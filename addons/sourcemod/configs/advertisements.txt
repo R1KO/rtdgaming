@@ -1,0 +1,95 @@
+// Advertisements 0.5
+// by Tsunami
+// 
+// Types
+// -----
+// C: Center message
+// H: Hint message
+// M: Menu message
+// S: Say message
+//    - Colors:  {DEFAULT}, {TEAM}, {GREEN}, {LIGHTGREEN}
+//    - Example: {GREEN}Current {LIGHTGREEN}Map: {DEFAULT}{CURRENTMAP}
+// T: Top message
+//    - Colors:  {WHITE},  {RED},  {GREEN}, {BLUE}, {YELLOW}, {PURPLE}, {CYAN},
+//               {ORANGE}, {PINK}, {OLIVE}, {LIME}, {VIOLET}, {LIGHTBLUE}
+//    - Example: {ORANGE} www.domain.com
+//
+// Flags (optional)
+// -----
+// Accepts flags of admins that will not see the advertisement.
+// When omitted everyone will see the advertisement.
+// When left empty only admins will see the advertisement.
+
+"Advertisements"
+{
+	"1"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Welcome to RTDGaming! {DEFAULT}Type:{TEAM}register{GREEN} to sign up at our forums"
+	}
+	"2"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Report any types of abuse on our forums: {TEAM}www.rtdgaming.com"
+	}
+	"3"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Buy rolls with credits! {DEFAULT}Type:{TEAM}shop, store, or credits"
+	}
+	"4"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Customize RTD! {DEFAULT}Type:{TEAM}options{GREEN}, to find out how."
+	}
+	"5"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Collect enough {TEAM}Dice{GREEN} and gain perks! {DEFAULT}Type:{TEAM}Dice{GREEN} to see your collection."
+	}
+	"6"
+	{
+		"type"		"S"
+		"text"		"{TEAM}TIP:{GREEN} Tired of typing to roll? Then {DEFAULT}Type:{TEAM}bind key ''say rtd''{GREEN} in the console."
+	}
+	"7"
+	{
+		"type"		"S"
+		"text"		"{GREEN}What does that roll do?! {DEFAULT}Type:{TEAM}rollinfo{GREEN} <roll name>"
+	}
+	"8"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Can't see your RTD Time or Credits? {DEFAULT}Type:{TEAM} movehud"
+	}
+	"9"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Teams Stacked? {DEFAULT}Type:{TEAM}scramble"
+	}
+	"10"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Buy FASTER! {DEFAULT}Type:{TEAM}buy {GREEN}<rollname>"
+	}
+	"11"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Support RTDGaming by {TEAM}Donating. {DEFAULT}Type:{TEAM}donate {DEFAULT}for more info."
+	}
+	"12"
+	{
+		"type"		"S"
+		"text"		"{GREEN}NEW RTD kill icons! {TEAM}www.rtdgaming.com/index.php?topic=575.0"
+	}
+	"13"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Access Dice Perks by {DEFAULT}Typing:{TEAM}perks"
+	}
+	"14"
+	{
+		"type"		"S"
+		"text"		"{GREEN}Give someone a roll this holiday season by{DEFAULT} Typing:{TEAM}gift"
+	}
+}

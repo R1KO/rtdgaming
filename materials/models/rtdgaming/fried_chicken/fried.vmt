@@ -1,0 +1,16 @@
+"VertexlitGeneric"
+{
+	"$baseTexture" "models\rtdgaming\fried_chicken/fried"
+	"$bumpmap" "models\rtdgaming\fried_chicken/fried_normal"
+                
+	"$normalmapalphaenvmapmask" 1
+	"$envmaptint" "[.35 .35 .35]"
+
+
+	"$phong" "1"
+	"$phongexponent" "50"
+	"$phongboost" "10"	
+	"$lightwarptexture" "models\lightwarps\weapon_lightwarp"
+	"$phongfresnelranges"	"[.25 .5 1]"
+
+}

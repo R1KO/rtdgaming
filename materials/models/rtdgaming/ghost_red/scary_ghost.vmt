@@ -1,0 +1,61 @@
+"VertexlitGeneric"
+{
+	"$baseTexture" "models/rtdgaming/ghost_red/scary_ghost"
+	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
+	"$detailscale" "3"
+	"$detailblendfactor" 2
+	"$detailblendmode" 1
+	"$color2" "[12 0 0]"
+
+	"$bumpmap" "models/effects/flat_normal"
+	"$nocull" "1"
+
+	"$selfillum" "1"
+	"$selfillumtint" "[12 .7 .1]"
+	"$selfIllumFresnel" "1"
+	"$selfIllumFresnelMinMaxExp" "[.1 1 2]"
+
+	"$phong" "1"
+	"$phongexponent" "1"
+	"$phongboost" "1"	
+	"$lightwarptexture" "models\player\pyro\pyro_lightwarp"
+	"$phongfresnelranges"	"[20 0 0]"
+
+
+	"$rimlight" "1"												
+	"$rimlightexponent" "1"
+	"$rimlightboost" "95"	
+
+"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$detail"
+			"animatedtextureframenumvar" "$detailframe"
+			"animatedtextureframerate" 24
+		}
+		"Sine"
+		{
+			"sinemin" ".2"
+			"sinemax" ".6"
+			"sineperiod" "1"
+			"resultVar" "$selfillumtint[1]"
+		}
+		"Sine"
+		{
+			"sinemin" ".5"
+			"sinemax" ".2"
+			"sineperiod" "1.1"
+			"resultVar" "$selfillumtint[0]"
+		}
+		"TextureScroll"
+		{
+			"texturescrollvar" "$detailtexturetransform"
+			"texturescrollrate" -.08
+			"texturescrollangle" 45
+		}
+	
+
+
+	}
+}

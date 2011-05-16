@@ -1,0 +1,27 @@
+
+
+"Refract"
+{
+	"$model" "1"
+	"$bluramount" "1.5"
+	"$refractamount" ".1"
+	"$refracttint" "{100 100 100}"
+	"$scale" "[1 1]"
+	"$dudvmap" "dev/water_dudv"
+	"$normalmap" "dev/water_normal"
+	//"$baseTexture" "models/rtdgaming/StasisCube"
+	"$refracttinttexture" "glass/glasswindow002b"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.5 .5 .5]"
+
+	"Proxies"
+	{
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$normalmap"
+			"animatedtextureframenumvar" "$bumpframe"
+			"animatedtextureframerate" 30.00
+		}
+
+	}
+}

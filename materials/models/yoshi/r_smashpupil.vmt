@@ -1,0 +1,11 @@
+"eyeball"
+{
+	"$baseTexture" "models/yoshi/r_smashpupil"
+               "$halflambert"1 
+	"$nocull"1
+	"$alphatest"1
+   
+	
+
+	
+}

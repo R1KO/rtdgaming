@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$baseTexture" "models\rtdgaming\cloud\cloud"
+	$halflambert 1
+}

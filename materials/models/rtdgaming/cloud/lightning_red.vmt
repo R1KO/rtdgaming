@@ -1,0 +1,26 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models\rtdgaming\cloud\lightning_red"
+	//"$bumpmap" "models\rtdgaming\iceslab\Ice001bump"
+	//"$envmap" "env_cubemap"
+	"$envmaptint" "[.9 .9 .9]"
+	"%keywords" "tf"
+	"$surfaceprop" "ice"
+	"$alpha" "0.9"
+	"$vertexalpha" 1
+	$translucent 1
+	"$nocull" "0"
+	"$additive" "1"
+	
+	
+
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"textureScrollVar" "$basetexturetransform"
+			"textureScrollRate" 0.15
+			"textureScrollAngle" 45
+		}
+	}
+}
