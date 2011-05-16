@@ -1,0 +1,18 @@
+"UnlitGeneric"
+{
+	"$baseTexture"	"models\rtdgaming\blizzardbackpack\Engi_SnowBackpack.vtf"
+	
+	// Cloaking
+	"$cloakPassEnabled" "1"
+
+	"Proxies"
+	{
+		"TextureScroll"
+		{
+			"texturescrollvar" "$basetexturetransform"
+			"texturescrollrate" 0.3
+			"texturescrollangle" -90
+		} 
+	}
+}
+

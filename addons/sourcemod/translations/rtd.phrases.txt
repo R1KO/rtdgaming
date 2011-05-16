@@ -1,0 +1,500 @@
+"Phrases"
+{
+	"Announcement_Message"
+	{
+		"#format"			"{1:c},{2:c}"
+		"en"				"This server is running a dice mod. Type: {1}!rtd{2} in chat."
+	}
+	"Server_Disable_Message"
+	{
+		"en"				"Too many commands have been disabled. Remove some commands from the cvar: sm_rtd_disable."
+	}
+	"Player_Alive"
+	{
+		"en"				"You must be alive to roll the dice."
+	}
+	"Player_Wait"
+	{
+		"#format"			"{1:c},{2:i},{3:c}"
+		"en"				"You must wait {1}{2}{3} second(s)."
+	}
+	"Player_Occupied_Mode1"
+	{
+		"#format"			"{1:c},{2:N},{3:c}"
+		"en"				"{1}{2}{3} is using roll the dice."
+	}
+	"Player_Occupied_Mode2"
+	{
+		"en"				"Too many players on your team are using roll the dice."	
+	}
+	"Disable_Overload"
+	{
+		"en"				"There are no rtd commands for your class."
+	}
+	"Player_Already"
+	{
+		"en"				"You're already rolling the dice!"
+	}
+	"Disabled"
+	{
+		"en"				"Roll the dice is currently disabled on this server."
+	}
+	"Server_Loaded"
+	{
+		"#format"			"{1:s}"
+		"en"				"Version: {1} loaded."
+	}
+	"Godmode_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}godmode{5} for {6}{7}{8} seconds."
+	}
+	"Toxic_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}toxic{5} for {6}{7}{8} seconds."
+	}
+	"Good_Health_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c}"
+		"en"				"{1}{2}{3} rolled and won buffed {4}health{5}!"
+	}
+	"Speed_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}speed{5} for {6}{7}{8} seconds."
+	}
+	"Noclip_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}noclip{5} for {6}{7}{8} seconds."
+	}
+	"Gravity_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}low gravity{5} for {6}{7}{8} seconds."
+	}
+	"Uber_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}Über Charge{5} for {6}{7}{8} seconds."
+	}
+	"Invis_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}invisibility{5} for {6}{7}{8} seconds."
+	}
+	"Instantkill_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}instant kills{5} for {6}{7}{8} seconds."
+	}
+	"Cloak_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}cloak{5} for {6}{7}{8} seconds."
+	}
+	"Crits_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won {4}crits{5} for {6}{7}{8} seconds."
+	}
+	"Explode_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c}"
+		"en"				"{1}{2}{3} rolled and {4}EXPLODED{5}."
+	}
+	"Snail_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and won a {4}snail's pace{5} for {6}{7}{8} seconds."
+	}
+	"Freeze_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and was {4}frozen{5} for {6}{7}{8} seconds."
+	}
+	"Timebomb_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c}"
+		"en"				"{1}{2}{3} rolled and became a {4}timebomb{5}."
+	}
+	"Ignite_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c}"
+		"en"				"{1}{2}{3} rolled and was {4}ignited{5}."
+	}
+	"Bad_Health_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c}"
+		"en"				"{1}{2}{3} rolled and lost all his {4}health{5}."
+	}
+	"Drug_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and was {4}drugged{5} for {6}{7}{8} seconds."
+	}
+	"Blind_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and was {4}blinded{5} for {6}{7}{8} seconds."
+	}
+	"Weapons_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c}"
+		"en"				"{1}{2}{3} rolled and was stripped of {4}weapons{5}."
+	}
+	"Beacon_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and was {4}beaconed{5} for {6}{7}{8} seconds."
+	}
+	"Taunt_Start"
+	{
+		"#format"			"{1:c},{2:N},{3:c},{4:c},{5:c},{6:c},{7:d},{8:c}"
+		"en"				"{1}{2}{3} rolled and was forced to {4}taunt{5} for {6}{7}{8} seconds."
+	}
+	"Effect_Off"
+	{
+		"#format"			"{1:c},{2:N},{3:c}"
+		"en"				"{1}{2}{3}'s effect has worn off."
+	}
+	"Toxic_Notify"
+	{
+		"#format"			"{1:N}"
+		"en"				"You were killed by {1}'s toxicity."
+	}
+	"Player_Disconnect"
+	{
+		"en"				"Player disconnected during rtd."
+	}
+	"Player_Died"
+	{
+		"#format"			"{1:c},{2:N},{3:c}"
+		"en"				"{1}{2}{3} died while using dice mod."
+	}
+	"Instantkill_Notify"
+	{
+		"#format"			"{1:c},{2:N},{3:c}"
+		"en"				"You were killed instantly by {1}{2}{3}."
+	}
+
+	//RTD Good Rolls
+	"AWARD_G_0"
+	{
+		"en" "God Mode"
+	}
+
+	"AWARD_G_1"
+	{
+		"en" "Toxic"
+	}
+
+	"AWARD_G_2"
+	{
+		"en" "Buffed Health"
+	}
+
+	"AWARD_G_3"
+	{
+		"en" "Speed"
+	}
+
+	"AWARD_G_4"
+	{
+		"en" "NoClip"
+	}
+
+	"AWARD_G_5"
+	{
+		"en" "Low Gravity"
+	}
+
+	"AWARD_G_6"
+	{
+		"en" "Ubercharge"
+	}
+
+	"AWARD_G_7"
+	{
+		"en" "Invisiblity"
+	}
+
+	"AWARD_G_8"
+	{
+		"en" "Instant Kills"
+	}
+
+	"AWARD_G_9"
+	{
+		"en" "Cloak"
+	}
+
+	"AWARD_G_10"
+	{
+		"en" "Crits"
+	}
+
+	"AWARD_G_11"
+	{
+		"en" "Scout Jumps"
+	}
+
+	"AWARD_G_12"
+	{
+		"en" "Mediray"
+	}
+
+	"AWARD_G_13"
+	{
+		"en" "Regeneration"
+	}
+
+	"AWARD_G_14"
+	{
+		"en" "Infinite Ammo"
+	}
+
+	"AWARD_G_15"
+	{
+		"en" "Sentry Builder"
+	}
+
+	"AWARD_G_16"
+	{
+		"en" "Sentry Mover"
+	}
+
+	"AWARD_G_17"
+	{
+		"en" "Class Immunity"
+	}
+
+	"AWARD_G_18"
+	{
+		"en" "Medic Virus"
+	}
+
+	"AWARD_G_19"
+	{
+		"en" "Ubercharger"
+	}
+
+	"AWARD_G_20"
+	{
+		"en" "Armor"
+	}
+
+	"AWARD_G_21"
+	{
+		"en" "Team Crits"
+	}
+
+	"AWARD_G_22"
+	{
+		"en" "Crouch Invisiblity"
+	}
+
+	"AWARD_G_23"
+	{
+		"en" "Proximity Stickies"
+	}
+
+	"AWARD_G_24"
+	{
+		"en" "Slow Cube"
+	}
+
+	"AWARD_G_25"
+	{
+		"en" "Bombs"
+	}
+
+	"AWARD_G_26"
+	{
+		"en" "Groovitron"
+	}
+
+	"AWARD_G_27"
+	{
+		"en" "Crap"
+	}
+
+	"AWARD_G_28"
+	{
+		"en" "Spider"
+	}
+
+	"AWARD_G_29"
+	{
+		"en" "Pumpkins"
+	}
+
+	"AWARD_G_30"
+	{
+		"en" "Fire Bullets"
+	}
+
+	"AWARD_G_31"
+	{
+		"en" "Roller Mine"
+	}
+
+	"AWARD_G_32"
+	{
+		"en" "TeleSphere"
+	}
+
+	"AWARD_G_33"
+	{
+		"en" "Ice Patch"
+	}
+
+	"AWARD_G_34"
+	{
+		"en" "Berserker"
+	}
+
+	"AWARD_G_35"
+	{
+		"en" "Vampire"
+	}
+
+	"AWARD_G_36"
+	{
+		"en" "Invis on Low Health"
+	}
+
+	"AWARD_G_37"
+	{
+		"en" "Flame"
+	}
+
+	"AWARD_G_38"
+	{
+		"en" "Rage"
+	}
+
+	"AWARD_G_39"
+	{
+		"en" "Fireball"
+	}
+
+	"AWARD_G_40"
+	{
+		"en" "Haste"
+	}
+
+	"AWARD_G_41"
+	{
+		"en" "Ghost"
+	}
+	
+	"AWARD_G_42"
+	{
+		"en" "Sandwich"
+	}
+	"AWARD_G_43"
+	{
+		"en" "Jump Pad"
+	}
+	"AWARD_G_44"
+	{
+		"en" "Accelerator"
+	}
+	"AWARD_G_45"
+	{
+		"en" "Zombies"
+	}
+	"AWARD_G_46"
+	{
+		"en" "Backpack"
+	}
+	"AWARD_G_47"
+	{
+		"en" "Collateral Damage"
+	}
+	
+	"AWARD_G_48"
+	{
+		"en" "Amplifier"
+	}
+	
+	"AWARD_G_49"
+	{
+		"en" "Proximity Mines"
+	}
+	
+	"AWARD_G_50"
+	{
+		"en" "Bear Trap"
+	}
+	"AWARD_G_51"
+	{
+		"en" "Reflect Shield"
+	}
+	
+	"AWARD_G_52"
+	{
+		"en" "Cage"
+	}
+	
+	"AWARD_G_53"
+	{
+		"en" "Crits Spurt"
+	}
+	
+	"AWARD_G_54"
+	{
+		"en" "Jarate Cloud"
+	}
+	
+	"AWARD_G_55"
+	{
+		"en" "Diglett"
+	}
+	
+	"AWARD_G_56"
+	{
+		"en" "Pitching Machine"
+	}
+	"AWARD_G_57"
+	{
+		"en" "Metal Man"
+	}
+	//RTD Bad Awards
+	"AWARD_B_0"
+	{
+		"en" "Ignite"
+	}
+
+	"AWARD_B_1"
+	{
+		"en" "1 Hp"
+	}
+
+	"AWARD_B_2"
+	{
+		"en" "Melee Mode"
+	}
+
+	"AWARD_B_3"
+	{
+		"en" "Taunting"
+	}
+
+	"AWARD_B_4"
+	{
+		"en" "+60 Seconds Wait Time"
+	}
+
+	"AWARD_B_5"
+	{
+		"en" "Bad Aim"
+	}
+	
+	"AWARD_B_6"
+	{
+		"en" "Loser"
+	}
+}

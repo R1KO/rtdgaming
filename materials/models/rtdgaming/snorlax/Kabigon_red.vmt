@@ -1,0 +1,5 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" 	"models/rtdgaming/snorlax/kabigon_red"
+	"$halflambert"	"1"
+}

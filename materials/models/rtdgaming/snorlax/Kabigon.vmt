@@ -1,0 +1,9 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" 	"models/rtdgaming/snorlax/kabigon"
+	"$halflambert"	"1"
+	
+	"$model" 1
+	"$phong" "1"
+	"$rimlight" "1" // To enable rim lighting (requires phong)
+}

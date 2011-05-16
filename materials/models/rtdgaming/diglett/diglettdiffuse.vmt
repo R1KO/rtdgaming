@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\rtdgaming/diglett/diglettDiffuse.vtf"
+	"$selfillum" 1
+	"$bumpmap" "models\rtdgaming/diglett/diglettNormal.vtf"
+	"$halflambert" 1
+        "$model" 1
+	"$phong" "1"
+	"$phongexponent" "20"
+	"$phongboost" "2"
+	"$lightwarptexture" "models/player/pyro/pyro_lightwarp"
+	"$phongfresnelranges" "[.1 2 8]" 
+	"$rimlight" "1" // To enable rim lighting (requires phong)
+	"$rimlightexponent" "2" // Exponent for phong component of rim lighting
+	"$rimlightboost" "10" // Boost for ambient cube component of rim lighting
+	// "$alphatest" 1
+}

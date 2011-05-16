@@ -1,0 +1,9 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models\yoshi\egg"
+	"$bumpmap" "models\rtdgaming\iceslab\Ice001bump"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.8 .8 .8]"
+	"%keywords" "tf"
+	"$surfaceprop" "ice"
+}

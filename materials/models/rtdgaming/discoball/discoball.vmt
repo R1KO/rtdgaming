@@ -1,0 +1,5 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "Metal/metalchrome001"
+	"$envmap" "env_cubemap"
+}

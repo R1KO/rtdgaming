@@ -1,0 +1,11 @@
+"VertexlitGeneric"
+{
+	"$baseTexture" "models\rtdgaming\crap_v2\crap"
+	"$bumpmap" "models\rtdgaming\crap_v2\crap_bumpmap_final"
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[0.15 0.35 0.15]"
+	
+	"%keywords" "tf"
+	"$surfaceprop" "mud"
+
+}

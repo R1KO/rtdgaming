@@ -1,0 +1,10 @@
+"Eyes"
+{
+	"$baseTexture" "models/yoshi/r_white"
+              "$iris" "models/yoshi/r_eye"
+	 "$halflambert"1 
+	"$nocull"1
+     
+	
+
+}
