@@ -6,6 +6,11 @@
  *                                                                        *
  **************************************************************************/
 
+  #if defined _attachments_included
+ #endinput
+#endif
+#define _attachments_included
+
 new Handle:attachments_array = INVALID_HANDLE;
 
 /** 
