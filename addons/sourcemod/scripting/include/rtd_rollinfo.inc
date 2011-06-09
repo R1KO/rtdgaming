@@ -6,6 +6,11 @@
  *																		 *
  **************************************************************************/
 
+ #if defined _rtd_rollinfo_included
+ #endinput
+#endif
+#define _rtd_rollinfo_included
+
 #define MAX_GOOD_AWARDS			81
 
 #define AWARD_G_GODMODE			0
