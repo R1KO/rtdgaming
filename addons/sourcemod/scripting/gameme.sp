@@ -4966,7 +4966,7 @@ public Action: Event_TF2ObjectDestroyedPre(Handle: event, const String: name[], 
 {
 	if(GetEventInt(event, "objecttype") == -1)
 		return Plugin_Continue;
-	
+		
 	if (GetEntProp(GetEventInt(event, "index"), Prop_Send, "m_bMiniBuilding", 1)) {
 		new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 		new userid = GetEventInt(event, "userid");
@@ -4989,7 +4989,7 @@ public Action: Event_TF2PlayerBuiltObjectPre(Handle: event, const String: name[]
 {
 	if(GetEventInt(event, "objecttype") == -1)
 		return Plugin_Continue;
-	
+		
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	if (client > 0) {
 		if (tf2_players[client][carry_object]) {

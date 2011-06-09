@@ -78,7 +78,7 @@ public bool:hasLoadoutChanged(client)
 	{
 		if (IsValidEntity(ent))
 		{		
-			if (GetEntDataEnt2(ent, m_hOwnerEntity) == client)
+			if (GetEntDataEnt2(ent, m_hOwnerEntity) == client && totWearables < 6)
 			{
 				totWearables ++;
 				SetArrayCell(tempWearablesArray, totWearables, GetEntProp(ent, Prop_Send, "m_iItemDefinitionIndex"));
