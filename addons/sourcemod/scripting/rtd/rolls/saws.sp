@@ -164,7 +164,7 @@ public Action:Spawn_Saw(client)
 	
 	TeleportEntity(ent, floorPos, angl, NULL_VECTOR);
 	
-	killEntityIn(ent, float(GetTime() + 120));
+	killEntityIn(ent, 120.0);
 	
 	return Plugin_Handled;
 }

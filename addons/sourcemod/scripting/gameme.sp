@@ -5214,8 +5214,9 @@ public OnTF2TakeDamage_Post(victim, attacker, inflictor, Float:damage, damagetyp
 				}
 			}
 		}
-
-		if (weapon_index > -1) {
+		
+		if (weapon_index > -1 && attacker < (MAXPLAYERS + 1) && weapon_index < MAX_LOG_WEAPONS && wdamage < weapon_data) 
+		{
 			player_weapons[attacker][weapon_index][wdamage] += idamage;
 			player_weapons[attacker][weapon_index][whits]++;
 		}
