@@ -71,7 +71,7 @@ public bool:hasLoadoutChanged(client)
 	//save found wearables into an array
 	new totWearables;
 	new Handle: tempWearablesArray;
-	tempWearablesArray = CreateArray(1, 6);
+	tempWearablesArray = CreateArray(1, 8);
 	
 	new ent = -1;
 	while( (ent = FindEntityByClassname(ent, "tf_wearable")) != -1 )
