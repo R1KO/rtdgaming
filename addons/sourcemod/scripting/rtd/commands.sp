@@ -1094,6 +1094,7 @@ stock bool:IsValidClient(iClient)
 	if (iClient < 0) return false;
 	if (iClient > MaxClients) return false;
 	if (!IsClientConnected(iClient)) return false;
+	if (!IsClientAuthorized(iClient)) return false;
 	return IsClientInGame(iClient);
 }
 

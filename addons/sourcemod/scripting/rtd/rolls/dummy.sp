@@ -346,7 +346,7 @@ public Action:Dummy_Timer(Handle:timer, Handle:dataPackHandle)
 						DealDamage(enemy, 45, client, 4226, "dummy");
 					}
 					
-					if(client < MAXPLAYERS)
+					if(client < cMaxClients)
 					{
 						if(RTD_Perks[client][28] && GetRandomInt(0, 99) < 50)
 						{
