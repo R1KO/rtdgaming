@@ -83,6 +83,8 @@ public Action:Spawn_BearTrap(client)
 	WritePackCell(dataPack, GetTime());//PackPosition(8) 
 	WritePackCell(dataPack, 120); //PackPosition(16) amount of time it will live in seconds
 	WritePackCell(dataPack, 0); //PackPosition(24) Start Time of last trap activation
+	WritePackCell(dataPack, RTD_PerksLevel[client][54]); //PackPosition(32) bleeding perk
+	
 	/*
 	if(annotation)
 	{
@@ -110,6 +112,7 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 	new bearTrap = ReadPackCell(dataPackHandle);
 	SetPackPosition(dataPackHandle, 24);
 	new lastTrapTime = ReadPackCell(dataPackHandle);
+	new bloodyTrap = ReadPackCell(dataPackHandle);
 	
 	new Float: playerPos[3];
 	new Float: bearTrapPos[3];
@@ -178,6 +181,9 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 					client_rolls[i][AWARD_G_BEARTRAP][3] = 0;
 					
 					EmitSoundToAll(SOUND_BEARTRAP_CLOSE, bearTrap);
+					
+					if(bloodyTrap)
+						TF2_MakeBleed(i, i, 4.0);
 					
 					break;
 				}

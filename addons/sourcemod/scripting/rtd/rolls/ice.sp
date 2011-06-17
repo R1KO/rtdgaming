@@ -70,12 +70,6 @@ public Action:Spawn_Ice(client)
 	}
 	
 	AttachTempParticle(ent,"rtd_snowfall_groundLOW_fix", 115.0, true,iceName,0.0, false);
-	/*
-	if(annotation)
-	{
-		CreateAnnotation(ent, "Friendly Ice Patch", 1, iTeam);
-		CreateAnnotation(ent, "Caution! Slipper Surface", 2, iTeam);
-	}*/
 	
 	return Plugin_Handled;
 }

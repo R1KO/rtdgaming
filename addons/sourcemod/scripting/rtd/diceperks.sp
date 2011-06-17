@@ -656,6 +656,13 @@ public fn_PerksMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					
 					PrintToChat(param1, "You now have: 10% Chance of Timer reset on death");
 				}
+				else if(StrContains(menuTriggers[1], "a51", false) != -1)
+				{
+					RTD_Perks[param1][54] += value;
+					RTD_PerksLevel[param1][54] ++;
+					
+					PrintToChat(param1, "Your traps now cause enemies to bleed");
+				}
 			}
 			
 			if(StrContains(menuTriggers[1], "reset", false) == -1)
