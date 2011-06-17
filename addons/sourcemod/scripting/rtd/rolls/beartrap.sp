@@ -185,7 +185,7 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 					if(bloodyTrap)
 					{
 						//delay the bleed effect in 3.5 seconds
-						CreateTimer(3.5,  	Timer_BleedDelay, GetClientUserId(i), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+						CreateTimer(3.5,  	Timer_BleedDelay, GetClientUserId(i), TIMER_FLAG_NO_MAPCHANGE);
 					}
 					
 					break;
