@@ -183,7 +183,10 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 					EmitSoundToAll(SOUND_BEARTRAP_CLOSE, bearTrap);
 					
 					if(bloodyTrap)
-						TF2_MakeBleed(i, i, 4.0);
+					{
+						//delay the bleed effect in 3.5 seconds
+						CreateTimer(3.5,  	Timer_BleedDelay, GetClientUserId(i), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+					}
 					
 					break;
 				}
@@ -193,6 +196,23 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 	}
 	
 	return Plugin_Continue;
+}
+
+public Action:Timer_BleedDelay(Handle:Timer, any:clientUserID)
+{
+	new client = GetClientOfUserId(clientUserID);
+	
+	//need valid client
+	if(client < 1)
+		return Plugin_Stop;
+	
+	//client must be alive
+	if(!IsPlayerAlive(client))
+		return Plugin_Stop;
+	
+	TF2_MakeBleed(client, client, 4.0);
+	
+	return Plugin_Stop;
 }
 
 public stopBearTrapTimer(Handle:dataPackHandle)
