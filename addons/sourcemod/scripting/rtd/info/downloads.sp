@@ -777,29 +777,6 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/instaporter/ball_catcher_sheet_red.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/instaporter/ball_catcher_sheet_red.vtf");
 	
-	//air intake
-	AddFileToDownloadsTable("materials/models/rtdgaming/air_intake/air_intake.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/air_intake/air_intake.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/air_intake/invulnfx_blue.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/air_intake/invulnfx_red.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/air_intake/straps.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/air_intake/straps.vtf");
-	
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake.dx80.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake.dx90.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake.mdl");
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake.sw.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake.vvd");
-	
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake_floor.dx80.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake_floor.dx90.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake_floor.mdl");
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake_floor.sw.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/air_intake/air_intake_floor.vvd");
-	
-	//AddFileToDownloadsTable("sound/rtdgaming/startsuck.wav");
-	//AddFileToDownloadsTable("sound/rtdgaming/endsuck.wav");
-	
 	AddFileToDownloadsTable("sound/rtdgaming/starman.wav");
 	AddFileToDownloadsTable("sound/rtdgaming/evillaugh.wav");
 	AddFileToDownloadsTable("sound/rtdgaming/fire_small1.wav");
