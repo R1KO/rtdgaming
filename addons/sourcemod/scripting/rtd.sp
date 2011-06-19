@@ -501,6 +501,7 @@ public Float:GetClientBaseSpeed(client)
 		return 200.0;
 	}
 	
+	//new String:redbulltext[128];
 	new String:classname[64];
 	GetEdictClassname(iWeapon, classname, 64);
 	
@@ -576,10 +577,10 @@ public Float:GetClientBaseSpeed(client)
 				
 				case 3:
 					speed *= 1.24;
-				
-				case 4:
-					speed *= 1.31;
 			}
+			
+			if(decapitations > 3)
+				speed *= 1.31;
 			
 			//The Scotsman's Skullcutter
 			if(itemDefinition == 172)
@@ -653,6 +654,9 @@ public Float:GetClientBaseSpeed(client)
 				speed *= 0.75;
 		}
 	}
+	
+	//Format(redbulltext, sizeof(redbulltext), "Speed: %i", RoundFloat(speed));
+	//centerHudText(client, redbulltext, 0.0, 1.0, HudMsg3, 0.13);
 	
 	return speed;
 }
