@@ -1134,8 +1134,7 @@ StripToMelee(client)
 			//Removes Spy Cloak
 			TF2_RemoveCond(client, 4);
 		}
-		for (new i = 0; i <= 5; i++)
-			if (i != 2)
+		for (new i = 0; i <= 1; i++)
 				TF2_RemoveWeaponSlot(client, i);
 			
 		new weapon = GetPlayerWeaponSlot(client, 2);
