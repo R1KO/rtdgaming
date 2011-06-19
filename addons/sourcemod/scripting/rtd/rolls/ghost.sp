@@ -68,7 +68,7 @@ public Action:Ghost_Timer(Handle:timer, any:other)
 					TF2_StunPlayer(i,float(RTD_Perks[i][12]), 0.0, TF_STUNFLAGS_GHOSTSCARE, 0);
 					
 					//Next time the player can get scared
-					client_rolls[i][AWARD_G_GHOST][2] = GetTime() + 6;
+					client_rolls[i][AWARD_G_GHOST][2] = GetTime() + 7;
 					
 					//PrintToChatAll("CurTime:%i | NextScare:%i", GetTime(), client_rolls[i][AWARD_G_GHOST][2] );
 				}

@@ -482,6 +482,8 @@ public Action:Timer_ShowInfo(Handle:timer)
 
 public Action:GenericTimer(Handle:timer)
 {
+	new String:redbulltext[128];
+	
 	for (new i = 1; i <= MaxClients; i++)
 	{
 		//ok let's make sure that the player really is in the game
@@ -525,6 +527,8 @@ public Action:GenericTimer(Handle:timer)
 				SetEntDataFloat(i, m_flMaxspeed, modifiedSpeed);
 				
 				//Please leave for debugging purposes
+				Format(redbulltext, sizeof(redbulltext), "Speed: %i", RoundFloat(GetEntDataFloat(i,m_flMaxspeed)));
+				centerHudText(i, redbulltext, 0.0, 1.0, HudMsg3, 0.13); 
 				//PrintToChat(i, "Cond:%i Speed:%f", TF2_GetPlayerConditionFlags(i), GetEntDataFloat(i,m_flMaxspeed));
 			}
 			
