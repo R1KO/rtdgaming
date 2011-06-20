@@ -483,6 +483,7 @@ public Action:Timer_ShowInfo(Handle:timer)
 public Action:GenericTimer(Handle:timer)
 {
 	new String:redbulltext[128];
+	new String:working[32];
 	
 	for (new i = 1; i <= MaxClients; i++)
 	{
@@ -526,7 +527,12 @@ public Action:GenericTimer(Handle:timer)
 				
 				SetEntDataFloat(i, m_flMaxspeed, modifiedSpeed);
 				
-				//Please leave for debugging purposes
+				/////////////////////////////////////////
+				//Please leave for debugging purposes  //
+				//                                     //
+				//Following displays MPH when Redbull  //
+				//is equipped.                         //
+				/////////////////////////////////////////
 				decl Float:_fTemp[3], Float:_fVelocity;
 				GetEntPropVector(i, Prop_Data, "m_vecVelocity", _fTemp);
 				for(new ki = 0; ki <= 2; ki++)
@@ -535,9 +541,22 @@ public Action:GenericTimer(Handle:timer)
 				_fVelocity = SquareRoot(_fTemp[0] + _fTemp[1] + _fTemp[2]) * 0.042748;
 				
 				new Float: maxSpeed = GetEntDataFloat(i,m_flMaxspeed) * 0.042748;
-				Format(redbulltext, sizeof(redbulltext), "Speed: %.2f (%.2f) mph ", _fVelocity, maxSpeed);
+				
+				if(GetEntityFlags(i) & FL_ONGROUND)
+				{
+					new diff = RoundFloat(_fVelocity) - RoundFloat(maxSpeed);
+					if(diff >= -2 && diff <= 2)
+					{
+						Format(working, sizeof(working), "[^_^]");
+					}else{
+						Format(working, sizeof(working), "[O_O]");
+					}
+				}else{
+					Format(working, sizeof(working), "[-_-]");
+				}
+					
+				Format(redbulltext, sizeof(redbulltext), "Speed: %.2f (%.2f) mph %s", _fVelocity, maxSpeed, working);
 				centerHudText(i, redbulltext, 0.0, 1.0, HudMsg3, 0.13); 
-				//PrintToChat(i, "Cond:%i Speed:%f", TF2_GetPlayerConditionFlags(i), GetEntDataFloat(i,m_flMaxspeed));
 			}
 			
 			//Following is for Speed
