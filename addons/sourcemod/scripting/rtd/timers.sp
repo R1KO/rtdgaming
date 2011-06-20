@@ -527,7 +527,15 @@ public Action:GenericTimer(Handle:timer)
 				SetEntDataFloat(i, m_flMaxspeed, modifiedSpeed);
 				
 				//Please leave for debugging purposes
-				Format(redbulltext, sizeof(redbulltext), "Speed: %i", RoundFloat(GetEntDataFloat(i,m_flMaxspeed)));
+				decl Float:_fTemp[3], Float:_fVelocity;
+				GetEntPropVector(i, Prop_Data, "m_vecVelocity", _fTemp);
+				for(new ki = 0; ki <= 2; ki++)
+					_fTemp[ki] *= _fTemp[ki];
+				
+				_fVelocity = SquareRoot(_fTemp[0] + _fTemp[1] + _fTemp[2]) * 0.042748;
+				
+				new Float: maxSpeed = GetEntDataFloat(i,m_flMaxspeed) * 0.042748;
+				Format(redbulltext, sizeof(redbulltext), "Speed: %.2f (%.2f) mph ", _fVelocity, maxSpeed);
 				centerHudText(i, redbulltext, 0.0, 1.0, HudMsg3, 0.13); 
 				//PrintToChat(i, "Cond:%i Speed:%f", TF2_GetPlayerConditionFlags(i), GetEntDataFloat(i,m_flMaxspeed));
 			}
