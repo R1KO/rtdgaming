@@ -414,6 +414,8 @@ stock RTDPrecache()
 	
 	telesphereModelIndex = PrecacheModel(MODEL_TELESPHERE, true);
 	
+	PrecacheSound(SOUND_DROPCABINET, true);
+	
 	//keep track of all indexed models in an array
 	modelIndex[0] = bombModelIndex;	
 	modelIndex[1] = mineModelIndex;	

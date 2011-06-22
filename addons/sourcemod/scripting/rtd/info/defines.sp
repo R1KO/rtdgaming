@@ -450,6 +450,8 @@
 #define MODEL_SENTRYSHIELD		"models/buildables/sentry_shield.mdl"
 
 #define SOUND_WHISTLE			"rtdgaming/whistle.wav"
+
+#define SOUND_DROPCABINET		"rtdgaming/robsupps.wav"
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 
