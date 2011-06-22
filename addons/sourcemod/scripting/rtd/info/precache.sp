@@ -412,6 +412,8 @@ stock RTDPrecache()
 	
 	shieldModelIndex = PrecacheModel(MODEL_SENTRYSHIELD, true);
 	
+	telesphereModelIndex = PrecacheModel(MODEL_TELESPHERE, true);
+	
 	//keep track of all indexed models in an array
 	modelIndex[0] = bombModelIndex;	
 	modelIndex[1] = mineModelIndex;	
@@ -466,6 +468,7 @@ stock RTDPrecache()
 	modelIndex[50] = stonewallModelIndex[1];
 	modelIndex[51] = shieldModelIndex;
 	modelIndex[52] = cloud02Index;
+	modelIndex[53] = telesphereModelIndex;
 	
-	totModels = 53;
+	totModels = 54;
 }
