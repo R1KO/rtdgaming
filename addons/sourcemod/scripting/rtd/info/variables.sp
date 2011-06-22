@@ -243,6 +243,7 @@ new airIntakeModelIndex[2];
 new brazierModelIndex;
 new stonewallModelIndex[2];
 new shieldModelIndex;
+new telesphereModelIndex;
 
 new diceNeeded;
 new g_BeginScore[cMaxClients];
@@ -274,7 +275,6 @@ new BaseVelocityOffset;
 new String:logPath[256];
 
 new WillTeleSphere[MAXPLAYERS+1];
-new TeleSphereMaxTime = 1200;
 new TeleGlowIndex;
 
 new g_BeamSprite;
