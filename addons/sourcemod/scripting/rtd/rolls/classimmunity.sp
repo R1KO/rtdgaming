@@ -46,13 +46,13 @@ public SetupClassImmunityMenu(client)
 }
 
 public fn_ClassImmunityMenuHandler(Handle:menu, MenuAction:action, param1, param2)
-{
-	decl String:message[200];
-	
+{	
 	switch (action) 
 	{
 		case MenuAction_Select: 
 		{
+			decl String:message[200];
+			
 			new String:name[32];
 			GetClientName(param1, name, sizeof(name));
 			client_rolls[param1][AWARD_G_CLASSIMMUNITY][0] = 1;
@@ -109,13 +109,13 @@ public fn_ClassImmunityMenuHandler(Handle:menu, MenuAction:action, param1, param
 		}
 	
 		case MenuAction_Cancel: {
-			PrintToChatSome(message); 
+			//PrintToChatSome(message); 
 			client_rolls[param1][AWARD_G_CLASSIMMUNITY][2] = 0;
 			//client_rolls[param1][AWARD_G_CLASSIMMUNITY][1] = 0;
 		}
 
 		case MenuAction_End: {
-			PrintToChatSome(message); 
+			//PrintToChatSome(message); 
 			//client_rolls[param1][AWARD_G_CLASSIMMUNITY][2] = GetTime();
 			CloseHandle(menu);
 		}
