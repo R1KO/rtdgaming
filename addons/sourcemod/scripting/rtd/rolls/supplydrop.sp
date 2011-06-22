@@ -36,6 +36,7 @@ public Action:Spawn_Supply(client)
 	Format(buf, 32, "supply_%d", supply);
 	DispatchKeyValue(supply, "targetname", buf);
 	SetEntityModel(supply, MODEL_LOCKER);
+	EmitSoundToAll(SOUND_DROPCABINET, client);
 	
 	DispatchSpawn(supply);
 	
