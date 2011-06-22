@@ -8,8 +8,9 @@ public GiveClassImmunity(client)
 {
 	if (!IsValidClient(client)) return;
 	
-	SetupClassImmunityMenu(client);
 	client_rolls[client][AWARD_G_CLASSIMMUNITY][2] = GetTime();
+	SetupClassImmunityMenu(client);
+	
 	if (RTD_PerksLevel[client][25] != 0)
 		CreateTimer(1.0 * RTD_Perks[client][25], Timer_ClassImmunityPerk, client, TIMER_FLAG_NO_MAPCHANGE);
 }
@@ -103,13 +104,19 @@ public fn_ClassImmunityMenuHandler(Handle:menu, MenuAction:action, param1, param
 					PrintToChatSome(message); 
 					client_rolls[param1][AWARD_G_CLASSIMMUNITY][1] = 8;
 				}
+				
 			}
 		}
 	
 		case MenuAction_Cancel: {
+			PrintToChatSome(message); 
+			client_rolls[param1][AWARD_G_CLASSIMMUNITY][2] = 0;
+			//client_rolls[param1][AWARD_G_CLASSIMMUNITY][1] = 0;
 		}
 
 		case MenuAction_End: {
+			PrintToChatSome(message); 
+			//client_rolls[param1][AWARD_G_CLASSIMMUNITY][2] = GetTime();
 			CloseHandle(menu);
 		}
 	}
