@@ -597,25 +597,6 @@ GivePlayerEffect(client, award, cost)
 				client_rolls[client][AWARD_G_DUMMY][5] = GetClientUserId(client);
 			}
 			
-			case AWARD_G_AIRINTAKE:
-			{
-				client_rolls[client][award][1] = 0; //entity index
-				SpawnAndAttachAirIntake(client);
-			}
-			
-			case AWARD_G_HORSEMANN:
-			{
-				centerHudText(client, "You are now the Horseless Headless Horsemann", 4.0, 5.0, HudMsg3, 0.75); 
-				centerHudText(client, "You take reduced damage", 10.0, 5.0, HudMsg3, 0.75); 
-				
-				ServerCommand("sm_bethehorseman %i", GetClientUserId(client));
-				
-				new Handle:dataPackHandle;
-				CreateDataTimer(0.8, Timer_Boo, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
-				
-				WritePackCell(dataPackHandle, GetClientUserId(client));
-			}
-			
 			case AWARD_G_BRAZIER:
 			{
 				client_rolls[client][AWARD_G_BRAZIER][4] = GetTime(); //next time it can regenerate

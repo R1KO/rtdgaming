@@ -19,7 +19,6 @@ public Determine_DropItem(client)
 	client_rolls[client][AWARD_G_BLIZZARD][0]		|| 
 	client_rolls[client][AWARD_G_SPIDER][1]			||
 	client_rolls[client][AWARD_G_WINGS][0]			||
-	client_rolls[client][AWARD_G_AIRINTAKE][0]		||
 	client_rolls[client][AWARD_G_STONEWALL][0]		||
 	client_rolls[client][AWARD_G_COW][1]			)
 	{
@@ -51,12 +50,6 @@ public BuildUseableRollsMenu(client)
 	{
 		Format(info, sizeof(info), "%i:0", AWARD_G_BLIZZARD);
 		AddMenuItem(hCMenu, info, "Drop Backpack Blizzard", ITEMDRAW_DEFAULT);
-	}
-	
-	if(client_rolls[client][AWARD_G_AIRINTAKE][0])
-	{
-		Format(info, sizeof(info), "%i:0", AWARD_G_AIRINTAKE);
-		AddMenuItem(hCMenu, info, "Drop Air Intake", ITEMDRAW_DEFAULT);
 	}
 	
 	if(client_rolls[client][AWARD_G_STONEWALL][0])
@@ -177,11 +170,6 @@ public fn_SpecialDropItem_Menu(Handle:menu, MenuAction:action, param1, param2)
 				case AWARD_G_BLIZZARD:
 				{
 					Drop_Blizzard(param1);
-				}
-				
-				case AWARD_G_AIRINTAKE:
-				{
-					Drop_AirIntake(param1);
 				}
 				
 				case AWARD_G_STONEWALL:

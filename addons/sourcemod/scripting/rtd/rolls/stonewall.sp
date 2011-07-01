@@ -158,7 +158,7 @@ public Action:Client_Stonewall_Timer(Handle:timer, Handle:dataPackHandle)
 	itemEquipped_OnBack[wearer] = 1;
 	
 	//PrintToChat(wearer, "%i | %i| %i", GetEntPropEnt(wearer, Prop_Send, "m_hObserverTarget"), GetEntProp(wearer, Prop_Send, "m_iObserverMode"), GetEntProp(wearer, Prop_Send, "m_bDrawViewmodel"));
-	if(GetEntProp(wearer, Prop_Send, "m_iObserverMode") > 0 || TF2_GetPlayerConditionFlags(wearer) & 128 || roundEnded)
+	if(GetEntProp(wearer, Prop_Send, "m_iObserverMode") > 0 || TF2_IsPlayerInCondition(wearer, TFCond_Bonked) || roundEnded)
 	{
 		/////////////////
 		//Update Alpha //

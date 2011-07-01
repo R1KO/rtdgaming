@@ -509,7 +509,7 @@ public Action:GenericTimer(Handle:timer)
 			if(client_rolls[i][AWARD_G_WINGS][0])
 			{
 				//Don't apply to demoman charging
-				if(TF2_GetPlayerConditionFlags(i) & TF_CONDFLAG_CHARGING)
+				if(TF2_IsPlayerInCondition(i, TFCond_Charging))
 					break;
 				
 				new Float:modifiedSpeed = GetClientBaseSpeed(i);
@@ -583,7 +583,7 @@ public Action:GenericTimer(Handle:timer)
 						//adjust the speed
 						
 						//Don't apply to demoman charging
-						if(!(TF2_GetPlayerConditionFlags(i) & TF_CONDFLAG_CHARGING))
+						if(!TF2_IsPlayerInCondition(i, TFCond_Charging))
 						{
 							new Float:modifiedSpeed = GetClientBaseSpeed(i);
 							modifiedSpeed *= 0.85;
