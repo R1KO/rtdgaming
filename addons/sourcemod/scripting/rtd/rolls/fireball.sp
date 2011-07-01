@@ -54,8 +54,11 @@ public Action:Spawn_Fireball(any:client)
 			if(distance > 800.0)
 				continue;
 			
-			DealDamage(i, 30,	client,	16779264,	"fireball");
-			DealDamage(i,  0,	client,		2056,	"fireball");
+			if(isVisibileCheck(i, fireball))
+			{
+				DealDamage(i, 30,	client,	16779264,	"fireball");
+				DealDamage(i,  0,	client,		2056,	"fireball");
+			}
 		}
 	}
 }

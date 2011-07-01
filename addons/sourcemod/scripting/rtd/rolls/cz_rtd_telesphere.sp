@@ -191,7 +191,6 @@ public Action:UpdateTeleSpheres(Handle:timer, Handle:dataPackHandle)
 	new realTeam;
 	new alpha;
 	
-	new playerConditionBits;
 	
 	for (new i=1;i<=MaxClients;i++)
 	{
@@ -201,10 +200,8 @@ public Action:UpdateTeleSpheres(Handle:timer, Handle:dataPackHandle)
 		if(!IsPlayerAlive(i))
 			continue;
 		
-		playerConditionBits = TF2_GetPlayerConditionFlags(i);
-		
 		//bypass ubers and cloaked
-		if(playerConditionBits & TF_CONDFLAG_UBERCHARGED || playerConditionBits & TF_CONDFLAG_CLOAKED || playerConditionBits & TF_CONDFLAG_DISGUISED)
+		if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged) || TF2_IsPlayerInCondition(i, TFCond_Cloaked) || TF2_IsPlayerInCondition(i, TFCond_Disguised))
 			continue;
 		
 		//bypass invisble players

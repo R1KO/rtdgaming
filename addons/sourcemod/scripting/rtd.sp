@@ -107,8 +107,8 @@
 #include "rtd/rolls/yoshi.sp"
 #include "rtd/rolls/instaporter.sp"
 #include "rtd/rolls/snorlax.sp"
-#include "rtd/rolls/airintake.sp"
-#include "rtd/rolls/horsemann.sp"
+//#include "rtd/rolls/airintake.sp"
+//#include "rtd/rolls/horsemann.sp"
 #include "rtd/rolls/doom.sp"
 #include "rtd/rolls/brazier.sp"
 #include "rtd/rolls/stonewall.sp"
@@ -899,4 +899,61 @@ stock bool:CheckAdminFlagsByString(client, const String:flagString[])
 	}
 	
 	return bool:(GetUserFlagBits(client) & ADMFLAG_ROOT);
+}
+
+public bool:isVisibileCheck(client, entity)
+{
+	/////////////////////////////////////////////////////////////
+	//Draws 2 tracerays from the entity to the client and      //
+	//from the client to the entity to see if both can see     //
+	//each other.                                              //
+	//                                                         //
+	//foundRange: the "fuzziness" or variation between each    //
+	//  collision that is still allowable                      //
+	//                                                         //
+	/////////////////////////////////////////////////////////////
+	
+	//Do dummy checks
+	if(!IsValidEntity(entity))
+		return false;
+	
+	if(!IsValidClient(client))
+		return false;
+	
+	new Float:foundRange;
+	new Float:traceEndPos[3];
+	
+	new Float:entityPos[3];
+	new Float:clientEyeOrigin[3];
+	
+	GetEntPropVector(entity, Prop_Data, "m_vecOrigin", entityPos);
+	//move it up due to the fact that this position is always at the bottom close to the floor
+	entityPos[2] += 30.0;
+	
+	GetClientEyePosition(client, clientEyeOrigin);
+	
+	//begin our trace from the entity to the client
+	new Handle:Trace = TR_TraceRayFilterEx(entityPos, clientEyeOrigin, MASK_NPCWORLDSTATIC, RayType_EndPoint, TraceFilterAll, entity);
+	TR_GetEndPosition(traceEndPos, Trace);
+	CloseHandle(Trace);
+	
+	foundRange = GetVectorDistance(clientEyeOrigin,traceEndPos);
+	
+	//Was the trace close to the player? If not the let's shoot from the player
+	//back to the Amplifier. This makes sure that none of the entites saw each other
+	if(foundRange > 35.0)
+	{
+		Trace = TR_TraceRayFilterEx(clientEyeOrigin, entityPos, MASK_NPCWORLDSTATIC, RayType_EndPoint, TraceFilterAll, client);
+		TR_GetEndPosition(traceEndPos, Trace);
+		CloseHandle(Trace);
+		
+		//did the player see a building?
+		foundRange = GetVectorDistance(entityPos, traceEndPos);
+	}
+	
+	
+	if(foundRange < 35.0)
+		return true;
+	
+	return false;
 }

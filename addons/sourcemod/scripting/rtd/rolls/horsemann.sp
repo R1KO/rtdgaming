@@ -44,13 +44,13 @@ public Action:Timer_Boo(Handle:timer, Handle:dataPackHandle)
 	if(client_rolls[client][AWARD_G_HORSEMANN][4]  > GetTime())
 		return Plugin_Continue;
 	
-	if(TF2_GetPlayerConditionFlags(client) & TF_CONDFLAG_BONKED)
+	if(TF2_IsPlayerInCondition(client, TFCond_Bonked))
 		return Plugin_Continue;
 	
-	if(TF2_GetPlayerConditionFlags(client) & TF_CONDFLAG_CRITCOLA)
+	if(TF2_IsPlayerInCondition(client, TFCond_CritCola))
 		return Plugin_Continue;
 	
-	if(!(TF2_GetPlayerConditionFlags(client) & TF_CONDFLAG_TAUNTING))
+	if(!TF2_IsPlayerInCondition(client, TFCond_Taunting))
 		return Plugin_Continue;
 	
 	//make sure player isn't going to eat something or drink something
@@ -83,7 +83,7 @@ public Action:Timer_Boo(Handle:timer, Handle:dataPackHandle)
 		if(!IsClientInGame(j) || !IsPlayerAlive(j))
 			continue;
 		
-		if(TF2_GetPlayerConditionFlags(j) & TF_CONDFLAG_UBERCHARGED)
+		if(TF2_IsPlayerInCondition(j, TFCond_Ubercharged))
 			continue;
 		
 		if(GetClientTeam(client) == GetClientTeam(j))

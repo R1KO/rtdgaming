@@ -663,7 +663,7 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		if(isClientOwnerOf(client, MODEL_MEDIRAY) == -1)
 			equipMediray(client);
 	}
-	
+	/*
 	if(client_rolls[client][AWARD_G_AIRINTAKE][0])
 	{
 		//delete any old air intake entities
@@ -693,7 +693,7 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		}
 		
 		SpawnAndAttachAirIntake(client);
-	}
+	}*/
 	
 	if(client_rolls[client][AWARD_G_STONEWALL][0])
 	{

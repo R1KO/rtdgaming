@@ -256,7 +256,7 @@ public Action:Amplifier_Timer(Handle:timer, Handle:dataPackHandle)
 		
 		distance = GetVectorDistance(clientEyeOrigin,amplifierPos);
 		
-		if(foundRange < 35.0 && distance < 350.0)
+		if(foundRange < 35.0)
 		{
 			if(giveAmmo)
 				GiveAmmoToActiveWeapon(i, 0.2);

@@ -276,7 +276,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		
 		if(client_rolls[attacker][AWARD_G_BLIZZARD][0] && GetTime() > client_rolls[attacker][AWARD_G_BLIZZARD][4])
 		{
-			if(!(TF2_GetPlayerConditionFlags(client) & TF_CONDFLAG_UBERCHARGED))
+			if(!TF2_IsPlayerInCondition(client, TFCond_Ubercharged))
 			{
 				//can we freeze client
 				if(GetTime() > client_rolls[client][AWARD_G_BLIZZARD][3])
@@ -612,7 +612,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 	lastdamage[client] = damagetype;
 	
 	//Armor
-	if(client_rolls[client][AWARD_G_ARMOR][0] && !sameTeam && !isAttackerSelf && !(TF2_GetPlayerConditionFlags(client) & TF_CONDFLAG_UBERCHARGED) && !(TF2_GetPlayerConditionFlags(client) & TF_CONDFLAG_BONKED))
+	if(client_rolls[client][AWARD_G_ARMOR][0] && !sameTeam && !isAttackerSelf && !TF2_IsPlayerInCondition(client, TFCond_Ubercharged) && !TF2_IsPlayerInCondition(client, TFCond_Bonked))
 	{		
 		SetHudTextParams(0.07, 1.0, 1.0, 250, 250, 210, 255);
 		ShowHudText(client, HudMsg5, "ARMOR: %i", client_rolls[client][AWARD_G_ARMOR][1]);

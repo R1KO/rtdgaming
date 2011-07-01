@@ -277,11 +277,6 @@ public Yoshi_BreakEgg(client)
 	Yoshi_Thirdperson(client, false);
 	TF2_StunPlayer(client, 0.1, 0.0, TF_STUNFLAG_BONKSTUCK | TF_STUNFLAG_NOSOUNDOREFFECT);
 	SetEntityMoveType(client, MOVETYPE_WALK);
-	
-	if(client_rolls[client][AWARD_G_HORSEMANN][0])
-	{
-		CreateTimer(2.0, Timer_DelayHorseMan, GetClientUserId(client));
-	}
 }
 
 public Action:Remove_Yoshi_Timer(Handle:timer, any:client)

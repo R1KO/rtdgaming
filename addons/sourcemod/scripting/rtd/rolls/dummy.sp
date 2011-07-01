@@ -273,7 +273,7 @@ public Action:Dummy_Timer(Handle:timer, Handle:dataPackHandle)
 			if(alpha < 255)
 				continue;
 			
-			if(TF2_GetPlayerConditionFlags(i)&TF_CONDFLAG_CLOAKED)
+			if(TF2_IsPlayerInCondition(i, TFCond_Cloaked))
 				continue;
 			
 			if(TF2_GetPlayerClass(i) == TFClass_Spy)

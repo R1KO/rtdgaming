@@ -33,7 +33,7 @@ public Action:Ghost_Timer(Handle:timer, any:other)
 		if(!IsClientInGame(i) || !IsPlayerAlive(i))
 			continue;
 		
-		if(TF2_GetPlayerConditionFlags(i) & TF_CONDFLAG_UBERCHARGED)
+		if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
 			continue;
 		
 		playerTeam = GetClientTeam(i);
