@@ -409,11 +409,6 @@ public Action:deleteRTDEntities()
 			killEntityIn(ent, 2.0);
 		}
 		
-		if (StrEqual(modelname, MODEL_TELESPHERE))
-		{
-			StopTeleSphere(ent);
-		}
-		
 		if (StrEqual(modelname, MODEL_SAW))
 		{
 			StopSound(ent, SNDCHAN_AUTO, SOUND_SAW);
@@ -464,18 +459,6 @@ public Action:deleteRTDEntities()
 			killEntityIn(ent, 2.0);
 			continue;
 		}
-	}
-	
-	ent = -1;
-	while ((ent = FindEntityByClassname(ent, "prop_sphere")) != -1)
-	{
-		if(GetEntProp(ent, Prop_Data, "m_iHealth") == 691)
-			continue;
-		
-		GetEntPropString(ent, Prop_Data, "m_ModelName", modelname, 128);
-		
-		if (StrEqual(modelname, MODEL_SPHERE))
-			AcceptEntityInput(ent, "break", -1, -1, 0);
 	}
 	
 	ent = -1;
@@ -638,19 +621,6 @@ public teleportToOwner(client)
 				if(IsValidEntity(parent))
 					TeleportEntity(parent, startpt, angle, speed);
 			}
-		}
-	}
-	
-	ent = -1;
-	while ((ent = FindEntityByClassname(ent, "prop_sphere")) != -1)
-	{
-		currIndex = GetEntProp(ent, Prop_Data, "m_nModelIndex");
-		
-		if (currIndex == rollermineModelIndex)
-		{
-			owner = GetEntPropEnt(ent, Prop_Data, "m_hOwnerEntity");
-			if(client == owner)
-				TeleportEntity(ent, startpt, NULL_VECTOR, NULL_VECTOR);
 		}
 	}
 }

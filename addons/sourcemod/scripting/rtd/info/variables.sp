@@ -243,7 +243,6 @@ new airIntakeModelIndex[2];
 new brazierModelIndex;
 new stonewallModelIndex[2];
 new shieldModelIndex;
-new telesphereModelIndex;
 
 new diceNeeded;
 new g_BeginScore[cMaxClients];
@@ -274,8 +273,6 @@ new Handle:g_Cvar_DiscoHeight, Handle:g_Cvar_DiscoRadius;
 new BaseVelocityOffset;
 new String:logPath[256];
 
-new WillTeleSphere[MAXPLAYERS+1];
-new TeleGlowIndex;
 
 new g_BeamSprite;
 new g_HaloSprite;

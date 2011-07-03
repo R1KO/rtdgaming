@@ -332,11 +332,6 @@ public Action:Command_rtdadmin(client, args)
 		Spawn_Zombie(client, 3);
 		return Plugin_Handled;
 	}	
-	else if(StrEqual("spawnroller", strMessage, false))
-	{
-		AddSphere(client);
-		return Plugin_Handled;
-	}
 	else if(StrEqual("yoshime", strMessage, false))
 	{
 		client_rolls[client][AWARD_G_YOSHI][0] = 1;

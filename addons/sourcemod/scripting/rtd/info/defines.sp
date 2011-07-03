@@ -99,7 +99,6 @@
 
 #define MODEL_AMPLIFIER			"models/rtdgaming/amplifier/amplifier.mdl"
 #define MODEL_SLOWCUBE			"models/rtdgaming/slowcube/slowcube.mdl"
-#define MODEL_SPHERE			"models/roller_spikes.mdl"
 #define MODEL_LOCKER			"models/props_gameplay/resupply_locker.mdl"
 #define MODEL_VOLLIGHT			"models/effects/vol_light128x128.mdl"
 #define MODEL_ICE				"models/rtdgaming/icepatch_v2/icepatch.mdl"
@@ -124,15 +123,8 @@
 
 #define SOUND_FLAMEOUT		"player/flame_out.wav"
 
-#define SOUND_MARIO_COIN 			"rtdgaming/goomba_stomp/coin.wav"
-#define SOUND_MARIO_DEATH 		"rtdgaming/goomba_stomp/death.wav"
-
-#define SSphere_HurtA 			"npc/roller/mine/rmine_blip1.wav"
-#define SSphere_HurtB 			"npc/roller/mine/rmine_blip3.wav"
-#define SSphere_AttackA 		"npc/roller/mine/rmine_shockvehicle1.wav"
-#define SSphere_AttackB 		"npc/roller/mine/rmine_shockvehicle2.wav"
-#define SSphere_Locked 			"npc/roller/mine/rmine_taunt2.wav"
 #define SSphere_Heal 			"items/gunpickup2.wav"
+#define SPRITE_PHYSBEAM			"materials/sprites/physbeam.vmt"
 
 //Yoshi stuffs
 #define MODEL_YOSHI_RED					"models/yoshi/yoshi2.mdl"
@@ -224,13 +216,6 @@
 
 #define SOUND_ICE					"ambient/windwinter.wav"
 
-#define SOUND_TELEPRE 			"ambient/levels/labs/teleport_preblast_suckin1.wav"
-#define SOUND_TELEPOST 			"npc/scanner/scanner_explode_crash2.wav"
-#define SOUND_TELEAMB 			"ambient/atmosphere/tone_quiet.wav"
-#define SOUND_TELEDIE 			"npc/scanner/cbot_discharge1.wav"
-#define MODEL_TELESPHERE 		"models/props_combine/breentp_rings.mdl"
-#define SPRITE_TELEGLOW 		"materials/sprites/yellowglow1.vmt"
-#define SPRITE_PHYSBEAM			"materials/sprites/physbeam.vmt"
 #define SOUND_REGENERATE		"items/regenerate.wav"
 #define SOUND_PICKUP			"items/ammo_pickup.wav"
 #define SOUND_MEDSHOT			"items/medshot4.wav"

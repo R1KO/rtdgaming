@@ -9,9 +9,6 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_D, true);
 	PrecacheSound(SOUND_E, true);
 	
-	PrecacheSound(SOUND_MARIO_COIN, true);
-	PrecacheSound(SOUND_MARIO_DEATH, true);
-	
 	PrecacheSound(SlowCube_Enter, true);
 	PrecacheSound(SlowCube_Exit, true);
 	PrecacheSound(SlowCube_Idle, true);
@@ -35,12 +32,8 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_DiceAchievement, true);
 	PrecacheSound(SOUND_PUMPKINDROP, true);
 	
-	PrecacheSound(SSphere_HurtA, true);
-	PrecacheSound(SSphere_HurtB, true);
-	PrecacheSound(SSphere_AttackA, true);
-	PrecacheSound(SSphere_AttackB, true);
-	PrecacheSound(SSphere_Locked, true);
 	PrecacheSound(SSphere_Heal, true);
+	PrecacheModel(SPRITE_PHYSBEAM, true);
 	
 	PrecacheSound(SOUND_FLAMEOUT, true);
 	
@@ -152,11 +145,6 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_CREDITFOUND, true);
 	PrecacheSound(SOUND_PRESENT, true);
 	
-	PrecacheSound(SOUND_TELEPRE, true);
-	PrecacheSound(SOUND_TELEPOST, true);
-	PrecacheSound(SOUND_TELEAMB, true);
-	PrecacheSound(SOUND_TELEDIE, true);
-	
 	PrecacheSound(SOUND_EATSANDVICH, true);
 	PrecacheSound(SOUND_RTDREADY, true);
 	PrecacheSound(SOUND_ROLL, true);
@@ -166,9 +154,6 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_MINEBEEP, true);
 	PrecacheSound(SOUND_MINEREADY, true);
 	PrecacheSound(SOUND_MINETHROW, true);
-	
-	TeleGlowIndex = PrecacheModel(SPRITE_TELEGLOW, true);
-	PrecacheModel(SPRITE_PHYSBEAM, true);
 	
 	instaPorterModelIndex = PrecacheModel(MODEL_INSTAPORTER, true);
 	PrecacheSound(SOUND_INSTAPORT_TELE, true);
@@ -230,7 +215,6 @@ stock RTDPrecache()
 	ghostModelIndex[1] = PrecacheModel(MODEL_GHOST_RED);
 	
 	amplifierModelIndex = PrecacheModel(MODEL_AMPLIFIER, true);
-	rollermineModelIndex = PrecacheModel(MODEL_SPHERE);
 	
 	jumpPadModelIndex = PrecacheModel(MDL_JUMP, true);
 	PrecacheSound(SND_DROP, true);
@@ -412,8 +396,6 @@ stock RTDPrecache()
 	
 	shieldModelIndex = PrecacheModel(MODEL_SENTRYSHIELD, true);
 	
-	telesphereModelIndex = PrecacheModel(MODEL_TELESPHERE, true);
-	
 	PrecacheSound(SOUND_DROPCABINET, true);
 	
 	//keep track of all indexed models in an array
@@ -451,26 +433,24 @@ stock RTDPrecache()
 	modelIndex[31] = milkbottleModelIndex;
 	modelIndex[32] = jumpPadModelIndex;
 	modelIndex[33] = slowcubeModelIndex;
-	modelIndex[34] = rollermineModelIndex;
-	modelIndex[35] = pumpkinModelIndex;
-	modelIndex[36] = groovitronModelIndex;
-	modelIndex[37] = ghostModelIndex[0];
-	modelIndex[38] = ghostModelIndex[1];
-	modelIndex[39] = blizzardModelIndex[0];
-	modelIndex[40] = blizzardModelIndex[1];
-	modelIndex[41] = wingsModelIndex;
-	modelIndex[42] = redbullModelIndex;
-	modelIndex[43] = dummyModelIndex;
-	modelIndex[44] = snorlaxModelIndex;
-	modelIndex[45] = instaPorterModelIndex;
-	modelIndex[46] = airIntakeModelIndex[0];
-	modelIndex[47] = airIntakeModelIndex[1];
-	modelIndex[48] = brazierModelIndex;
-	modelIndex[49] = stonewallModelIndex[0];
-	modelIndex[50] = stonewallModelIndex[1];
-	modelIndex[51] = shieldModelIndex;
-	modelIndex[52] = cloud02Index;
-	modelIndex[53] = telesphereModelIndex;
+	modelIndex[34] = pumpkinModelIndex;
+	modelIndex[35] = groovitronModelIndex;
+	modelIndex[36] = ghostModelIndex[0];
+	modelIndex[37] = ghostModelIndex[1];
+	modelIndex[38] = blizzardModelIndex[0];
+	modelIndex[39] = blizzardModelIndex[1];
+	modelIndex[40] = wingsModelIndex;
+	modelIndex[41] = redbullModelIndex;
+	modelIndex[42] = dummyModelIndex;
+	modelIndex[43] = snorlaxModelIndex;
+	modelIndex[44] = instaPorterModelIndex;
+	modelIndex[45] = airIntakeModelIndex[0];
+	modelIndex[46] = airIntakeModelIndex[1];
+	modelIndex[47] = brazierModelIndex;
+	modelIndex[48] = stonewallModelIndex[0];
+	modelIndex[49] = stonewallModelIndex[1];
+	modelIndex[50] = shieldModelIndex;
+	modelIndex[51] = cloud02Index;
 	
-	totModels = 54;
+	totModels = 52;
 }

@@ -554,6 +554,17 @@ public bool:TraceFilter(ent, contentMask)
 	return (ent == g_FilteredEntity) ? false : true;
 }
 
+public bool:TraceFilterAll(caller, contentsMask, any:entity)
+{
+	new String:modelname[128];
+	GetEntPropString(caller, Prop_Data, "m_ModelName", modelname, 128);
+	
+	new String:checkclass[64];
+	GetEdictClassname(caller,checkclass,sizeof(checkclass));
+	
+	return !(StrEqual(checkclass, "player", false) || StrEqual(checkclass, "func_respawnroomvisualizer", false) ||(caller==entity) || StrEqual(modelname, MODEL_SPIDER) || StrEqual(modelname, MODEL_SPIDERBOX));
+}
+
 stock Float:AngleBetweenVectors(const Float:a[3], const Float:b[3]) {
     return ArcCosine(GetVectorDotProduct(a, b) / (GetVectorLength(a) * GetVectorLength(b)));
 } 
@@ -568,7 +579,7 @@ public SortDistanceAscend(x[], y[], array[][], Handle:data)
 }
 
 	
-public bool:TraceFilterSpider(caller, contentsMask, any:SphereNum)
+public bool:TraceFilterSpider(caller, contentsMask, any:entity)
 {
 	new String:modelname[128];
 	GetEntPropString(caller, Prop_Data, "m_ModelName", modelname, 128);
@@ -576,7 +587,7 @@ public bool:TraceFilterSpider(caller, contentsMask, any:SphereNum)
 	new String:checkclass[64];
 	GetEdictClassname(caller,checkclass,sizeof(checkclass));
 	
-	return !(StrEqual(checkclass, "player", false) || StrEqual(checkclass, "func_respawnroomvisualizer", false) ||(caller==SphereNum));
+	return !(StrEqual(checkclass, "player", false) || StrEqual(checkclass, "func_respawnroomvisualizer", false) ||(caller==entity));
 }
 
 stock botherEngineer(client, spider, spiderTeam, box, Float:distance)
@@ -1024,17 +1035,7 @@ public findClosestObject(spider, box, Float:spiderPosition[3], Float:traceRaySpi
 				//Find rollermines
 				if(step == 4)
 				{
-					if ((StrEqual(modelname, MODEL_SPHERE)) 
-						&& foundObjectEnt != spider)
-					{
-						GetEntPropVector(foundObjectEnt, Prop_Send, "m_vecOrigin", foundObjectPos);
-						
-						objectDistances[foundObjects][0] = float(foundObjectEnt);
-						distance = GetVectorDistance(spiderPosition,foundObjectPos);
-						
-					}else{
-						processObject = false;
-					}
+					processObject = false;
 				}
 				
 				if(step > 4)
@@ -1109,7 +1110,7 @@ public findClosestObject(spider, box, Float:spiderPosition[3], Float:traceRaySpi
 					//buildables that are team independent, might be enemies
 					if(StrEqual(objectName, "obj_sentrygun") || StrEqual(objectName, "obj_dispenser") || StrEqual(objectName,"obj_teleporter") ||
 						StrEqual(objectName, MODEL_SPIDER) || StrEqual(objectName, MODEL_ZOMBIE_CLASSIC) ||
-						StrEqual(objectName, MODEL_ZOMBIE_02) || StrEqual(objectName, MODEL_ZOMBIE_03) || StrEqual(modelname, MODEL_SPHERE))
+						StrEqual(objectName, MODEL_ZOMBIE_02) || StrEqual(objectName, MODEL_ZOMBIE_03))
 					{
 						new tempBuildableTeam;
 						//focus on closest enemies first!
@@ -1198,9 +1199,6 @@ public findClosestPlayer(spider, box, Float:spiderPosition[3], Float:traceRaySpi
 	
 	new String:modelname[128];
 	GetEntPropString(spider, Prop_Data, "m_ModelName", modelname, 128);
-	
-	if (StrEqual(modelname, MODEL_SPHERE) )
-		allowSounds = false;
 	
 	if (StrEqual(modelname, MODEL_SPIDER) )
 		isSpider = true;
@@ -2752,4 +2750,27 @@ public dropSpider(client)
 	itemEquipped_OnBack[client] = 0;
 	
 	Spawn_Spider(client, spiderHealth, spiderMaxHealth);
+}
+
+public Action:SphereSoundRdy(Handle:timer, any:entity)
+{
+	if (IsValidEdict(entity))
+	{
+		
+		decl String:modelname[64];
+		GetEntPropString(entity, Prop_Data, "m_ModelName", modelname, 64);
+		if (StrEqual(modelname, MODEL_SPIDER) ||
+			StrEqual(modelname, MODEL_ZOMBIE_CLASSIC) || StrEqual(modelname, MODEL_ZOMBIE_02) ||
+			StrEqual(modelname, MODEL_ZOMBIE_03))
+		{
+			//PrintToChatAll("Sounds, valid model! Found model: %s",modelname);
+		}else{
+			//PrintToChatAll("Stopping Sounds invalid model! Found model: %s",modelname);
+			return Plugin_Stop;
+		}
+		
+		SetEntProp(entity, Prop_Data, "m_PerformanceMode", 1);
+	}
+	
+	return Plugin_Stop;
 }
