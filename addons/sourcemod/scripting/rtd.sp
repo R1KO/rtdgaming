@@ -68,8 +68,6 @@
 #include "rtd/rolls/spider.sp"
 #include "rtd/rolls/pumpkins.sp"
 #include "rtd/rolls/infiammo.sp"
-#include "rtd/rolls/cz_spheres.sp"
-#include "rtd/rolls/cz_rtd_telesphere.sp"
 #include "rtd/rolls/ice.sp"
 #include "rtd/rolls/RoF.sp"
 #include "rtd/rolls/flame.sp"
@@ -317,20 +315,6 @@ public OnMapStart()
 //This is only Triggerd By SM Unloading, and or Reloading a plugin
 public OnPluginEnd()
 {
-	new testTeleporter = -1;
-	while ((testTeleporter = FindEntityByClassname(testTeleporter, "prop_dynamic")) != -1)
-	{
-		if (IsValidEdict(testTeleporter))
-		{
-			decl String:modelname[64];
-			GetEntPropString(testTeleporter, Prop_Data, "m_ModelName", modelname, sizeof(modelname));
-			if (StrEqual(modelname, MODEL_TELESPHERE))
-			{
-				StopTeleSphere(testTeleporter);
-			}
-		}
-	}
-	
 	//Save everythin when plugin ends
 	for (new i=1; i<=MaxClients; i++)
 	{

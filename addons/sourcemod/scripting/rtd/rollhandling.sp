@@ -112,8 +112,6 @@ public bool:UnAcceptable(client, award)
 		&& (gMarkedMurderer[4] || (gMarkedMurderer[0] + MARKED_MURDERER_COOLDOWN > GetTime())))
 		return true;
 	
-	if(award == AWARD_G_ROLLERMINE && amountOfRollerMines(client)>10) return true;
-	
 	///////////////////////////////////////////////////////
 	//check entity limits for resource intensive rolls   //
 	///////////////////////////////////////////////////////
@@ -436,13 +434,6 @@ GivePlayerEffect(client, award, cost)
 			case AWARD_G_FIREBULLETS:
 			{	
 			}
-			
-			case AWARD_G_ROLLERMINE:
-			{	
-			}
-			
-			case AWARD_G_TELESPHERE:
-				centerHudText(client, "Teleports enemies away!  Put in VERY strategic positions!", 4.0, 5.0, HudMsg3, 0.75);
 			
 			case AWARD_G_ICE:
 				centerHudText(client, "Ice Patches make enemies slip and slide!", 4.0, 5.0, HudMsg3, 0.75);
@@ -951,7 +942,6 @@ public RemoveLifetimeRolls(client)
 	inBombBlastZone[client] = 0;
 	beingSlowCubed[client] = 0;
 	inSlowCube[client] = 0;
-	WillTeleSphere[client] = 0;
 	inIce[client] = false;
 	ROFMult[client] = 0.0;
 	
@@ -992,7 +982,6 @@ public CleanPlayer(client)
 	inBombBlastZone[client] = 0;
 	beingSlowCubed[client] = 0;
 	inSlowCube[client] = 0;
-	WillTeleSphere[client] = 0;
 	inIce[client] = false;
 	ROFMult[client] = 0.0;
 	

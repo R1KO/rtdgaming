@@ -453,19 +453,6 @@ public deployRoll(client, tempAward)
 				createFlame(client, 60.0);
 		}
 		
-		case AWARD_G_ROLLERMINE:
-			AddSphere(client);
-		
-		case AWARD_G_TELESPHERE:
-		{
-			if(!CloseToEnemySpawnDoors(client))
-			{
-				AddTeleSphere(client);
-			}else{
-				denyDrop = true;
-			}
-		}
-		
 		case AWARD_G_ICE:
 		{
 			tooClose = closeToModel(client, 100.0, "prop_dynamic", MODEL_ICE);
