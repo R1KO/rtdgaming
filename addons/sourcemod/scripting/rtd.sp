@@ -111,6 +111,7 @@
 #include "rtd/rolls/brazier.sp"
 #include "rtd/rolls/stonewall.sp"
 #include "rtd/rolls/buildingshield.sp"
+#include "rtd/rolls/rubberbullets.sp"
 //Perks
 
 public Plugin:myinfo = 

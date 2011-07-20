@@ -156,7 +156,9 @@ public Action:Yoshi_EggTimer(Handle:timer, any:client)
 	
 	if (!IsValidClient(client) || !IsPlayerAlive(client))
 	{
-		Yoshi_BreakEgg(client);
+		if(IsClientAuthorized(client))
+			Yoshi_BreakEgg(client);
+		
 		return Plugin_Stop;
 	}
 	

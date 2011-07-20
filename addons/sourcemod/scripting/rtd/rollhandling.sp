@@ -1,7 +1,6 @@
 #include <sourcemod>
 #include <tf2_stocks>
 #include <rtd_rollinfo>
-#include <gamerules>
 
 stock bool:RollTheDice(client)
 {
@@ -612,6 +611,11 @@ GivePlayerEffect(client, award, cost)
 				client_rolls[client][AWARD_G_FLAVOREDDAMAGE][7] = 1;
 				client_rolls[client][AWARD_G_FLAVOREDDAMAGE][6] = GetTime() + 7; //next time it's allowed to build 
 				centerHudText(client, "7s damage of each: Milk, Jarate then Fire", 4.0, 5.0, HudMsg3, 0.75); 
+			}
+			
+			case AWARD_G_RUBBERBULLETS:
+			{
+				centerHudText(client, "On it, enemies will be knocked back!", 4.0, 5.0, HudMsg3, 0.75); 
 			}
 		}
 	}else{ // Bad Command
