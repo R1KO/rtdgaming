@@ -11,7 +11,7 @@
 #endif
 #define _rtd_rollinfo_included
 
-#define MAX_GOOD_AWARDS			81
+#define MAX_GOOD_AWARDS			82
 
 #define AWARD_G_GODMODE			0
 #define AWARD_G_TOXIC				1
@@ -94,21 +94,22 @@
 #define AWARD_G_BUILDINGSHIELD	78
 #define AWARD_G_SENTRYWRENCH		79
 #define AWARD_G_FLAVOREDDAMAGE	80
+#define AWARD_G_RUBBERBULLETS	81
 
 #define MAX_BAD_AWARDS			10
 
-#define AWARD_B_LOSER				81
-#define AWARD_B_NOJUMP			82
-#define AWARD_B_IGNITE			83
-#define AWARD_B_HEALTH			84
-#define AWARD_B_WEAPONS			85
-#define AWARD_B_TAUNT				86
-#define AWARD_B_WAITMORE			87
-#define AWARD_B_BADAIM			88
-#define AWARD_B_DOOM				89
-#define AWARD_B_SLOWMO			90
+#define AWARD_B_LOSER				82
+#define AWARD_B_NOJUMP			83
+#define AWARD_B_IGNITE			84
+#define AWARD_B_HEALTH			85
+#define AWARD_B_WEAPONS			86
+#define AWARD_B_TAUNT				87
+#define AWARD_B_WAITMORE			88
+#define AWARD_B_BADAIM			89
+#define AWARD_B_DOOM				90
+#define AWARD_B_SLOWMO			91
 
-new String:roll_id[100][32]; //roll identifiers that match up with ;
+new String:roll_id[150][32]; //roll identifiers that match up with ;
 
 stock SetupRoll_IDs()
 {
@@ -197,7 +198,7 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_BUILDINGSHIELD],	32, "BUILDINGSHIELD");
 	Format(roll_id[AWARD_G_SENTRYWRENCH],	32, "SENTRYWRENCH");
 	Format(roll_id[AWARD_G_FLAVOREDDAMAGE],	32, "FLAVOREDDAMAGE");
-	
+	Format(roll_id[AWARD_G_RUBBERBULLETS],	32, "RUBBERBULLETS");
 	
 	Format(roll_id[AWARD_B_WEAPONS], 		32, "WEAPONS");
 	Format(roll_id[AWARD_B_TAUNT], 			32, "TAUNT");

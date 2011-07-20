@@ -560,6 +560,21 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			}
 		}
 		
+		if(client_rolls[attacker][AWARD_G_RUBBERBULLETS][0])
+		{
+			if(!(damagetype & 2056))
+			{
+				if(!TF2_IsPlayerInCondition(client, TFCond_Ubercharged))
+				{
+					if(GetTime() > client_rolls[client][AWARD_G_RUBBERBULLETS][6])
+					{
+						client_rolls[client][AWARD_G_RUBBERBULLETS][6] = GetTime() + 1;
+						Blast(client, attacker);
+						EmitSoundToAll(SOUND_BOUNCE, client);
+					}
+				}
+			}
+		}
 	}
 	
 	if(client_rolls[client][AWARD_G_STONEWALL][0] && !client_rolls[client][AWARD_G_HORSEMANN][0])
