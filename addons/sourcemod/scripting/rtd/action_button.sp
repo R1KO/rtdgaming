@@ -419,8 +419,14 @@ public deployRoll(client, tempAward)
 			Spawn_Supply(client);
 	
 		case AWARD_G_BOMB:
-			SpawnBomb(client);
+			SpawnBomb(client, 1);
 		
+		case AWARD_G_FIREBOMB:
+			SpawnBomb(client, 2);
+		
+		case AWARD_G_ICEBOMB:
+			SpawnBomb(client, 3);
+			
 		case AWARD_G_GROOVITRON:
 			Spawn_Groovitron(client);
 		
@@ -741,6 +747,9 @@ public deployRoll(client, tempAward)
 			client_rolls[client][tempAward][1] = 0;
 			client_rolls[client][tempAward][0] = 0;
 		}
+		
+		//unmark unusual attribute
+		client_rolls[client][tempAward][9] = 0;
 	}else{
 		EmitSoundToAll(SOUND_DENY, client);
 	}

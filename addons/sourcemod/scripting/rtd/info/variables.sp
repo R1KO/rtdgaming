@@ -29,6 +29,7 @@ new Handle:c_AmountToResetEventPerks = INVALID_HANDLE;
 
 new Handle:g_TimerExtendDatapack = INVALID_HANDLE;
 new Handle:c_AllowRTDAdminMenu = INVALID_HANDLE;	
+new Handle:c_UnusualRoll_Shop_Chance = INVALID_HANDLE;
 
 //new Handle:g_EntityDebug = INVALID_HANDLE;
 
@@ -96,7 +97,7 @@ new isNewUser[cMaxClients];
 new TFClassType:roll_ClassRestriction[100];
 new TFClassType:roll_ExcludeClass[100];
 
-new client_rolls[cMaxClients][100][9];
+new client_rolls[cMaxClients][100][10];
 /** Couldn't find this anywhere and I sometimes find myself needing Handle types saved. **/
 /** Two should do. Please don't delete!      --Czech **/
 //new client_rollsHandle[cMaxClients][100][2];
@@ -261,6 +262,7 @@ new dicedeposit_timestamp[cMaxClients];
 new diceOnMap;
 new mineMaxAmount;
 new allowRTDAdminMenu;
+new unusualRoll_Shop_Chance;
 new moreDeployables; //enabled/disabled
 new deployables_max;
 new Float:deployables_chance = 0.5;

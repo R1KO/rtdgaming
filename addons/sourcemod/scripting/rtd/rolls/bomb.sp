@@ -5,7 +5,7 @@
 #include <sdkhooks>
 #include <rtd_rollinfo>
 
-public SpawnBomb(client)
+public SpawnBomb(client, bombType)
 {
 	//---duke tf2nades
 	// get position and angles
@@ -69,6 +69,7 @@ public SpawnBomb(client)
 	WritePackCell(dataPackHandle, GetTime());     //PackPosition(8); Bomb Start Time
 	WritePackCell(dataPackHandle, 10);     //PackPosition(16); Time in seconds before it blows up
 	WritePackCell(dataPackHandle, 0);     //PackPosition(24); Started Ringing?
+	WritePackCell(dataPackHandle, bombType); 
 	
 	EmitSoundToAll(Bomb_Tick, ent);
 	
@@ -84,18 +85,38 @@ public SpawnBomb(client)
 	TeleportEntity(ent, startpt, angle, speed);
 	
 	new String:text[24];
-	returnOrdinal(client_rolls[client][AWARD_G_BOMB][1], text, sizeof(text));
+	
+	//Setup bomb specifics
+	switch(bombType)
+	{
+		case 1:
+		{
+			returnOrdinal(client_rolls[client][AWARD_G_BOMB][1], text, sizeof(text));
+			DispatchKeyValue(ent, "skin","0"); 
+			Phys_SetMass(ent, 70.0);
+		}
+			
+		case 2:
+		{
+			returnOrdinal(client_rolls[client][AWARD_G_FIREBOMB][1], text, sizeof(text));
+			DispatchKeyValue(ent, "skin","1"); 
+			Phys_SetMass(ent, 110.0);
+		}
+			
+		case 3:
+		{
+			returnOrdinal(client_rolls[client][AWARD_G_ICEBOMB][1], text, sizeof(text));
+			DispatchKeyValue(ent, "skin","2"); 
+			Phys_SetMass(ent, 50.0);
+		}
+	}
+	
+	
 	
 	SetHudTextParams(0.42, 0.82, 5.0, 250, 250, 210, 255);
 	ShowHudText(client, HudMsg3, "%s Bomb Dropped", text);
 	
 	EmitSoundToAll(SOUND_B, ent, _, _, _, 0.75);
-	/*
-	if(annotation)
-	{
-		CreateAnnotation(ent, "Friendly", 1, iTeam);
-		CreateAnnotation(ent, "Enemy", 2, iTeam);
-	}*/
 	
 	//allow bomb to be picked up
 	SetEntProp(ent, Prop_Data, "m_PerformanceMode", 1);
@@ -121,6 +142,7 @@ public Action:Bomb_Timer(Handle:timer, Handle:dataPackHandle)
 	
 	new explosionTime = detonateTime + startTime;
 	new secondsBeforeExplosion = explosionTime - GetTime();
+	new bombType = ReadPackCell(dataPackHandle);
 	
 	/////////////////////////////////////////////
 	//Show nearby players that there is a bomb //
@@ -219,7 +241,7 @@ public Action:Bomb_Timer(Handle:timer, Handle:dataPackHandle)
 	if(GetTime() - startTime >= detonateTime)
 	{
 		StopSound(bomb, SNDCHAN_AUTO, Bomb_Ready);
-		ExplodeBomb(bomb);
+		ExplodeBomb(bomb, bombType);
 		return Plugin_Stop;
 	}
 	
@@ -246,14 +268,11 @@ public stopBombTimer(Handle:dataPackHandle)
 		return true;
 	}
 	
-	//if(GetTime() - startTime > detonateTime)
-	//	return true;
-	
 	return false;
 }
 
 
-public ExplodeBomb(any:other)
+public ExplodeBomb(any:other, any:bombType)
 {
 	if(IsValidEntity(other))
 	{	
@@ -274,27 +293,39 @@ public ExplodeBomb(any:other)
 		AcceptEntityInput(smokeEnt, "start");
 		//------------------------------
 		
-		//entity will be removed by this timer
-		CreateTimer(0.1, damageNearbyPlayers, other);
+		new Handle:dataPackHandle;
+		CreateDataTimer(0.1, damageNearbyPlayers_Timer, dataPackHandle, TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+		
+		//Setup the datapack with appropriate information
+		WritePackCell(dataPackHandle, EntIndexToEntRef(other));   //PackPosition(0); 
+		WritePackCell(dataPackHandle, bombType);   //PackPosition(8); 
 		
 		killEntityIn(smokeEnt, 1.0);
 	}
 }
 
-public Action:damageNearbyPlayers(Handle:Timer, any:other)
+public Action:damageNearbyPlayers_Timer(Handle:Timer, Handle:dataPackHandle)
 {
-	if (IsValidEntity(other))
+	ResetPack(dataPackHandle);
+	new bomb = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	new bombType = ReadPackCell(dataPackHandle);
+	
+	//Bomb Type 1 = normal
+	//Bomb Type 2 = fire
+	//Bomb Type 3 = ice
+	//PrintToChatAll("Bomb Type: %i", bombType);
+	
+	if (IsValidEntity(bomb))
 	{
 		//Get the bomb's postion
 		new Float:bombPos[3];
-		GetEntPropVector(other, Prop_Data, "m_vecOrigin", bombPos);  
+		GetEntPropVector(bomb, Prop_Data, "m_vecOrigin", bombPos);  
 		
-		new iTeam = GetEntProp(other, Prop_Data, "m_iTeamNum");
-		new attacker = GetEntPropEnt(other, Prop_Data, "m_hOwnerEntity");
+		new iTeam = GetEntProp(bomb, Prop_Data, "m_iTeamNum");
+		new attacker = GetEntPropEnt(bomb, Prop_Data, "m_hOwnerEntity");
 		
 		new Float:pos[3];
 		new Float:distance;
-		new cond;
 		new Float:damageAmount;
 		
 		for (new i = 1; i <= MaxClients ; i++)
@@ -305,34 +336,68 @@ public Action:damageNearbyPlayers(Handle:Timer, any:other)
 			if(GetClientTeam(i) == iTeam)
 				continue;
 			
-			
 			GetClientEyePosition(i, pos);
 			
 			distance = GetVectorDistance(bombPos, pos);
 			
-			cond = GetEntData(i, m_nPlayerCond);
-			
 			if(client_rolls[i][AWARD_G_GODMODE][0])
 				continue;
 			
-			if(cond == 32 || cond == 327712)
+			if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
 				continue;
 			
 			if(distance > 500.0)
 				continue;
 			
-			//Invalid attacker, possible reasons player left
+			//Invalid attacker, possible reasons player (bomb owner) left
 			//attacker must be a client!
 			if(attacker == -1 || attacker > MaxClients)
 				attacker = i;
 			
 			
-			
-			damageAmount = (-1 * distance) + 500.0;
-			
-			DealDamage(i, RoundFloat(damageAmount), attacker, 128, "bomb");
+			switch(bombType)
+			{
+				case 1:
+				{
+					damageAmount = (-1 * distance) + 500.0;
+					
+					DealDamage(i, RoundFloat(damageAmount), attacker, 128, "bomb");
+				}
+				
+				case 2:
+				{
+					damageAmount = (((-1 * distance) + 500.0) / 10.0) + 1.0;
+					
+					DealDamage(i, RoundFloat(damageAmount), attacker, 16779264, "bomb");
+					DealDamage(i, 1, attacker, 2056,"tf_weapon_flamethrower");
+					
+					createFlame(bomb, 3.0);
+				}
+				
+				case 3:
+				{
+					//can we freeze client
+					if(GetTime() > client_rolls[i][AWARD_G_BLIZZARD][3])
+					{
+						damageAmount = 10.0;
+						
+						DealDamage(i, RoundFloat(damageAmount), attacker, 128, "bomb");
+						
+						//mark the next time the client can get frozen
+						client_rolls[client][AWARD_G_BLIZZARD][3] = GetTime() + 3;
+						
+						//mark the client as frozen
+						client_rolls[client][AWARD_G_BLIZZARD][7] = 1;
+						
+						FreezeClient(i, attacker, 3.0);
+					}
+				}
+			}
 		}
+		
 		//OK we're done with this entity lets get it outta here
-		AcceptEntityInput(other,"kill");
+		AcceptEntityInput(bomb,"kill");
 	}
+	
+	return Plugin_Stop;
 }

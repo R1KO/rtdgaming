@@ -663,37 +663,6 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		if(isClientOwnerOf(client, MODEL_MEDIRAY) == -1)
 			equipMediray(client);
 	}
-	/*
-	if(client_rolls[client][AWARD_G_AIRINTAKE][0])
-	{
-		//delete any old air intake entities
-		
-		//everyone intake
-		if(IsValidEntity(client_rolls[client][AWARD_G_AIRINTAKE][1]))
-		{
-			new currIndex = GetEntProp(client_rolls[client][AWARD_G_AIRINTAKE][1], Prop_Data, "m_nModelIndex");
-			
-			if(currIndex == airIntakeModelIndex[0] || currIndex == airIntakeModelIndex[1])
-			{
-				CDetach(client_rolls[client][AWARD_G_AIRINTAKE][1]);
-				killEntityIn(client_rolls[client][AWARD_G_AIRINTAKE][1], 0.0);
-			}
-		}
-		
-		//client only intake
-		if(IsValidEntity(client_rolls[client][AWARD_G_AIRINTAKE][2]))
-		{
-			new currIndex = GetEntProp(client_rolls[client][AWARD_G_AIRINTAKE][2], Prop_Data, "m_nModelIndex");
-			
-			if(currIndex == airIntakeModelIndex[0] || currIndex == airIntakeModelIndex[1])
-			{
-				CDetach(client_rolls[client][AWARD_G_AIRINTAKE][2]);
-				killEntityIn(client_rolls[client][AWARD_G_AIRINTAKE][2], 0.0);
-			}
-		}
-		
-		SpawnAndAttachAirIntake(client);
-	}*/
 	
 	if(client_rolls[client][AWARD_G_STONEWALL][0])
 	{

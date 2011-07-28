@@ -80,7 +80,7 @@
 
 #define MODEL_MINE				"models/rtdgaming/mines/mines.mdl"
 #define MODEL_GROOVITRON		"models/rtdgaming/discoball/discoball.mdl"
-#define MODEL_BOMB				"models/rtdgaming/bomb_v1/bomb.mdl"
+#define MODEL_BOMB				"models/rtdgaming/bomb_v2/bomb.mdl"
 #define MODEL_DICE				"models/rtdgaming/dice/dice.mdl"
 #define MODEL_DICEDEPOSIT		"models/rtdgaming/dicedeposit_v2/dicedeposit.mdl"
 #define MODEL_CRAP				"models/rtdgaming/crap_v2/crap.mdl"
