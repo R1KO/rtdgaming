@@ -170,12 +170,76 @@ GivePlayerEffect(client, award, cost)
 	client_rolls[client][award][0] = 1;
 	lastRoll[client] = award;
 	
+	//Unusual variables
+	new bool:isUnusual = false;
+	new extraTime;
+	new extraHealth;
+	new extraDeployables;
+	
 	//Display roll info
-	if(BoughtSomething[client]){
-		Format(chatMessage, sizeof(chatMessage), "\x01\x04[CREDITS] \x03%s\x04 used \x01%i\x04 CREDITS and bought %s\x03%s.", name, cost, roll_Article[award], roll_Text[award]);
-		
-		Format(message, sizeof(message), "You bought: %s%s", roll_Article[award], roll_Text[award]);
-		centerHudText(client, message, 0.0, 5.0, HudMsg3, 0.75); 
+	if(BoughtSomething[client])
+	{
+		//determine if this will be an unusual roll
+		if(GetRandomInt(1,100) <= unusualRoll_Shop_Chance)
+		{
+			client_rolls[client][award][9] = 1; //mark as unusual 
+			isUnusual = true;
+			
+			extraTime = GetRandomInt(1, 10);
+			extraHealth = GetRandomInt(100, 300);
+			extraDeployables = GetRandomInt(1, 2);
+			
+			new String:bonus[32];
+			if(roll_CountDownTimer[award])
+			{
+				Format(bonus, sizeof(bonus), "+%i seconds", extraTime);
+			}else if(roll_isDeployable[award])
+			{
+				if(extraDeployables == 1)
+				{
+					Format(bonus, sizeof(bonus), "+1 deployable");
+				}else{
+					Format(bonus, sizeof(bonus), "+%i deployable", extraDeployables);
+				}
+			}else if(roll_itemEquipped_OnBack[award])
+			{
+				switch(award)
+				{
+					case AWARD_G_BACKPACK:
+					{
+						Format(bonus, sizeof(bonus), "Stuffed pack");
+					}
+					
+					case AWARD_G_BLIZZARD:
+					{
+						Format(bonus, sizeof(bonus), "Shorter Cooldown");
+					}
+					
+					case AWARD_G_WINGS:
+					{
+						Format(bonus, sizeof(bonus), "Faster Speed");
+					}
+					
+					case AWARD_G_STONEWALL:
+					{
+						Format(bonus, sizeof(bonus), "Increased Dmg Reduction when activated");
+					}
+				}
+				
+			}else{
+				Format(bonus, sizeof(bonus), "+%i health", extraDeployables);
+			}
+			
+			Format(chatMessage, sizeof(chatMessage), "\x01\x04[Unusual Purchase] \x03%s\x04 bought an Unsual \x03%s\x04. Bonus: \x03%s", name, roll_Text[award], bonus);
+			
+			Format(message, sizeof(message), "Unusual Purchase: %s%s", roll_Article[award], roll_Text[award]);
+			centerHudText(client, message, 0.0, 5.0, HudMsg3, 0.75); 
+		}else{
+			Format(chatMessage, sizeof(chatMessage), "\x01\x04[SHOP] \x03%s\x04 used \x01%i\x04 CREDITS and bought %s\x03%s.", name, cost, roll_Article[award], roll_Text[award]);
+			
+			Format(message, sizeof(message), "You bought: %s%s", roll_Article[award], roll_Text[award]);
+			centerHudText(client, message, 0.0, 5.0, HudMsg3, 0.75); 
+		}
 		
 	}else{
 		if(cost == -1)
@@ -223,7 +287,7 @@ GivePlayerEffect(client, award, cost)
 		{
 			if(roll_isGood[award])
 			{
-				WritePackCell(dataPackHandle, GetTime() + GetConVarInt(c_Duration) + RTD_Perks[client][6]); //16  end time
+				WritePackCell(dataPackHandle, GetTime() + GetConVarInt(c_Duration) + RTD_Perks[client][6] + extraTime); //16  end time
 			}else{
 				WritePackCell(dataPackHandle, GetTime() + GetConVarInt(c_Duration) - RTD_Perks[client][6]); //16  end time
 			}
@@ -258,7 +322,12 @@ GivePlayerEffect(client, award, cost)
 					client_rolls[client][award][1] = roll_amountDeployable[award];
 				}
 			}else{
-				client_rolls[client][award][1] = roll_amountDeployable[award];
+				if(isUnusual)
+				{
+					client_rolls[client][award][1] = roll_amountDeployable[award] + extraDeployables;
+				}else{
+					client_rolls[client][award][1] = roll_amountDeployable[award];
+				}
 			}
 		}
 		
@@ -383,7 +452,7 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_G_ARMOR:
 			{
-				client_rolls[client][award][1] += 500;
+				client_rolls[client][award][1] += (500 + extraHealth);
 				
 				if(GetClientTeam(client) == BLUE_TEAM)
 				{
@@ -492,8 +561,16 @@ GivePlayerEffect(client, award, cost)
 			case AWARD_G_BACKPACK:
 			{	
 				client_rolls[client][award][1] = 0; //entity index
-				client_rolls[client][award][2] = 2; //ammopacks
-				client_rolls[client][award][3] = 2; //healthpacks
+				
+				if(isUnusual)
+				{
+					client_rolls[client][award][2] = GetRandomInt(2,15); //ammopacks
+					client_rolls[client][award][3] = GetRandomInt(2, 15); //healthpacks
+				}else{
+					client_rolls[client][award][2] = 2; //ammopacks
+					client_rolls[client][award][3] = 2; //healthpacks
+				}
+				
 				SpawnAndAttachBackpack(client);
 				
 				centerHudText(client, "Every point received adds either ammo or health to your backpack!", 4.0, 10.0, HudMsg3, 0.75); 

@@ -35,7 +35,9 @@ rtd_load_cvars()
 	c_AmountToResetPerks			= CreateConVar("sm_rtd_perks_reset_amount",				"500",		"<1-x> Cost to reset Perks");
 	c_AmountToResetEventPerks		= CreateConVar("sm_rtd_perks_event_reset_amount",		"100",		"<1-x> Cost to reset Event Perks");
 	
-	c_AllowRTDAdminMenu		= CreateConVar("sm_rtd_admin_menu",		"0",		"<0/1> Enable RTD admin menu");
+	c_AllowRTDAdminMenu				= CreateConVar("sm_rtd_admin_menu",						"0",		"<0/1> Enable RTD admin menu");
+	
+	c_UnusualRoll_Shop_Chance		= CreateConVar("sm_rtd_unusualroll_shop",				"5",		"<0-100> Chance of unusual roll for shop");
 	
 	HookConVarChange(c_Dice_MinPlayers,				ConVarChange_RTD);
 	HookConVarChange(c_Dice_RespawnTime,			ConVarChange_RTD);
@@ -58,7 +60,8 @@ rtd_load_cvars()
 	HookConVarChange(c_AmountToResetPerks,			ConVarChange_RTD);
 	HookConVarChange(c_AmountToResetEventPerks,		ConVarChange_RTD);
 	
-	HookConVarChange(c_AllowRTDAdminMenu,		ConVarChange_RTD);
+	HookConVarChange(c_AllowRTDAdminMenu,			ConVarChange_RTD);
+	HookConVarChange(c_UnusualRoll_Shop_Chance,		ConVarChange_RTD);
 }
 
 rtd_load_cvar_configs()
@@ -89,6 +92,8 @@ rtd_load_cvar_configs()
 	reset_EventPerksCost	= GetConVarInt(c_AmountToResetEventPerks);
 	
 	allowRTDAdminMenu = GetConVarInt(c_AllowRTDAdminMenu);
+	
+	unusualRoll_Shop_Chance =  GetConVarInt(c_UnusualRoll_Shop_Chance);
 }
 
 public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:newValue[])
@@ -178,5 +183,8 @@ public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:new
 	}else if(convar == c_AllowRTDAdminMenu)
 	{
 		allowRTDAdminMenu	= GetConVarInt(c_AllowRTDAdminMenu);
+	}else if(convar == c_UnusualRoll_Shop_Chance)
+	{
+		unusualRoll_Shop_Chance =  GetConVarInt(c_UnusualRoll_Shop_Chance);
 	}
 }

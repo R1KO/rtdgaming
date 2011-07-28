@@ -28,6 +28,8 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 	new Float:clientAbsOrigin[3];
 	new nextTimeForAnnotation;
 	new String:message[64];
+	new String:message2[32];
+	new skin;
 	
 	//////////////////////////////////////////
 	//Retrieve the values from the dataPack //
@@ -164,11 +166,25 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 				}
 			}else if(lookingAtModelIndex == bombModelIndex)
 			{
+				skin = GetEntProp(lookingAt, Prop_Data, "m_nSkin");
+				
+				switch(skin)
+				{
+					case 0:
+						Format(message2, sizeof(message2), "");
+						
+					case 1:
+						Format(message2, sizeof(message2), "Fire ");
+						
+					case 2:
+						Format(message2, sizeof(message2), "Ice ");
+				}
+				
 				if(objectTeam == iTeam)
 				{
-					Format(message, sizeof(message), "Friendly Bomb");
+					Format(message, sizeof(message), "Friendly %sBomb", message2);
 				}else{
-					Format(message, sizeof(message), "Enemy Bomb");
+					Format(message, sizeof(message), "Enemy %sBomb", message2);
 				}
 			}else if(lookingAtModelIndex == rollermineModelIndex)
 			{
@@ -374,6 +390,33 @@ public pickupItem(client, award)
 			PrintCenterText(client, "Bomb disarmed!");
 		}
 		
+		case AWARD_G_ICEBOMB:
+		{
+			killEntityIn(lookingAt, 0.0);
+			
+			StopSound(lookingAt, SNDCHAN_AUTO, Bomb_Tick);
+			
+			client_rolls[client][AWARD_G_ICEBOMB][3] = GetTime() + 1;
+			
+			client_rolls[client][AWARD_G_ICEBOMB][0] = 1;
+			client_rolls[client][AWARD_G_ICEBOMB][1] ++;
+			
+			PrintCenterText(client, "Ice Bomb disarmed!");
+		}
+		
+		case AWARD_G_FIREBOMB:
+		{
+			killEntityIn(lookingAt, 0.0);
+			
+			StopSound(lookingAt, SNDCHAN_AUTO, Bomb_Tick);
+			
+			client_rolls[client][AWARD_G_FIREBOMB][3] = GetTime() + 1;
+			
+			client_rolls[client][AWARD_G_FIREBOMB][0] = 1;
+			client_rolls[client][AWARD_G_FIREBOMB][1] ++;
+			
+			PrintCenterText(client, "Fire Bomb disarmed!");
+		}
 		case AWARD_G_AMPLIFIER:
 		{
 			client_rolls[client][AWARD_G_AMPLIFIER][0] = 1;
@@ -406,6 +449,8 @@ public Pickup_AimTarget(client, lookingAt, objectTeam, clientTeam, lookingAtMode
 	new Float:distance;
 	new Float:playerPos[3];
 	new Float:objectPos[3];
+	new skin;
+	new tempAward;
 	new parent = GetEntPropEnt(lookingAt, Prop_Data, "m_pParent");
 	new owner = GetEntPropEnt(lookingAt, Prop_Data, "m_hOwnerEntity");
 	
@@ -553,9 +598,23 @@ public Pickup_AimTarget(client, lookingAt, objectTeam, clientTeam, lookingAtMode
 			{
 				if(RTD_PerksLevel[client][36] > 0)
 				{
-					if(GetTime() > client_rolls[client][AWARD_G_BOMB][3])
+					skin = GetEntProp(lookingAt, Prop_Data, "m_nSkin");
+					
+					switch(skin)
 					{
-						lookingAtPickup[client][0] = AWARD_G_BOMB;
+						case 0:
+							tempAward = AWARD_G_BOMB;
+						
+						case 1:
+							tempAward = AWARD_G_FIREBOMB;
+						
+						case 2:
+							tempAward = AWARD_G_ICEBOMB;
+					}
+					
+					if(GetTime() > client_rolls[client][tempAward][3])
+					{
+						lookingAtPickup[client][0] = tempAward;
 						lookingAtPickup[client][1] = lookingAt;
 						
 						if(RTDOptions[client][0] == 0)

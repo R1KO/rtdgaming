@@ -69,17 +69,23 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("models/rtdgaming/slowcube/slowcube.vvd");
 	AddFileToDownloadsTable("materials/models/rtdgaming/slowcube/slowcube.vmt");
 
-	AddFileToDownloadsTable("models/rtdgaming/bomb_v1/bomb.dx80.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/bomb_v1/bomb.dx90.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/bomb_v1/bomb.phy");
-	AddFileToDownloadsTable("models/rtdgaming/bomb_v1/bomb.sw.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/bomb_v1/bomb.vvd");
-	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v1/Black.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v1/Black.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v1/Red.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v1/Red.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v1/White.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v1/White.vtf");
+	AddFileToDownloadsTable("models/rtdgaming/bomb_v2/bomb.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/bomb_v2/bomb.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/bomb_v2/bomb.phy");
+	AddFileToDownloadsTable("models/rtdgaming/bomb_v2/bomb.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/bomb_v2/bomb.vvd");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/black.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/black.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/red.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/red.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/white.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/white.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/darkblue.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/darkblue.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/fire.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/fire.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/ice.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/bomb_v2/ice.vtf");
 	
 	AddFileToDownloadsTable("models/rtdgaming/dice/dice.dx80.vtx");
 	AddFileToDownloadsTable("models/rtdgaming/dice/dice.dx90.vtx");
@@ -253,7 +259,7 @@ stock RTDDownloads()
 	
 	//Model Files (Download and Precache)
 	AddFileToDownloadsTable("models/rtdgaming/slowcube/slowcube.mdl");
-	AddFileToDownloadsTable("models/rtdgaming/bomb_v1/bomb.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/bomb_v2/bomb.mdl");
 	AddFileToDownloadsTable("models/rtdgaming/dice/dice.mdl");
 	AddFileToDownloadsTable("models/rtdgaming/discoball/discoball.mdl");
 	AddFileToDownloadsTable("models/rtdgaming/crap_v2/crap.mdl");
