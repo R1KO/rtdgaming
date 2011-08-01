@@ -366,7 +366,7 @@ public Action:damageNearbyPlayers_Timer(Handle:Timer, Handle:dataPackHandle)
 				
 				case 2:
 				{
-					damageAmount = (((-1 * distance) + 500.0) / 10.0) + 1.0;
+					damageAmount = (((-1 * distance) + 500.0) / 20.0) + 1.0;
 					
 					DealDamage(i, RoundFloat(damageAmount), attacker, 16779264, "bomb");
 					DealDamage(i, 1, attacker, 2056,"tf_weapon_flamethrower");
@@ -384,10 +384,10 @@ public Action:damageNearbyPlayers_Timer(Handle:Timer, Handle:dataPackHandle)
 						DealDamage(i, RoundFloat(damageAmount), attacker, 128, "bomb");
 						
 						//mark the next time the client can get frozen
-						client_rolls[client][AWARD_G_BLIZZARD][3] = GetTime() + 3;
+						client_rolls[i][AWARD_G_BLIZZARD][3] = GetTime() + 3;
 						
 						//mark the client as frozen
-						client_rolls[client][AWARD_G_BLIZZARD][7] = 1;
+						client_rolls[i][AWARD_G_BLIZZARD][7] = 1;
 						
 						FreezeClient(i, attacker, 3.0);
 					}
