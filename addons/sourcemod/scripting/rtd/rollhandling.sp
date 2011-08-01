@@ -230,7 +230,7 @@ GivePlayerEffect(client, award, cost)
 				Format(bonus, sizeof(bonus), "+%i health", extraDeployables);
 			}
 			
-			Format(chatMessage, sizeof(chatMessage), "\x01\x04[Unusual Purchase] \x03%s\x04 bought an Unsual \x03%s\x04. Bonus: \x03%s", name, roll_Text[award], bonus);
+			Format(chatMessage, sizeof(chatMessage), "\x01\x04[Unusual Purchase] \x03%s\x04 bought an Unusual \x03%s\x04. Bonus: \x03%s", name, roll_Text[award], bonus);
 			
 			Format(message, sizeof(message), "Unusual Purchase: %s%s", roll_Article[award], roll_Text[award]);
 			centerHudText(client, message, 0.0, 5.0, HudMsg3, 0.75); 
