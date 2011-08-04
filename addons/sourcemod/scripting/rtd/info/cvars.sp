@@ -39,6 +39,8 @@ rtd_load_cvars()
 	
 	c_UnusualRoll_Shop_Chance		= CreateConVar("sm_rtd_unusualroll_shop",				"5",		"<0-100> Chance of unusual roll for shop");
 	
+	c_Classic						= CreateConVar("sm_rtd_classic",						"0",		"<0/1> If enabled, players will not earn credits nor dice or use any features that are implemented with them");
+	
 	HookConVarChange(c_Dice_MinPlayers,				ConVarChange_RTD);
 	HookConVarChange(c_Dice_RespawnTime,			ConVarChange_RTD);
 	HookConVarChange(c_Dice_RareSpawn,				ConVarChange_RTD);
@@ -62,6 +64,7 @@ rtd_load_cvars()
 	
 	HookConVarChange(c_AllowRTDAdminMenu,			ConVarChange_RTD);
 	HookConVarChange(c_UnusualRoll_Shop_Chance,		ConVarChange_RTD);
+	HookConVarChange(c_Classic,		ConVarChange_RTD);
 }
 
 rtd_load_cvar_configs()
@@ -93,7 +96,8 @@ rtd_load_cvar_configs()
 	
 	allowRTDAdminMenu = GetConVarInt(c_AllowRTDAdminMenu);
 	
-	unusualRoll_Shop_Chance =  GetConVarInt(c_UnusualRoll_Shop_Chance);
+	unusualRoll_Shop_Chance =	GetConVarInt(c_UnusualRoll_Shop_Chance);
+	rtd_classic				=	GetConVarInt(c_Classic);
 }
 
 public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:newValue[])
@@ -186,5 +190,8 @@ public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:new
 	}else if(convar == c_UnusualRoll_Shop_Chance)
 	{
 		unusualRoll_Shop_Chance =  GetConVarInt(c_UnusualRoll_Shop_Chance);
+	}else if(convar == c_Classic)
+	{
+		rtd_classic =  GetConVarInt(c_Classic);
 	}
 }

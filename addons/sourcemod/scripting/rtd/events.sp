@@ -35,7 +35,7 @@ public APLRes:AskPluginLoad2(Handle:hPlugin, bool:isAfterMapLoaded, String:error
 	
 	CreateTimer(600.0, resetCredsUsed, GetClientUserId(client), TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
 	
-	if(g_BCONNECTED)
+	if(g_BCONNECTED && !rtd_classic)
 	{
 		SetHudTextParams(0.42, 0.22, 10.0, 250, 250, 210, 255, 2);
 		ShowHudText(client, HudMsg3, "Connecting to Database...");
@@ -54,7 +54,7 @@ public OnClientDisconnect(client)
 {	
 	//connects to database to save client's active credits
 	//Only connect if the client is connected and the DB is a valid handle
-	if(areStatsLoaded[client] && g_BCONNECTED)
+	if(areStatsLoaded[client] && g_BCONNECTED && !rtd_classic)
 		saveStats(client);
 	
 	if(inTimerBasedRoll[client])
@@ -198,7 +198,7 @@ public Action:Event_RoundActive(Handle:event, const String:name[], bool:dontBroa
 		g_BeginScore[j] = TF2_GetPlayerResourceData(j, TFResource_TotalScore) ;
 	
 	//Spawn the dice deposit
-	if(GetConVarInt(c_Dice_Deposits))
+	if(GetConVarInt(c_Dice_Deposits) && !rtd_classic)
 		CreateTimer(1.0, DiceDepositRoundSpawn_Timer);
 }
 
@@ -224,7 +224,7 @@ public Action:Event_Setup(Handle:event,  const String:name[], bool:dontBroadcast
 	}
 	
 	//respawn the dice
-	if(diceNeeded > 0)
+	if(diceNeeded > 0 && !rtd_classic)
 	{
 		if(diceNeeded > diceSpawnLimit)
 			diceNeeded = diceSpawnLimit;
@@ -265,6 +265,9 @@ public Action:disableControlPoints(bool:capState)
 	
 public Action:Event_Teamplay_Win_Panel(Handle:event, const String:name[], bool:dontBroadcast)
 {
+	if(rtd_classic)
+		return Plugin_Continue;
+	
 	new playersFound;
 	
 	//Award MVPs with dice
@@ -360,12 +363,15 @@ public SortScoreDesc(x[], y[], array[][], Handle:data)
 
 public Action:Event_PointCaptured(Handle:event, const String:name[], bool:dontBroadcast)
 {
+	if(rtd_classic)
+		return Plugin_Continue;
+	
 	//For Dice Deposit
 	//new String:cap[32];
 	//GetEventString(event, "cpname", cap, sizeof(cap));
 	RemoveDepositsNearEntity(GetEventInt(event, "cp"));
 	
-	//PrintToChatAll("%i",GetEventInt(event, "cp"));
+	return Plugin_Continue;
 }
 
 public Action:Event_RoundSelected(Handle:event, const String:name[], bool:dontBroadcast)
