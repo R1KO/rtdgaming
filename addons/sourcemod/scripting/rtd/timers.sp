@@ -22,6 +22,9 @@ public Action:Timer_RunRTDonBots(Handle:Timer, any:client)
 
 public Action:Timer_Check_DatabaseOnClient(Handle:Timer)
 {
+	if(rtd_classic)
+		return Plugin_Continue;
+	
 	if(!g_BCONNECTED)
 	{
 		openDatabaseConnection();
@@ -39,6 +42,8 @@ public Action:Timer_Check_DatabaseOnClient(Handle:Timer)
 			}
 		}
 	}
+	
+	return Plugin_Continue;
 }
 
 public Toxic(client)
@@ -410,7 +415,7 @@ public Action:Timer_ShowInfo(Handle:timer)
 				}
 			}
 			
-			if(areStatsLoaded[i] && !b_InScore)
+			if((areStatsLoaded[i] && !b_InScore) || rtd_classic)
 			{
 				if(GetConVarInt(c_Enabled))
 				{
@@ -462,7 +467,7 @@ public Action:Timer_ShowInfo(Handle:timer)
 			if(currentTeam == 1){
 				//ShowHudText(i, HudMsg2, "Credits: DISABLED");
 			}else{
-				if(!b_InScore)
+				if(!b_InScore && !rtd_classic)
 				{
 					if(areStatsLoaded[i])
 					{

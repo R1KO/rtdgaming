@@ -689,23 +689,41 @@ public Action:Command_rtd(client, args)
 	
 	if(StrEqual(strArgs[0], "buy", false))
 	{
-		decl String:arg2[128];
-		if (StrEqual(strArgs[1], "", false) && GetCmdArg(2, arg2, sizeof(arg2)) != 0)
-			SetupCreditsMenu(client, arg2);
-		else
-			SetupCreditsMenu(client, strArgs[1]);
+		if(rtd_classic)
+		{
+			PrintToChat(client, "Buying is DISABLED in Classic RTD");
+		}else{
+			decl String:arg2[128];
+			if (StrEqual(strArgs[1], "", false) && GetCmdArg(2, arg2, sizeof(arg2)) != 0)
+				SetupCreditsMenu(client, arg2);
+			else
+				SetupCreditsMenu(client, strArgs[1]);
+		}
+		
 		return Plugin_Handled;
 	}
 	
 	if((StrEqual(strArgs[0], "givecreds", false) || StrEqual(strArgs[0], "givecredits", false) || StrEqual(strArgs[0], "givecredit", false) || StrEqual(strArgs[0], "givecred", false)) && !StrEqual(strArgs[1], "", false))
 	{
-		SetupGiveCreditsMenu(client, StringToInt(strArgs[1]));
+		if(rtd_classic)
+		{
+			PrintToChat(client, "That is DISABLED in Classic RTD");
+		}else{
+			SetupGiveCreditsMenu(client, StringToInt(strArgs[1]));	
+		}
+		
 		return Plugin_Handled;
 	}
 	
 	if(StrEqual(strArgs[0], "gift", false))
 	{
-		SetupGiftMenu(client);
+		if(rtd_classic)
+		{
+			PrintToChat(client, "Gifting is DISABLED in Classic RTD");
+		}else{
+			SetupGiftMenu(client);
+		}
+		
 		return Plugin_Handled;
 	}
 	
@@ -741,7 +759,7 @@ public Action:Command_rtd(client, args)
 	//check for credits
 	for(new i=0; i<g_iCreditTriggers; i++)
 	{
-		if(StrEqual(chatCreditTriggers[i], strArgs[0], false) && GetConVarInt(c_Enabled))
+		if(StrEqual(chatCreditTriggers[i], strArgs[0], false) && GetConVarInt(c_Enabled) && !rtd_classic)
 		{
 			SetupCreditsMenu(client, "");
 			return Plugin_Handled;
@@ -751,7 +769,9 @@ public Action:Command_rtd(client, args)
 	
 	if((StrEqual("perk", strArgs[0], false) || StrEqual("perks", strArgs[0], false) || StrEqual("!perk", strArgs[0], false) || StrEqual("diceperk", strArgs[0], false) || StrEqual("diceperks", strArgs[0], false)) && StrEqual("", strArgs[1], false))
 	{
-		SetupPerksMenu(client, 0);
+		if(!rtd_classic)
+			SetupPerksMenu(client, 0);
+		
 		return Plugin_Handled;
 	}
 	
@@ -771,7 +791,7 @@ public Action:Command_rtd(client, args)
 		return Plugin_Handled;
 	}
 	
-	if (StrEqual("!respec", strArgs[0], false))
+	if (StrEqual("!respec", strArgs[0], false) && !rtd_classic)
 	{
 		//PrintToChatAll("R: %d | P: %d | T: %d", client_rolls[client][AWARD_G_CLASSIMMUNITY][2], RTD_Perks[client][25], GetTime());
 		if (RTD_PerksLevel[client][25] != 0)
@@ -786,25 +806,33 @@ public Action:Command_rtd(client, args)
 		
 	if(StrEqual("dice", strArgs[0], false) || StrEqual("!dice", strArgs[0], false))
 	{
-		ShowDiceStatus(client);
+		if(!rtd_classic)
+			ShowDiceStatus(client);
+		
 		return Plugin_Handled;
 	}
 	
 	if(StrEqual("rtdrank", strArgs[0], false) || StrEqual("rtdstats", strArgs[0], false) || StrEqual("rtdplace", strArgs[0], false))
 	{
-		rankpanel(client);
+		if(!rtd_classic)
+			rankpanel(client);
+		
 		return Plugin_Handled;
 	}
 	
 	if(StrEqual("topcreds", strArgs[0], false) || StrEqual("topcredits", strArgs[0], false) || StrEqual("topcredit", strArgs[0], false) || StrEqual("creditrank", strArgs[0], false) || StrEqual("rankcredit", strArgs[0], false))
 	{
-		top10pnl(client);
+		if(!rtd_classic)
+			top10pnl(client);
+		
 		return Plugin_Handled;
 	}
 	
 	if(StrEqual("topdice", strArgs[0], false) || StrEqual("toprtddice", strArgs[0], false) || StrEqual("dicerank", strArgs[0], false)  || StrEqual("rankdice", strArgs[0], false))
 	{
-		top10Dice(client);
+		if(!rtd_classic)
+			top10Dice(client);
+		
 		return Plugin_Handled;
 	}
 	
@@ -838,7 +866,7 @@ public Action:Command_rtd(client, args)
 		//attachHatToSpider(client, -1);
 	}
 	
-	if(StrEqual("award", strArgs[0], false))
+	if(StrEqual("award", strArgs[0], false) && !rtd_classic)
 	{
 		if(StrEqual("", strArgs[1], false))
 		{

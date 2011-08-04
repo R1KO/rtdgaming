@@ -247,7 +247,7 @@ public OnConfigsExecuted()
 	/************************
 	* Connect to Database   *
 	*************************/
-	if(!g_BCONNECTED)
+	if(!g_BCONNECTED && !rtd_classic)
 		openDatabaseConnection();
 	
 	Item_ParseList();

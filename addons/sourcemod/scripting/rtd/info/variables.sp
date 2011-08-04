@@ -30,6 +30,7 @@ new Handle:c_AmountToResetEventPerks = INVALID_HANDLE;
 new Handle:g_TimerExtendDatapack = INVALID_HANDLE;
 new Handle:c_AllowRTDAdminMenu = INVALID_HANDLE;	
 new Handle:c_UnusualRoll_Shop_Chance = INVALID_HANDLE;
+new Handle:c_Classic = INVALID_HANDLE;
 
 //new Handle:g_EntityDebug = INVALID_HANDLE;
 
@@ -263,6 +264,7 @@ new diceOnMap;
 new mineMaxAmount;
 new allowRTDAdminMenu;
 new unusualRoll_Shop_Chance;
+new rtd_classic;
 new moreDeployables; //enabled/disabled
 new deployables_max;
 new Float:deployables_chance = 0.5;
