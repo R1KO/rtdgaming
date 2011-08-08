@@ -502,6 +502,10 @@ public Action:SpawnDice_Timer(Handle:Timer)
 	if(!((GetTime() - timeOfLastDiceSpawn) > dice_RespawnTime))
 		return Plugin_Continue;
 	
+	//skip dice functions if in classic
+	if(rtd_classic)
+		return Plugin_Continue;
+	
 	///////////////////////////////////////////
 	//Dice have just been respawned, so save //
 	//the time they got spawned              //
