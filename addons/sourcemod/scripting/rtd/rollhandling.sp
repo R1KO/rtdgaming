@@ -98,6 +98,11 @@ public bool:UnAcceptable(client, award)
 	//Fists of Steel + Hulk is a no no
 	if(award == AWARD_G_HULK && isPlayerHolding_UniqueWeapon(client, 331)) return true;
 	
+	if(award == AWARD_G_PROXSTICKIES &&
+	 !( isPlayerHolding_UniqueWeapon(client, 20) ||//sticky bomb launcher
+	   isPlayerHolding_UniqueWeapon(client, 265) || //sticky jumper
+	   isPlayerHolding_UniqueWeapon(client, 130) )) return true;
+	
 	if(award == AWARD_G_NOCLIP && class == TFClass_Sniper) return true;
 	if(award == AWARD_G_NOCLIP && class == TFClass_Engineer) return true;
 	if(award == AWARD_G_NOCLIP && inSetup) return true;
