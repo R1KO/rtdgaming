@@ -103,6 +103,7 @@ public bool:UnAcceptable(client, award)
 	if(award == AWARD_G_NOCLIP && inSetup) return true;
 	
 	if(award == AWARD_G_SPEED && class == TFClass_Scout) return true;
+	if(award == AWARD_G_WINGS && class == TFClass_Scout) return true;
 	
 	if(award == AWARD_G_YOSHI && client_rolls[client][AWARD_G_CROUCHINVIS][0]) return true;
 	
