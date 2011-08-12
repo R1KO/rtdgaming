@@ -18,7 +18,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 public Action:SpawnAndAttachWings(client)
-{	
+{		
 	new ent = CreateEntityByName("prop_dynamic_override");
 	if ( ent == -1 )
 	{
@@ -120,6 +120,12 @@ public Action:Wings_Timer(Handle:timer, Handle:dataPackHandle)
 					if(denyPickup(client, AWARD_G_WINGS, true))
 						continue;	
 					
+					if(TF2_GetPlayerClass(client) == TFClass_Scout)
+					{
+						PrintCenterText(client, "Scouts can't use redbull!");						
+						continue;
+					}
+					
 					if(client_rolls[client][AWARD_G_WINGS][0])
 					{
 						//Add extra speed boost
@@ -136,6 +142,10 @@ public Action:Wings_Timer(Handle:timer, Handle:dataPackHandle)
 					
 					new String:name[32];
 					GetClientName(client, name, sizeof(name));
+					
+					
+	
+					
 					if(!client_rolls[client][AWARD_G_WINGS][0])
 					{
 						
