@@ -490,6 +490,7 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_G_BOMB:
 			{	
+				EmitSoundToClient(client, SOUND_BOMB);
 			}
 			
 			case AWARD_G_GROOVITRON:
