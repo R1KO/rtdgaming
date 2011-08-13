@@ -256,6 +256,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("sound/rtdgaming/mines/mine_throw1.wav");
 	AddFileToDownloadsTable("sound/rtdgaming/mines/minedrawbeep.WAV");
 	AddFileToDownloadsTable("sound/rtdgaming/mines/proxymineF4C5.wav");
+	AddFileToDownloadsTable("sound/rtdgaming/pepbombwise.wav");
 	
 	//Model Files (Download and Precache)
 	AddFileToDownloadsTable("models/rtdgaming/slowcube/slowcube.mdl");

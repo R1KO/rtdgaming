@@ -397,6 +397,7 @@ stock RTDPrecache()
 	shieldModelIndex = PrecacheModel(MODEL_SENTRYSHIELD, true);
 	
 	PrecacheSound(SOUND_DROPCABINET, true);
+	PrecacheSound(SOUND_BOMB, true);
 	
 	//keep track of all indexed models in an array
 	modelIndex[0] = bombModelIndex;	

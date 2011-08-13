@@ -77,6 +77,7 @@
 
 #define SOUND_GROOVITRON		"rtdgaming/groovitron01.wav"
 #define SOUND_BOUGHTSOMETHING	"rtdgaming/boughtsomething.wav"
+#define SOUND_BOMB			    "rtdgaming/pepbombwise.wav"
 
 #define MODEL_MINE				"models/rtdgaming/mines/mines.mdl"
 #define MODEL_GROOVITRON		"models/rtdgaming/discoball/discoball.mdl"
