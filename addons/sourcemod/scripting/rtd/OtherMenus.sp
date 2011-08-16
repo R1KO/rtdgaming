@@ -719,12 +719,15 @@ public Action:SetupGiveCreditsMenu(client, amountToDonate)
 	{	
 		if(IsClientInGame(i)) 
 		{
-			GetClientName(i, clientName, sizeof(clientName));
-			
-			Format(clientName, sizeof(clientName), "%s has %i Credits" , clientName ,RTDCredits[i]);
-			Format(menuInfo, sizeof(menuInfo), "%i" , GetClientUserId(i));
-			
-			AddMenuItem(hCMenu, menuInfo, clientName);
+			if(!IsFakeClient(i))
+			{
+				GetClientName(i, clientName, sizeof(clientName));
+				
+				Format(clientName, sizeof(clientName), "%s has %i Credits" , clientName ,RTDCredits[i]);
+				Format(menuInfo, sizeof(menuInfo), "%i" , GetClientUserId(i));
+				
+				AddMenuItem(hCMenu, menuInfo, clientName);
+			}
 		}
 	}
 	

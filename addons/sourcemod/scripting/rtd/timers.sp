@@ -573,9 +573,9 @@ public Action:GenericTimer(Handle:timer)
 				//adjust the gravity
 				if(client_rolls[i][AWARD_G_STONEWALL][5] >= GetTime())
 				{
-					if(!(GetClientButtons(i) & IN_JUMP))
+					if(GetEntData(i, m_nWaterLevel) != 3 && GetEntityFlags(i) & FL_ONGROUND && !(GetEntityFlags(i) & FL_WATERJUMP) && !(GetClientButtons(i) & IN_JUMP))
 					{
-						SetEntityGravity(i, 100.0);
+						SetEntityGravity(i, 3.0);
 					}else{
 						SetEntityGravity(i, 1.1);
 					}
