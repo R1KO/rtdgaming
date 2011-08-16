@@ -4,20 +4,6 @@
 #include <tf2_stocks>
 #include <sdkhooks>
 
-/**
-11:43 AM - CarlZalph: Up/Down is the first index.
-11:43 AM - CarlZalph: Left/right is the second
-11:44 AM - CarlZalph: Third will always be 0.0, as the screen only rolls on fall damage.
-11:46 AM - CarlZalph: cl_showpos 1
-11:46 AM - CarlZalph: To view your own view angles in real-time.
-11:48 AM - RTD{D} Czech Erface=?f.?x.fx: Wow
-11:48 AM - RTD{D} Czech Erface=?f.?x.fx: Thank you!
-11:48 AM - RTD{D} Czech Erface=?f.?x.fx: Same for the eyes?
-11:51 AM - CarlZalph: All angles are the same with respect to the coordinate system.
-11:51 AM - CarlZalph: The client's model's angles only update if he looks far left/right or is moving while turning.
-11:51 AM - CarlZalph: It always looks towards {0.0, Left/Right, 0.0}
-**/
-
 public Make_Yoshi(client)
 {
 	if (!IsValidClient(client) || !IsPlayerAlive(client)) {
