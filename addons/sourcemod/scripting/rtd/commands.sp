@@ -703,7 +703,7 @@ public Action:Command_rtd(client, args)
 		return Plugin_Handled;
 	}
 	
-	if((StrEqual(strArgs[0], "givecreds", false) || StrEqual(strArgs[0], "givecredits", false) || StrEqual(strArgs[0], "givecredit", false) || StrEqual(strArgs[0], "givecred", false)) && !StrEqual(strArgs[1], "", false))
+	if((StrEqual(strArgs[0], "givecreds", false) || StrEqual(strArgs[0], "givecredits", false) || StrEqual(strArgs[0], "givecredit", false) || StrEqual(strArgs[0], "givecred", false)))
 	{
 		if(rtd_classic)
 		{
