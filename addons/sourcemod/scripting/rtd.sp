@@ -208,6 +208,7 @@ public OnPluginStart()
 	BuildPath(Path_SM, logPath, sizeof(logPath), "logs/rtd_%s.log", logTimeStamp);
 	
 	ShakeID = GetUserMessageId("Shake");
+	
 }
 
 public OnConfigsExecuted()

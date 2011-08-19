@@ -822,11 +822,12 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("models/rtdgaming/cloud/cloud_angry.sw.vtx");
 	AddFileToDownloadsTable("models/rtdgaming/cloud/cloud_angry.vvd");
 	
-	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.dx80.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.dx90.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.mdl");
-	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.sw.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.vvd");
+	AddFileToDownloadsTable("models/rtdgaming/angelic_v2/angelic.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/angelic_v2/angelic.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/angelic_v2/angelic.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/angelic_v2/angelic.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/angelic_v2/angelic.vvd");
+	AddFileToDownloadsTable("models/rtdgaming/angelic_v2/angelic.phy");
 	
 	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/all_halo.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/dispenser.vmt");
@@ -844,6 +845,8 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes02_blue.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes02_blue.vtf");
 	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/wings.vmt");
+	
+	AddFileToDownloadsTable("sound/rtdgaming/flap.wav");
 	
 	AddFileToDownloadsTable("sound/rtdgaming/whistle.wav");
 }

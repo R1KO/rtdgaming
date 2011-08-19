@@ -439,7 +439,7 @@
 
 #define SOUND_DROPCABINET		"rtdgaming/robsupps.wav"
 
-#define MODEL_ANGELIC			"models/rtdgaming/angelic/angelic.mdl"
+#define MODEL_ANGELIC			"models/rtdgaming/angelic_v2/angelic.mdl"
 
 #define SOUND_FLAP			"rtdgaming/flap.wav"
 
