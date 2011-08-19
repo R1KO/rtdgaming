@@ -352,7 +352,15 @@ public Action:RightClick_Timer(Handle:Timer)
 			//mark that the user has the action button pressed
 			holdingRightClick[i] = 1;
 			
-			deployRoll(i, activeRoll[0]);
+			//make sure entity limit isn't reached before deploying this roll
+			//deployables usually have entites attached to them and too many will crash server
+			if(roll_EntLimit[activeRoll[0]] && IsEntLimitReached())
+			{
+				PrintCenterText(i, "Entity Limit reached! Please wait befor trying to deploy roll!");
+				PrintToChat(i, "Entity Limit reached! Please wait befor trying to deploy roll!");
+			}else{
+				deployRoll(i, activeRoll[0]);
+			}
 		}
 	}
 	
