@@ -46,9 +46,6 @@ public Action:Spawn_AngelicDispenser(client, health, maxHealth)
 	
 	SetEntPropEnt(angelic, Prop_Data, "m_hLastAttacker", client);
 	
-	//this is the owner
-	SetEntProp(angelic, Prop_Data, "m_PerformanceMode", client);
-	
 	SetEntProp( angelic, Prop_Data, "m_nSolidType", 6 );
 	SetEntProp( angelic, Prop_Send, "m_nSolidType", 6 );
 	
@@ -75,6 +72,8 @@ public Action:Spawn_AngelicDispenser(client, health, maxHealth)
 		DispatchKeyValue(angelic, "skin","3"); 
 	}
 	
+	AcceptEntityInput(angelic, "SetDamageFilter", -1, -1, 0); 
+	
 	TeleportEntity(angelic,floorPos, playerAngle, NULL_VECTOR);
 	
 	HookSingleEntityOutput(angelic, "OnBreak", AngelicBreak, false);
@@ -90,7 +89,7 @@ public Action:Spawn_AngelicDispenser(client, health, maxHealth)
 	//Important variables to keep track of     //
 	/////////////////////////////////////////////
 	new Handle:dataPack;
-	CreateDataTimer(5.0,Angelic_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+	CreateDataTimer(0.5,Angelic_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	WritePackCell(dataPack, EntIndexToEntRef(angelic));
 	WritePackCell(dataPack, GetTime());//PackPosition(8) 
 	WritePackCell(dataPack, 720); //PackPosition(16) amount of time it will live
@@ -106,6 +105,8 @@ public Action:Spawn_AngelicDispenser(client, health, maxHealth)
 	
 	AttachFastParticle2(angelic, "halopoint", 20.0, "hat");
 	
+	SDKHook(angelic,	SDKHook_OnTakeDamage, 	AngelicHook);
+	
 	return Plugin_Continue;
 }
 
@@ -114,6 +115,22 @@ public Action:Spawn_AngelicDispenser(client, health, maxHealth)
 //halopoint
 //target_break_child_puff - use for teleporting in and out
 //AttachTempParticle(crap, "superrare_flies", 14.0, true, crapName, 30.0, false);
+
+public Action:AngelicHook(angelic, &attacker, &inflictor, &Float:damage, &damagetype)
+{
+	if(GetEntProp(angelic, Prop_Data, "m_PerformanceMode") < GetTime())
+	{
+		AttachTempParticle(angelic,"tpdamage_1", 1.0, false,"", 0.0, false);
+		SetEntProp(angelic, Prop_Data, "m_PerformanceMode", GetTime() + 1);
+		
+		if(GetEntProp(angelic, Prop_Data, "m_iTeamNum") == RED_TEAM)
+		{
+			DispatchKeyValue(angelic, "skin","2"); 
+		}else{
+			DispatchKeyValue(angelic, "skin","5"); 
+		}
+	}
+}
 
 public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 {
@@ -151,6 +168,23 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 		EmitSoundToAll(SOUND_FLAP, angelic);
 	}
 	
+	/////////////////
+	//update eyes  //
+	/////////////////
+	new iTeam = GetEntProp(angelic, Prop_Data, "m_iTeamNum");
+	
+	if(GetEntProp(angelic, Prop_Data, "m_PerformanceMode") < GetTime())
+	{
+		if(iTeam == RED_TEAM)
+		{
+			if(GetEntProp(angelic, Prop_Data, "m_nSkin") != 0)
+				DispatchKeyValue(angelic, "skin","0"); 
+		}else{
+			if(GetEntProp(angelic, Prop_Data, "m_nSkin") != 3)
+				DispatchKeyValue(angelic, "skin","3"); 
+		}
+	}
+	
 	//////////////////////////////////////////////
 	// Determine if it can teleport to a player //
 	//////////////////////////////////////////////
@@ -161,9 +195,6 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 	//Find allies with health lass than 30%    //
 	/////////////////////////////////////////////
 	new Float:playerPos[3];
-	
-	new iTeam = GetEntProp(angelic, Prop_Data, "m_iTeamNum");
-	
 	new Float: clientHealth;
 	new Float: triggerHealth;
 	new Float: distance;

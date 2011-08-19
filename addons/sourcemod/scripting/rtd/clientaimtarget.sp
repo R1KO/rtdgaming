@@ -26,7 +26,6 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 	new lookingAtModelIndex;
 	new Float:lookingAtOrigin[3];
 	new Float:clientAbsOrigin[3];
-	new nextTimeForAnnotation;
 	new String:message[64];
 	new String:message2[32];
 	new skin;
@@ -38,10 +37,7 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 	ResetPack(dataPackHandle);
 	
 	for (new i = 1; i <= MaxClients ; i++)
-	{
-		SetPackPosition(dataPackHandle, i-1);
-		nextTimeForAnnotation = ReadPackCell(dataPackHandle);
-		
+	{	
 		if(!IsClientInGame(i) || !IsPlayerAlive(i))
 			continue;
 		
@@ -81,10 +77,10 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 			//Pickup the stuff
 			Pickup_AimTarget(i, lookingAt, objectTeam, iTeam, lookingAtModelIndex);
 			
-			//PrintToChat(i, "%i", nextTimeForAnnotation);
+			//PrintToChat(i, "Time of next annotation:%i | Client: %i |  %i", timeForNextAnnotation[i] , i, GetTime());
 			
 			//determine if annotation can be spawned
-			if(nextTimeForAnnotation > GetTime())
+			if(timeForNextAnnotation[i]  > GetTime())
 				continue;
 			
 			if(GetVectorDistance(lookingAtOrigin,clientAbsOrigin) > maxDistanceToSee)
@@ -97,8 +93,9 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 			//Player is looking at an RTD object
 			//update the datapack and set the next time
 			//an annotations is sent
-			SetPackPosition(dataPackHandle, i-1);
-			WritePackCell(dataPackHandle, GetTime() + 3);
+			timeForNextAnnotation[i]  = GetTime() + 3;
+			
+			//PrintToChat(i, "Delaying Annotation for client: %i | Time: %i", i, timeForNextAnnotation[i]) ;
 			
 			//clear it out
 			Format(message, sizeof(message), "");
@@ -314,6 +311,8 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 				}
 			}else if(lookingAtModelIndex == angelicModelIndex)
 			{
+				lookingAtOrigin[2] += 85.0;
+				
 				if(objectTeam == iTeam)
 				{
 					Format(message, sizeof(message), "Friendly Angelic Dispenser (%i/%i hp)", objHealth,objMaxHeath);

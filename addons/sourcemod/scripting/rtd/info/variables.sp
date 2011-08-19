@@ -331,3 +331,4 @@ new bool:clientOverlay[MAXPLAYERS + 1];
 new m_nWaterLevel;
 new m_hOwnerEntity;
 new lastSummon[MAXPLAYERS + 1];
+new timeForNextAnnotation[MAXPLAYERS + 1];
