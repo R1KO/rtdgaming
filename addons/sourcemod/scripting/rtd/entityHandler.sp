@@ -434,6 +434,16 @@ public Action:deleteRTDEntities()
 			killEntityIn(ent, 2.0); 
 			continue;
 		}
+		
+		if(currIndex == angelicModelIndex)
+		{
+			SetEntProp(ent, Prop_Data, "m_PerformanceMode", 66);
+			
+			StopSound(ent, SNDCHAN_AUTO, SOUND_FLAP);
+			
+			killEntityIn(ent, 2.0); 
+			continue;
+		}
 	}
 	
 	ent = -1;

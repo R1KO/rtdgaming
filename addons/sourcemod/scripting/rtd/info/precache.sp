@@ -399,6 +399,10 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_DROPCABINET, true);
 	PrecacheSound(SOUND_BOMB, true);
 	
+	PrecacheSound(SOUND_FLAP, true);
+	
+	angelicModelIndex = PrecacheModel(MODEL_ANGELIC, true);
+	
 	//keep track of all indexed models in an array
 	modelIndex[0] = bombModelIndex;	
 	modelIndex[1] = mineModelIndex;	
@@ -452,6 +456,7 @@ stock RTDPrecache()
 	modelIndex[49] = stonewallModelIndex[1];
 	modelIndex[50] = shieldModelIndex;
 	modelIndex[51] = cloud02Index;
+	modelIndex[52] = angelicModelIndex;
 	
-	totModels = 52;
+	totModels = 53;
 }

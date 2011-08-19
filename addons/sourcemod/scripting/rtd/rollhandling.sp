@@ -708,6 +708,10 @@ GivePlayerEffect(client, award, cost)
 			{
 				centerHudText(client, "On it, enemies will be knocked back!", 4.0, 5.0, HudMsg3, 0.75); 
 			}
+			
+			case AWARD_G_ANGELIC:
+			{
+			}
 		}
 	}else{ // Bad Command
 		//Let's store how many bad rolls the user has received 

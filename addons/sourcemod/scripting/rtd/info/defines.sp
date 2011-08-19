@@ -438,6 +438,11 @@
 #define SOUND_WHISTLE			"rtdgaming/whistle.wav"
 
 #define SOUND_DROPCABINET		"rtdgaming/robsupps.wav"
+
+#define MODEL_ANGELIC			"models/rtdgaming/angelic/angelic.mdl"
+
+#define SOUND_FLAP			"rtdgaming/flap.wav"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 
