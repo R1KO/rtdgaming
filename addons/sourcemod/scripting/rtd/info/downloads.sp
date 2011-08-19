@@ -822,5 +822,28 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("models/rtdgaming/cloud/cloud_angry.sw.vtx");
 	AddFileToDownloadsTable("models/rtdgaming/cloud/cloud_angry.vvd");
 	
+	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/angelic/angelic.vvd");
+	
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/all_halo.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/dispenser.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/dispenser_blue.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes01.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes01.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes02.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes02.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes_blue.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes_blue.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes01_blue.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes01_blue.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes02_blue.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/eyes02_blue.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/angelic/wings.vmt");
+	
 	AddFileToDownloadsTable("sound/rtdgaming/whistle.wav");
 }

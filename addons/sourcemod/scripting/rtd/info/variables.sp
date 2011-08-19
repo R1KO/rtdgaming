@@ -245,6 +245,7 @@ new airIntakeModelIndex[2];
 new brazierModelIndex;
 new stonewallModelIndex[2];
 new shieldModelIndex;
+new angelicModelIndex;
 
 new diceNeeded;
 new g_BeginScore[cMaxClients];

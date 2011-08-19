@@ -215,6 +215,12 @@ public Action:Dummy_Timer(Handle:timer, Handle:dataPackHandle)
 	
 	new dummyTeam =  GetEntProp(dummy, Prop_Data, "m_iTeamNum");
 	
+	/////////////////////////////////////////
+	// Delay dummy from attacking on spawn //
+	/////////////////////////////////////////
+	if(pickUpTime > GetTime())
+		return Plugin_Continue;
+	
 	///////////////////////////////
 	//Set if it can be picked up //
 	///////////////////////////////

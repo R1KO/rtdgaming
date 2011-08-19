@@ -312,6 +312,14 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 				}else{
 					Format(message, sizeof(message), "Enemy Brazier (%i/%i hp)", objHealth,objMaxHeath);
 				}
+			}else if(lookingAtModelIndex == angelicModelIndex)
+			{
+				if(objectTeam == iTeam)
+				{
+					Format(message, sizeof(message), "Friendly Angelic Dispenser (%i/%i hp)", objHealth,objMaxHeath);
+				}else{
+					Format(message, sizeof(message), "Enemy Angelic Dispenser (%i/%i hp)", objHealth,objMaxHeath);
+				}
 			}
 			
 			if(!(StrEqual(message, "")))

@@ -11,7 +11,7 @@
 #endif
 #define _rtd_rollinfo_included
 
-#define MAX_GOOD_AWARDS			84
+#define MAX_GOOD_AWARDS			85
 
 #define AWARD_G_GODMODE			0
 #define AWARD_G_TOXIC				1
@@ -28,9 +28,9 @@
 #define AWARD_G_MEDIRAY			12
 #define AWARD_G_REGEN				13
 #define AWARD_G_INFIAMMO			14
-#define AWARD_G_SENTRYBUILDER	15
+#define AWARD_G_SENTRYBUILDER		15
 #define AWARD_G_HULK				16
-#define AWARD_G_CLASSIMMUNITY	17
+#define AWARD_G_CLASSIMMUNITY		17
 #define AWARD_G_MEDICVIRUS		18
 #define AWARD_G_UBERCHARGER		19
 #define AWARD_G_ARMOR				20
@@ -59,11 +59,11 @@
 #define AWARD_G_ACCELERATOR		43
 #define AWARD_G_ZOMBIE			44
 #define AWARD_G_BACKPACK			45
-#define AWARD_G_DIVIDETHESHOT	46
+#define AWARD_G_DIVIDETHESHOT		46
 #define AWARD_G_AMPLIFIER			47
 #define AWARD_G_PROXMINES			48
 #define AWARD_G_BEARTRAP			49
-#define AWARD_G_REFLECTSHIELD	50
+#define AWARD_G_REFLECTSHIELD		50
 #define AWARD_G_CAGE				51
 #define AWARD_G_CRITSSPURT		52
 #define AWARD_G_URINECLOUD		53
@@ -78,14 +78,14 @@
 #define AWARD_G_WINGS				62
 #define AWARD_G_SUPPLYDROP		63
 #define AWARD_G_JETPACK			64
-#define AWARD_G_HEARTSAPLENTY	65
+#define AWARD_G_HEARTSAPLENTY		65
 #define AWARD_G_TAUNTTRAP			66
 #define AWARD_G_DUMMY				67
 #define AWARD_G_YOSHI				68
 #define AWARD_G_MARKEDMURDERER 	69
 #define AWARD_G_INSTAPORTER		70
 #define AWARD_G_SNORLAX			71
-#define AWARD_G_JARATEBULLETS	72
+#define AWARD_G_JARATEBULLETS		72
 #define AWARD_G_AIRINTAKE			73
 #define AWARD_G_HORSEMANN			74
 #define AWARD_G_BRAZIER			75
@@ -94,22 +94,23 @@
 #define AWARD_G_BUILDINGSHIELD	78
 #define AWARD_G_SENTRYWRENCH		79
 #define AWARD_G_FLAVOREDDAMAGE	80
-#define AWARD_G_RUBBERBULLETS	81
+#define AWARD_G_RUBBERBULLETS		81
 #define AWARD_G_ICEBOMB			82
 #define AWARD_G_FIREBOMB			83
+#define AWARD_G_ANGELIC			84
 
 #define MAX_BAD_AWARDS			10
 
-#define AWARD_B_LOSER				84
-#define AWARD_B_NOJUMP			85
-#define AWARD_B_IGNITE			86
-#define AWARD_B_HEALTH			87
-#define AWARD_B_WEAPONS			88
-#define AWARD_B_TAUNT				89
-#define AWARD_B_WAITMORE			90
-#define AWARD_B_BADAIM			91
-#define AWARD_B_DOOM				92
-#define AWARD_B_SLOWMO			93
+#define AWARD_B_LOSER				85
+#define AWARD_B_NOJUMP			86
+#define AWARD_B_IGNITE			87
+#define AWARD_B_HEALTH			88
+#define AWARD_B_WEAPONS			89
+#define AWARD_B_TAUNT				90
+#define AWARD_B_WAITMORE			91
+#define AWARD_B_BADAIM			92
+#define AWARD_B_DOOM				93
+#define AWARD_B_SLOWMO			94
 
 new String:roll_id[150][32]; //roll identifiers that match up with ;
 
@@ -127,7 +128,7 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_GRAVITY], 		32, "GRAVITY");
 	Format(roll_id[AWARD_G_UBER], 			32, "UBER");
 	Format(roll_id[AWARD_G_INVIS], 			32, "INVIS");
-	Format(roll_id[AWARD_G_INSTANTKILL],	32, "INSTANTKILL");
+	Format(roll_id[AWARD_G_INSTANTKILL],		32, "INSTANTKILL");
 	Format(roll_id[AWARD_G_CLOAK],			32, "CLOAK");
 	Format(roll_id[AWARD_G_CRITS], 			32, "CRITS");
 	Format(roll_id[AWARD_G_SCOUTJUMP], 		32, "SCOUTJUMP");
@@ -138,10 +139,10 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_HULK], 			32, "HULK");
 	Format(roll_id[AWARD_G_CLASSIMMUNITY],	32, "CLASSIMMUNITY");
 	Format(roll_id[AWARD_G_MEDICVIRUS], 		32, "MEDICVIRUS");
-	Format(roll_id[AWARD_G_UBERCHARGER],	32, "UBERCHARGER");
+	Format(roll_id[AWARD_G_UBERCHARGER],		32, "UBERCHARGER");
 	Format(roll_id[AWARD_G_ARMOR],			32, "ARMOR");
 	Format(roll_id[AWARD_G_TEAMCRITS],		32, "TEAMCRITS");
-	Format(roll_id[AWARD_G_CROUCHINVIS],	32, "CROUCHINVIS");
+	Format(roll_id[AWARD_G_CROUCHINVIS],		32, "CROUCHINVIS");
 	Format(roll_id[AWARD_G_PROXSTICKIES], 	32, "PROXSTICKIES");
 	Format(roll_id[AWARD_G_SLOWCUBE],		32, "SLOWCUBE");
 	Format(roll_id[AWARD_G_BOMB], 			32, "BOMB");
@@ -189,7 +190,7 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_DUMMY],			32, "DUMMY");
 	Format(roll_id[AWARD_G_YOSHI],			32, "YOSHI");
 	Format(roll_id[AWARD_G_MARKEDMURDERER],	32, "MARKEDMURDERER");
-	Format(roll_id[AWARD_G_INSTAPORTER],	32, "INSTAPORTER");
+	Format(roll_id[AWARD_G_INSTAPORTER],		32, "INSTAPORTER");
 	Format(roll_id[AWARD_G_SNORLAX],			32, "SNORLAX");
 	Format(roll_id[AWARD_G_JARATEBULLETS],	32, "JARATEBULLETS");
 	Format(roll_id[AWARD_G_AIRINTAKE],		32, "AIRINTAKE");
@@ -203,6 +204,7 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_RUBBERBULLETS],	32, "RUBBERBULLETS");
 	Format(roll_id[AWARD_G_ICEBOMB],			32, "ICEBOMB");
 	Format(roll_id[AWARD_G_FIREBOMB],		32, "FIREBOMB");
+	Format(roll_id[AWARD_G_ANGELIC],			32, "ANGELIC");
 	
 	Format(roll_id[AWARD_B_WEAPONS], 		32, "WEAPONS");
 	Format(roll_id[AWARD_B_TAUNT], 			32, "TAUNT");

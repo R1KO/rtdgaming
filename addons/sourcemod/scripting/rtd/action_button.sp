@@ -735,6 +735,12 @@ public deployRoll(client, tempAward)
 		
 		case AWARD_G_BRAZIER:
 			Spawn_Brazier(client, client_rolls[client][AWARD_G_BRAZIER][4]);
+			
+		case AWARD_G_ANGELIC:
+		{
+			Spawn_AngelicDispenser(client, 900, 900);
+			
+		}
 	}
 	
 	/////////////////////////////////////
