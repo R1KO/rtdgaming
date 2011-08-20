@@ -663,6 +663,24 @@ public fn_PerksMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					
 					PrintToChat(param1, "Your traps now cause enemies to bleed");
 				}
+				else if(StrContains(menuTriggers[1], "a52", false) != -1)
+				{
+					RTD_Perks[param1][55] += value;
+					RTD_PerksLevel[param1][55] ++;
+					
+					PrintToChat(param1, "Angelic Dispenser heals +150 HP");
+				}
+				else if(StrContains(menuTriggers[1], "a53", false) != -1)
+				{
+					RTD_Perks[param1][56] += value;
+					RTD_PerksLevel[param1][56] ++;
+					
+					PrintToChat(param1, "Angelic Dispenser cooldown period: 5s");
+				}else{
+					talentPoints[param1] += cost;
+					PrintToChat(param1, "ERROR! Could not find item in shop! TP reimbursed!");
+					
+				}
 			}
 			
 			if(StrContains(menuTriggers[1], "reset", false) == -1)
