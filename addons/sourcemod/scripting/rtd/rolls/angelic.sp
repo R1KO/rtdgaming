@@ -185,6 +185,15 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 		}
 	}
 	
+	////////////////
+	//heal self   //
+	////////////////
+	SetVariantInt(20);
+	AcceptEntityInput(angelic, "AddHealth");
+	
+	if(GetEntProp(angelic, Prop_Data, "m_iHealth") > GetEntProp(angelic, Prop_Data, "m_iMaxHealth"))
+		SetEntProp(angelic, Prop_Data, "m_iHealth", GetEntProp(angelic, Prop_Data, "m_iMaxHealth"));
+	
 	//////////////////////////////////////////////
 	// Determine if it can teleport to a player //
 	//////////////////////////////////////////////
@@ -212,7 +221,7 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 				if(client_rolls[ownerID][AWARD_G_ANGELIC][4] < GetTime())
 				{
 					clientHealth = float(GetClientHealth(ownerID));
-					triggerHealth = float(finalHealthAdjustments(ownerID)) * 0.3;
+					triggerHealth = float(finalHealthAdjustments(ownerID)) * 0.35;
 					
 					if (clientHealth <= triggerHealth)
 					{
@@ -240,7 +249,7 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 			continue;
 		
 		clientHealth = float(GetClientHealth(i));
-		triggerHealth = float(finalHealthAdjustments(i)) * 0.3;
+		triggerHealth = float(finalHealthAdjustments(i)) * 0.35;
 		
 		//client doesn't need to be saved
 		if (clientHealth > triggerHealth)
@@ -290,14 +299,6 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 		
 		break;
 	}
-	
-	
-	//heal self
-	SetVariantInt(10);
-	AcceptEntityInput(angelic, "AddHealth");
-	
-	if(GetEntProp(angelic, Prop_Data, "m_iHealth") > GetEntProp(angelic, Prop_Data, "m_iMaxHealth"))
-		SetEntProp(angelic, Prop_Data, "m_iHealth", GetEntProp(angelic, Prop_Data, "m_iMaxHealth"));
 	
 	return Plugin_Continue;
 }
