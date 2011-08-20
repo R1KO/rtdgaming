@@ -98,6 +98,22 @@ public Action:Spawn_AngelicDispenser(client, health, maxHealth)
 	WritePackCell(dataPack, GetClientUserId(client)); //40
 	WritePackString(dataPack, entityName); //PackPosition(48)
 	
+	//"Angelic Dispenser heals +150 HP (def: +100 HP)"
+	if(RTD_PerksLevel[client][55] == 1)
+	{
+		WritePackCell(dataPack, 150);
+	}else{
+		WritePackCell(dataPack, 100);
+	}
+	
+	//"Angelic Dispenser cooldown period: 5s (def: 8s)"
+	if(RTD_PerksLevel[client][56] == 1)
+	{
+		WritePackCell(dataPack, 5);
+	}else{
+		WritePackCell(dataPack, 8);
+	}
+	
 	////////////////////////////////
 	//Setup the pretty stuff      //
 	////////////////////////////////
@@ -118,6 +134,12 @@ public Action:Spawn_AngelicDispenser(client, health, maxHealth)
 
 public Action:AngelicHook(angelic, &attacker, &inflictor, &Float:damage, &damagetype)
 {
+	if(GetEntProp(angelic, Prop_Data, "m_iTeamNum") == GetEntProp(attacker, Prop_Data, "m_iTeamNum"))
+	{
+		damage = 0.0;
+		return Plugin_Changed;
+	}
+	
 	if(GetEntProp(angelic, Prop_Data, "m_PerformanceMode") < GetTime())
 	{
 		AttachTempParticle(angelic,"tpdamage_1", 1.0, false,"", 0.0, false);
@@ -130,6 +152,8 @@ public Action:AngelicHook(angelic, &attacker, &inflictor, &Float:damage, &damage
 			DispatchKeyValue(angelic, "skin","5"); 
 		}
 	}
+	
+	return Plugin_Continue;
 }
 
 public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
@@ -153,6 +177,8 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 	new lastSoundTime = ReadPackCell(dataPackHandle);
 	new ownerID = GetClientOfUserId(ReadPackCell(dataPackHandle));
 	ReadPackString(dataPackHandle, entityName, 32);
+	new healRate = ReadPackCell(dataPackHandle);
+	new coolDownTime = ReadPackCell(dataPackHandle);
 	
 	/////////////////////////////////////////////
 	//Reemit sounds every 30s even though this //
@@ -283,16 +309,18 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 			
 			if( distance < 100.0)
 			{
-				addHealth(nearbyClient, 100);
-				TF2_AddCondition(nearbyClient, TFCond_InHealRadius, 2.0);
+				PrintCenterText(nearbyClient, "Angelic Dispenser came to the rescue!");
+				addHealth(nearbyClient, healRate);
+				TF2_AddCondition(nearbyClient, TFCond_InHealRadius, 4.0);
 				
-				Shake2(nearbyClient, 0.5, 45.0);
+				Shake2(nearbyClient, 1.0, 65.0);
 			}
 		}
 		
 		//adjust next time it can teleport
 		SetPackPosition(dataPackHandle, 24);
-		WritePackCell(dataPackHandle, GetTime() + 10); //PackPosition(24) time it can teleport to a player
+		
+		WritePackCell(dataPackHandle, GetTime() + coolDownTime); //PackPosition(24) time it can teleport to a player
 		
 		//mark the player as unable to be saved for the next 60s
 		client_rolls[i][AWARD_G_ANGELIC][4] = GetTime() + 30;
