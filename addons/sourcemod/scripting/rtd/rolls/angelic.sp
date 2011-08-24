@@ -291,6 +291,11 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 		GetClientAbsAngles(i, playerAngle);
 		playerAngle[1] += 90.0;
 		
+		//telepor Angelic a bit above the player
+		//this is to prevent clipping issues
+		//prorably needs a check so it doesnt teleport up into a wall?
+		playerPos[2] += 30.0;
+		
 		TeleportEntity(angelic, playerPos, playerAngle, NULL_VECTOR);
 		
 		AttachTempParticle(angelic, "god_rays", 5.0, false, "", 31.0, false);
