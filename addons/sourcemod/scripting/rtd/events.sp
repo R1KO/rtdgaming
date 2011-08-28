@@ -122,6 +122,12 @@ public Action:Event_PlayerChangeClass(Handle:event, const String:name[], bool:do
 		PrintToChat(client, "\x04[RTD]\x01You lost your \x03Yoshi\x01 roll for switching classes.");
 	}
 	
+	if (client_rolls[client][AWARD_G_WINGS][0])
+	{
+		Drop_Wings(client);
+		PrintToChat(client, "\x04[RTD]\x01You lost your \x03Redbull\x01 roll for switching classes.");
+	}
+	
 	//Remove any rolls that have class restrictions
 	for(new i=0; i<MAX_GOOD_AWARDS + MAX_BAD_AWARDS; i ++)
 	{
