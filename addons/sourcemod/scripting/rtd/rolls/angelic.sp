@@ -214,7 +214,7 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 	////////////////
 	//heal self   //
 	////////////////
-	SetVariantInt(5);
+	SetVariantInt(1);
 	AcceptEntityInput(angelic, "AddHealth");
 	
 	if(GetEntProp(angelic, Prop_Data, "m_iHealth") > GetEntProp(angelic, Prop_Data, "m_iMaxHealth"))
