@@ -765,6 +765,7 @@ public fn_CreditsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					SetupGiftMenu(param1);
 				}else if(StrEqual(menuTriggers[1], "AddMinute"))
 				{
+					PrintToChatAll("[RTD] Player %s has purchased another minute!", name);
 					Round_AddTime(60);
 					Time_addClient(param1);
 				}
