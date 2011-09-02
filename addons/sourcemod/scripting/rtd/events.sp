@@ -33,6 +33,19 @@ public APLRes:AskPluginLoad2(Handle:hPlugin, bool:isAfterMapLoaded, String:error
 	
 	creds_ReceivedFromGifts[client] = 0;
 	
+	//clear trinkets
+	for(new k = 0; k < 50; k++)
+	{
+		Format(RTD_TrinketUnique[client][k], 32, "");
+		RTD_TrinketEquipped[client][k] = 0;
+	}
+	
+	for(new k = 0; k <= MAX_TRINKETS; k++)
+	{
+		RTD_TrinketActive[client][k] = 0;
+		RTD_TrinketBonus[client][k] = 0;
+	}
+	
 	CreateTimer(600.0, resetCredsUsed, GetClientUserId(client), TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
 	
 	if(g_BCONNECTED && !rtd_classic)
@@ -61,7 +74,6 @@ public OnClientDisconnect(client)
 		PrintToChatAll("%c[RTD]%c %T", cGreen, cDefault, "Player_Disconnect", LANG_SERVER);
 	
 	CleanPlayer(client);
-	
 }
 
 public Action:Event_PlayerChangeClass(Handle:event, const String:name[], bool:dontBroadcast)
@@ -708,8 +720,10 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 			client_rolls[client][AWARD_G_HORSEMANN][0] = 0;
 		}
 	}
-		
+	
 	UpdateWaist(client);
+	
+	equipActiveTrinket(client);
 	
 	return Plugin_Continue;
 }
@@ -879,6 +893,58 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			//TF_SpawnMedipack_Ex(client, "item_healthkit_medium", true, MODEL_FRIED_CHICKEN);
 			
 			//determine if present can be spawned
+			
+			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
+			{
+				AttachTempParticle(client,"bday_confetti",2.0, false,"",0.0, false);
+				AttachTempParticle(client,"bday_balloon02",2.0, false,"",0.0, false);
+				AttachTempParticle(client,"bday_balloon02",2.0, false,"",0.0, false);
+			}
+			
+			if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
+			{
+				new playerTeam =  GetClientTeam(client);
+				new Float:distance;
+				
+				new Float:playerPos[3];
+				new Float:enemyPos[3];
+				GetClientAbsOrigin(client, playerPos);
+				
+				new Float:finalvec[3];
+				finalvec[2]=200.0;
+				finalvec[0]=GetRandomFloat(150.0, 375.0)*GetRandomInt(-1,1);
+				finalvec[1]=GetRandomFloat(150.0, 375.0)*GetRandomInt(-1,1);
+				
+				for (new i = 1; i <= MaxClients ; i++)
+				{
+					if(!IsClientInGame(i) || !IsPlayerAlive(i))
+						continue;
+					
+					if(playerTeam == GetClientTeam(i))
+						continue;
+					
+					GetClientAbsOrigin(client, enemyPos);
+					
+					distance = GetVectorDistance(enemyPos, playerPos);
+					
+					if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
+						continue;
+					
+					if(distance > 150.0)
+						continue;
+					
+					SetEntDataVector(i,BaseVelocityOffset,finalvec,true);
+					
+					DealDamage(i, RTD_TrinketBonus[client][TRINKET_EXPLOSIVEDEATH], client, 128, "proxmine");
+					
+					SetHudTextParams(0.405, 0.82, 4.0, 255, 50, 50, 255);
+					ShowHudText(i, HudMsg3, "You were hurt by an Explosive Death");
+					
+					EmitSoundToAll(Bomb_Explode, client);
+					AttachTempParticle(client,"ExplosionCore_MidAir", 1.0, false,"",0.0, false);
+				}
+			}
+			
 			if(!spawnedItem)
 				spawnedItem = DetermineQuestionBlockSpawn(client, attacker);
 			

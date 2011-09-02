@@ -37,7 +37,7 @@
 //-Time reduction, 15s - 45s
 //-Gives the use 50+ Armor 
 
-public Action:Spawn_QuestionBlock(client)
+public Action:Spawn_QuestionBlock(client, attacker)
 {
 	new Float:vicorigvec[3];
 	GetClientAbsOrigin(client, Float:vicorigvec);
@@ -53,7 +53,7 @@ public Action:Spawn_QuestionBlock(client)
 		
 		case 2:
 		{
-			if(GetRandomInt(1,4) == 2)
+			if(GetRandomInt(1,100) < 20 + RTD_TrinketBonus[attacker][TRINKET_PARTYTIME])
 			{
 				SetEntityModel(ent,MODEL_PRESENT05);
 			}else{
@@ -190,7 +190,7 @@ public bool:DetermineQuestionBlockSpawn(client, attacker)
 	
 	if((addedBonus + randomValue) >= 0.9)
 	{
-		Spawn_QuestionBlock(client);
+		Spawn_QuestionBlock(client, attacker);
 		return true;
 	}
 	

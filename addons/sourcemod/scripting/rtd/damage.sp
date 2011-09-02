@@ -575,6 +575,45 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 				}
 			}
 		}
+		
+		if(RTD_TrinketActive[attacker][TRINKET_UNUSUALMELEE] && (damagetype & 4226))
+		{
+			if(GetRandomInt(1,100) <= RTD_TrinketBonus[attacker][TRINKET_UNUSUALMELEE])
+			{
+				//Jarate,Bleed,Fire,Stun"
+				switch(RTD_TrinketLevel[attacker][TRINKET_UNUSUALMELEE])
+				{
+					case 0:
+					{
+						TF2_AddCondition(client, TFCond_Jarated, 5.0);
+					}
+					
+					case 1:
+					{
+						TF2_MakeBleed(client, client, 5.0);
+					}
+					
+					case 2:
+					{
+						TF2_IgnitePlayer(client, attacker);
+					}
+					
+					case 3:
+					{
+						TF2_StunPlayer(client, 2.5, 0.0, TF_STUNFLAGS_NORMALBONK, 0);
+					}
+				}
+			}
+		}
+		
+		if(RTD_TrinketActive[attacker][TRINKET_HEAVYHITTER])
+		{
+			if(GetClientTeam(attacker) == BLUE_TEAM)
+			{
+				damage *= 1.0 + (float(RTD_TrinketBonus[attacker][TRINKET_HEAVYHITTER]) / 100.0);
+				//PrintToChat(attacker, "Pre: %f | New: %f", oldDamage, damage);
+			}
+		}
 	}
 	
 	if(client_rolls[client][AWARD_G_STONEWALL][0] && !client_rolls[client][AWARD_G_HORSEMANN][0])

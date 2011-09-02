@@ -622,6 +622,66 @@ public Action:GenericTimer(Handle:timer)
 					client_rolls[i][AWARD_G_INFIAMMO][1] += 1;
 			}
 			
+			if(RTD_TrinketActive[i][TRINKET_SCARYTAUNT])
+			{
+				if(RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] < GetTime())
+				{	
+					if(TF2_IsPlayerInCondition(i, TFCond_Taunting))
+					{
+						
+						RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] = GetTime() + 20;
+						
+						new playerTeam;
+						playerTeam = GetClientTeam(i);
+						
+						new Float:playerPos[3];
+						new Float:enemyPos[3];
+						new Float:distance;
+						new String:playsound[64];
+						new rndNum;
+						new stunFlag;
+						
+						GetClientAbsOrigin(i, playerPos);
+						
+						for (new j = 1; j <= MaxClients ; j++)
+						{
+							if(!IsClientInGame(j) || !IsPlayerAlive(j))
+								continue;
+							
+							if(TF2_IsPlayerInCondition(j, TFCond_Ubercharged))
+								continue;
+							
+							
+							if(playerTeam != GetClientTeam(j))
+							{
+								GetClientAbsOrigin(j,enemyPos);
+								distance = GetVectorDistance( playerPos, enemyPos);
+								
+								if(distance < 150.0)
+								{
+									stunFlag = GetEntData(j, m_iStunFlags);
+									
+									//scare the player
+									if(stunFlag != TF_STUNFLAGS_GHOSTSCARE)
+									{
+										rndNum = GetRandomInt(1,8);
+										
+										Format(playsound, sizeof(playsound), "vo/halloween_scream%i.wav", rndNum);
+										EmitSoundToAll(playsound,j);
+										
+										rndNum = GetRandomInt(1,6);
+										Format(playsound, sizeof(playsound), "vo/halloween_boo%i.wav", rndNum);
+										EmitSoundToAll(playsound,i);
+										
+										TF2_StunPlayer(j,float(RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]), 0.0, TF_STUNFLAGS_GHOSTSCARE, 0);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
 		}
 	}
 	
@@ -693,6 +753,29 @@ public Action:delayInstaKill(Handle:timer, Handle:dataPackHandle)
 	//Do the damage
 	//DealDamage(i,damageAmount, client, 4226, "toxic");
 	DealDamage(client, 9999, attacker, 4226, "InstaKill");
+	
+	return Plugin_Stop;
+}
+
+public Action:doSuperJump(Handle:timer, any:clientUserID)
+{
+	new client = GetClientOfUserId(clientUserID);
+	
+	if(client < 1)
+		return Plugin_Stop;
+	
+	if (!IsClientInGame(client) || !IsPlayerAlive(client))
+		return Plugin_Stop;
+	
+	if(GetEntityFlags(client) & FL_ONGROUND)
+		return Plugin_Stop;
+	
+	new Float:speed[3];
+	GetEntPropVector(client, Prop_Data, "m_vecVelocity", speed);
+	ScaleVector(speed, 1+(float(RTD_TrinketBonus[client][TRINKET_SUPERJUMP])/10.0));
+	
+	TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
+	AttachFastParticle(client, "rockettrail", 1.0);
 	
 	return Plugin_Stop;
 }
