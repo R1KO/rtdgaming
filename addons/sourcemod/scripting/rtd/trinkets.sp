@@ -264,7 +264,7 @@ public fn_TrinketsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						if(nextAvailableSlot(param1) >= 0)
 						{
 							GiveRandomTrinket(param1, 0);
-							SetupTrinketsMenu(param1, 0);
+							//SetupTrinketsMenu(param1, 0);
 						}else{
 							PrintCenterText(param1, "Trinket limit reached!");
 							PrintToChat(param1, "Trinket limit reached!");

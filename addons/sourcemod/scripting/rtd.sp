@@ -861,12 +861,10 @@ ShowWhatIsMOTD(client, String:lookingFor[])
 	
 	if (StrEqual(lookingFor, "trinket", false) || StrEqual(lookingFor, "trinkets", false))
 	{
-		if(lastRoll[client] != 0)
-		{
-			new String:url[128];
-			Format(url, sizeof(url), "http://wiki.rtdgaming.com/wiki/Trinket");
-			ShowMOTDPanel(client, "Something", url, MOTDPANEL_TYPE_URL);
-		}
+		new String:url[128];
+		Format(url, sizeof(url), "http://wiki.rtdgaming.com/wiki/Trinket");
+		ShowMOTDPanel(client, "Something", url, MOTDPANEL_TYPE_URL);
+		
 		return;
 	}
 	
