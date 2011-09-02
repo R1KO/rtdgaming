@@ -441,11 +441,11 @@ public Action:ShowDiceStatus(client)
 	Format(message02, sizeof(message02), "    Next Dice Spawn: %d:%s", nextDiceSpawnTimeMin, nextDiceSpawnTimeSec);
 	Format(message03, sizeof(message03), "    Dice Found: %i", RTDdice[client]);
 	Format(message10, sizeof(message10), "    Dice Level: %i", diceLevel);
-	Format(message11, sizeof(message11), "    Mining Bonus: +%i%", RTD_Perks[client][16] - 5);
+	Format(message11, sizeof(message11), "    Mining Bonus: +%i%", RTD_Perks[client][16] + RTD_TrinketBonus[client][TRINKET_DICEMINER] - 5);
 	
 	
 	
-	Format(message07, sizeof(message07), "    Chance for Good Roll: %i\%%",RoundFloat(GetConVarFloat(c_Chance)*100.0) + RTD_Perks[client][1] + RTD_Perks[client][21]);
+	Format(message07, sizeof(message07), "    Chance for Good Roll: %i\%%",RoundFloat(GetConVarFloat(c_Chance)*100.0) + RTD_Perks[client][1] + RTD_Perks[client][21] + RTD_TrinketBonus[client][TRINKET_LADYLUCK]);
 	Format(message08, sizeof(message08), "    Time reduction/point: %is",RTD_Perks[client][0]);
 	
 	Format(message05, sizeof(message05), "    Next level at: %i Dice", nextLevel);

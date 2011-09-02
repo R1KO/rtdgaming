@@ -31,8 +31,9 @@ new Handle:g_TimerExtendDatapack = INVALID_HANDLE;
 new Handle:c_AllowRTDAdminMenu = INVALID_HANDLE;	
 new Handle:c_UnusualRoll_Shop_Chance = INVALID_HANDLE;
 new Handle:c_Classic = INVALID_HANDLE;
-
-//new Handle:g_EntityDebug = INVALID_HANDLE;
+new Handle:c_Trinkets = INVALID_HANDLE;
+new Handle:c_TrinketPrice = INVALID_HANDLE;
+new Handle:c_TrinketExtPrice = INVALID_HANDLE;
 
 new g_oFOV, g_oDefFOV;
 
@@ -122,6 +123,7 @@ new idOfReceiver[cMaxClients];
 new RTDCredits[cMaxClients];
 new RTDdice[cMaxClients];
 new RTDOptions[cMaxClients][10];
+
 new Float:HUDxPos[cMaxClients][3];
 new Float:HUDyPos[cMaxClients][3];
 new bool:movingHUD[cMaxClients];
@@ -266,6 +268,9 @@ new mineMaxAmount;
 new allowRTDAdminMenu;
 new unusualRoll_Shop_Chance;
 new rtd_classic;
+new rtd_trinket_enabled;
+new rtd_trinketPrice;
+new rtd_trinketExtPrice;
 new moreDeployables; //enabled/disabled
 new deployables_max;
 new Float:deployables_chance = 0.5;
@@ -332,3 +337,37 @@ new m_nWaterLevel;
 new m_hOwnerEntity;
 new lastSummon[MAXPLAYERS + 1];
 new timeForNextAnnotation[MAXPLAYERS + 1];
+
+////////////////
+//  TRINKETS  //
+////////////////
+//trinket variables
+new totalTrinkets = 0;
+
+new String:trinket_Unique[MAX_TRINKETS][32];
+new String:trinket_Title[MAX_TRINKETS][32];
+new String:trinket_Identifier[MAX_TRINKETS][64];
+new String:trinket_Description[MAX_TRINKETS][128];
+new String:trinket_TierID[MAX_TRINKETS][5][32];
+
+new trinket_Enabled[MAX_TRINKETS];
+new trinket_Rarity[MAX_TRINKETS];
+new trinket_Tiers[MAX_TRINKETS];
+new trinket_BonusAmount[MAX_TRINKETS][4];
+new trinket_TierChance[MAX_TRINKETS][4];
+new trinket_Index[MAX_TRINKETS];
+new trinket_TotalChance[MAX_TRINKETS];
+new trinketChanceBounds[MAX_TRINKETS][4];
+
+new RTD_TrinketActive[cMaxClients][MAX_TRINKETS + 1];
+new RTD_TrinketBonus[cMaxClients][MAX_TRINKETS + 1];
+new RTD_TrinketLevel[cMaxClients][MAX_TRINKETS + 1];
+new RTD_TrinketMisc[cMaxClients][MAX_TRINKETS + 1];
+
+//player variables
+new String:RTD_TrinketUnique[cMaxClients][50][32];
+new RTD_TrinketTier[cMaxClients][50];
+new RTD_TrinketExpire[cMaxClients][50];
+new RTD_TrinketIndex[cMaxClients][50];
+new RTD_TrinketEquipped[cMaxClients][50];
+new String:RTD_TrinketTitle[cMaxClients][32];

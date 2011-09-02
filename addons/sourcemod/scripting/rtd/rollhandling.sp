@@ -10,7 +10,7 @@ stock bool:RollTheDice(client)
 	new bound[2];
 	
 	//determine if roll will be good
-	if((GetConVarFloat(c_Chance) + amountOfBadRolls[client] + (float(RTD_Perks[client][1] + RTD_Perks[client][21])*0.01)) > GetRandomFloat(0.0, 1.0)) 
+	if((GetConVarFloat(c_Chance) + amountOfBadRolls[client] + (float(RTD_Perks[client][1] + RTD_Perks[client][21] + RTD_TrinketBonus[client][TRINKET_LADYLUCK])*0.01)) > GetRandomFloat(0.0, 1.0)) 
 		goodCommand = true;
 	
 	if(goodCommand)
@@ -1043,6 +1043,9 @@ public RemoveLifetimeRolls(client)
 	inSlowCube[client] = 0;
 	inIce[client] = false;
 	ROFMult[client] = 0.0;
+	
+	if(RTD_TrinketActive[client][TRINKET_QUICKDRAW])
+		ROFMult[client] = 1.0 + (float(RTD_TrinketBonus[client][TRINKET_QUICKDRAW])/100.0);
 	
 	new oldValue = client_rolls[client][AWARD_G_BLIZZARD][3];
 	

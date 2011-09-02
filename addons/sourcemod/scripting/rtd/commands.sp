@@ -775,6 +775,20 @@ public Action:Command_rtd(client, args)
 		return Plugin_Handled;
 	}
 	
+	if((StrEqual("trinket", strArgs[0], false) || StrEqual("trinkets", strArgs[0], false) || StrEqual("!trinket", strArgs[0], false) || StrEqual("/trinkets", strArgs[0], false) || StrEqual("!trinkets", strArgs[0], false) || StrEqual("/trinket", strArgs[0], false) || StrEqual("trinks", strArgs[0], false) || StrEqual("trinkts", strArgs[0], false) || StrEqual("trinkt", strArgs[0], false)) && StrEqual("", strArgs[1], false))
+	{
+		if(!rtd_classic)
+			SetupTrinketsMenu(client, 0);
+		
+		return Plugin_Handled;
+	}
+	
+	if((StrEqual("trinkettest", strArgs[0], false)))
+	{
+		GiveRandomTrinket(client, 1);
+		return Plugin_Handled;
+	}
+	
 	if(StrEqual("movehud", strArgs[0], false))
 	{
 		SetEntityMoveType(client,MOVETYPE_NONE);

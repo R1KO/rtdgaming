@@ -20,6 +20,7 @@
 #include <regex>
 #include <adminmenu>
 #include <rtd_rollinfo>
+#include <rtd_trinkets>
 
 //Plugin version is the date  :)
 #define PLUGIN_VERSION 			"03-11-2011 $Rev: 691 $" //DO NOT MODIFY $REV *$ - Commit this file to auto-update
@@ -52,6 +53,7 @@
 #include "rtd/action_button.sp"
 #include "rtd/round_engine.sp"
 #include "rtd/beacon.sp"
+#include "rtd/trinkets.sp"
 
 //Rolls
 #include "rtd/rollhandling.sp"
@@ -258,6 +260,7 @@ public OnConfigsExecuted()
 	Load_DicePerks_ShopMenu();
 	Load_Rolls();
 	Process_Disabled_Rolls();
+	Load_Trinkets();
 }
 
 
@@ -268,6 +271,7 @@ public OnMapStart()
 	ResetStatus();
 	Load_Rolls();
 	Process_Disabled_Rolls();
+	Load_Trinkets();
 	
 	//Timers galore
 	
@@ -424,6 +428,14 @@ public Action:OnPlayerRunCmd(client, &buttons, &impulse, Float:vel[3], Float:ang
 		{
 			if(buttons & IN_JUMP)
 				SetEntityGravity(client, 1.2);
+		}
+	}
+	
+	if(RTD_TrinketActive[client][TRINKET_SUPERJUMP])
+	{
+		if((GetEntityFlags(client) & FL_ONGROUND) && (buttons & IN_JUMP))
+		{
+			CreateTimer(0.0, doSuperJump, GetClientUserId(client));
 		}
 	}
 }
@@ -842,6 +854,17 @@ ShowWhatIsMOTD(client, String:lookingFor[])
 		{
 			new String:url[128];
 			Format(url, sizeof(url), "http://wiki.rtdgaming.com/wiki/%s", roll_Text[lastRoll[client]]);
+			ShowMOTDPanel(client, "Something", url, MOTDPANEL_TYPE_URL);
+		}
+		return;
+	}
+	
+	if (StrEqual(lookingFor, "trinket", false) || StrEqual(lookingFor, "trinkets", false))
+	{
+		if(lastRoll[client] != 0)
+		{
+			new String:url[128];
+			Format(url, sizeof(url), "http://wiki.rtdgaming.com/wiki/Trinket");
 			ShowMOTDPanel(client, "Something", url, MOTDPANEL_TYPE_URL);
 		}
 		return;

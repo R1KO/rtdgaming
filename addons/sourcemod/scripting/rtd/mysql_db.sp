@@ -30,6 +30,8 @@ public saveStats(client)
 		//Perks consist of 5 characters
 		///////////////////////////////////
 		new String:stringDiceLvls[293]; 
+		new String:stringTrinkets[600];
+		new totFound;
 		
 		//PerksLevels
 		for(new i = 0; i < totalShopDicePerks; i++)
@@ -45,6 +47,24 @@ public saveStats(client)
 			}
 		}
 		
+		checkTrinketsExpiration(client);
+		
+		//Trinkets
+		for(new i = 0; i < 50; i++)
+		{
+			if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
+			{
+				if(totFound == 0)
+				{
+					Format(stringTrinkets, sizeof(stringTrinkets), "%s:%i:%i:%i", RTD_TrinketUnique[client][i], RTD_TrinketTier[client][i], RTD_TrinketExpire[client][i], RTD_TrinketEquipped[client][i]);
+				}else{
+					Format(stringTrinkets, sizeof(stringTrinkets), "%s,%s:%i:%i:%i", stringTrinkets, RTD_TrinketUnique[client][i], RTD_TrinketTier[client][i], RTD_TrinketExpire[client][i], RTD_TrinketEquipped[client][i]);
+				}
+				
+				totFound ++;
+			}
+		}
+		
 		GetClientAuthString(client, clsteamId, sizeof(clsteamId));
 		
 		//PrintToServer("Saving Talent Points: %i for Client %i", talentPoints[client], client);
@@ -52,6 +72,12 @@ public saveStats(client)
 		Format(query, sizeof(query), "UPDATE `Player` SET `CREDITS` = '%i', `DICE` = '%i', `OPTION1` = '%i', `OPTION2` = '%i', `OPTION3` = '%i', `OPTION4` = '%i', `HUDXPOS` = '%i', `HUDYPOS` = '%i', `HUDXPOS2` = '%i', `HUDYPOS2` = '%i', `LASTONTIME` = '%i', `OPTION5` = '%i', `SCOREENABLED` = '%i', `VOICEOPTIONS` = '%i', `BETATESTING` = '%i', `TALENTPOINTS` = '%i', `DICEPERKS` = '%s' WHERE `STEAMID` = '%s'", RTDCredits[client], RTDdice[client], RTDOptions[client][0], RTDOptions[client][1], RTDOptions[client][2], RTDOptions[client][3], RoundFloat(HUDxPos[client][0] * 100), RoundFloat(HUDyPos[client][0] * 100), RoundFloat(HUDxPos[client][1] * 100), RoundFloat(HUDyPos[client][1] * 100), time, RTDOptions[client][4], ScoreEnabled[client], VoiceOptions[client], isBetaUser[client], talentPoints[client], stringDiceLvls, clsteamId);
 		
 		//LogMessage("saveStats(client): %s", query);
+		SQL_TQuery(db,SQLErrorCheckCallback, query);
+		
+		
+		//save the trinket stuff
+		Format(query, sizeof(query), "UPDATE `Trinkets` SET `TRINKETRAW` = '%s' WHERE `STEAMID` = '%s'", stringTrinkets, clsteamId);
+		//LogMessage("trinket SQl save query: %s", query);
 		SQL_TQuery(db,SQLErrorCheckCallback, query);
 	}
 }
@@ -227,6 +253,125 @@ public InitializeClientonDB(client)
 	
 	//LogMessage("InitializeClientonDB(client): %s", buffer);
 	SQL_TQuery(db, LoadEverythingAtOnce, buffer, GetClientUserId(client));
+	
+	//////////////////
+	//load trinkets //
+	//////////////////
+	Format(buffer, sizeof(buffer), "SELECT * FROM Trinkets WHERE STEAMID = '%s'", ConUsrSteamID);
+	
+	//LogMessage("InitializeClientonDB(client): %s", buffer);
+	SQL_TQuery(db, LoadTrinketsSQL, buffer, GetClientUserId(client));
+}
+
+public LoadTrinketsSQL(Handle:owner, Handle:hndl, const String:error[], any:data)
+{
+	//Just for trinkets
+	new client;
+	
+	/* Make sure the client didn't disconnect while the thread was running */
+	if ((client = GetClientOfUserId(data)) == 0)
+	{
+		return;
+	}
+ 
+	if (hndl == INVALID_HANDLE)
+	{
+		LogToFile(logPath,"Trinkets Query failed! %s", error);
+	} else 
+	{
+		if (!SQL_GetRowCount(hndl)) 
+		{
+			new String:ClientSteamID[MAX_LINE_WIDTH];
+			GetClientAuthString(client, ClientSteamID, sizeof(ClientSteamID));
+			
+			/*insert user*/
+			new String:buffer[255];
+			
+			Format(buffer, sizeof(buffer), "INSERT INTO Trinkets (`STEAMID`) VALUES ('%s')", ClientSteamID);
+			SQL_TQuery(db, SQLErrorCheckCallback, buffer);
+		}
+		else
+		{
+			while (SQL_FetchRow(hndl))
+			{
+				new String:stringTrinkets[600];
+				SQL_FetchString(hndl,1, stringTrinkets, sizeof(stringTrinkets));
+				
+				//Handle the dice perks
+				//50 max trinkets
+				
+				//Example of saved trinket data
+				//t01:3:expire time
+				//above is the Lady Luck trinket (t01) with a High variant (3)
+				new String:partsTrinkets[50][32];
+				ExplodeString(stringTrinkets, ",", partsTrinkets, 100, 32);
+				new foundTrinket;
+				
+				//Split up the strings :
+				for(new i = 0; i < 50; i++)
+				{
+					new String:finalSplit[4][20];
+					decl String:chatMessage[200];
+					
+					ExplodeString(partsTrinkets[i], ":", finalSplit, 4, 32); 
+					
+					//Find the read unique identifier
+					for(new j = 0; j < MAX_TRINKETS; j++)
+					{
+						if(StrEqual(finalSplit[0], "", true))
+							continue;
+						
+						if(StrEqual(finalSplit[0], trinket_Unique[j], true))
+						{
+							//PrintToServer("Raw data: %s", partsTrinkets[i]);
+							//PrintToServer("Pass: %i | Loaded Trinket: %s | Tier: %s | Expire: %s | Equipped: %s", j, finalSplit[0], finalSplit[1], finalSplit[2], finalSplit[3]);
+							
+							
+							Format(RTD_TrinketUnique[client][foundTrinket], 64, "%s", trinket_Unique[j]);
+							RTD_TrinketIndex[client][foundTrinket] = trinket_Index[j];
+							
+							RTD_TrinketTier[client][foundTrinket] = StringToInt(finalSplit[1]);
+							RTD_TrinketExpire[client][foundTrinket] = StringToInt(finalSplit[2]);
+							RTD_TrinketEquipped[client][foundTrinket] = StringToInt(finalSplit[3]);
+							
+							Format(RTD_TrinketTitle[client][foundTrinket], 32, "%s", trinket_Title[j]);
+							
+							//apply stats
+							if(RTD_TrinketEquipped[client][foundTrinket] == 1)
+							{
+								RTD_TrinketActive[client][trinket_Index[j]] = 1;
+								RTD_TrinketBonus[client][trinket_Index[j]] = trinket_BonusAmount[trinket_Index[j]][RTD_TrinketTier[client][foundTrinket]];
+								RTD_TrinketLevel[client][trinket_Index[j]] = RTD_TrinketTier[client][foundTrinket];
+								RTD_TrinketMisc[client][trinket_Index[j]] = 0;
+								
+								Format(chatMessage, sizeof(chatMessage), "\x03Equipped\x04 (\x03%s\x04)\x01%s \x04Trinket", trinket_TierID[RTD_TrinketIndex[client][foundTrinket]][RTD_TrinketTier[client][foundTrinket]], trinket_Title[RTD_TrinketIndex[client][foundTrinket]]);
+								PrintToChat(client, chatMessage); 
+							}else{
+								RTD_TrinketActive[client][trinket_Index[j]] = 0;
+								RTD_TrinketBonus[client][trinket_Index[j]] = 0;
+								RTD_TrinketLevel[client][trinket_Index[j]] = 0;
+								RTD_TrinketMisc[client][trinket_Index[j]] = 0;
+							}
+							
+							foundTrinket ++;
+							break;
+						}
+					}
+				}
+				
+				checkTrinketsExpiration(client);
+				
+				//---------------------------------------------------------
+				
+				//ehh, there no player here mate
+				if ((client = GetClientOfUserId(data)) == 0)
+					return;
+			}
+		}
+		
+		return;
+	}
+	return;
 }
 
 public LoadEverythingAtOnce(Handle:owner, Handle:hndl, const String:error[], any:data)
