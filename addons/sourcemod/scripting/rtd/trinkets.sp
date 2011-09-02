@@ -886,6 +886,8 @@ GiveRandomTrinket(client, test)
 		Format(chatMessage, sizeof(chatMessage), "\x01\x04[TEST] \x03%s\x04 obtained: (\x03%s\x04)\x01 %s \x04Trinket", name, trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
 	}
 	
+	RTDCredits[client] -= rtd_trinketPrice;
+	
 	PrintToChatSome(chatMessage, client);
 	
 	Format(chatMessage, sizeof(chatMessage), "Obtained: (%s) %s Trinket", trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
