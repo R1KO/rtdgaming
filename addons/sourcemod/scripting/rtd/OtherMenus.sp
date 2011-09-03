@@ -3,7 +3,8 @@
 
 #pragma semicolon 1
 
-public Action:SetupGenericMenu(menuType, client){
+public Action:SetupGenericMenu(menuType, client)
+{
 	new String:strMenuType[6];
 	IntToString(menuType, strMenuType, sizeof(strMenuType));
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_GenericMenuHandler);
@@ -107,7 +108,8 @@ public fn_GenericMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 	}
 }
 
-public Action:SetupDonateAmountMenu(donator,receiver){
+public Action:SetupDonateAmountMenu(donator,receiver)
+{
 	
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_DonateAmountMenuHandler);
 	
@@ -225,7 +227,8 @@ public fn_ReimburseAmountMenuHandler(Handle:menu, MenuAction:action, param1, par
 	}
 }
 
-public Action:SetupReimburseDiceAmountMenu(donator,receiver){
+public Action:SetupReimburseDiceAmountMenu(donator,receiver)
+{
 	
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_ReimDiceAmountMenuHandler);
 	

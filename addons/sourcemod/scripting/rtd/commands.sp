@@ -783,6 +783,13 @@ public Action:Command_rtd(client, args)
 		return Plugin_Handled;
 	}
 	
+	if((StrEqual("listtrinkets", strArgs[0], false)))
+	{
+		listTrinkets(client);
+		return Plugin_Handled;
+	}
+	
+	
 	if((StrEqual("trinkettest", strArgs[0], false)))
 	{
 		GiveRandomTrinket(client, 1);

@@ -657,28 +657,33 @@ public Action:GenericTimer(Handle:timer)
 								GetClientAbsOrigin(j,enemyPos);
 								distance = GetVectorDistance( playerPos, enemyPos);
 								
-								if(distance < 150.0)
+								if(distance < 250.0)
 								{
 									stunFlag = GetEntData(j, m_iStunFlags);
 									
 									//scare the player
 									if(stunFlag != TF_STUNFLAGS_GHOSTSCARE)
 									{
-										rndNum = GetRandomInt(1,8);
-										
-										Format(playsound, sizeof(playsound), "vo/halloween_scream%i.wav", rndNum);
-										EmitSoundToAll(playsound,j);
-										
-										rndNum = GetRandomInt(1,6);
-										Format(playsound, sizeof(playsound), "vo/halloween_boo%i.wav", rndNum);
-										EmitSoundToAll(playsound,i);
-										
-										TF2_StunPlayer(j,float(RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]), 0.0, TF_STUNFLAGS_GHOSTSCARE, 0);
+										if(isVisibileCheck(i, j))
+										{
+											rndNum = GetRandomInt(1,8);
+											
+											Format(playsound, sizeof(playsound), "vo/halloween_scream%i.wav", rndNum);
+											EmitSoundToAll(playsound,j);
+											
+											rndNum = GetRandomInt(1,6);
+											Format(playsound, sizeof(playsound), "vo/halloween_boo%i.wav", rndNum);
+											EmitSoundToAll(playsound,i);
+											
+											TF2_StunPlayer(j,float(RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]), 0.0, TF_STUNFLAGS_GHOSTSCARE, 0);
+										}
 									}
 								}
 							}
 						}
 					}
+				}else{
+					PrintCenterText(i, "Scary Taunt recharging. Wait: %s", RTD_TrinketMisc[i][TRINKET_SCARYTAUNT]- GetTime());
 				}
 			}
 			

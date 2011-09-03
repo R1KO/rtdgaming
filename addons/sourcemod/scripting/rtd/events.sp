@@ -896,9 +896,10 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			
 			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
 			{
-				AttachTempParticle(client,"bday_confetti",2.0, false,"",0.0, false);
-				AttachTempParticle(client,"bday_balloon02",2.0, false,"",0.0, false);
-				AttachTempParticle(client,"bday_balloon02",2.0, false,"",0.0, false);
+				//AttachFastParticle(client, "finishline_confetti", 2.0);
+				AttachTempParticle(client,"finishline_confetti",2.0, false,"",0.0, false);
+				//AttachTempParticle(client,"bday_balloon02",2.0, false,"",0.0, false);
+				//AttachTempParticle(client,"bday_balloon02",2.0, false,"",0.0, false);
 			}
 			
 			if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
@@ -923,7 +924,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 					if(playerTeam == GetClientTeam(i))
 						continue;
 					
-					GetClientAbsOrigin(client, enemyPos);
+					GetClientAbsOrigin(i, enemyPos);
 					
 					distance = GetVectorDistance(enemyPos, playerPos);
 					
@@ -940,9 +941,12 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 					SetHudTextParams(0.405, 0.82, 4.0, 255, 50, 50, 255);
 					ShowHudText(i, HudMsg3, "You were hurt by an Explosive Death");
 					
-					EmitSoundToAll(Bomb_Explode, client);
+					//AttachFastParticle(client, "ExplosionCore_MidAir", 1.0);
+					
 					AttachTempParticle(client,"ExplosionCore_MidAir", 1.0, false,"",0.0, false);
 				}
+				
+				EmitSoundToAll(Bomb_Explode, client);
 			}
 			
 			if(!spawnedItem)
