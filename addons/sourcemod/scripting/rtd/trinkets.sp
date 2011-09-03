@@ -301,6 +301,35 @@ public fn_TrinketsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 	}
 }
 
+public listTrinkets(client)
+{
+	//new Handle: temp_Trinkets 	= CreateArray(2, MAX_TRINKETS);
+	new temp_Trinkets[50][2];
+	new foundTrinkets;
+	decl String:chatMessage[200];
+	
+	//Trinkets
+	for(new i = 0; i < 50; i++)
+	{
+		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
+		{
+			temp_Trinkets[foundTrinkets][0] = RTD_TrinketIndex[client][i];
+			temp_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i];
+			foundTrinkets ++;
+		}
+	}
+	
+	SortCustom2D(_:temp_Trinkets, foundTrinkets, SortAscend);
+	
+
+	for(new i = 0; i < foundTrinkets; i++)
+	{
+		Format(chatMessage, sizeof(chatMessage), "\x03%s \x01%s \x04Trinket", trinket_TierID[temp_Trinkets[i][0]][temp_Trinkets[i][1]], trinket_Title[temp_Trinkets[i][0]]);
+		PrintToChat(client, chatMessage); 
+	}
+	
+}
+
 public Action:TrinketsLoadoutMenu(client, startAtPage)
 {
 	if(amountOfTrinketsHeld(client) < 1)
@@ -527,7 +556,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					RTD_TrinketEquipped[param1][selectedSlot] = 1;
 					equipActiveTrinket(param1);
 					
-					Format(chatMessage, sizeof(chatMessage), "\x03Equipped\x04 (\x03%s\x04)\x01%s \x04Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
+					Format(chatMessage, sizeof(chatMessage), "\x03Equipped\x04 (\x03%s\x04) \x01%s \x04Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 					PrintToChat(param1, chatMessage); 
 					
 					Format(chatMessage, sizeof(chatMessage), "Equipped (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
@@ -896,4 +925,13 @@ GiveRandomTrinket(client, test)
 	
 	//debug
 	//PrintToChatAll("Trinket saved in slot: %i | Tier: %i", availableSlot, variant);
+}
+
+public SortAscend(x[], y[], array[][], Handle:data)
+{
+    if (x[1] > y[1])
+        return -1;
+	else if (x[1] < y[1])
+		return 1;
+    return 0;
 }
