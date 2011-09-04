@@ -42,174 +42,17 @@ public Action:Command_rtdadmin(client, args)
 		}
 	}
 	
+	//not full game admin get outta here
+	if(!CheckAdminFlagsByString(client, "z"))
+		return Plugin_Handled;
+	
 	decl String:strMessage[128];
 	GetCmdArg(1, strMessage, sizeof(strMessage));
 	new String:adminName[128];
 	GetClientName(client, adminName, sizeof(adminName));
 	
-	if(StrEqual("givedice", strMessage, false))
-	{
-		SetupGenericMenu(3, client);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("givecredits", strMessage, false))
-	{
-		SetupGenericMenu(2, client);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("teleportplayer", strMessage, false))
-	{
-		SetupGenericMenu(5, client);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("eggme", strMessage, false))
-	{
-		Yoshi_Eat(client, client);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("time", strMessage, false))
-	{
-		decl String:typeArg[64];
-		GetCmdArg(2, typeArg, sizeof(typeArg));
-		
-		decl String:timeArg[64];
-		GetCmdArg(3, timeArg, sizeof(timeArg));
-		if (StrEqual("", timeArg, false)) {
-			PrintToChat(client, "You must specify a time value as the third parameter.");
-			return Plugin_Handled;
-		}
-		new timeVal = StringToInt(timeArg);
-		
-		//Alright, now the actual logic made by bl4nk to change the time
-		if (StrEqual("add", typeArg, false)) {
-			Round_AddTime(timeVal);
-		} else if (StrEqual("sub", typeArg, false)) {
-			Round_AddTime(-timeVal);
-		} else if (StrEqual("set", typeArg, false)) {
-			Round_SetTime(timeVal);
-		} else {
-			PrintToChat(client, "You must specify (add|rem|set) as the second parameter.");
-		}
-		return Plugin_Handled;		
-	}
-	else if (StrEqual("invis", strMessage, false))
-	{
-		decl String:actionArg[64];
-		GetCmdArg(2, actionArg, sizeof(actionArg));
-		if (StrEqual("true", actionArg, false)) {
-			Colorize(client, INVIS);
-			InvisibleHideFixes(client, TF2_GetPlayerClass(client), 0);
-		} else if (StrEqual("false", actionArg, false)) {
-			Colorize(client, NORMAL);
-			InvisibleHideFixes(client, TF2_GetPlayerClass(client), 1);
-		} else {
-			PrintToChat(client, "You must supply an argument of \"true\" or \"false\" for that command");
-		}
-		return Plugin_Handled;
-	}
-	else if(StrEqual("award", strMessage, false))
-	{
-		decl String:roll_arg[64];
-		GetCmdArg(2, roll_arg, sizeof(roll_arg));
-		if (StrEqual("", roll_arg, false)) {
-			SetupAwardMenu(client);
-			return Plugin_Handled;
-		}
-		new roll = StringToInt(roll_arg);
-		
-		// Check if the admin wants to apply it to another player(s)
-		decl String:playersArg[64];
-		GetCmdArg(3, playersArg, sizeof(playersArg));
-		
-		decl String:forceArg[64];
-		GetCmdArg(4, forceArg, sizeof(forceArg));
-		new bool:forceRoll = StrEqual(forceArg, "true", false);
-		
-		//If they want to apply it to all players
-		if (StrEqual("*", playersArg, false))
-		{
-			for(new i=1;i<=MaxClients;i++)
-				if(IsValidClient(i) && IsPlayerAlive(i) && (forceRoll || !UnAcceptable(i, roll) && !inTimerBasedRoll[i]))
-					GivePlayerEffect(i, roll, 0);
-			LogToFile(logPath,"[RTD][ADMIN] %s awarded everyone %s", adminName, roll_Text[roll]);
-			PrintToChatAll("[RTD][ADMIN] %s gave everyone %s", adminName, roll_Text[roll]);
-		}
-		else if (!StrEqual("", playersArg, false)) //They want to apply to some players
-		{
-			decl String:target_name[MAX_TARGET_LENGTH];
-			decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
-		
-			if ((target_count = ProcessTargetString(
-					playersArg,
-					client,
-					target_list,
-					MAXPLAYERS,
-					COMMAND_FILTER_ALIVE,
-					target_name,
-					sizeof(target_name),
-					tn_is_ml)) <= 0)
-			{
-				PrintToChat(client, "Couldn't match any players for the roll awardment.");
-				return Plugin_Handled;
-			}
-			
-			for (new i = 0; i < target_count; i++)
-				if (IsValidClient(target_list[i]) && IsPlayerAlive(target_list[i]) && (forceRoll || !UnAcceptable(target_list[i], roll) && !inTimerBasedRoll[target_list[i]])) {
-					GivePlayerEffect(target_list[i], roll, 0);
-					LogToFile(logPath,"[RTD][ADMIN] %s awarded %s to %s", adminName, roll_Text[roll], target_name[i]);
-					PrintToChat(target_list[i], "[RTD][ADMIN] %s gave you %s", adminName, roll_Text[roll]);
-				}
-		}
-		else if (IsValidClient(client) && IsPlayerAlive(client) && (forceRoll || !UnAcceptable(client, roll) && !inTimerBasedRoll[client]))//Apply to themselves
-		{
-			LogToFile(logPath,"[RTD][ADMIN] %s was awarded %s", adminName, roll_Text[roll]);
-			GivePlayerEffect(client, roll, 0);
-		}
-		
-		return Plugin_Handled;
-	}
-	else if(StrEqual("resetcolor", strMessage, false))
-	{
-		// Check if the admin wants to apply it to another player(s)
-		decl String:playersArg[64];
-		GetCmdArg(2, playersArg, sizeof(playersArg));
-		
-		//If they want to apply it to all players
-		if (StrEqual("*", playersArg, false))
-		{
-			for(new i=1;i<=MaxClients;i++)
-				if(IsValidClient(i) && IsPlayerAlive(i))
-					Colorize(i, NORMAL);
-		}
-		else if (!StrEqual("", playersArg, false)) //They want to apply to some players
-		{
-			decl String:target_name[MAX_TARGET_LENGTH];
-			decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
-		
-			if ((target_count = ProcessTargetString(
-					playersArg,
-					client,
-					target_list,
-					MAXPLAYERS,
-					COMMAND_FILTER_ALIVE,
-					target_name,
-					sizeof(target_name),
-					tn_is_ml)) <= 0)
-			{
-				PrintToChat(client, "Couldn't match any players for the roll awardment.");
-				return Plugin_Handled;
-			}
-			
-			for (new i = 0; i < target_count; i++)
-				if (IsValidClient(target_list[i]) && IsPlayerAlive(target_list[i]))
-					Colorize(target_list[i], NORMAL);
-		}
-		else if (IsValidClient(client) && IsPlayerAlive(client))//Apply to themselves
-			Colorize(client, NORMAL);
-		
-		return Plugin_Handled;
-	}
-	else if(StrEqual("spawndice", strMessage, false))
+	
+	if(StrEqual("spawndice", strMessage, false))
 	{
 		decl String:arg[128];
 		GetCmdArg(2, arg, sizeof(arg));
@@ -232,156 +75,19 @@ public Action:Command_rtdadmin(client, args)
 			LogToFile(logPath,"[RTD][ADMIN] %s Respawned %d Dice", adminName, amount);
 		return Plugin_Handled;
 	}
-	else if(StrEqual("info", strMessage, false))
-	{
-		SetupGenericMenu(4, client);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("setdice", strMessage, false))
-	{
-		new String:diceAdd[12];
-		GetCmdArg(2, diceAdd, sizeof(diceAdd));
-		new diceAddAmount = StringToInt(diceAdd);
-		RTDdice[client] = diceAddAmount;
-		LogToFile(logPath,"[RTD][ADMIN] %s's Dice was Set to %d", adminName, diceAddAmount);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("equip", strMessage, false))
-	{
-		new String:equipArgs[128];
-		GetCmdArg(2, equipArgs, sizeof(equipArgs));
-		
-		PrintToChat(client, "\x01\x04[RTD][ADMIN] Equip \x03%s\x04 with \x03%s", adminName, equipArgs);
-		LogToFile(logPath,"[RTD][ADMIN]  Equip %s with %s", adminName, equipArgs);
-		ServerCommand("equip_weapon \"%s\" %s", adminName, equipArgs);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("addcond", strMessage, false) || StrEqual("remcond", strMessage, false))
-	{
-		//Are we adding or removing it?
-		new bool:adding = StrEqual("addcond", strMessage, false);
-	
-		decl String:condStrValue[128];
-		GetCmdArg(2, condStrValue, sizeof(condStrValue));
-		new condValue = StringToInt(condStrValue);
-	
-		// Check if the admin wants to apply it to another player(s)
-		decl String:playersArg[64];
-		GetCmdArg(3, playersArg, sizeof(playersArg));
-		
-		//If they want to apply it to all players
-		if (StrEqual("*", playersArg, false))
-		{
-			for(new i=1;i<=MaxClients;i++)
-				if(IsValidClient(i) && IsPlayerAlive(i))
-					TF2_DoCond(i, condValue, adding);
-			LogToFile(logPath,"[RTD][ADMIN] %s %s everyone condition %d", adminName, adding ? "added to" : "removed from", condValue);
-			PrintToChatAll("\x01\x04[RTD][ADMIN] %s did something to everyone!", adminName);
-		}
-		else if (!StrEqual("", playersArg, false)) //They want to apply to some players
-		{
-			decl String:target_name[MAX_TARGET_LENGTH];
-			decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
-		
-			if ((target_count = ProcessTargetString(
-					playersArg,
-					client,
-					target_list,
-					MAXPLAYERS,
-					COMMAND_FILTER_ALIVE,
-					target_name,
-					sizeof(target_name),
-					tn_is_ml)) <= 0)
-			{
-				PrintToChat(client, "Couldn't match any players for the condition awardment.");
-				return Plugin_Handled;
-			}
-			
-			for (new i = 0; i < target_count; i++)
-				if (IsValidClient(target_list[i]) && IsPlayerAlive(target_list[i])) {
-					TF2_DoCond(target_list[i], condValue, adding);
-					LogToFile(logPath,"[RTD][ADMIN] %s %s %s condition %d", adminName, adding ? "added to" : "removed from", target_name[i], condValue);
-					PrintToChat(target_list[i], "\x01\x04[RTD][ADMIN] %s did something to you!", adminName);
-				}
-		}
-		else if (IsValidClient(client) && IsPlayerAlive(client))//Apply to themselves
-		{
-			TF2_DoCond(client, condValue, adding);
-			PrintToChat(client, "\x01\x04[RTD][ADMIN] %s Condition \x03%d\x04 on \x03%s", adding ? "Adding" : "Removing", condValue, adminName);
-			LogToFile(logPath,"[RTD][ADMIN] %s Condition %d on %s", adding ? "Adding" : "Removing", adminName, condValue);
-		}
-		return Plugin_Handled;
-	}	
-	else if(StrEqual("spawnzombie1", strMessage, false))
-	{
-		Spawn_Zombie(client, 1);
-		return Plugin_Handled;
-	}	
-	else if(StrEqual("spawnzombie2", strMessage, false))
-	{
-		Spawn_Zombie(client, 2);
-		return Plugin_Handled;
-	}	
-	else if(StrEqual("spawnsaw", strMessage, false))
-	{
-		Spawn_Saw(client);
-		return Plugin_Handled;
-	}	
-	else if(StrEqual("spawnzombie3", strMessage, false))
-	{
-		Spawn_Zombie(client, 3);
-		return Plugin_Handled;
-	}	
-	else if(StrEqual("yoshime", strMessage, false))
-	{
-		client_rolls[client][AWARD_G_YOSHI][0] = 1;
-		Make_Yoshi(client);
-		CreateTimer(20.0, Remove_Yoshi_Timer, client, TIMER_FLAG_NO_MAPCHANGE);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("findEnt", strMessage, false))
-	{
-		//This is used for finding certain values of the given class name
-		//returns all entites found!
-		
-		new ent = -1;
-		new String:entityClass[128];
-		GetCmdArg(2, entityClass, sizeof(entityClass));
-		new totFound;
-		
-		while ((ent = FindEntityByClassname(ent, entityClass)) != -1)
-		{
-			totFound ++;
-			if(ent == -1)
-			{
-				PrintToChat(client, "\x01\x04[RTD][ADMIN] No entity found by classname \x03%s", adminName, entityClass);
-			}else{
-				PrintToChat(client, "\x01\x04[RTD][ADMIN] Entity found \x03%i", ent);
-				//new String:modelname[128];
-				//GetEntPropString(ent, Prop_Data, "m_ModelName", modelname, 128);
-				PrintToChat(client, "\x01\x04[RTD][ADMIN] Model:%i", GetEntProp(ent, Prop_Data, "m_nModelIndex"));
-				
-				PrintToChat(client, "SolidType:%i | CollisionGroup:%i | SolidFlags:%i", GetEntProp(ent, Prop_Send, "m_nSolidType"), GetEntProp(ent, Prop_Send, "m_CollisionGroup"), GetEntProp(ent, Prop_Send, "m_usSolidFlags"));
-			}
-		}
-		PrintToChat(client, "\x01\x04[RTD][ADMIN] Entity \x03%i", ent);
-		PrintToChat(client, "\x01\x04[RTD][ADMIN] Total Found:\x03%i", totFound);
-		LogToFile(logPath,"[RTD][ADMIN] %s Classname Lookup %s", adminName, entityClass);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("setdice#", strMessage, false))
+	else if(StrEqual("donate", strMessage, false))
 	{
 		if(args < 7)
 		{
-			PrintToChat(client, "usage: /rtdadmin setdice# <SteamID> <amount>");
+			PrintToChat(client, "usage: /rtdadmin donate <SteamID> <amount>");
 			return Plugin_Handled;
 		}
 		
-		new String:amountStr[128];
 		new String:steamID[128];
 		new String:steamIDPart1[128];
 		new String:steamIDPart2[128];
 		new String:steamIDPart3[128];
+		new String:amountStr[128];
 		
 		GetCmdArg(2, steamIDPart1, sizeof(steamIDPart1));
 		GetCmdArg(4, steamIDPart2, sizeof(steamIDPart2));
@@ -391,84 +97,15 @@ public Action:Command_rtdadmin(client, args)
 		
 		Format(steamID,sizeof(steamID),"%s:%s:%s",steamIDPart1,steamIDPart2,steamIDPart3);
 		
-		//rtdadmin setcreds# STEAM_0:0:15175229 
+		//rtdadmin donate STEAM_0:0:15175229 
 		//STEAM_0:0:15175229 
 		new amount = StringToInt(amountStr);
-		new wantedClient = findClientbySteamID(steamID);
-		if(wantedClient == -1)
-		{
-			PrintToChat(client, "Client %s not found!",steamID);
-			return Plugin_Handled;
-		}
 		
-		new String:name[32];
-		GetClientName(wantedClient, name, sizeof(name));
+		ReplaceString(steamID, sizeof(steamID), "\\", "", true);
+		SQL_EscapeString(db, steamID, steamID, sizeof(steamID));
 		
-		if(client > 0)
-			PrintToChat(client, "\x01\x04[RTD][ADMIN] Setting Dice for %s:from %d to %d", name, RTDdice[wantedClient], amount);
-		LogToFile(logPath,"[RTD][ADMIN] Setting Dice for %s: from %d to %d", name,RTDdice[wantedClient],  amount);
+		confirmDonationMenu(steamID, amount, client);
 		
-		RTDdice[wantedClient] = amount;
-		
-		return Plugin_Handled;
-	}
-	else if(StrEqual("setcreds#", strMessage, false))
-	{
-		if(args < 7)
-		{
-			PrintToChat(client, "usage: /rtdadmin setcreds# <SteamID> <amount>");
-			return Plugin_Handled;
-		}
-		
-		new String:amountStr[128];
-		new String:steamID[128];
-		new String:steamIDPart1[128];
-		new String:steamIDPart2[128];
-		new String:steamIDPart3[128];
-		
-		GetCmdArg(2, steamIDPart1, sizeof(steamIDPart1));
-		GetCmdArg(4, steamIDPart2, sizeof(steamIDPart2));
-		GetCmdArg(6, steamIDPart3, sizeof(steamIDPart3));
-		
-		GetCmdArg(7, amountStr, sizeof(amountStr));
-		
-		Format(steamID,sizeof(steamID),"%s:%s:%s",steamIDPart1,steamIDPart2,steamIDPart3);
-		
-		//rtdadmin setcreds# STEAM_0:0:15175229 
-		//STEAM_0:0:15175229 
-		new amount = StringToInt(amountStr);
-		new wantedClient = findClientbySteamID(steamID);
-		if(wantedClient == -1)
-		{
-			PrintToChat(client, "Client %s not found!",steamID);
-			return Plugin_Handled;
-		}
-		
-		new String:name[32];
-		GetClientName(wantedClient, name, sizeof(name));
-			
-		PrintToChat(client, "\x01\x04[RTD][ADMIN] Setting Credits for %s:from %d to %d", name, RTDCredits[wantedClient], amount);
-		LogToFile(logPath,"[RTD][ADMIN] Setting Credits for %s: from %d to %d", name,RTDCredits[wantedClient],  amount);
-		
-		RTDCredits[wantedClient] = amount;
-		
-		return Plugin_Handled;
-	}
-	else if(StrEqual("findrag", strMessage, false))
-	{
-		new ent = -1;
-		new totFound;
-		while ((ent = FindEntityByClassname(ent, "tf_ragdoll")) != -1)
-		{
-			totFound ++;
-		}
-		PrintToChat(client, "TotalRagdolls: %i",totFound);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("backpack", strMessage, false))
-	{
-		LogToFile(logPath,"[RTD][ADMIN] Attaching Backpack on %s", adminName);
-		SpawnAndAttachBackpack(client);
 		return Plugin_Handled;
 	}
 	else if(StrEqual("spawndeposits", strMessage, false))
@@ -489,11 +126,6 @@ public Action:Command_rtdadmin(client, args)
 	else if(StrEqual("dicedepositcfg", strMessage, false))
 	{
 		DiceDeposit_ParseList();
-		return Plugin_Handled;
-	}
-	else if(StrEqual("forceserverroll", strMessage, false))
-	{
-		//serverRolls_NextRoll = GetTime();
 		return Plugin_Handled;
 	}
 	else if(StrEqual("copyloc", strMessage, false))
@@ -525,58 +157,9 @@ public Action:Command_rtdadmin(client, args)
 		PrintToChat(client, "		}");
 		return Plugin_Handled;
 	}
-	else if(StrEqual("testmsg", strMessage, false))
-	{
-		return Plugin_Handled;
-	}
 	else if(StrEqual("loadawards", strMessage, false))
 	{
 		LoadAwards();
-		return Plugin_Handled;
-	}
-	else if(StrEqual("awarddenydebug", strMessage, false))
-	{
-		new String:argsStr[128];
-		
-		GetCmdArg(2, argsStr, sizeof(argsStr));
-		new award = StringToInt(argsStr);
-		
-		new String:code[128];
-		GetCmdArg(3, code, sizeof(code));
-		
-		GetCmdArg(4, argsStr, sizeof(argsStr));
-		new awarded = StringToInt(argsStr);
-		
-		new Handle:dataPack = CreateDataPack();
-		WritePackCell(dataPack, client);
-		WritePackCell(dataPack, award);
-		WritePackString(dataPack, code);
-		WritePackCell(dataPack, awarded);
-		WritePackCell(dataPack, 0);
-		DenyAward(dataPack);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("giveaward", strMessage, false))
-	{
-		new Handle:dataPack = CreateDataPack();
-		new String:argsStr[128];
-		
-		GetCmdArg(2, argsStr, sizeof(argsStr));
-		new award = StringToInt(argsStr);
-		
-		GiveAward(client, award, dataPack);
-		return Plugin_Handled;
-	}
-	else if(StrEqual("scramble", strMessage, false))
-	{
-		PrintToChatAll("\x01\x04[Scramble]\x01 Teams will be scrambled next round.");
-		g_bScramblePending = true;
-		g_iScrambleDelay = GetTime() + 300;
-		return Plugin_Handled;
-	}
-	else if(StrEqual("scramble2", strMessage, false))
-	{
-		DisplayScrambleVoteMenu();
 		return Plugin_Handled;
 	}
 	else if(StrEqual("dmgDebug", strMessage, false))
@@ -591,67 +174,10 @@ public Action:Command_rtdadmin(client, args)
 		}
 		return Plugin_Handled;
 	}
-	else if(StrEqual("kill", strMessage, false))
-	{
-		new String:player[64], String:saverolls[8];
-		GetCmdArg(2, saverolls, sizeof(saverolls));
-		GetCmdArg(3, player, sizeof(player));
-		g_bSaveRollsOnDeath = StrEqual("true", saverolls, false);
-		if (StrEqual("*", player, false))
-		{
-			for(new i=1;i<=MaxClients;i++)
-				if(IsValidClient(i))
-					SlapPlayer(i, 9001);
-		}
-		else if (!StrEqual("", player, false)) //They want to apply to some players
-		{
-			decl String:target_name[MAX_TARGET_LENGTH];
-			decl target_list[MAXPLAYERS], target_count, bool:tn_is_ml;
-		
-			if ((target_count = ProcessTargetString(
-					player,
-					client,
-					target_list,
-					MAXPLAYERS,
-					COMMAND_FILTER_ALIVE,
-					target_name,
-					sizeof(target_name),
-					tn_is_ml)) <= 0)
-			{
-				PrintToChat(client, "Couldn't match any players for the kill.");
-				g_bSaveRollsOnDeath = false;
-				return Plugin_Handled;
-			}
-			for (new i = 0; i < target_count; i++)
-				if (IsValidClient(target_list[i]) && IsPlayerAlive(target_list[i]))
-					SlapPlayer(target_list[i], 9001);
-		}
-		else if (IsValidClient(client) && IsPlayerAlive(client))//Apply to themselves
-		{
-			SlapPlayer(client, 9001);
-		}
-		
-		g_bSaveRollsOnDeath = false;
-		return Plugin_Handled;
-	}
 	else if(StrEqual("dicedebug", strMessage, false))
 	{
 		diceDebug[client] = !diceDebug[client];
 		PrintToChat(client, "[RTD][ADMIN] Dice mine debugging turned %s.", diceDebug[client] ? "ON" : "OFF");
-		return Plugin_Handled;
-	}
-	else if(StrEqual("entcount", strMessage, false))
-	{
-		new maxents = GetMaxEntities();
-		new i, c = 0;
-		
-		for(i = MaxClients; i <= maxents; i++)
-		{
-			if(IsValidEntity(i) || IsValidEdict(i))
-				c += 1;	
-		}
-		
-		PrintToChat(client, "%Ent Count: %i", c);
 		return Plugin_Handled;
 	}
 	else
