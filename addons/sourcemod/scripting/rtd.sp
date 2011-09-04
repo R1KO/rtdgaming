@@ -34,6 +34,7 @@
 #include "rtd/info/downloads.sp"
 #include "rtd/load_cfgs.sp"
 
+#include "rtd/donate.sp"
 #include "rtd/particles.sp"
 #include "rtd/diceperks.sp"
 #include "rtd/mysql_db.sp"

@@ -371,3 +371,7 @@ new RTD_TrinketExpire[cMaxClients][50];
 new RTD_TrinketIndex[cMaxClients][50];
 new RTD_TrinketEquipped[cMaxClients][50];
 new String:RTD_TrinketTitle[cMaxClients][32];
+
+
+new donate_Amount[cMaxClients];
+new String:donate_SteamID[cMaxClients][64];
