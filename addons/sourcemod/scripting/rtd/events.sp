@@ -904,6 +904,8 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			
 			if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
 			{
+				AttachTempParticle(client,"ExplosionCore_MidAir", 1.0, false,"",0.0, false);
+				
 				new playerTeam =  GetClientTeam(client);
 				new Float:distance;
 				
@@ -936,14 +938,16 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 					
 					SetEntDataVector(i,BaseVelocityOffset,finalvec,true);
 					
-					DealDamage(i, RTD_TrinketBonus[client][TRINKET_EXPLOSIVEDEATH], client, 128, "proxmine");
+					
+					
+					
+					DelayDamage(0.1, i, RTD_TrinketBonus[client][TRINKET_EXPLOSIVEDEATH], client, 128, "proxmine");
 					
 					SetHudTextParams(0.405, 0.82, 4.0, 255, 50, 50, 255);
 					ShowHudText(i, HudMsg3, "You were hurt by an Explosive Death");
 					
 					//AttachFastParticle(client, "ExplosionCore_MidAir", 1.0);
 					
-					AttachTempParticle(client,"ExplosionCore_MidAir", 1.0, false,"",0.0, false);
 				}
 				
 				EmitSoundToAll(Bomb_Explode, client);

@@ -93,8 +93,14 @@ public donate(String:steamID[], amount, admin)
 	if(clientUserID > 0)
 	{
 		//Player is online
+		new String:name[32];
+		GetClientName(client, name, sizeof(name));
+		
 		PrintCenterText(client, "You have received: %i credits from your donation", amount);
 		PrintToChat(client, "You have received: %i credits from your donation", amount);
+		
+		PrintToChatAll("%s has received %i credits from a donation", name, amount);
+		
 		RTDCredits[client] += amount;
 		
 	}else{
