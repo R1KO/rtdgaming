@@ -727,6 +727,44 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 	}
 }
 
+
+DelayDamage(Float:time, victim,damage,attacker=0,dmg_type=DMG_GENERIC,String:weapon[]="")
+{
+	new Handle:dataPackHandle;
+	CreateDataTimer(time, DelayDamage_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+
+	//Setup the datapack with appropriate information
+	WritePackCell(dataPackHandle, GetClientUserId(victim)); //0   client
+	WritePackCell(dataPackHandle, damage); //
+	WritePackCell(dataPackHandle, GetClientUserId(attacker)); //
+	WritePackCell(dataPackHandle, dmg_type); //
+	WritePackString(dataPackHandle, weapon);
+	
+}
+
+public Action:DelayDamage_Timer(Handle:timer, Handle:dataPackHandle)
+{
+	//////////////////////////////////////////////////////////////
+	// Used for Timer based effects.                            //
+	// This shows the countdown, makes sure the effect stays in //
+	// place and then reverses it once time is up or if player  //
+	// is invalid (disconnect or died)                          //
+	// ///////////////////////////////////////////////////////////
+	
+	new String:weapon[32];
+	
+	ResetPack(dataPackHandle);
+	new victim = GetClientOfUserId(ReadPackCell(dataPackHandle));
+	new damage = ReadPackCell(dataPackHandle);
+	new attacker = GetClientOfUserId(ReadPackCell(dataPackHandle));
+	new dmg_type = ReadPackCell(dataPackHandle);
+	ReadPackString(dataPackHandle, weapon, sizeof(weapon));
+	
+	DealDamage(victim,damage,attacker,dmg_type,weapon);
+	
+	return Plugin_Stop;
+}
+
 DealDamage(victim,damage,attacker=0,dmg_type=DMG_GENERIC,String:weapon[]="")
 {
 	if(victim>0 && IsValidEdict(victim) && damage>0)
