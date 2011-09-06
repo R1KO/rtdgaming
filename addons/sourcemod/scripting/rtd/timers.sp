@@ -624,9 +624,9 @@ public Action:GenericTimer(Handle:timer)
 			
 			if(RTD_TrinketActive[i][TRINKET_SCARYTAUNT])
 			{
-				if(RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] < GetTime())
+				if(TF2_IsPlayerInCondition(i, TFCond_Taunting))
 				{	
-					if(TF2_IsPlayerInCondition(i, TFCond_Taunting))
+					if(RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] < GetTime())
 					{
 						
 						RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] = GetTime() + 20;
@@ -681,9 +681,9 @@ public Action:GenericTimer(Handle:timer)
 								}
 							}
 						}
+					}else{
+						PrintCenterText(i, "Scary Taunt recharging. Wait: %i", RTD_TrinketMisc[i][TRINKET_SCARYTAUNT]- GetTime());
 					}
-				}else{
-					PrintCenterText(i, "Scary Taunt recharging. Wait: %s", RTD_TrinketMisc[i][TRINKET_SCARYTAUNT]- GetTime());
 				}
 			}
 			
