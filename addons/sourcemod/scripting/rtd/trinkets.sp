@@ -303,8 +303,9 @@ public fn_TrinketsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 
 public listTrinkets(client)
 {
+	/*
 	//new Handle: temp_Trinkets 	= CreateArray(2, MAX_TRINKETS);
-	new temp_Trinkets[50][2];
+	new temp_Trinkets[50][4];
 	new foundTrinkets;
 	decl String:chatMessage[200];
 	
@@ -315,6 +316,10 @@ public listTrinkets(client)
 		{
 			temp_Trinkets[foundTrinkets][0] = RTD_TrinketIndex[client][i];
 			temp_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i];
+			temp_Trinkets[foundTrinkets][2] = RTD_TrinketExpire[client][i];
+			temp_Trinkets[foundTrinkets][3] = RTD_TrinketEquipped[client][i];
+			
+			RTD_TrinketUnique[client][i];Format(RTD_TrinketUnique[client][availableSlot], 32, "%s", trinket_Unique[awardedTrinket]);
 			foundTrinkets ++;
 		}
 	}
@@ -324,9 +329,14 @@ public listTrinkets(client)
 
 	for(new i = 0; i < foundTrinkets; i++)
 	{
+		RTD_TrinketIndex[client][i] = temp_Trinkets[foundTrinkets][0];
+		RTD_TrinketTier[client][i] = temp_Trinkets[foundTrinkets][1];
+		RTD_TrinketExpire[client][i] = temp_Trinkets[foundTrinkets][2];
+		RTD_TrinketEquipped[client][i] = temp_Trinkets[foundTrinkets][3];
+		
 		Format(chatMessage, sizeof(chatMessage), "\x03%s \x01%s \x04Trinket", trinket_TierID[temp_Trinkets[i][0]][temp_Trinkets[i][1]], trinket_Title[temp_Trinkets[i][0]]);
 		PrintToChat(client, chatMessage); 
-	}
+	}*/
 	
 }
 
