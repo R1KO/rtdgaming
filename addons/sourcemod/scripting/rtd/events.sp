@@ -355,7 +355,7 @@ public GiveDiceToTopLoser(winningTeam, any:MVP1, any:MVP2, diceToGive)
 	{
 		client = i + 1;
 		Scores[i][0] = client;
-		if (IsClientInGame(client) && GetClientTeam(client) != winningTeam && client != MVP1 && client != MVP2)
+		if (IsClientInGame(client) && GetClientTeam(client) != winningTeam && client != MVP1 && client != MVP2 && (GetClientTeam(client) == RED_TEAM || GetClientTeam(client) == BLUE_TEAM))
 			Scores[i][1] = TF2_GetPlayerResourceData(client, TFResource_TotalScore) - g_BeginScore[client];
 		else
 			Scores[i][1] = -1;
@@ -933,7 +933,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 					if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
 						continue;
 					
-					if(distance > 150.0)
+					if(distance > 200.0)
 						continue;
 					
 					SetEntDataVector(i,BaseVelocityOffset,finalvec,true);
