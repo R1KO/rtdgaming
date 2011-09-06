@@ -738,7 +738,7 @@ public deployRoll(client, tempAward)
 			
 		case AWARD_G_ANGELIC:
 		{
-			Spawn_AngelicDispenser(client, 900, 900);
+			Spawn_AngelicDispenser(client, 400, 400);
 			
 		}
 	}
