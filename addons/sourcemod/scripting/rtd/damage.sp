@@ -126,7 +126,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 	new bool:isAttackerPlayer = false;
 	
 	//2048 GetMaxEntities
-	if(attacker < 2048)
+	if(attacker > -1 && attacker < 2048)
 	{
 		if(GetClientTeam(client) == GetEntProp(attacker, Prop_Data, "m_iTeamNum"))
 			sameTeam = true;
