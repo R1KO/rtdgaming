@@ -29,7 +29,7 @@ public saveStats(client)
 		//Sample perk: a00:0
 		//Perks consist of 5 characters
 		///////////////////////////////////
-		new String:stringDiceLvls[293]; 
+		new String:stringDiceLvls[600]; 
 		new String:stringTrinkets[600];
 		new totFound;
 		
