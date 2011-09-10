@@ -563,6 +563,7 @@ public Action:SetupCreditsMenu(client, String:itemToBuy[])
 	
 	if(StrEqual(itemToBuy, "", false))
 	{
+		EmitSoundToClient(client, SOUND_SHOP);
 		DisplayMenu(hCMenu,client,MENU_TIME_FOREVER);
 	}else{
 		QuickBuy(hCMenu, client, itemToBuy);
@@ -594,6 +595,7 @@ public fn_CreditsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 			{
 				PrintCenterText(param1, "You can't purchase while in an active RTD");
 				PrintToChat(param1, "You can't purchase while in an active RTD!");
+				StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 				action = MenuAction_Cancel;
 			}
 		}
@@ -784,6 +786,8 @@ public fn_CreditsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 			CloseHandle(menu);
 		}
 	}
+	
+	StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 }
 
 public QuickBuy(Handle:menu,client, String:itemToBuy[])

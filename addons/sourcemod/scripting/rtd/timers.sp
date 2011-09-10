@@ -628,6 +628,7 @@ public Action:GenericTimer(Handle:timer)
 				{	
 					if(RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] < GetTime())
 					{
+						AttachTempParticle(i,"superrare_ghosts",5.0, false,"",20.0, false);
 						
 						RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] = GetTime() + 20;
 						

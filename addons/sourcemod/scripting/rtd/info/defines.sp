@@ -443,6 +443,9 @@
 
 #define SOUND_FLAP			"rtdgaming/flap.wav"
 
+#define SOUND_OPEN_TRINKET	"rtdgaming/opentrinket.mp3"
+#define SOUND_SHOP			"rtdgaming/shop.mp3"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 

@@ -34,6 +34,7 @@ new Handle:c_Classic = INVALID_HANDLE;
 new Handle:c_Trinkets = INVALID_HANDLE;
 new Handle:c_TrinketPrice = INVALID_HANDLE;
 new Handle:c_TrinketExtPrice = INVALID_HANDLE;
+new Handle:c_TrinketReRollPrice = INVALID_HANDLE;
 
 new g_oFOV, g_oDefFOV;
 
@@ -271,6 +272,7 @@ new rtd_classic;
 new rtd_trinket_enabled;
 new rtd_trinketPrice;
 new rtd_trinketExtPrice;
+new rtd_trinket_rerollPrice;
 new moreDeployables; //enabled/disabled
 new deployables_max;
 new Float:deployables_chance = 0.5;
@@ -371,7 +373,7 @@ new RTD_TrinketExpire[cMaxClients][50];
 new RTD_TrinketIndex[cMaxClients][50];
 new RTD_TrinketEquipped[cMaxClients][50];
 new String:RTD_TrinketTitle[cMaxClients][32];
-
+new lastExpireNotification[cMaxClients];
 
 new donate_Amount[cMaxClients];
 new String:donate_SteamID[cMaxClients][64];

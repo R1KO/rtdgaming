@@ -4,6 +4,7 @@
 #include <tf2_stocks>
 #include <sdkhooks>
 #include <tf2>
+#include <attachments>
 
 public Action:Spawn_BearTrap(client)
 {
@@ -84,14 +85,10 @@ public Action:Spawn_BearTrap(client)
 	WritePackCell(dataPack, 120); //PackPosition(16) amount of time it will live in seconds
 	WritePackCell(dataPack, 0); //PackPosition(24) Start Time of last trap activation
 	WritePackCell(dataPack, RTD_PerksLevel[client][54]); //PackPosition(32) bleeding perk
-	
-	/*
-	if(annotation)
-	{
-		CreateAnnotation(ent, "Friendly ", 1, iTeam, 1);
-		CreateAnnotation(ent, "Enemy ", 2, iTeam, 1);
-		
-	}*/
+	WritePackCell(dataPack, RTD_PerksLevel[client][57]); //PackPosition(40) latch onto enemies -RTD_PerksLevel[client][57]
+	WritePackCell(dataPack, 0); //PackPosition(48) end of latch time
+	WritePackCell(dataPack, 0); //PackPosition(56) latched enemy ID
+	WritePackCell(dataPack, 0); //PackPosition(64) latched to enemy
 	
 	return Plugin_Handled;
 }
@@ -113,6 +110,10 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 	SetPackPosition(dataPackHandle, 24);
 	new lastTrapTime = ReadPackCell(dataPackHandle);
 	new bloodyTrap = ReadPackCell(dataPackHandle);
+	new latchTrap = ReadPackCell(dataPackHandle);
+	new latchTrapTime = ReadPackCell(dataPackHandle);
+	new latchEnemyID = ReadPackCell(dataPackHandle);
+	new latchedToEnemy = ReadPackCell(dataPackHandle);
 	
 	new Float: playerPos[3];
 	new Float: bearTrapPos[3];
@@ -132,6 +133,67 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 	//The trap is animating
 	if(currentSequence != 0 && isFinished == 0)
 	{
+		return Plugin_Continue;
+	}
+	
+	//the trap is latched onto an enemy
+	if(latchedToEnemy)
+	{
+		
+		
+		new client = GetClientOfUserId(latchEnemyID);
+		new dropTrap;
+		
+		//need valid client
+		if(client < 1)
+			dropTrap = 1;
+		
+		//client must be alive
+		if(!IsPlayerAlive(client))
+			dropTrap = 1;
+		
+		if(dropTrap != 1)
+		{
+			new Float:bearAngle[3];
+			new Float:zeroPos[3];
+			bearAngle[2] = -75.0;
+			
+			TeleportEntity(bearTrap, zeroPos, bearAngle, NULL_VECTOR);
+			CAttach(bearTrap, client, "head");
+		}
+		
+		if(dropTrap == 1 || (latchTrapTime < GetTime() && latchTrapTime != 0))
+		{	
+			if(dropTrap == 0)
+				TF2_StunPlayer(client,3.0, 0.0, TF_STUNFLAGS_SMALLBONK, 0);
+			
+			CDetach(bearTrap);
+			
+			GetEntPropVector(bearTrap, Prop_Data, "m_vecOrigin", bearTrapPos);
+			
+			new Float:Direction[3];
+			Direction[0] = bearTrapPos[0];
+			Direction[1] = bearTrapPos[1];
+			Direction[2] = bearTrapPos[2]-1024;
+			
+			new Float:floorPos[3];
+			new Float:zeroAngle[3];
+			
+			new Handle:Trace = TR_TraceRayFilterEx(bearTrapPos, Direction, MASK_SOLID, RayType_EndPoint, TraceFilterAll, bearTrap);
+			TR_GetEndPosition(floorPos, Trace);
+			CloseHandle(Trace);
+			
+			floorPos[2] += 4;
+			TeleportEntity(bearTrap, floorPos, zeroAngle, NULL_VECTOR);
+			
+			SetPackPosition(dataPackHandle, 48);
+			WritePackCell(dataPackHandle, 0); //time when it will unlatch itself
+			WritePackCell(dataPackHandle, 0); //enemy id
+			WritePackCell(dataPackHandle, 0); //latched to enemy
+			
+		}
+		
+		
 		return Plugin_Continue;
 	}
 	
@@ -169,19 +231,46 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 					SetVariantString("close");
 					AcceptEntityInput(bearTrap, "SetAnimation", -1, -1, 0);
 					
-					SetPackPosition(dataPackHandle, 24);
-					WritePackCell(dataPackHandle, GetTime() + 5); //time when it will open
+					if(latchTrap)
+					{
+						
+						new Float:zeroPos[3];
+						new Float:bearAngle[3];
+						bearAngle[2] = -75.0;
+						
+						TeleportEntity(bearTrap, zeroPos, bearAngle, NULL_VECTOR);
+						CAttach(bearTrap, i, "head");
+						
+						//ehh weird behavior have to do it twice
+						TeleportEntity(bearTrap, zeroPos, bearAngle, NULL_VECTOR);
+						CAttach(bearTrap, i, "head");
+						
+						SetPackPosition(dataPackHandle, 24);
+						WritePackCell(dataPackHandle, GetTime() + 10); //time when it will open
+						
+						SetPackPosition(dataPackHandle, 48);
+						WritePackCell(dataPackHandle, GetTime() + 5); //time when it will unlatch itself
+						WritePackCell(dataPackHandle, GetClientUserId(i)); //enemy userid
+						WritePackCell(dataPackHandle, 1); //latched to enemy
+						
+						
+					}else{
+						SetPackPosition(dataPackHandle, 24);
+						WritePackCell(dataPackHandle, GetTime() + 5); //time when it will open
+						
+						
+						client_rolls[i][AWARD_G_BEARTRAP][3] = 1; //this is used to disable the stun sound
+						TF2_StunPlayer(i,3.0, 0.0, TF_STUNFLAGS_NORMALBONK, 0);
+						
+						SetEntityMoveType(i, MOVETYPE_NONE);
+						SetEntityMoveType(i, MOVETYPE_WALK);
+					}
 					
-					
-					client_rolls[i][AWARD_G_BEARTRAP][3] = 1; //this is used to disable the stun sound
-					TF2_StunPlayer(i,3.0, 0.0, TF_STUNFLAGS_NORMALBONK, 0);
 					DealDamage(i, 30, bearTrap, 4226, "beartrap");
-					SetEntityMoveType(i, MOVETYPE_NONE);
-					SetEntityMoveType(i, MOVETYPE_WALK);
+					
 					client_rolls[i][AWARD_G_BEARTRAP][3] = 0;
-					
 					EmitSoundToAll(SOUND_BEARTRAP_CLOSE, bearTrap);
-					
+						
 					if(bloodyTrap)
 					{
 						//delay the bleed effect in 3.5 seconds
