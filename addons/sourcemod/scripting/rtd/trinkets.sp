@@ -226,7 +226,10 @@ public Action:SetupTrinketsMenu(client, startAtPage)
 	AddMenuItem(hCMenu, "1", displayInfo, ITEMDRAW_DEFAULT);
 	
 	
-	DisplayMenuAtItem(hCMenu, client, startAtPage, MENU_TIME_FOREVER);
+	DisplayMenuAtItem(hCMenu, client, 0, MENU_TIME_FOREVER);
+	
+	if(startAtPage == 0)
+		EmitSoundToClient(client, SOUND_SHOP);
 	
 	return Plugin_Handled;
 }
@@ -275,16 +278,20 @@ public fn_TrinketsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						
 						EmitSoundToClient(param1, SOUND_DENY);
 					}
+					
+					StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 				}
 				
 			}
 		}
 		
 		case MenuAction_Cancel: {
+			StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 		}
 		
 		case MenuAction_End: {
 			CloseHandle(menu);
+			StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 		}
 	}
 }
@@ -332,7 +339,7 @@ public Action:TrinketsLoadoutMenu(client, startAtPage)
 {
 	if(amountOfTrinketsHeld(client) < 1)
 	{
-		SetupTrinketsMenu(client, 0);
+		SetupTrinketsMenu(client, 1);
 		PrintCenterText(client, "You have no trinkets!");
 	}
 	
@@ -442,11 +449,12 @@ public fn_TrinketsLoadOutHandler(Handle:menu, MenuAction:action, param1, param2)
 		}
 		
 		case MenuAction_Cancel: {
-			SetupTrinketsMenu(param1, 0);
+			SetupTrinketsMenu(param1, 1);
 		}
 		
 		case MenuAction_End: {
 			CloseHandle(menu);
+			StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 		}
 	}
 }
@@ -526,6 +534,8 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				{
 					if(RTDCredits[param1] >= rtd_trinketExtPrice)
 					{
+						EmitSoundToClient(param1, SOUND_BOUGHTSOMETHING);
+						
 						RTDCredits[param1] -= rtd_trinketExtPrice;
 						
 						if(RTD_TrinketExpire[param1][selectedSlot] < GetTime())
@@ -541,7 +551,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						Format(chatMessage, sizeof(chatMessage), "Extended (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 						PrintCenterText(param1, chatMessage);
 						
-						TrinketsLoadoutMenu(param1, 0);
+						TrinketsLoadoutMenu(param1, 1);
 						
 					}else{
 						PrintCenterText(param1, "Insufficent Credits!");
@@ -565,7 +575,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					Format(chatMessage, sizeof(chatMessage), "Equipped (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 					PrintCenterText(param1, chatMessage);
 					
-					TrinketsLoadoutMenu(param1, 0);
+					TrinketsLoadoutMenu(param1, 1);
 					
 				}
 				
@@ -580,7 +590,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					Format(chatMessage, sizeof(chatMessage), "Unequipped (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 					PrintCenterText(param1, chatMessage);
 					
-					TrinketsLoadoutMenu(param1, 0);
+					TrinketsLoadoutMenu(param1, 1);
 				}
 				
 				//destroy trinket
@@ -598,7 +608,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 		}
 		
 		case MenuAction_Cancel: {
-			TrinketsLoadoutMenu(param1, 0);
+			TrinketsLoadoutMenu(param1, 1);
 		}
 		
 		case MenuAction_End: {
@@ -661,6 +671,8 @@ public fn_ReRollTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				{
 					if(RTDCredits[param1] >= rtd_trinket_rerollPrice)
 					{
+						EmitSoundToClient(param1, SOUND_BOUGHTSOMETHING);
+						
 						RTDCredits[param1] -= rtd_trinket_rerollPrice;
 							
 						new variant;
@@ -685,9 +697,13 @@ public fn_ReRollTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						
 						EmitSoundToClient(param1, SOUND_OPEN_TRINKET);
 						
+						new String:name[32];
+						GetClientName(param1, name, sizeof(name));
 						
-						Format(chatMessage, 64, "Variant on %s changed from: %s to %s", trinket_Title[RTD_TrinketIndex[param1][selectedSlot]], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][oldVariant], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][variant]);
+						Format(chatMessage, 64, "\x03%s\x04 rerolled \x03%s\x04 from: \x01%s\x04 to \x01%s", name, trinket_Title[RTD_TrinketIndex[param1][selectedSlot]], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][oldVariant], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][variant]);
 						PrintToChat(param1, chatMessage);
+						
+						Format(chatMessage, sizeof(chatMessage), "Obtained: (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][variant], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 						PrintCenterText(param1, chatMessage);
 					}else{
 						PrintCenterText(param1, "Insufficent Credits!");
@@ -698,11 +714,11 @@ public fn_ReRollTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				}
 			}
 			
-			TrinketsLoadoutMenu(param1, 0);
+			TrinketsLoadoutMenu(param1, 1);
 		}
 		
 		case MenuAction_Cancel: {
-			TrinketsLoadoutMenu(param1, 0);
+			TrinketsLoadoutMenu(param1, 1);
 		}
 		
 		case MenuAction_End: {
@@ -780,11 +796,11 @@ public fn_DestroyTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2
 				}
 			}
 			
-			TrinketsLoadoutMenu(param1, 0);
+			TrinketsLoadoutMenu(param1, 1);
 		}
 		
 		case MenuAction_Cancel: {
-			TrinketsLoadoutMenu(param1, 0);
+			TrinketsLoadoutMenu(param1, 1);
 		}
 		
 		case MenuAction_End: {
