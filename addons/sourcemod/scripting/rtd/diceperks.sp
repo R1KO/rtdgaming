@@ -71,6 +71,8 @@ public Action:SetupPerksMenu(client, startAtPage)
 	
 	DisplayMenuAtItem(hCMenu, client, startAtPage, MENU_TIME_FOREVER);
 	
+	EmitSoundToClient(client, SOUND_SHOP);
+	
 	return Plugin_Handled;
 }
 
@@ -676,6 +678,13 @@ public fn_PerksMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					RTD_PerksLevel[param1][56] ++;
 					
 					PrintToChat(param1, "Angelic Dispenser cooldown period: 5s");
+				}
+				else if(StrContains(menuTriggers[1], "a54", false) != -1)
+				{
+					RTD_Perks[param1][57] += value;
+					RTD_PerksLevel[param1][57] ++;
+					
+					PrintToChat(param1, "Bear Traps now latch onto enemies!");
 				}else{
 					talentPoints[param1] += cost;
 					PrintToChat(param1, "ERROR! Could not find item in shop! TP reimbursed!");
@@ -695,6 +704,8 @@ public fn_PerksMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 			CloseHandle(menu);
 		}
 	}
+	
+	StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 }
 
 Load_DicePerks()

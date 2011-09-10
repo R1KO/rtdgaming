@@ -849,4 +849,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("sound/rtdgaming/flap.wav");
 	
 	AddFileToDownloadsTable("sound/rtdgaming/whistle.wav");
+	
+	AddFileToDownloadsTable("sound/rtdgaming/opentrinket.mp3");
+	AddFileToDownloadsTable("sound/rtdgaming/shop.mp3");
 }

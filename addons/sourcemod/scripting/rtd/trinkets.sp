@@ -277,18 +277,6 @@ public fn_TrinketsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					}
 				}
 				
-				case 2:
-				{
-					if(RTDCredits[param1] >= rtd_trinketExtPrice)
-					{
-						//ShowMenuExtendTrinket(param1);
-					}else{
-						PrintCenterText(param1, "Insufficent Credits!");
-						PrintToChat(param1, "Insufficent Credits!");
-						
-						EmitSoundToClient(param1, SOUND_DENY);
-					}
-				}
 			}
 		}
 		
@@ -474,6 +462,7 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	
 	new String:extendTrinket[64];
 	new String:displayIdent[64];
+	new String:reRollText[64];
 	
 	//slotStatus
 	//1 = equipped
@@ -481,6 +470,7 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	//2 = unequipped
 	
 	Format(extendTrinket, 64, "[%i Credits] 7 Day Trinket Extension", rtd_trinketExtPrice);
+	Format(reRollText, 64, "[%i Credits] Reroll Variant", rtd_trinket_rerollPrice);
 	
 	if(slotStatus == 1)
 	{
@@ -494,6 +484,9 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	
 	Format(displayIdent, 64, "%i:0", selectedSlot);
 	AddMenuItem(hCMenu, displayIdent, extendTrinket, ITEMDRAW_DEFAULT);
+	
+	Format(displayIdent, 64, "%i:4", selectedSlot);
+	AddMenuItem(hCMenu, displayIdent, reRollText, ITEMDRAW_DEFAULT);
 	
 	Format(displayIdent, 64, "%i:3", selectedSlot);
 	AddMenuItem(hCMenu, displayIdent, "Destroy Trinket!", ITEMDRAW_DEFAULT);
@@ -595,6 +588,12 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				{
 					confirmDestroyTrinket(param1, selectedSlot, slotStatus);
 				}
+				
+				//reroll Variant
+				case 4:
+				{
+					confirmReRollTrinket(param1, selectedSlot, slotStatus);
+				}
 			}
 		}
 		
@@ -608,6 +607,115 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 	}
 }
 
+////////////////////////////////////////
+// Reroll Trinket                     //
+// User can change variant on trinket //
+////////////////////////////////////////
+public Action:confirmReRollTrinket(client, selectedSlot, slotStatus)
+{
+	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_ReRollTrinkMenuHandler);
+	
+	new String:menuTitle[64];
+	new String:displayIdent[64];
+	
+	Format(menuTitle, 64, "[%i Credits] Change variant on: %s %s ?", rtd_trinket_rerollPrice, trinket_TierID[RTD_TrinketIndex[client][selectedSlot]][RTD_TrinketTier[client][selectedSlot]], trinket_Title[RTD_TrinketIndex[client][selectedSlot]]);
+	SetMenuTitle(hCMenu, menuTitle);
+	
+	Format(displayIdent, 64, "%i", selectedSlot);
+	AddMenuItem(hCMenu, displayIdent, "No", ITEMDRAW_DEFAULT);
+	
+	Format(displayIdent, 64, "%i", selectedSlot);
+	AddMenuItem(hCMenu, displayIdent, "Yes", ITEMDRAW_DEFAULT);
+	
+	SetMenuExitBackButton(hCMenu, true);
+	DisplayMenuAtItem(hCMenu, client, 0, MENU_TIME_FOREVER);
+	
+	return Plugin_Handled;
+}
+
+public fn_ReRollTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
+{	
+	switch (action) 
+	{
+		case MenuAction_Select: 
+		{
+			decl String:MenuInfo[64];
+			decl String:chatMessage[200];
+			
+			new style;
+			new selectedSlot;
+			
+			GetMenuItem(menu, param2, MenuInfo, sizeof(MenuInfo),style);
+			
+			selectedSlot = StringToInt(MenuInfo[0]);
+			
+			switch(param2)
+			{
+				//get outta here
+				case 0:
+				{
+				}
+				
+				//change variant on trinket
+				case 1:
+				{
+					if(RTDCredits[param1] >= rtd_trinket_rerollPrice)
+					{
+						RTDCredits[param1] -= rtd_trinket_rerollPrice;
+							
+						new variant;
+						new oldVariant = RTD_TrinketTier[param1][selectedSlot];
+						new rndNum;
+						
+						rndNum = GetRandomInt(1, trinket_TotalChance[RTD_TrinketIndex[param1][selectedSlot]]);
+						
+						//find out which tier our rndNum falls under
+						for(new i = 0; i < trinket_Tiers[RTD_TrinketIndex[param1][selectedSlot]]; i++)
+						{
+							if(rndNum <= trinketChanceBounds[RTD_TrinketIndex[param1][selectedSlot]][i])
+							{
+								variant = i;
+								break;
+							}
+						}
+						
+						RTD_TrinketTier[param1][selectedSlot] = variant;
+						
+						equipActiveTrinket(param1);
+						
+						EmitSoundToClient(param1, SOUND_OPEN_TRINKET);
+						
+						
+						Format(chatMessage, 64, "Variant on %s changed from: %s to %s", trinket_Title[RTD_TrinketIndex[param1][selectedSlot]], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][oldVariant], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][variant]);
+						PrintToChat(param1, chatMessage);
+						PrintCenterText(param1, chatMessage);
+					}else{
+						PrintCenterText(param1, "Insufficent Credits!");
+						PrintToChat(param1, "Insufficent Credits!");
+						
+						EmitSoundToClient(param1, SOUND_DENY);
+					}
+				}
+			}
+			
+			TrinketsLoadoutMenu(param1, 0);
+		}
+		
+		case MenuAction_Cancel: {
+			TrinketsLoadoutMenu(param1, 0);
+		}
+		
+		case MenuAction_End: {
+			CloseHandle(menu);
+		}
+	}
+}
+
+
+////////////////////////////////////////
+// Destroy Trinket                    //
+// User can destroy a trinket         //
+////////////////////////////////////////
 public Action:confirmDestroyTrinket(client, selectedSlot, slotStatus)
 {
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_DestroyTrinkMenuHandler);
@@ -750,6 +858,8 @@ public checkTrinketsExpiration(client)
 	if(!(IsClientInGame(client) && IsClientAuthorized(client)))
 		return;
 	
+	new expiredTrinkets;
+	
 	//Check to see if player has any trinkets
 	for(new i = 0; i < 21; i++)
 	{
@@ -757,7 +867,7 @@ public checkTrinketsExpiration(client)
 		{
 			if(RTD_TrinketExpire[client][i] < GetTime())
 			{
-				PrintToChat(client, "%s Trinket in slot %i has expired! To be able to use this trinket go to the Trinkets menu.", trinket_Title[RTD_TrinketIndex[client][i]], i);
+				expiredTrinkets = 1;
 				RTD_TrinketEquipped[client][i] = 0;
 				
 				RTD_TrinketActive[client][RTD_TrinketIndex[client][i]] = 0;
@@ -767,6 +877,13 @@ public checkTrinketsExpiration(client)
 			}
 		}
 	}
+	
+	if(expiredTrinkets == 1 && lastExpireNotification[client] < GetTime())
+	{
+		PrintToChat(client, "You have expired trinkets! Extend them through the Trinkets menu.");
+		lastExpireNotification[client] = GetTime() + 180;
+	}
+	
 }
 
 public amountOfTrinketsHeld(client)
@@ -849,12 +966,10 @@ GiveRandomTrinket(client, test)
 		baseRarity = 2;
 	}
 	
-	
 	if(rarity > 80 && rarity <= 95)
 	{
 		baseRarity = 3;
 	}
-	
 	
 	if(rarity > 95)
 	{

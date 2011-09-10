@@ -43,6 +43,8 @@ rtd_load_cvars()
 	c_Trinkets						= CreateConVar("sm_rtd_trinkets",						"1",		"<0/1> Allows access to trinkets");
 	c_TrinketPrice					= CreateConVar("sm_rtd_trinketPrice",					"500",		"<0-x> Cost to purchase trinkets");
 	c_TrinketExtPrice				= CreateConVar("sm_rtd_trinketextprice",				"50",		"<0-x> Cost to extend trinkets for 7 days");
+	c_TrinketReRollPrice			= CreateConVar("sm_rtd_trinketreroll_price",			"300",		"<0-x> Cost to change variant on trinket");
+	
 	
 	HookConVarChange(c_Dice_MinPlayers,				ConVarChange_RTD);
 	HookConVarChange(c_Dice_RespawnTime,			ConVarChange_RTD);
@@ -71,6 +73,7 @@ rtd_load_cvars()
 	HookConVarChange(c_Trinkets,					ConVarChange_RTD);
 	HookConVarChange(c_TrinketPrice,				ConVarChange_RTD);
 	HookConVarChange(c_TrinketExtPrice,				ConVarChange_RTD);
+	HookConVarChange(c_TrinketReRollPrice,			ConVarChange_RTD);
 }
 
 rtd_load_cvar_configs()
@@ -107,8 +110,7 @@ rtd_load_cvar_configs()
 	rtd_trinket_enabled		=	GetConVarInt(c_Trinkets);
 	rtd_trinketPrice		=	GetConVarInt(c_TrinketPrice);
 	rtd_trinketExtPrice		=	GetConVarInt(c_TrinketExtPrice);
-	
-	
+	rtd_trinket_rerollPrice	=	GetConVarInt(c_TrinketReRollPrice);
 }
 
 public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:newValue[])
@@ -213,6 +215,9 @@ public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:new
 	}else if(convar == c_TrinketExtPrice)
 	{
 		rtd_trinketExtPrice = GetConVarInt(c_TrinketExtPrice);
+	}else if(convar == c_TrinketReRollPrice)
+	{
+		rtd_trinket_rerollPrice	= GetConVarInt(c_TrinketReRollPrice);
 	}
 	
 }
