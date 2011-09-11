@@ -71,7 +71,8 @@ public Action:SetupPerksMenu(client, startAtPage)
 	
 	DisplayMenuAtItem(hCMenu, client, startAtPage, MENU_TIME_FOREVER);
 	
-	EmitSoundToClient(client, SOUND_SHOP);
+	if(startAtPage == 0)
+		EmitSoundToClient(client, SOUND_SHOP);
 	
 	return Plugin_Handled;
 }

@@ -579,6 +579,12 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		}
 	}
 	
+	if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
+	{	
+		RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH] = 0;
+		SpawnAndAttachDynamite(client);
+	}
+	
 	if(client_rolls[client][AWARD_G_WINGS][0])
 	{
 		if(IsValidEntity(client_rolls[client][AWARD_G_WINGS][1]))

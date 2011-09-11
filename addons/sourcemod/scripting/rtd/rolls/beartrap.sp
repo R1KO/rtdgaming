@@ -93,6 +93,94 @@ public Action:Spawn_BearTrap(client)
 	return Plugin_Handled;
 }
 
+public Action:Spawn_AttachedBearTrap(enemy, team, health, maxhealth, bleedPerk)
+{
+	new ent = CreateEntityByName("prop_dynamic_override");
+	if ( ent == -1 )
+	{
+		return Plugin_Handled;
+	}
+	
+	SetEntityModel(ent, MODEL_BEARTRAP);
+	
+	//make sure to do this before we actually spawn the P.O.S.
+	SetEntProp(ent, Prop_Data, "m_takedamage", 2);  //default = 2
+	
+	DispatchSpawn(ent);
+	CAttach(ent, GetClientOfUserId(enemy), "flag");
+	
+	//new iTeam = GetClientTeam(client);
+	SetVariantInt(team);
+	AcceptEntityInput(ent, "TeamNum", -1, -1, 0);
+
+	SetVariantInt(team);
+	AcceptEntityInput(ent, "SetTeam", -1, -1, 0); 
+	
+
+	SetEntProp(ent, Prop_Data, "m_takedamage", 2);  //default = 2
+	
+	
+	SetEntProp( ent, Prop_Data, "m_nSolidType", 6 );
+	SetEntProp( ent, Prop_Send, "m_nSolidType", 6 );
+	
+	SetEntProp(ent, Prop_Data, "m_CollisionGroup", 3);
+	SetEntProp(ent, Prop_Send, "m_CollisionGroup", 3);
+	
+	AcceptEntityInput( ent, "DisableCollision" );
+	AcceptEntityInput( ent, "EnableCollision" );
+	
+	SetEntProp(ent, Prop_Data, "m_iMaxHealth", maxhealth);
+	SetEntProp(ent, Prop_Data, "m_iHealth", health);
+	
+	if(team == RED_TEAM)
+	{
+		SetVariantString(bluDamageFilter);
+	}else{
+		SetVariantString(redDamageFilter);
+	}
+	AcceptEntityInput(ent, "SetDamageFilter", -1, -1, 0); 
+	
+	SetVariantString("close");
+	AcceptEntityInput(ent, "SetAnimation", -1, -1, 0); 
+	
+	if(team == RED_TEAM)
+	{
+		SetVariantString("255+150+150");
+		AcceptEntityInput(ent, "color", -1, -1, 0);
+	}
+	else
+	{
+		SetVariantString("150+150+255");
+		AcceptEntityInput(ent, "color", -1, -1, 0);
+	}
+	
+	//new Float:pos[3];
+	//GetEntPropVector(client, Prop_Data, "m_vecOrigin", pos);
+	//GetClientAbsOrigin(client,pos);
+	
+	new Float:bearAngle[3];
+	bearAngle[2] = -75.0;
+	
+	TeleportEntity(ent, NULL_VECTOR, bearAngle, NULL_VECTOR);
+	/////////////////////////////////////////////
+	//Initiate the timer.                      //
+	//Important variables to keep track of     //
+	/////////////////////////////////////////////
+	new Handle:dataPack;
+	CreateDataTimer(0.2,BearTrap_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+	WritePackCell(dataPack, ent);
+	WritePackCell(dataPack, GetTime());//PackPosition(8) 
+	WritePackCell(dataPack, 120); //PackPosition(16) amount of time it will live in seconds
+	WritePackCell(dataPack, GetTime() + 10); //PackPosition(24) Start Time of last trap activation
+	WritePackCell(dataPack, bleedPerk); //PackPosition(32) bleeding perk
+	WritePackCell(dataPack, 1); //PackPosition(40) latch onto enemies -RTD_PerksLevel[client][57]
+	WritePackCell(dataPack, GetTime() + 5); //PackPosition(48) end of latch time
+	WritePackCell(dataPack, enemy); //PackPosition(56) latched enemy ID
+	WritePackCell(dataPack, 1); //PackPosition(64) latched to enemy
+	
+	return Plugin_Handled;
+}
+
 public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 {
 	////////////////////////////////
@@ -139,8 +227,6 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 	//the trap is latched onto an enemy
 	if(latchedToEnemy)
 	{
-		
-		
 		new client = GetClientOfUserId(latchEnemyID);
 		new dropTrap;
 		
@@ -151,7 +237,7 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 		//client must be alive
 		if(!IsPlayerAlive(client))
 			dropTrap = 1;
-		
+		/*
 		if(dropTrap != 1)
 		{
 			new Float:bearAngle[3];
@@ -161,11 +247,12 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 			TeleportEntity(bearTrap, zeroPos, bearAngle, NULL_VECTOR);
 			CAttach(bearTrap, client, "head");
 		}
+		*/
 		
 		if(dropTrap == 1 || (latchTrapTime < GetTime() && latchTrapTime != 0))
 		{	
-			if(dropTrap == 0)
-				TF2_StunPlayer(client,3.0, 0.0, TF_STUNFLAGS_SMALLBONK, 0);
+			//if(dropTrap == 0)
+			//	TF2_StunPlayer(client,3.0, 0.0, TF_STUNFLAGS_SMALLBONK, 0);
 			
 			CDetach(bearTrap);
 			
@@ -233,27 +320,23 @@ public Action:BearTrap_Timer(Handle:timer, Handle:dataPackHandle)
 					
 					if(latchTrap)
 					{
+						Spawn_AttachedBearTrap(GetClientUserId(i), bearTrapTeam, GetEntProp(bearTrap, Prop_Data, "m_iHealth"), GetEntProp(bearTrap, Prop_Data, "m_iMaxHealth"), bloodyTrap);
 						
-						new Float:zeroPos[3];
-						new Float:bearAngle[3];
-						bearAngle[2] = -75.0;
+						TF2_StunPlayer(i,5.0, 0.0, TF_STUNFLAGS_SMALLBONK, 0);
 						
-						TeleportEntity(bearTrap, zeroPos, bearAngle, NULL_VECTOR);
-						CAttach(bearTrap, i, "head");
+						DealDamage(i, 30, bearTrap, 4226, "beartrap");
+						if(bloodyTrap)
+							CreateTimer(3.5,  	Timer_BleedDelay, GetClientUserId(i), TIMER_FLAG_NO_MAPCHANGE);
+					
+						client_rolls[i][AWARD_G_BEARTRAP][3] = 0;
+						EmitSoundToAll(SOUND_BEARTRAP_CLOSE, bearTrap);
 						
-						//ehh weird behavior have to do it twice
-						TeleportEntity(bearTrap, zeroPos, bearAngle, NULL_VECTOR);
-						CAttach(bearTrap, i, "head");
+						new Float:finalvec[3];
+						finalvec[2]=GetRandomFloat(200.0, 600.0);
+						SetEntDataVector(i,BaseVelocityOffset,finalvec,true);
 						
-						SetPackPosition(dataPackHandle, 24);
-						WritePackCell(dataPackHandle, GetTime() + 10); //time when it will open
-						
-						SetPackPosition(dataPackHandle, 48);
-						WritePackCell(dataPackHandle, GetTime() + 5); //time when it will unlatch itself
-						WritePackCell(dataPackHandle, GetClientUserId(i)); //enemy userid
-						WritePackCell(dataPackHandle, 1); //latched to enemy
-						
-						
+						killEntityIn(bearTrap, 0.0);
+						return Plugin_Stop;
 					}else{
 						SetPackPosition(dataPackHandle, 24);
 						WritePackCell(dataPackHandle, GetTime() + 5); //time when it will open

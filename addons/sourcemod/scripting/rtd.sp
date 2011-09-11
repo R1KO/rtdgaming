@@ -116,6 +116,7 @@
 #include "rtd/rolls/buildingshield.sp"
 #include "rtd/rolls/rubberbullets.sp"
 #include "rtd/rolls/angelic.sp"
+#include "rtd/rolls/dynamite.sp"
 //Perks
 
 public Plugin:myinfo = 
