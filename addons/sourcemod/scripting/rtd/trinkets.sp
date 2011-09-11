@@ -350,7 +350,7 @@ public organizeTrinkets(client)
 	new foundTrinkets;
 	
 	//Sort by saving the index and the tier
-	for(new i = 0; i < 50; i++)
+	for(new i = 0; i < 21; i++)
 	{
 		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
 		{
@@ -368,15 +368,16 @@ public organizeTrinkets(client)
 				}
 			}
 			
-			placeholder_Trinkets[foundTrinkets][0] = RTD_TrinketIndex[client][i];
-			placeholder_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i];
-			placeholder_Trinkets[foundTrinkets][2] = RTD_TrinketExpire[client][i];
-			placeholder_Trinkets[foundTrinkets][3] = RTD_TrinketEquipped[client][i];
+			placeholder_Trinkets[i][0] = RTD_TrinketIndex[client][i];
+			placeholder_Trinkets[i][1] = RTD_TrinketTier[client][i];
+			placeholder_Trinkets[i][2] = RTD_TrinketExpire[client][i];
+			placeholder_Trinkets[i][3] = RTD_TrinketEquipped[client][i];
 			
 			//clear out the unique
 			Format(RTD_TrinketUnique[client][i], 32, "");
 			
 			foundTrinkets ++;
+			
 		}
 	}
 	
@@ -1126,7 +1127,7 @@ GiveRandomTrinket(client, test)
 		RTD_TrinketEquipped[client][availableSlot] = 0;
 		Format(RTD_TrinketTitle[client][availableSlot], 32, "%s", trinket_Title[awardedTrinket]);
 		
-		Format(chatMessage, sizeof(chatMessage), "\x03%s\x04 obtained: (\x03%s\x04)\x01%s \x04Trinket", name, trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
+		Format(chatMessage, sizeof(chatMessage), "\x03%s\x04 obtained: (\x03%s\x04) \x01%s \x04Trinket", name, trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
 		
 	}else{
 		Format(chatMessage, sizeof(chatMessage), "\x01\x04[TEST] \x03%s\x04 obtained: (\x03%s\x04)\x01 %s \x04Trinket", name, trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
