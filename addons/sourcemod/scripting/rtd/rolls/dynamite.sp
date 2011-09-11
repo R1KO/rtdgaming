@@ -5,7 +5,7 @@
 #include <attachments>
 #include <rtd_rollinfo>
 
-public Action:SpawnAndAttachClientDynamite(client)
+public Action:SpawnAndAttachClientDynamite(client, originalEntity)
 {	
 	new ent = CreateEntityByName("prop_dynamic_override");
 	if ( ent == -1 )
@@ -22,7 +22,7 @@ public Action:SpawnAndAttachClientDynamite(client)
 	//Set the Dynamite's owner
 	SetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity", client);
 	
-	SDKHook(ent, SDKHook_SetTransmit, Hook_ClientBlizzard);  
+	SDKHook(ent, SDKHook_SetTransmit, Hook_ClientBlizzard);  //Hook_EveryoneBlizzard - Hook_ClientBlizzard
 	
 	DispatchSpawn(ent);
 	CAttach(ent, client, "flag");
@@ -39,18 +39,13 @@ public Action:SpawnAndAttachClientDynamite(client)
 	
 	
 	decl String:dynamiteName[32];
-	Format(dynamiteName, 32, "dynamite_%i", ent);
+	Format(dynamiteName, 32, "dynamiteclient_%i", ent);
 	DispatchKeyValue(ent, "targetname", dynamiteName);
 	
 	AcceptEntityInput( ent, "DisableShadow" );
 	
-	new particle = AttachFastParticle3(ent, "candle_light1", 0.0, "CENTER");
-	
-	
-	
 	AcceptEntityInput( ent, "DisableCollision" );
 	
-	RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH] = EntIndexToEntRef(ent);
 	
 	//The Datapack stores all the Backpack's important values
 	new Handle:dataPackHandle;
@@ -59,7 +54,9 @@ public Action:SpawnAndAttachClientDynamite(client)
 	//Setup the datapack with appropriate information
 	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0);  Backpack Index
 	WritePackCell(dataPackHandle, GetClientUserId(client));     //PackPosition(8) ;  Amount of ammopacks
-	WritePackCell(dataPackHandle, particle);     //PackPosition(8) ;  Amount of ammopacks
+	WritePackCell(dataPackHandle, 0);     //PackPosition(8) ; unused was a particle
+	WritePackCell(dataPackHandle, 1);     //PackPosition(24) ;  client only
+	WritePackCell(dataPackHandle, EntIndexToEntRef(originalEntity));     //PackPosition(24) ;  client only
 	
 	return Plugin_Handled;
 }
@@ -78,10 +75,14 @@ public Action:SpawnAndAttachDynamite(client)
 	
 	SetEntityModel(ent, MODEL_DYNAMITE);
 	
+	decl String:dynamiteName[32];
+	Format(dynamiteName, 32, "dynamite_%i", ent);
+	DispatchKeyValue(ent, "targetname", dynamiteName);
+	
 	//Set the Dynamite's owner
 	SetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity", client);
 	
-	SDKHook(ent, SDKHook_SetTransmit, Hook_EveryoneBlizzard); 
+	SDKHook(ent, SDKHook_SetTransmit, Hook_EveryoneBlizzard ); //Hook_ClientBlizzard - Hook_EveryoneBlizzard
 	
 	DispatchSpawn(ent);
 	CAttach(ent, client, "flag");
@@ -97,13 +98,9 @@ public Action:SpawnAndAttachDynamite(client)
 	TeleportEntity(ent, pos, NULL_VECTOR, NULL_VECTOR);
 	
 	
-	decl String:dynamiteName[32];
-	Format(dynamiteName, 32, "dynamite_%i", ent);
-	DispatchKeyValue(ent, "targetname", dynamiteName);
-	
 	AcceptEntityInput( ent, "DisableShadow" );
 	
-	new particle = AttachFastParticle3(ent, "candle_light1", 0.0, "CENTER");
+	//new particle = AttachFastParticle3(ent, client, 0, "candle_light1", 0.0, "CENTER");
 	
 	
 	
@@ -118,9 +115,11 @@ public Action:SpawnAndAttachDynamite(client)
 	//Setup the datapack with appropriate information
 	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0);  Backpack Index
 	WritePackCell(dataPackHandle, GetClientUserId(client));     //PackPosition(8) ;  Amount of ammopacks
-	WritePackCell(dataPackHandle, particle);     //PackPosition(8) ;  Amount of ammopacks
+	WritePackCell(dataPackHandle, 0);     //PackPosition(16) ; unsused was a particle
+	WritePackCell(dataPackHandle, 0);     //PackPosition(24) ;  client only
+	WritePackCell(dataPackHandle, 0);     //PackPosition(32) ;  original entity
 	
-	SpawnAndAttachClientDynamite(client);
+	SpawnAndAttachClientDynamite(client, ent);
 	
 	return Plugin_Handled;
 }
@@ -140,7 +139,6 @@ public Action:Client_Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 	ResetPack(dataPackHandle);
 	new dynamite = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new client = GetClientOfUserId(ReadPackCell(dataPackHandle));
-	new particle = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
 	
 	/////////////////
@@ -161,8 +159,6 @@ public Action:Client_Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 			SetEntityRenderMode(dynamite, RENDER_TRANSCOLOR);	
 			SetEntityRenderColor(dynamite, 255, 255,255, 0);
 			
-			if(IsValidEntity(particle))
-				killEntityIn(particle, 0.0);
 		}else{
 			SetEntityRenderMode(dynamite, RENDER_TRANSCOLOR);	
 			SetEntityRenderColor(dynamite, 255, 255,255, alpha);
@@ -170,23 +166,6 @@ public Action:Client_Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 	}else{
 		SetEntityRenderMode(dynamite, RENDER_TRANSCOLOR);	
 		SetEntityRenderColor(dynamite, 255, 255,255, alpha);
-	}
-	
-	if(alpha == 0)
-	{
-		if(IsValidEntity(particle))
-			killEntityIn(particle, 0.0);
-	}else{
-		if(!IsValidEntity(particle))
-		{
-			if(!(TF2_IsPlayerInCondition(client, TFCond_Cloaked)))
-			{
-				//PrintToChatAll("recreating particle");
-				
-				SetPackPosition(dataPackHandle, 16);
-				WritePackCell(dataPackHandle, AttachFastParticle3(dynamite, "candle_light1", 0.0, "CENTER"));     //PackPosition(16)
-			}
-		}
 	}
 	
 	////////////////////
@@ -234,7 +213,6 @@ public Action:Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 	ResetPack(dataPackHandle);
 	new dynamite = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new client = GetClientOfUserId(ReadPackCell(dataPackHandle));
-	new particle = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
 	
 	/////////////////
@@ -248,9 +226,6 @@ public Action:Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 		{
 			SetEntityRenderMode(dynamite, RENDER_TRANSCOLOR);	
 			SetEntityRenderColor(dynamite, 255, 255,255, 0);
-			
-			if(IsValidEntity(particle))
-				killEntityIn(particle, 0.0);
 		}else{
 			SetEntityRenderMode(dynamite, RENDER_TRANSCOLOR);	
 			SetEntityRenderColor(dynamite, 255, 255,255, alpha);
@@ -258,23 +233,6 @@ public Action:Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 	}else{
 		SetEntityRenderMode(dynamite, RENDER_TRANSCOLOR);	
 		SetEntityRenderColor(dynamite, 255, 255,255, alpha);
-	}
-	
-	if(alpha == 0)
-	{
-		if(IsValidEntity(particle))
-			killEntityIn(particle, 0.0);
-	}else{
-		if(!IsValidEntity(particle))
-		{
-			if(!(TF2_IsPlayerInCondition(client, TFCond_Cloaked)))
-			{
-				PrintToChatAll("recreating particle");
-				
-				SetPackPosition(dataPackHandle, 16);
-				WritePackCell(dataPackHandle, AttachFastParticle3(dynamite, "candle_light1", 0.0, "CENTER"));     //PackPosition(16)
-			}
-		}
 	}
 	
 	////////////////////
@@ -313,6 +271,10 @@ public stopDynamiteTimer(Handle:dataPackHandle)
 	new dynamite = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new client = GetClientOfUserId(ReadPackCell(dataPackHandle));
 	
+	SetPackPosition(dataPackHandle, 24);
+	new clientOnly = ReadPackCell(dataPackHandle);
+	new originalEntity = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	
 	if(!IsValidEntity(dynamite))
 		return true;
 	
@@ -344,7 +306,14 @@ public stopDynamiteTimer(Handle:dataPackHandle)
 		return true;
 	}
 	
-	new savedEntity = EntRefToEntIndex(RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH]);
+	new savedEntity;
+	
+	if(clientOnly)
+	{
+		savedEntity = originalEntity;
+	}else{
+		savedEntity = EntRefToEntIndex(RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH]);
+	}
 	
 	if(!IsValidEntity(savedEntity))
 	{
@@ -353,7 +322,7 @@ public stopDynamiteTimer(Handle:dataPackHandle)
 		return true;
 	}
 	
-	if(savedEntity != dynamite)
+	if(clientOnly == 0 && savedEntity != dynamite)
 	{
 		CDetach(dynamite);
 		killEntityIn(dynamite, 0.1);
