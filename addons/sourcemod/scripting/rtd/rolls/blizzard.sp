@@ -166,7 +166,7 @@ public Action:Client_Blizzard_Timer(Handle:timer, Handle:dataPackHandle)
 	itemEquipped_OnBack[wearer] = 1;
 	
 	//PrintToChat(wearer, "%i | %i| %i", GetEntPropEnt(wearer, Prop_Send, "m_hObserverTarget"), GetEntProp(wearer, Prop_Send, "m_iObserverMode"), GetEntProp(wearer, Prop_Send, "m_bDrawViewmodel"));
-	if(GetEntProp(wearer, Prop_Send, "m_iObserverMode") > 0 || TF2_IsPlayerInCondition(wearer, TFCond_Bonked) || roundEnded)
+	if(TF2_IsPlayerInCondition(wearer, TFCond_Taunting) || TF2_IsPlayerInCondition(wearer, TFCond_Bonked) || GetEntData(wearer, m_iStunFlags) & TF_STUNFLAG_THIRDPERSON)
 	{
 		/////////////////
 		//Update Alpha //

@@ -299,8 +299,8 @@ AttachFastParticle2(ent, String:particleType[], Float:zOffset, String:attachment
 	}
 }
 
-public AttachFastParticle3(ent, String:particleType[], Float:zOffset, String:attachmentPoint[])
-{
+public AttachFastParticle3(ent, owner, clientOnly, String:particleType[], Float:zOffset, String:attachmentPoint[])
+{	
 	//this one just has the option for an attachment point
 	new particle = CreateEntityByName("info_particle_system");
 
@@ -319,7 +319,18 @@ public AttachFastParticle3(ent, String:particleType[], Float:zOffset, String:att
 		DispatchKeyValue(particle, "targetname", "tf2particle");
 		DispatchKeyValue(particle, "parentname", tName);
 		DispatchKeyValue(particle, "effect_name", particleType);
+		
+		SetEntPropEnt(particle, Prop_Send, "m_hOwnerEntity", owner);
+		
+		if(clientOnly)
+		{	
+			SDKHook(particle, SDKHook_SetTransmit, Hook_EveryoneBlizzard); 
+		}else{
+			SDKHook(particle, SDKHook_SetTransmit, Hook_ClientBlizzard); 
+		}
+		
 		DispatchSpawn(particle);
+		
 		SetVariantString(tName);
 		AcceptEntityInput(particle, "SetParent", particle, particle, 0);
 		
