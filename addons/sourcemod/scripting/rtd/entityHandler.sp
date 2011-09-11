@@ -460,7 +460,9 @@ public Action:deleteRTDEntities()
 	
 	ent = -1;
 	while ((ent = FindEntityByClassname(ent, "prop_physics")) != -1)
-	{	
+	{
+		new currIndex = GetEntProp(ent, Prop_Data, "m_nModelIndex");
+		
 		GetEntPropString(ent, Prop_Data, "m_ModelName", modelname, 128);
 		
 		if (StrEqual(modelname, MODEL_SPIDERBOX) || StrEqual(modelname, MODEL_BOMB) || StrEqual(modelname, MODEL_ICE) || StrEqual(modelname, MODEL_CRAP) || StrEqual(modelname, MODEL_BRAZIER))
@@ -480,6 +482,15 @@ public Action:deleteRTDEntities()
 		{
 			killEntityIn(ent, 2.0);
 			continue;
+		}
+		
+		for (new i = 0; i < totModels ; i++)
+		{
+			if(currIndex == modelIndex[i])
+			{
+				killEntityIn(ent, 2.0); 
+				continue;
+			}
 		}
 	}
 	
