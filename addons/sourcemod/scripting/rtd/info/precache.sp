@@ -461,5 +461,6 @@ stock RTDPrecache()
 	modelIndex[52] = angelicModelIndex;
 	modelIndex[53] = PrecacheModel(MODEL_DYNAMITE, true);
 	
+	
 	totModels = 54;
 }
