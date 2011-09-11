@@ -335,6 +335,73 @@ public listTrinkets(client)
 	
 }
 
+///////////////////////////////////
+//       Organize Trinkets       //
+//                               //
+// Equippd items are in 1st slot //
+// Rest are ordered by Variant   //
+//                               //
+///////////////////////////////////
+public organizeTrinkets(client)
+{
+	//new Handle: temp_Trinkets 	= CreateArray(2, MAX_TRINKETS);
+	new temp_Trinkets[50][2];
+	new placeholder_Trinkets[50][4];
+	new foundTrinkets;
+	
+	//Sort by saving the index and the tier
+	for(new i = 0; i < 50; i++)
+	{
+		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
+		{
+			temp_Trinkets[foundTrinkets][0] = i;
+			
+			if(RTD_TrinketEquipped[client][i])
+			{
+				temp_Trinkets[foundTrinkets][1] = 999; //bump equipped to the top
+			}else{
+				if(trinketExpired(client, i))
+				{
+					temp_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i] - 100;
+				}else{
+					temp_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i];
+				}
+			}
+			
+			placeholder_Trinkets[foundTrinkets][0] = RTD_TrinketIndex[client][i];
+			placeholder_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i];
+			placeholder_Trinkets[foundTrinkets][2] = RTD_TrinketExpire[client][i];
+			placeholder_Trinkets[foundTrinkets][3] = RTD_TrinketEquipped[client][i];
+			
+			//clear out the unique
+			Format(RTD_TrinketUnique[client][i], 32, "");
+			
+			foundTrinkets ++;
+		}
+	}
+	
+	SortCustom2D(_:temp_Trinkets, foundTrinkets, SortAscend);
+	
+	new savedSlot;
+	
+	for(new i = 0; i < foundTrinkets; i++)
+	{
+		savedSlot = temp_Trinkets[i][0];
+		
+		
+		RTD_TrinketIndex[client][i] = placeholder_Trinkets[savedSlot][0];
+		RTD_TrinketTier[client][i] = placeholder_Trinkets[savedSlot][1];
+		RTD_TrinketExpire[client][i] = placeholder_Trinkets[savedSlot][2];
+		RTD_TrinketEquipped[client][i] = placeholder_Trinkets[savedSlot][3];
+		
+		Format(RTD_TrinketUnique[client][i], 32, "%s", trinket_Unique[RTD_TrinketIndex[client][i]]);
+	}
+	
+	
+	//find the equipped
+}
+
+
 public Action:TrinketsLoadoutMenu(client, startAtPage)
 {
 	if(amountOfTrinketsHeld(client) < 1)
@@ -342,6 +409,9 @@ public Action:TrinketsLoadoutMenu(client, startAtPage)
 		SetupTrinketsMenu(client, 1);
 		PrintCenterText(client, "You have no trinkets!");
 	}
+	
+	organizeTrinkets(client);
+	
 	
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_TrinketsLoadOutHandler);
 	
@@ -575,7 +645,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					Format(chatMessage, sizeof(chatMessage), "Equipped (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 					PrintCenterText(param1, chatMessage);
 					
-					TrinketsLoadoutMenu(param1, 1);
+					TrinketsLoadoutMenu(param1, 0);
 					
 				}
 				
@@ -590,7 +660,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					Format(chatMessage, sizeof(chatMessage), "Unequipped (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 					PrintCenterText(param1, chatMessage);
 					
-					TrinketsLoadoutMenu(param1, 1);
+					TrinketsLoadoutMenu(param1, 0);
 				}
 				
 				//destroy trinket
@@ -608,7 +678,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 		}
 		
 		case MenuAction_Cancel: {
-			TrinketsLoadoutMenu(param1, 1);
+			TrinketsLoadoutMenu(param1, 0);
 		}
 		
 		case MenuAction_End: {
@@ -714,11 +784,11 @@ public fn_ReRollTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				}
 			}
 			
-			TrinketsLoadoutMenu(param1, 1);
+			TrinketsLoadoutMenu(param1, 0);
 		}
 		
 		case MenuAction_Cancel: {
-			TrinketsLoadoutMenu(param1, 1);
+			TrinketsLoadoutMenu(param1, 0);
 		}
 		
 		case MenuAction_End: {
@@ -796,11 +866,11 @@ public fn_DestroyTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2
 				}
 			}
 			
-			TrinketsLoadoutMenu(param1, 1);
+			TrinketsLoadoutMenu(param1, 0);
 		}
 		
 		case MenuAction_Cancel: {
-			TrinketsLoadoutMenu(param1, 1);
+			TrinketsLoadoutMenu(param1, 0);
 		}
 		
 		case MenuAction_End: {
