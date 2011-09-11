@@ -402,7 +402,7 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_FLAP, true);
 	PrecacheSound(SOUND_OPEN_TRINKET, true);
 	PrecacheSound(SOUND_SHOP, true);
-
+	
 	angelicModelIndex = PrecacheModel(MODEL_ANGELIC, true);
 	
 	//keep track of all indexed models in an array
@@ -459,6 +459,7 @@ stock RTDPrecache()
 	modelIndex[50] = shieldModelIndex;
 	modelIndex[51] = cloud02Index;
 	modelIndex[52] = angelicModelIndex;
+	modelIndex[53] = PrecacheModel(MODEL_DYNAMITE, true);
 	
-	totModels = 53;
+	totModels = 54;
 }

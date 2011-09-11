@@ -298,3 +298,39 @@ AttachFastParticle2(ent, String:particleType[], Float:zOffset, String:attachment
 		AcceptEntityInput(particle, "start");
 	}
 }
+
+public AttachFastParticle3(ent, String:particleType[], Float:zOffset, String:attachmentPoint[])
+{
+	//this one just has the option for an attachment point
+	new particle = CreateEntityByName("info_particle_system");
+
+	new String:tName[128];
+	if (IsValidEdict(particle))
+	{
+		new Float:pos[3]; 
+		GetEntPropVector(ent, Prop_Send, "m_vecOrigin", pos);
+		pos[2] += zOffset;
+		
+		TeleportEntity(particle, pos, NULL_VECTOR, NULL_VECTOR);
+		
+		Format(tName, sizeof(tName), "target%i", ent);
+		DispatchKeyValue(ent, "targetname", tName);
+
+		DispatchKeyValue(particle, "targetname", "tf2particle");
+		DispatchKeyValue(particle, "parentname", tName);
+		DispatchKeyValue(particle, "effect_name", particleType);
+		DispatchSpawn(particle);
+		SetVariantString(tName);
+		AcceptEntityInput(particle, "SetParent", particle, particle, 0);
+		
+		SetVariantString(attachmentPoint);
+		AcceptEntityInput(particle, "SetParentAttachment", particle, particle, 0);
+		
+		ActivateEntity(particle);
+		AcceptEntityInput(particle, "start");
+		
+		return EntIndexToEntRef(particle);
+	}
+	
+	return -1;
+}

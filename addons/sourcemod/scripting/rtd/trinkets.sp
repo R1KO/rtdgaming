@@ -847,6 +847,12 @@ public equipActiveTrinket(client)
 	
 	if(RTD_TrinketActive[client][TRINKET_QUICKDRAW])
 		ROFMult[client] = 1.0 + (float(RTD_TrinketBonus[client][TRINKET_QUICKDRAW])/100.0);
+	
+	if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
+	{
+		RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH] = 0;
+		SpawnAndAttachDynamite(client);
+	}
 }
 
 public unequipTrinkets(client)

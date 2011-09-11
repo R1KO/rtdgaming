@@ -446,6 +446,16 @@ public Action:deleteRTDEntities()
 			killEntityIn(ent, 2.0); 
 			continue;
 		}
+		
+		for (new i = 0; i < totModels ; i++)
+		{
+			if(currIndex == modelIndex[i])
+			{
+				killEntityIn(ent, 2.0); 
+				continue;
+			}
+		}
+		
 	}
 	
 	ent = -1;

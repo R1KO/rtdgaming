@@ -852,4 +852,17 @@ stock RTDDownloads()
 	
 	AddFileToDownloadsTable("sound/rtdgaming/opentrinket.mp3");
 	AddFileToDownloadsTable("sound/rtdgaming/shop.mp3");
+	
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite.vvd");
+	
+	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/dynamite_SM_01.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/dynamite_SM_01.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/dynamite_SM_02.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/dynamite_SM_02.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/invulnfx_blue.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/invulnfx_red.vmt");
 }
