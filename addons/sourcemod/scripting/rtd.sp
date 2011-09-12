@@ -117,6 +117,7 @@
 #include "rtd/rolls/rubberbullets.sp"
 #include "rtd/rolls/angelic.sp"
 #include "rtd/rolls/dynamite.sp"
+#include "rtd/trinkets_trading.sp"
 //Perks
 
 public Plugin:myinfo = 

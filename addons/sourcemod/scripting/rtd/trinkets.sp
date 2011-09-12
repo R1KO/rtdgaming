@@ -207,6 +207,13 @@ Load_Trinkets()
 ////////////////////////////////
 public Action:SetupTrinketsMenu(client, startAtPage)
 {
+	trading[client][0] = 0;
+	trading[client][1] = 0;
+	trading[client][2] = 0;
+	trading[client][3] = 0;
+	trading[client][4] = 0;
+	trading[client][5] = 0;
+	
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_TrinketsMenuHandler);
 	
 	new String:menuTitle[64];
@@ -405,6 +412,13 @@ public organizeTrinkets(client)
 
 public Action:TrinketsLoadoutMenu(client, startAtPage)
 {
+	trading[client][0] = 0;
+	trading[client][1] = 0;
+	trading[client][2] = 0;
+	trading[client][3] = 0;
+	trading[client][4] = 0;
+	trading[client][5] = 0;
+	
 	if(amountOfTrinketsHeld(client) < 1)
 	{
 		SetupTrinketsMenu(client, 1);
@@ -567,6 +581,9 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	Format(displayIdent, 64, "%i:4", selectedSlot);
 	AddMenuItem(hCMenu, displayIdent, reRollText, ITEMDRAW_DEFAULT);
 	
+	Format(displayIdent, 64, "%i:5", selectedSlot);
+	AddMenuItem(hCMenu, displayIdent, "Trade Trinket!", ITEMDRAW_DEFAULT);
+	
 	Format(displayIdent, 64, "%i:3", selectedSlot);
 	AddMenuItem(hCMenu, displayIdent, "Destroy Trinket!", ITEMDRAW_DEFAULT);
 	
@@ -675,6 +692,12 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				{
 					confirmReRollTrinket(param1, selectedSlot, slotStatus);
 				}
+				
+				//trade trinket
+				case 5:
+				{
+					askAmountToTrade(param1, selectedSlot);
+				}
 			}
 		}
 		
@@ -771,8 +794,8 @@ public fn_ReRollTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						new String:name[32];
 						GetClientName(param1, name, sizeof(name));
 						
-						Format(chatMessage, 64, "\x03%s\x04 rerolled \x03%s\x04 from: \x01%s\x04 to \x01%s", name, trinket_Title[RTD_TrinketIndex[param1][selectedSlot]], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][oldVariant], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][variant]);
-						PrintToChat(param1, chatMessage);
+						Format(chatMessage, 128, "\x03%s\x04 rerolled \x03%s\x04 from: \x01%s\x04 to \x01%s", name, trinket_Title[RTD_TrinketIndex[param1][selectedSlot]], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][oldVariant], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][variant]);
+						PrintToChatAll(chatMessage);
 						
 						Format(chatMessage, sizeof(chatMessage), "Obtained: (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][variant], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 						PrintCenterText(param1, chatMessage);

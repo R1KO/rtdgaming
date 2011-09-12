@@ -375,5 +375,7 @@ new RTD_TrinketEquipped[cMaxClients][50];
 new String:RTD_TrinketTitle[cMaxClients][32];
 new lastExpireNotification[cMaxClients];
 
+new trading[cMaxClients][6];
+
 new donate_Amount[cMaxClients];
 new String:donate_SteamID[cMaxClients][64];

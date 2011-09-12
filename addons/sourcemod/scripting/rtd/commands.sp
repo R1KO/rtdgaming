@@ -211,6 +211,12 @@ public Action:Command_rtd(client, args)
 		}
 	}
 	
+	if(trading[client][0] == 1)
+	{
+		trading[client][2] = StringToInt(strArgs[0]);
+		return Plugin_Handled;
+	}
+	
 	if(StrEqual("!rtd", strArgs[0], false)) cond = true;
 	
 	if(StrEqual(strArgs[0], "buy", false))
