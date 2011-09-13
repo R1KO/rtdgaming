@@ -696,6 +696,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				//trade trinket
 				case 5:
 				{
+					StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 					askAmountToTrade(param1, selectedSlot);
 				}
 			}

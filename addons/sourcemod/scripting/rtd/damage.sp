@@ -576,7 +576,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			}
 		}
 		
-		if(RTD_TrinketActive[attacker][TRINKET_UNUSUALMELEE] && (damagetype & 4226))
+		if(RTD_TrinketActive[attacker][TRINKET_UNUSUALMELEE] && (damagetype & DMG_CLUB))
 		{
 			if(GetRandomInt(1,100) <= RTD_TrinketBonus[attacker][TRINKET_UNUSUALMELEE])
 			{
