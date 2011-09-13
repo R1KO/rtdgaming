@@ -630,7 +630,7 @@ public Action:GenericTimer(Handle:timer)
 					{
 						AttachTempParticle(i,"superrare_ghosts",5.0, false,"",20.0, false);
 						
-						RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] = GetTime() + 20;
+						RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] = GetTime() + 30;
 						
 						new playerTeam;
 						playerTeam = GetClientTeam(i);
@@ -643,6 +643,8 @@ public Action:GenericTimer(Handle:timer)
 						new stunFlag;
 						
 						GetClientAbsOrigin(i, playerPos);
+						new String:name[32];
+						GetClientName(i, name, 32);
 						
 						for (new j = 1; j <= MaxClients ; j++)
 						{
@@ -677,6 +679,9 @@ public Action:GenericTimer(Handle:timer)
 											EmitSoundToAll(playsound,i);
 											
 											TF2_StunPlayer(j,float(RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]), 0.0, TF_STUNFLAGS_GHOSTSCARE, 0);
+											
+											
+											PrintCenterText(j, "%s scared you!", name);
 										}
 									}
 								}
