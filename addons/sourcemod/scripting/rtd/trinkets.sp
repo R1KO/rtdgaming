@@ -579,7 +579,8 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	AddMenuItem(hCMenu, displayIdent, extendTrinket, ITEMDRAW_DEFAULT);
 	
 	Format(displayIdent, 64, "%i:4", selectedSlot);
-	AddMenuItem(hCMenu, displayIdent, reRollText, ITEMDRAW_DEFAULT);
+	//AddMenuItem(hCMenu, displayIdent, reRollText, ITEMDRAW_DEFAULT);
+	AddMenuItem(hCMenu, displayIdent, reRollText, RTD_TrinketTier[client][selectedSlot]>=(trinket_Tiers[RTD_TrinketIndex[client][selectedSlot]]-1)?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
 	
 	Format(displayIdent, 64, "%i:5", selectedSlot);
 	AddMenuItem(hCMenu, displayIdent, "Trade Trinket!", ITEMDRAW_DEFAULT);
@@ -809,7 +810,12 @@ public fn_ReRollTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				}
 			}
 			
-			TrinketsLoadoutMenu(param1, 0);
+			new slotStatus = 2; //unequipped
+			if(RTD_TrinketEquipped[param1][selectedSlot])
+				slotStatus = 1;
+			
+			showTrinketSelectionMenu(param1, selectedSlot, slotStatus);
+			//TrinketsLoadoutMenu(param1, 0);
 		}
 		
 		case MenuAction_Cancel: {
