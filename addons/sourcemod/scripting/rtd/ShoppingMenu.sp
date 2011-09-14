@@ -2,6 +2,7 @@
 #include <tf2_stocks>
 #include <sdktools>
 #include <rtd_rollinfo>
+
 #pragma semicolon 1
 
 stock SetupGiftMenu(client)
@@ -941,7 +942,7 @@ public addAllRolls(Handle:hCMenu, client)
 		
 	AddMenuItem(hCMenu,"20:Force:50:1:100",						"[20 Credits] Buy a 100% chance of a good roll", RTDCredits[client]<20?ITEMDRAW_DISABLED:NoClipThisLife[client]?ITEMDRAW_DISABLED:inTimerBasedRoll[client]?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
 	
-	AddMenuItem(hCMenu,"100:AddMinute::", "[100 Credits ] Add a minute to the round timer.", inSetup||RTDCredits[client]<50||Time_clientAlreadyBoughtTime(client)?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
+	AddMenuItem(hCMenu,"100:AddMinute::", "[100 Credits ] Add a minute to the round timer.", GameRules_GetProp("m_bInSetup", 4, 0)||RTDCredits[client]<50||Time_clientAlreadyBoughtTime(client)?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
 }
 
 public Time_addClient(client)

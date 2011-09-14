@@ -515,7 +515,7 @@ public Action:SpawnDice_Timer(Handle:Timer)
 	
 	removeAllDice();
 	
-	if(roundEnded || inSetup)
+	if(roundEnded || GameRules_GetProp("m_bInSetup", 4, 0))
 	{
 		diceNeeded = diceSpawnLimit;
 		return Plugin_Continue;
