@@ -105,7 +105,7 @@ public bool:UnAcceptable(client, award)
 	
 	if(award == AWARD_G_NOCLIP && class == TFClass_Sniper) return true;
 	if(award == AWARD_G_NOCLIP && class == TFClass_Engineer) return true;
-	if(award == AWARD_G_NOCLIP && inSetup) return true;
+	if(award == AWARD_G_NOCLIP && GameRules_GetProp("m_bInSetup", 4, 0)) return true;
 	
 	if(award == AWARD_G_SPEED && class == TFClass_Scout) return true;
 	if(award == AWARD_G_WINGS && class == TFClass_Scout) return true;

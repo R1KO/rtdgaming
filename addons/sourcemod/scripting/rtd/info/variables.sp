@@ -50,7 +50,6 @@ new Handle:g_instaporter[cMaxClients] = INVALID_HANDLE;
 
 new Handle:db = INVALID_HANDLE;			/** Database connection */
 new bool:g_BCONNECTED = false;
-new bool:inSetup = false;
 new m_bCarried;
 
 //--My Variables---------------------------

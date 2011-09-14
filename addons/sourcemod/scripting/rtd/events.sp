@@ -5,8 +5,8 @@
 #include <sdkhooks>
 #include <clientprefs>
 #include <regex>
- #include <rtd_rollinfo>
- #include <tf2>
+#include <rtd_rollinfo>
+#include <tf2>
  //Quick hack
  #include "rtd/rolls/markedmurderer.sp"
  
@@ -190,24 +190,9 @@ public Action:Event_RoundActive(Handle:event, const String:name[], bool:dontBroa
 	decl String:currentMap[32];
 	GetCurrentMap(currentMap, sizeof(currentMap));
 	
-	if(StrContains(currentMap, "cp_", false) > 0)
-	{
-		new m_nSetupTimeLength = FindSendPropOffs("CTeamRoundTimer", "m_nSetupTimeLength");	
-		new i = -1;
-		new team_round_timer = FindEntityByClassname(i, "team_round_timer");
-		if (IsValidEntity(team_round_timer))
-		{
-			new setupTime = GetEntData(team_round_timer,m_nSetupTimeLength);
-			
-			if(setupTime > 0)
-			{
-				inSetup = true;
-				
-				//LogMessage("Points disabled!");
-				disableControlPoints(true);
-			}
-		}
-	}
+	//disable control points during setup
+	if(GameRules_GetProp("m_bInSetup", 4, 0))
+		disableControlPoints(true);
 	
 	removeAllDice();
 	
@@ -225,7 +210,6 @@ public Action:Event_RoundActive(Handle:event, const String:name[], bool:dontBroa
 public Action:Event_Setup(Handle:event,  const String:name[], bool:dontBroadcast) 
 { 
 	roundEnded = false;
-	inSetup = false;
 	
     //Ok setup time is over let's re-enable noclip 
     //Update the disabled commands with what is saved in the cfg 
