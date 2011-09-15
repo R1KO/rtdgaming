@@ -187,9 +187,8 @@ public Action:Event_RoundActive(Handle:event, const String:name[], bool:dontBroa
 	
 	//Disable capping during Setup
 	//If no setup time is found then game continues as usual
-	decl String:currentMap[32];
-	GetCurrentMap(currentMap, sizeof(currentMap));
 	
+	//PrintToChatAll("Event_RoundActive: %i", GameRules_GetProp("m_bInSetup", 4, 0));
 	//disable control points during setup
 	if(GameRules_GetProp("m_bInSetup", 4, 0))
 		disableControlPoints(true);
@@ -216,8 +215,10 @@ public Action:Event_Setup(Handle:event,  const String:name[], bool:dontBroadcast
 	roll_enabled[AWARD_G_NOCLIP] = 1;
 	
 	//re-enable the cap points
-	if(GameRules_GetProp("m_bInSetup", 4, 0) != 1)
-		disableControlPoints(false);
+	//PrintToChatAll("Event_Setup: %i", GameRules_GetProp("m_bInSetup", 4, 0));
+	
+	//wait until next frame to check if in setup
+	CreateTimer(0.1, delayCheck);
 	
 	//respawn the dice
 	if(diceNeeded > 0 && !rtd_classic)
@@ -233,6 +234,13 @@ public Action:Event_Setup(Handle:event,  const String:name[], bool:dontBroadcast
 } 
 
 
+public Action:delayCheck(Handle:Timer)
+{
+	if(GameRules_GetProp("m_bInSetup", 4, 0) == 0)
+		disableControlPoints(false);
+	
+	return Plugin_Stop;
+}
 
 public Action:disableControlPoints(bool:capState)
 {
