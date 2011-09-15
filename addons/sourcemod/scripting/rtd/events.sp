@@ -190,8 +190,10 @@ public Action:Event_RoundActive(Handle:event, const String:name[], bool:dontBroa
 	
 	//PrintToChatAll("Event_RoundActive: %i", GameRules_GetProp("m_bInSetup", 4, 0));
 	//disable control points during setup
+	/*
 	if(GameRules_GetProp("m_bInSetup", 4, 0))
 		disableControlPoints(true);
+	*/
 	
 	removeAllDice();
 	
@@ -218,7 +220,9 @@ public Action:Event_Setup(Handle:event,  const String:name[], bool:dontBroadcast
 	//PrintToChatAll("Event_Setup: %i", GameRules_GetProp("m_bInSetup", 4, 0));
 	
 	//wait until next frame to check if in setup
+	/*
 	CreateTimer(0.1, delayCheck);
+	*/
 	
 	//respawn the dice
 	if(diceNeeded > 0 && !rtd_classic)
