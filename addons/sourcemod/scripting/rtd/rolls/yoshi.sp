@@ -23,6 +23,7 @@ public Make_Yoshi(client)
 	CreateTimer(0.1, Timer_Yoshi, client, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 	
 	//And finally...
+	EmitSoundToAll(SOUND_YOSHISONG, client);
 	EmitSoundToAll(SOUND_YOSHI_BECOMEYOSHI, client);
 	PrintCenterText(client, "Touch enemies to gobble up and place them in eggs!");
 }
@@ -287,6 +288,9 @@ stock Remove_Yoshi(client)
 	RTDOptions[client][3] = client_rolls[client][AWARD_G_YOSHI][3];
 	UpdateWaist(client);
 	EmitSoundToAll(SOUND_YOSHI_YOSHIDIE, client);
+	
+	StopSound(client, SNDCHAN_AUTO, SOUND_YOSHISONG);
+	
 }
 
 stock Yoshi_Thirdperson(client, bool:apply=true, type=0)

@@ -216,14 +216,8 @@ public Action:Event_Setup(Handle:event,  const String:name[], bool:dontBroadcast
 	roll_enabled[AWARD_G_NOCLIP] = 1;
 	
 	//re-enable the cap points
-	decl String:currentMap[32];
-	GetCurrentMap(currentMap, sizeof(currentMap));
-	
-	if(StrContains(currentMap, "cp_", false) > 0)
-	{
-		//LogMessage("Points enabled!");
+	if(GameRules_GetProp("m_bInSetup", 4, 0) != 1)
 		disableControlPoints(false);
-	}
 	
 	//respawn the dice
 	if(diceNeeded > 0 && !rtd_classic)

@@ -403,6 +403,10 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_OPEN_TRINKET, true);
 	PrecacheSound(SOUND_SHOP, true);
 	
+	
+	PrecacheSound(SOUND_YOSHISONG, true);
+	PrecacheSound(SOUND_LOSERHANK, true);
+	
 	angelicModelIndex = PrecacheModel(MODEL_ANGELIC, true);
 	
 	//keep track of all indexed models in an array

@@ -865,4 +865,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/dynamite_SM_02.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/invulnfx_blue.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/invulnfx_red.vmt");
+	
+	AddFileToDownloadsTable("sound/rtdgaming/yoshi.mp3");
+	AddFileToDownloadsTable("sound/rtdgaming/loser.mp3");
 }

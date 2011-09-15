@@ -1,4 +1,5 @@
 #include <sourcemod>
+#include <sourcemod>
 #include <tf2_stocks>
 #include <sdktools>
 #include <rtd_rollinfo>
