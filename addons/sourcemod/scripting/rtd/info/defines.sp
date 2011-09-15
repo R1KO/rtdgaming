@@ -446,6 +446,8 @@
 #define SOUND_OPEN_TRINKET	"rtdgaming/opentrinket.mp3"
 #define SOUND_SHOP			"rtdgaming/shop.mp3"
 
+#define SOUND_YOSHISONG 	"sound/rtdgaming/yoshi.mp3"
+#define SOUND_LOSERHANK		"sound/rtdgaming/loser.mp3"
 #define MODEL_DYNAMITE		"models/rtdgaming/dynamite/dynamite.mdl"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////

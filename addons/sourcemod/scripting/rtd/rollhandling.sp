@@ -807,6 +807,8 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_B_LOSER:
 			{
+				EmitSoundToAll(SOUND_LOSERHANK, client);
+				
 				centerHudText(client, "You take 10\% dmg but cannot use your weapons!", 4.0, 5.0, HudMsg3, 0.75); 
 				
 				TF2_StunPlayer(client,10.0, 0.0, TF_STUNFLAGS_LOSERSTATE, 0);
@@ -925,6 +927,9 @@ public Action:Timer_Rolls(Handle:timer, Handle:dataPackHandle)
 				StopSound(client, SNDCHAN_AUTO, SOUND_SLOWMO);
 				ResetClientSpeed(client);
 			}
+			
+			case AWARD_B_LOSER:
+				StopSound(client, SNDCHAN_AUTO, SOUND_LOSERHANK);
 			
 		}
 		
