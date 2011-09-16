@@ -781,12 +781,31 @@ public Action:doSuperJump(Handle:timer, any:clientUserID)
 	if(GetEntityFlags(client) & FL_ONGROUND)
 		return Plugin_Stop;
 	
-	new Float:speed[3];
-	GetEntPropVector(client, Prop_Data, "m_vecVelocity", speed);
-	ScaleVector(speed, 1+(float(RTD_TrinketBonus[client][TRINKET_SUPERJUMP])/10.0));
+	RTD_TrinketMisc[client][TRINKET_SUPERJUMP] ++;
 	
-	TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
-	AttachFastParticle(client, "rockettrail", 1.0);
+	if(RTD_TrinketMisc[client][TRINKET_SUPERJUMP] >= 3)
+	{
+		switch(GetRandomInt(1,3))
+		{
+			case 1:
+				EmitSoundToAll(SOUND_JUMP01, client);
+				
+			case 2:
+				EmitSoundToAll(SOUND_JUMP02, client);
+				
+			case 3:
+				EmitSoundToAll(SOUND_JUMP03, client);
+		}
+		
+		new Float:speed[3];
+		GetEntPropVector(client, Prop_Data, "m_vecVelocity", speed);
+		ScaleVector(speed, 1+(float(RTD_TrinketBonus[client][TRINKET_SUPERJUMP])/10.0));
+		
+		TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
+		AttachFastParticle(client, "rockettrail", 1.0);
+		
+		RTD_TrinketMisc[client][TRINKET_SUPERJUMP] = 0;
+	}
 	
 	return Plugin_Stop;
 }
