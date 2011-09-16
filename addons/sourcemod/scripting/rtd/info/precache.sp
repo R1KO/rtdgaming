@@ -407,6 +407,10 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_YOSHISONG, true);
 	PrecacheSound(SOUND_LOSERHANK, true);
 	
+	PrecacheSound(SOUND_JUMP01, true);
+	PrecacheSound(SOUND_JUMP02, true);
+	PrecacheSound(SOUND_JUMP03, true);
+	
 	angelicModelIndex = PrecacheModel(MODEL_ANGELIC, true);
 	
 	//keep track of all indexed models in an array
