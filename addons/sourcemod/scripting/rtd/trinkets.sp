@@ -777,6 +777,8 @@ public fn_ReRollTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						
 						rndNum = GetRandomInt(1, trinket_TotalChance[RTD_TrinketIndex[param1][selectedSlot]]);
 						
+						//PrintToChat(param1, "%i", rndNum);
+						
 						//find out which tier our rndNum falls under
 						for(new i = 0; i < trinket_Tiers[RTD_TrinketIndex[param1][selectedSlot]]; i++)
 						{
