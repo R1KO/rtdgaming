@@ -259,7 +259,7 @@ public Action:Command_rtd(client, args)
 		return Plugin_Handled;
 	}
 	
-	if(StrEqual(strArgs[0], "rollinfo", false))
+	if(StrEqual(strArgs[0], "rollinfo", false) || StrEqual(strArgs[0], "wiki", false))
 	{
 		ShowWhatIsMOTD(client, strArgs[1]);
 		//return Plugin_Handled;
@@ -322,12 +322,6 @@ public Action:Command_rtd(client, args)
 	}
 	
 	
-	if((StrEqual("trinkettest", strArgs[0], false)))
-	{
-		GiveRandomTrinket(client, 1);
-		return Plugin_Handled;
-	}
-	
 	if(StrEqual("movehud", strArgs[0], false))
 	{
 		SetEntityMoveType(client,MOVETYPE_NONE);
@@ -359,10 +353,13 @@ public Action:Command_rtd(client, args)
 		
 	if(StrEqual("dice", strArgs[0], false) || StrEqual("!dice", strArgs[0], false))
 	{
-		if(!rtd_classic)
-			ShowDiceStatus(client);
-		
-		return Plugin_Handled;
+		if(StrEqual("", strArgs[1], false))
+		{
+			if(!rtd_classic)
+				ShowDiceStatus(client);
+			
+			return Plugin_Handled;
+		}
 	}
 	
 	if(StrEqual("rtdrank", strArgs[0], false) || StrEqual("rtdstats", strArgs[0], false) || StrEqual("rtdplace", strArgs[0], false))

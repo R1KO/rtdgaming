@@ -596,6 +596,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 					case 2:
 					{
 						TF2_IgnitePlayer(client, attacker);
+						DealDamage(client,0,attacker,2056,"tf_weapon_flamethrower");
 					}
 					
 					case 3:
