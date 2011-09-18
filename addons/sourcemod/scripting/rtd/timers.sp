@@ -669,6 +669,8 @@ public Action:GenericTimer(Handle:timer)
 									{
 										if(isVisibileCheck(i, j))
 										{
+											timeExpireScare[j] = GetTime() + RTD_TrinketBonus[i][TRINKET_SCARYTAUNT];
+											
 											rndNum = GetRandomInt(1,8);
 											
 											Format(playsound, sizeof(playsound), "vo/halloween_scream%i.wav", rndNum);
@@ -681,7 +683,7 @@ public Action:GenericTimer(Handle:timer)
 											TF2_StunPlayer(j,float(RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]), 0.0, TF_STUNFLAGS_GHOSTSCARE, 0);
 											
 											
-											PrintCenterText(j, "%s scared you!", name);
+											PrintCenterText(j, "%s scared you for %i seconds!", name, RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]);
 										}
 									}
 								}
