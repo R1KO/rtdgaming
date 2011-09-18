@@ -806,7 +806,20 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	
 	lastAttackerOnPlayer[client] = attacker;
 	
-	if(death_ringer & 32) return Plugin_Continue;
+	if(client > 0 && client <= MaxClients && attacker > 0 && attacker <= MaxClients && client != attacker)
+	{
+		if(IsClientInGame(client) && IsClientInGame(attacker))
+		{
+			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
+				AttachFastParticle(client, "finishline_confetti", 2.0);
+				//AttachTempParticle(client,"finishline_confetti",2.0, false,"",0.0, false);
+		}
+	}
+	
+	//PrintToChatAll("DEBUG: Client :%i | ATTACKER :%i | death_ringer:%i", client, attacker, death_ringer);
+	
+	if(death_ringer & 32)
+		return Plugin_Continue;
 	
 	//If someone currently has marked murderer
 	if (gMarkedMurderer[4]) {
@@ -886,17 +899,6 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	{
 		if(IsClientInGame(client) && IsClientInGame(attacker))
 		{
-			//TF_SpawnMedipack_Ex(client, "item_healthkit_medium", true, MODEL_FRIED_CHICKEN);
-			
-			//determine if present can be spawned
-			
-			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
-			{
-				//AttachFastParticle(client, "finishline_confetti", 2.0);
-				AttachTempParticle(client,"finishline_confetti",2.0, false,"",0.0, false);
-				//AttachTempParticle(client,"bday_balloon02",2.0, false,"",0.0, false);
-				//AttachTempParticle(client,"bday_balloon02",2.0, false,"",0.0, false);
-			}
 			
 			if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
 			{

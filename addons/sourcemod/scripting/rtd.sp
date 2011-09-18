@@ -815,6 +815,20 @@ public isPlayerHolding_UniqueWeapon(client, m_iItemDefinitionIndex)
 	return false;
 }
 
+public isActiveWeapon(client, m_iItemDefinitionIndex)
+{
+	new iWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	
+	if(IsValidEntity(iWeapon))
+	{
+		new itemDefinition = GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex");
+		if(itemDefinition == m_iItemDefinitionIndex)
+			return true;
+	}
+	
+	return false;
+}
+
 ShowWhatIsMOTD(client, String:lookingFor[])
 {
 	new String:rollTriggers[9][32];
@@ -843,7 +857,7 @@ ShowWhatIsMOTD(client, String:lookingFor[])
 		return;
 	}
 	
-	if (StrEqual(lookingFor, "present", false))
+	if (StrEqual(lookingFor, "present", false) || StrEqual(lookingFor, "presents", false))
 	{
 		new String:url[128];
 		Format(url, sizeof(url), "http://wiki.rtdgaming.com/wiki/Presents");

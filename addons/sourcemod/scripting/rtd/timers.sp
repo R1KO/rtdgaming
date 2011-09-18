@@ -624,7 +624,7 @@ public Action:GenericTimer(Handle:timer)
 			
 			if(RTD_TrinketActive[i][TRINKET_SCARYTAUNT])
 			{
-				if(TF2_IsPlayerInCondition(i, TFCond_Taunting))
+				if(TF2_IsPlayerInCondition(i, TFCond_Taunting) && !isActiveWeapon(i, 163) && !isActiveWeapon(i, 46))
 				{	
 					if(RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] < GetTime())
 					{
