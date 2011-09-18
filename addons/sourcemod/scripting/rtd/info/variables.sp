@@ -378,3 +378,4 @@ new trading[cMaxClients][6];
 
 new donate_Amount[cMaxClients];
 new String:donate_SteamID[cMaxClients][64];
+new timeExpireScare[cMaxClients];

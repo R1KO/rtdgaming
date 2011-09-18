@@ -123,7 +123,7 @@
 public Plugin:myinfo = 
 {
 	name = "[TF2] Roll The Dice",
-	author = "linux_lover",
+	author = "Fox",
 	description = "Let's users roll for special temporary powers.",
 	version = PLUGIN_VERSION,
 	url = "http://www.rtdgaming.com"

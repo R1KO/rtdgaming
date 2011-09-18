@@ -355,6 +355,24 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			return Plugin_Changed;
 		}
 		
+		if(timeExpireScare[client] > GetTime())
+		{
+			damage *= 0.4;
+			
+			if(damagetype & 2050)
+			{
+				damage *= 0.0;
+				PrintCenterText(attacker, "Player can't be taunt killed while scared!");
+				
+				//Blast(client, attacker);
+				//new Float:finalvec[3];
+				//finalvec[2]=GetRandomFloat(300.0, 600.0);
+				//SetEntDataVector(client,BaseVelocityOffset,finalvec,true);
+			}
+			
+			//PrintToChatAll("damagetype %i", damagetype);
+		}
+		
 		//less damage on ice
 		if(inIce[attacker] && damagetype == 16779264 || inIce[attacker] && damagetype == 2056)
 		{
