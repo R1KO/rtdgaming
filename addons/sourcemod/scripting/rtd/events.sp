@@ -811,8 +811,23 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 		if(IsClientInGame(client) && IsClientInGame(attacker))
 		{
 			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
-				AttachFastParticle(client, "finishline_confetti", 2.0);
-				//AttachTempParticle(client,"finishline_confetti",2.0, false,"",0.0, false);
+			{
+				for(new i = 0; i <= RTD_TrinketLevel[attacker][TRINKET_PARTYTIME]; i++)
+				{
+					switch(GetRandomInt(1,3))
+					{
+						case 1:
+							AttachFastParticle(client, "finishline_confetti", 2.0);
+						
+						case 2:
+							AttachFastParticle(client, "bday_confetti", 2.0);
+							
+						case 3:
+							AttachFastParticle(client, "bday_balloon02", 2.0);
+					}
+				}
+			}
+			//AttachTempParticle(client,"finishline_confetti",2.0, false,"",0.0, false);
 		}
 	}
 	

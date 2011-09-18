@@ -185,10 +185,15 @@ public bool:DetermineQuestionBlockSpawn(client, attacker)
 	{
 		addedBonus = 0.25;
 	}else{
-		addedBonus = RTDdice[attacker] / 10000.0;
+		addedBonus = RTDdice[attacker] / 4000.0;
 	}
 	
-	if((addedBonus + randomValue) >= 0.9)
+	new Float:trinketBonus;
+	if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
+		trinketBonus = float(RTD_TrinketBonus[attacker][TRINKET_PARTYTIME]) / 100.0;
+	
+	//PrintToChat(attacker, "addedBonus: %f | randomValue: %f | trinketBonus: %f || %f", addedBonus, randomValue, trinketBonus, (addedBonus + randomValue + trinketBonus));
+	if((addedBonus + randomValue + trinketBonus) >= 0.9)
 	{
 		Spawn_QuestionBlock(client, attacker);
 		return true;
