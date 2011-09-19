@@ -719,7 +719,7 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 	
 	UpdateWaist(client);
 	
-	equipActiveTrinket(client);
+	CreateTimer(0.1,  	Timer_DelayTrinketEquip, GetClientUserId(client), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Continue;
 }
