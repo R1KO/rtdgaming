@@ -278,68 +278,76 @@ GiveRandomEffect(client, attacker, special)
 		}
 	}else{
 		//Reward the player with something GOOD
-		reward = GetRandomInt(1, 6);
+		reward = GetRandomInt(1, 20);
 		
-		switch(reward)
+		if(reward <= 5)
 		{
-			case 1:
+			randomValue = GetRandomInt(50, 100);
+			addHealth(client, randomValue);
+			PrintCenterText(client, "You were given +%i HP", randomValue);
+			
+			return;
+		}
+		
+		if(reward > 5 && reward <= 8)
+		{
+			randomValue = GetRandomInt(50, RTD_Perks[client][8]);
+			PrintCenterText(client, "You were given +%i Armor", randomValue);
+			
+			if(!client_rolls[client][AWARD_G_ARMOR][0])
 			{
-				randomValue = GetRandomInt(50, 100);
-				addHealth(client, randomValue);
-				PrintCenterText(client, "You were given +%i HP", randomValue);
+				client_rolls[client][AWARD_G_ARMOR][0] = 1;
+				client_rolls[client][AWARD_G_ARMOR][1] = randomValue;//Status of Armor HP
+			}else{
+				client_rolls[client][AWARD_G_ARMOR][1] += randomValue;//Status of Armor HP
 			}
 			
-			case 2:
-			{	
-				randomValue = GetRandomInt(50, RTD_Perks[client][8]);
-				PrintCenterText(client, "You were given +%i Armor", randomValue);
-				
-				if(!client_rolls[client][AWARD_G_ARMOR][0])
-				{
-					client_rolls[client][AWARD_G_ARMOR][0] = 1;
-					client_rolls[client][AWARD_G_ARMOR][1] = randomValue;//Status of Armor HP
-				}else{
-					client_rolls[client][AWARD_G_ARMOR][1] += randomValue;//Status of Armor HP
-				}
-				
-			}
+			return;
+		}
+		
+		if(reward > 8 && reward <= 11)
+		{
+			randomValue = GetRandomInt(50, 100);
+			PrintCenterText(client, "Time Reduction of %is", randomValue);
+			RTD_Timer[client] -= randomValue;
 			
-			case 3:
-			{
-				randomValue = GetRandomInt(50, 100);
-				PrintCenterText(client, "Time Reduction of %is", randomValue);
-				RTD_Timer[client] -= randomValue;
-			}
+			return;
+		}
+		
+		if(reward > 11 && reward < 18)
+		{
+			randomValue = GetRandomInt(50, 100);
+			PrintCenterText(client, "Ammo replenished", randomValue);
+			GiveAmmo(client, 200);
 			
-			case 4:
-			{
-				randomValue = GetRandomInt(50, 100);
-				PrintCenterText(client, "Ammo replenished", randomValue);
-				GiveAmmo(client, 200);
-			}
+			return;
+		}
 			
-			case 5:
-			{
-				randomValue = GetRandomInt(1, RTD_Perks[client][7]);
-				PrintCenterText(client, "Found %i CREDITS!", randomValue);
-				
-				
-				RTDCredits[client] += randomValue;
-				
-				EmitSoundToAll(SOUND_CREDITFOUND, client);
-			}
+		if(reward == 18)
+		{
+			randomValue = GetRandomInt(1, RTD_Perks[client][7]);
+			PrintCenterText(client, "Found %i CREDITS!", randomValue);
 			
-			case 6:
-			{
-				PrintCenterText(client, "You were given CRITS for 6s");
-				TF2_AddCondition(client,TFCond_Kritzkrieged,2.0);
-				new Handle:dataPack;
-				CreateDataTimer(1.0,giveCrits_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
-				
-				WritePackCell(dataPack, client);
-				WritePackCell(dataPack, 0); //starting time
-				WritePackCell(dataPack, 6); //max time
-			}
+			
+			RTDCredits[client] += randomValue;
+			
+			EmitSoundToAll(SOUND_CREDITFOUND, client);
+			
+			return;
+		}
+			
+		if(reward > 18)
+		{
+			PrintCenterText(client, "You were given CRITS for 6s");
+			TF2_AddCondition(client,TFCond_Kritzkrieged,2.0);
+			new Handle:dataPack;
+			CreateDataTimer(1.0,giveCrits_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+			
+			WritePackCell(dataPack, client);
+			WritePackCell(dataPack, 0); //starting time
+			WritePackCell(dataPack, 6); //max time
+			
+			return;
 		}
 	}
 }

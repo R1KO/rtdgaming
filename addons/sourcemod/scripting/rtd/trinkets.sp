@@ -943,6 +943,7 @@ public equipActiveTrinket(client)
 				RTD_TrinketMisc[client][RTD_TrinketIndex[client][i]] = 0;
 				RTD_TrinketLevel[client][RTD_TrinketIndex[client][i]] = RTD_TrinketTier[client][i];
 				
+				PrintHintText(client, "(%s) \%s Trinket currently equipped", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
 				//PrintToChat(client, "Trinket Bonus: %i", RTD_TrinketBonus[client][RTD_TrinketIndex[client][i]]);
 			}
 		}
@@ -1184,4 +1185,19 @@ public SortAscend(x[], y[], array[][], Handle:data)
 	else if (x[1] < y[1])
 		return 1;
     return 0;
+}
+
+public Action:Timer_DelayTrinketEquip(Handle:Timer, any:UserID)
+{
+	new client = GetClientOfUserId(UserID);
+	
+	if(client < 1)
+		return Plugin_Stop;
+	
+	if(!IsClientAuthorized(client))
+		return Plugin_Stop;
+	
+	equipActiveTrinket(client);
+	
+	return Plugin_Stop;
 }
