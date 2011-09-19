@@ -364,8 +364,8 @@ public Action:Command_rtd(client, args)
 	
 	if(StrEqual("rtdrank", strArgs[0], false) || StrEqual("rtdstats", strArgs[0], false) || StrEqual("rtdplace", strArgs[0], false))
 	{
-		if(!rtd_classic)
-			rankpanel(client);
+		if(StrEqual("", strArgs[1], false))
+			showStatsPage(client);
 		
 		return Plugin_Handled;
 	}
