@@ -912,6 +912,17 @@ ShowWhatIsMOTD(client, String:lookingFor[])
 	PrintToChat(client, "%s Not found!", lookingFor);
 }
 
+showStatsPage(client)
+{
+	new String:clsteamId[MAX_LINE_WIDTH];
+	new String:url[128];
+	GetClientAuthString(client, clsteamId, sizeof(clsteamId));
+	
+	Format(url, sizeof(url), "http://stats.rtdgaming.com/player?&s=rarity&w=asc&q=%s", clsteamId);
+	ShowMOTDPanel(client, "Something", url, MOTDPANEL_TYPE_URL);
+	
+}
+
 stock bool:CheckAdminFlagsByString(client, const String:flagString[])
 {
 	if (!IsClientInGame(client))
