@@ -517,16 +517,13 @@ public fn_OfferMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					RTD_TrinketEquipped[param1][availableSlot] = 0;
 					
 					
-					////clear values from seller
-					Format(RTD_TrinketUnique[seller][selectedSlot], 32, "");
-					
-					RTD_TrinketEquipped[seller][selectedSlot] = 0;
-					RTD_TrinketActive[seller][RTD_TrinketIndex[seller][selectedSlot]] = 0;
-					RTD_TrinketBonus[seller][RTD_TrinketIndex[seller][selectedSlot]] = 0;
+					//clear values from seller
+					eraseTrinket(seller, selectedSlot);
 					
 					
 					///finally we're done!!!!
 					EmitSoundToClient(param1, SOUND_OPEN_TRINKET);
+					EmitSoundToClient(seller, SOUND_BOUGHTSOMETHING);
 					
 					new String:name[32];
 					GetClientName(param1, name, sizeof(name));

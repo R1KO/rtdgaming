@@ -373,6 +373,7 @@ new RTD_TrinketIndex[cMaxClients][50];
 new RTD_TrinketEquipped[cMaxClients][50];
 new String:RTD_TrinketTitle[cMaxClients][32];
 new lastExpireNotification[cMaxClients];
+new RTD_Trinket_DB_ID[cMaxClients][50];
 
 new trading[cMaxClients][6];
 
