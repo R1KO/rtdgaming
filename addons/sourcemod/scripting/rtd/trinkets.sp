@@ -353,7 +353,7 @@ public organizeTrinkets(client)
 {
 	//new Handle: temp_Trinkets 	= CreateArray(2, MAX_TRINKETS);
 	new temp_Trinkets[50][2];
-	new placeholder_Trinkets[50][4];
+	new placeholder_Trinkets[50][5];
 	new foundTrinkets;
 	
 	//Sort by saving the index and the tier
@@ -379,6 +379,7 @@ public organizeTrinkets(client)
 			placeholder_Trinkets[i][1] = RTD_TrinketTier[client][i];
 			placeholder_Trinkets[i][2] = RTD_TrinketExpire[client][i];
 			placeholder_Trinkets[i][3] = RTD_TrinketEquipped[client][i];
+			placeholder_Trinkets[i][4] = RTD_Trinket_DB_ID[client][i];
 			
 			//clear out the unique
 			Format(RTD_TrinketUnique[client][i], 32, "");
@@ -401,6 +402,7 @@ public organizeTrinkets(client)
 		RTD_TrinketTier[client][i] = placeholder_Trinkets[savedSlot][1];
 		RTD_TrinketExpire[client][i] = placeholder_Trinkets[savedSlot][2];
 		RTD_TrinketEquipped[client][i] = placeholder_Trinkets[savedSlot][3];
+		RTD_Trinket_DB_ID[client][i] = placeholder_Trinkets[savedSlot][4];
 		
 		Format(RTD_TrinketUnique[client][i], 32, "%s", trinket_Unique[RTD_TrinketIndex[client][i]]);
 	}
@@ -445,7 +447,7 @@ public Action:TrinketsLoadoutMenu(client, startAtPage)
 	new daysLeft;
 	
 	//Trinkets
-	for(new i = 0; i < 50; i++)
+	for(new i = 0; i < 20; i++)
 	{
 		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
 		{
@@ -886,12 +888,9 @@ public fn_DestroyTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2
 				//destroy trinket
 				case 1:
 				{
+					eraseTrinket(param1, selectedSlot);
+					
 					Format(RTD_TrinketUnique[param1][selectedSlot], 32, "");
-					
-					RTD_TrinketEquipped[param1][selectedSlot] = 0;
-					
-					RTD_TrinketActive[param1][RTD_TrinketIndex[param1][selectedSlot]] = 0;
-					RTD_TrinketBonus[param1][RTD_TrinketIndex[param1][selectedSlot]] = 0;
 					
 					Format(chatMessage, 64, "Destroyed Trinket: %s %s", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 					PrintToChat(param1, chatMessage);
@@ -1162,6 +1161,8 @@ GiveRandomTrinket(client, test)
 		RTD_TrinketIndex[client][availableSlot] = trinket_Index[awardedTrinket];
 		RTD_TrinketExpire[client][availableSlot] = GetTime() + 604800; // expire in 7 days
 		RTD_TrinketEquipped[client][availableSlot] = 0;
+		RTD_Trinket_DB_ID[client][availableSlot] = 0;
+		
 		Format(RTD_TrinketTitle[client][availableSlot], 32, "%s", trinket_Title[awardedTrinket]);
 		
 		Format(chatMessage, sizeof(chatMessage), "\x03%s\x04 obtained: (\x03%s\x04) \x01%s \x04Trinket", name, trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
@@ -1204,4 +1205,30 @@ public Action:Timer_DelayTrinketEquip(Handle:Timer, any:UserID)
 	equipActiveTrinket(client);
 	
 	return Plugin_Stop;
+}
+
+public eraseTrinket(client, slot)
+{
+	//used when player trades or destroys trinket
+	
+	if(RTD_Trinket_DB_ID[client][slot] != 0)
+	{
+		new String:buffer[255];
+		Format(buffer, sizeof(buffer), "DELETE FROM `trinkets_v2` WHERE ID = '%i'", RTD_Trinket_DB_ID[client][slot]);
+		SQL_TQuery(db, SQLErrorCheckCallback, buffer);
+	}
+	
+	
+	RTD_TrinketActive[client][RTD_TrinketIndex[client][slot]] = 0;
+	RTD_TrinketBonus[client][RTD_TrinketIndex[client][slot]] = 0;
+	
+	Format(RTD_TrinketUnique[client][slot], 32, "");
+	Format(RTD_TrinketTitle[client][slot], 32, "");
+	
+	RTD_TrinketEquipped[client][slot] = 0;
+	RTD_Trinket_DB_ID[client][slot] = 0;
+	
+	RTD_TrinketTier[client][slot] = 0;
+	RTD_TrinketExpire[client][slot] = 0;
+	RTD_TrinketIndex[client][slot] = 0;
 }
