@@ -34,7 +34,7 @@ public APLRes:AskPluginLoad2(Handle:hPlugin, bool:isAfterMapLoaded, String:error
 	creds_ReceivedFromGifts[client] = 0;
 	
 	//clear trinkets
-	for(new k = 0; k < 50; k++)
+	for(new k = 0; k < 21; k++)
 	{
 		Format(RTD_TrinketUnique[client][k], 32, "");
 		RTD_TrinketEquipped[client][k] = 0;
