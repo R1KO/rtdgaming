@@ -888,13 +888,13 @@ public fn_DestroyTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2
 				//destroy trinket
 				case 1:
 				{
-					eraseTrinket(param1, selectedSlot);
-					
-					Format(RTD_TrinketUnique[param1][selectedSlot], 32, "");
-					
 					Format(chatMessage, 64, "Destroyed Trinket: %s %s", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 					PrintToChat(param1, chatMessage);
 					PrintCenterText(param1, chatMessage);
+					
+					eraseTrinket(param1, selectedSlot);
+					
+					Format(RTD_TrinketUnique[param1][selectedSlot], 32, "");
 				}
 			}
 			
