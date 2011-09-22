@@ -995,6 +995,7 @@ public checkTrinketsExpiration(client)
 			{
 				expiredTrinkets = 1;
 				RTD_TrinketEquipped[client][i] = 0;
+				RTD_TrinketExpire[client][i] = 0;
 				
 				RTD_TrinketActive[client][RTD_TrinketIndex[client][i]] = 0;
 				RTD_TrinketBonus[client][RTD_TrinketIndex[client][i]] = 0;
@@ -1028,6 +1029,9 @@ public amountOfTrinketsHeld(client)
 
 public bool:trinketExpired(client, slot)
 {
+	if(RTD_TrinketExpire[client][slot] == 0)
+		return true;
+	
 	if(RTD_TrinketExpire[client][slot] < GetTime())
 		return true;
 	
