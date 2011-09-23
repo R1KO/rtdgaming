@@ -376,6 +376,7 @@ new lastExpireNotification[cMaxClients];
 new RTD_Trinket_DB_ID[cMaxClients][50];
 
 new trading[cMaxClients][6];
+new smelting[cMaxClients][3];
 
 new donate_Amount[cMaxClients];
 new String:donate_SteamID[cMaxClients][64];
