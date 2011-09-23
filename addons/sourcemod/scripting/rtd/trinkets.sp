@@ -414,6 +414,9 @@ public Action:TrinketsLoadoutMenu(client, startAtPage)
 	trading[client][4] = 0;
 	trading[client][5] = 0;
 	
+	smelting[client][0] = -1;
+	smelting[client][1] = -1;
+	
 	if(amountOfTrinketsHeld(client) < 1)
 	{
 		SetupTrinketsMenu(client, 1);
@@ -579,6 +582,9 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	Format(displayIdent, 64, "%i:5", selectedSlot);
 	AddMenuItem(hCMenu, displayIdent, "Trade Trinket!", ITEMDRAW_DEFAULT);
 	
+	Format(displayIdent, 64, "%i:6", selectedSlot);
+	AddMenuItem(hCMenu, displayIdent, "Smelt Trinket!", ITEMDRAW_DEFAULT);
+	
 	Format(displayIdent, 64, "%i:3", selectedSlot);
 	AddMenuItem(hCMenu, displayIdent, "Destroy Trinket!", ITEMDRAW_DEFAULT);
 	
@@ -692,6 +698,12 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				case 5:
 				{
 					askAmountToTrade(param1, selectedSlot);
+				}
+				
+				//smelt trinket
+				case 6:
+				{
+					selectSecondTrinket(param1, selectedSlot);
 				}
 			}
 		}
@@ -900,6 +912,298 @@ public fn_DestroyTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2
 			CloseHandle(menu);
 		}
 	}
+}
+
+////////////////////////////////////////
+// Smelt Trinket                      //
+// User can combine trinkets          //
+////////////////////////////////////////
+public Action:selectSecondTrinket(client, selectedSlot)
+{
+	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_SelectSecondMenuHandler);
+	
+	new String:menuTitle[64];
+	new String:displayInfo[128];
+	new String:displayIdent[64];
+	
+	Format(menuTitle, 64, "Smelt %s %s with ?", trinket_TierID[RTD_TrinketIndex[client][selectedSlot]][RTD_TrinketTier[client][selectedSlot]], trinket_Title[RTD_TrinketIndex[client][selectedSlot]]);
+	SetMenuTitle(hCMenu, menuTitle);
+	
+	//Trinkets
+	for(new i = 0; i < 20; i++)
+	{
+		if(!StrEqual(RTD_TrinketUnique[client][i], "", false) && selectedSlot != i)
+		{
+			if(RTD_TrinketEquipped[client][i] == 1)
+			{
+				Format(displayInfo, 64, "[Equipped] (%s) %s", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
+				
+				Format(displayIdent, 64, "%i:1", i); //1 = equipped
+				
+			}else{
+				if(RTD_TrinketExpire[client][i] < GetTime())
+				{
+					Format(displayInfo, 64, "[Expired] (%s) %s", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
+					
+					Format(displayIdent, 64, "%i:0", i); //0 = expired
+				}else{
+					Format(displayInfo, 64, "(%s) %s", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
+					
+					Format(displayIdent, 64, "%i:2", i); //2 = unequipped
+				}
+			}
+			
+			AddMenuItem(hCMenu, displayIdent, displayInfo, ITEMDRAW_DEFAULT);
+		}
+	}
+	
+	smelting[client][0] = selectedSlot;
+	smelting[client][1] = -1;
+	
+	SetMenuExitBackButton(hCMenu, true);
+	DisplayMenuAtItem(hCMenu, client, 0, MENU_TIME_FOREVER);
+	
+	return Plugin_Handled;
+}
+
+public fn_SelectSecondMenuHandler(Handle:menu, MenuAction:action, param1, param2)
+{	
+	switch (action) 
+	{
+		case MenuAction_Select: 
+		{
+			//param2 item
+			//param1 client
+			decl String:MenuInfo[64];
+			new String:menuTriggers[4][16];
+			
+			new style;
+			
+			GetMenuItem(menu, param2, MenuInfo, sizeof(MenuInfo),style);
+			ExplodeString(MenuInfo, ":", menuTriggers, 2, 3);
+			
+			smelting[param1][1] = StringToInt(menuTriggers[0]);
+			
+			confirmSmelt(param1);
+		}
+		
+		case MenuAction_Cancel: {
+			smelting[param1][0] = -1;
+			smelting[param1][1] = -1;
+			
+			TrinketsLoadoutMenu(param1, 0);
+		}
+		
+		case MenuAction_End: {
+			CloseHandle(menu);
+		}
+	}
+}
+
+public bool:isValidToSmelt(client)
+{
+	//emergency scenario
+	if(smelting[client][0] == -1 || smelting[client][1] == -1)
+	{
+		PrintCenterText(client, "Invalid trinkets selected!");
+		TrinketsLoadoutMenu(client, 0);
+		return false;
+	}
+	
+	//make sure the trinkets are valid (should never be false)
+	if(StrEqual(RTD_TrinketUnique[client][smelting[client][0]], "", false) || StrEqual(RTD_TrinketUnique[client][smelting[client][1]], "", false))
+	{
+		PrintCenterText(client, "Invalid trinkets selected!");
+		TrinketsLoadoutMenu(client, 0);
+		return false;
+	}
+	
+	return true;
+}
+
+public confirmSmelt(client)
+{
+	if(!isValidToSmelt(client))
+		return;
+	
+	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_ConfirmSmeltMenuHandler);
+	
+	new String:menuTitle[64];
+	
+	new tempSlot1 = smelting[client][0];
+	new tempSlot2 = smelting[client][1];
+	
+	Format(menuTitle, 64, "Smelt %s %s with %s %s", trinket_TierID[RTD_TrinketIndex[client][tempSlot1]][RTD_TrinketTier[client][tempSlot1]], trinket_Title[RTD_TrinketIndex[client][tempSlot1]], trinket_TierID[RTD_TrinketIndex[client][tempSlot2]][RTD_TrinketTier[client][tempSlot2]], trinket_Title[RTD_TrinketIndex[client][tempSlot2]]);
+	SetMenuTitle(hCMenu, menuTitle);
+
+	AddMenuItem(hCMenu, "0", "No", ITEMDRAW_DEFAULT);
+	AddMenuItem(hCMenu, "1", "Yes", ITEMDRAW_DEFAULT);
+	
+	DisplayMenuAtItem(hCMenu, client, 0, MENU_TIME_FOREVER);
+}
+	
+public fn_ConfirmSmeltMenuHandler(Handle:menu, MenuAction:action, param1, param2)
+{	
+	switch (action) 
+	{
+		case MenuAction_Select: 
+		{	
+			switch(param2)
+			{
+				//get outta here
+				case 0:
+				{
+				}
+				
+				//finally smelt the trinkets!!
+				case 1:
+				{
+					smeltTrinkets(param1);
+				}
+			}
+			
+			TrinketsLoadoutMenu(param1, 0);
+		}
+		
+		case MenuAction_Cancel: {
+			TrinketsLoadoutMenu(param1, 0);
+		}
+		
+		case MenuAction_End: {
+			CloseHandle(menu);
+		}
+	}
+}
+public smeltTrinkets(client)
+{
+	if(!isValidToSmelt(client))
+		return;
+	
+	new tempSlot1 = smelting[client][0];
+	new tempSlot2 = smelting[client][1];
+	decl String:chatMessage[200];
+	
+	new String:name[32];
+	GetClientName(client, name, sizeof(name));
+	
+	//check to make there are trinkets loaded
+	if(totalTrinkets < 1)
+	{
+		PrintCenterText(client, "Ooops, no trinkets found in the database! Smelt not possible!");
+		PrintToChat(client, "Ooops, no trinkets found in the database! Smelt not possible!");
+		
+		smelting[client][0] = -1;
+		smelting[client][1] = -1;
+		return;
+	}
+	
+	//player cannot roll the first smelted trinket
+	new excludedTrinket = RTD_TrinketIndex[client][smelting[client][0]];
+	
+	//Let's pick a rarity
+	new rarity = GetRandomInt(1, 100);
+	new baseRarity;
+	
+	if(rarity <= 50)
+	{
+		baseRarity = 1;
+	}
+	
+	if(rarity > 50 && rarity <= 80)
+	{
+		baseRarity = 2;
+	}
+	
+	if(rarity > 80 && rarity <= 95)
+	{
+		baseRarity = 3;
+	}
+	
+	if(rarity > 95)
+	{
+		baseRarity = 4;
+	}
+	
+	if(countRarity(baseRarity) < 1)
+	{
+		PrintCenterText(client, "Ooops, no trinkets found in the shop matching rarity: %i! Smelting not possible!!", baseRarity);
+		PrintToChat(client, "Ooops, no trinkets found in the shop matching rarity: %i! Smelting not possible!!", baseRarity);
+		
+		smelting[client][0] = -1;
+		smelting[client][1] = -1;
+		return;
+	}
+	
+	Format(chatMessage, sizeof(chatMessage), "\x03%s\x04 smelted: (\x03%s\x04) \x01%s \x04with (\x03%s\x04) \x01%s", name, trinket_TierID[RTD_TrinketIndex[client][tempSlot1]][RTD_TrinketTier[client][tempSlot1]], trinket_Title[RTD_TrinketIndex[client][tempSlot1]], trinket_TierID[RTD_TrinketIndex[client][tempSlot2]][RTD_TrinketTier[client][tempSlot2]], trinket_Title[RTD_TrinketIndex[client][tempSlot2]]);
+	PrintToChat(client, chatMessage);
+	
+	eraseTrinket(client, tempSlot1);
+	eraseTrinket(client, tempSlot2);
+	
+	//Build an array for trinkets that match this rarity
+	new Handle: rarityArray 	= CreateArray(1, countRarity);
+	new totFound;
+	new awardedTrinket;
+	new rndPickFromArray;
+	new variant;
+	new rndNum;
+	
+	//put all the trinkets with the rarity into an array
+	for(new i = 0; i < totalTrinkets; i++)
+	{
+		if(trinket_Rarity[i] == baseRarity)
+		{
+			if(excludedTrinket != i)
+			{
+				SetArrayCell(rarityArray, totFound, i, 0);
+				totFound ++;
+			}
+		}
+	}
+	
+	//pick a trinket
+	rndPickFromArray = GetRandomInt(0, totFound-1);
+	awardedTrinket = GetArrayCell(rarityArray, rndPickFromArray, 0);
+	CloseHandle(rarityArray);
+	
+	//aright now let's pick the variant
+	rndNum = GetRandomInt(1, trinket_TotalChance[awardedTrinket]);
+	//PrintToChat(client, "Rolled: %i ", rndNum);
+	
+	//find out which tier our rndNum falls under
+	for(new i = 0; i < trinket_Tiers[awardedTrinket]; i++)
+	{
+		if(rndNum <= trinketChanceBounds[awardedTrinket][i])
+		{
+			variant = i;
+			break;
+		}
+	}
+	
+	new availableSlot = nextAvailableSlot(client);
+	
+	Format(RTD_TrinketUnique[client][availableSlot], 32, "%s", trinket_Unique[awardedTrinket]);
+	RTD_TrinketTier[client][availableSlot] = variant;
+	RTD_TrinketIndex[client][availableSlot] = trinket_Index[awardedTrinket];
+	RTD_TrinketExpire[client][availableSlot] = GetTime() + 604800; // expire in 7 days
+	RTD_TrinketEquipped[client][availableSlot] = 0;
+	RTD_Trinket_DB_ID[client][availableSlot] = 0;
+	
+	Format(RTD_TrinketTitle[client][availableSlot], 32, "%s", trinket_Title[awardedTrinket]);
+	
+	Format(chatMessage, sizeof(chatMessage), "\x03%s\x04 obtained: (\x03%s\x04) \x01%s \x04Trinket", name, trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
+	
+	
+	PrintToChatSome(chatMessage, client);
+	
+	Format(chatMessage, sizeof(chatMessage), "Obtained: (%s) %s Trinket", trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
+	PrintCenterText(client, chatMessage);
+	
+	
+	smelting[client][0] = -1;
+	smelting[client][1] = -1;
+	
+	EmitSoundToClient(client, SOUND_OPEN_TRINKET);
 }
 
 public bool:isTrinketEquipped(client, trinketLookup)
