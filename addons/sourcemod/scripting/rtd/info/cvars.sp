@@ -209,6 +209,7 @@ public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:new
 	}else if(convar == c_Trinkets)
 	{
 		rtd_trinket_enabled = GetConVarInt(c_Trinkets);
+		
 	}else if(convar == c_TrinketPrice)
 	{
 		rtd_trinketPrice = GetConVarInt(c_TrinketPrice);
