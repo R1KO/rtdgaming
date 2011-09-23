@@ -161,8 +161,8 @@ public Action:Spawn_Spider(client, health, MaxHealth)
 	}
 	
 	//Setup the datapack with appropriate information
-	WritePackCell(dataPackHandle, ent); //
-	WritePackCell(dataPackHandle, box); //8
+	WritePackCell(dataPackHandle, EntIndexToEntRef(ent)); //
+	WritePackCell(dataPackHandle, EntIndexToEntRef(box)); //8
 	WritePackCell(dataPackHandle, iTeam); //16
 	WritePackFloat(dataPackHandle, 40.0); //24 - The range tolerance
 	WritePackCell(dataPackHandle, client); //32 - Client that spawned it
@@ -350,29 +350,20 @@ public Action:SpiderThink_Timer(Handle:timer, Handle:dataPackHandle)
 	// Set to the beginning and unpack it   //
 	//////////////////////////////////////////
 	ResetPack(dataPackHandle);
-	spider = ReadPackCell(dataPackHandle);
-	box = ReadPackCell(dataPackHandle);
+	spider = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	box = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	spiderTeam = ReadPackCell(dataPackHandle);
 	rangeTolerance = ReadPackFloat(dataPackHandle);
 	spiderOwner = ReadPackCell(dataPackHandle);
 	
 	SetPackPosition(dataPackHandle, 112);
-	flameEntity = ReadPackCell(dataPackHandle);
+	flameEntity = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
 	new owner = GetEntPropEnt(spider, Prop_Data, "m_hOwnerEntity");
 	spiderRollDice(box, owner, dataPackHandle);
 	
-	if(IsValidEntity(flameEntity))
+	if(flameEntity <= 0)
 	{
-		new String:classname[256];
-		GetEdictClassname(flameEntity, classname, sizeof(classname));
-		if (!StrEqual(classname, "info_particle_system", false))
-		{
-			flameEntity = -1;
-			SetPackPosition(dataPackHandle, 112);
-			WritePackCell(dataPackHandle, -1);
-		}
-	}else{
 		flameEntity = -1;
 		SetPackPosition(dataPackHandle, 112);
 		WritePackCell(dataPackHandle, -1);
@@ -453,7 +444,7 @@ public Action:SpiderThink_Timer(Handle:timer, Handle:dataPackHandle)
 	///////////////////////////////
 	
 	//are flames needed?
-	if(flameEntity != -1)
+	if(flameEntity > 0)
 		validateFlames(spider, closestDistance, flameEntity, dataPackHandle);
 	
 	new Float:lastKnownPos[3];
@@ -1397,70 +1388,33 @@ public stopSpiderThinkTimer(Handle:dataPackHandle)
 	//LogToFile(logPath,"stopSpiderThinkTimer -- Entering");
 	
 	ResetPack(dataPackHandle);
-	new spider = ReadPackCell(dataPackHandle);
-	new box = ReadPackCell(dataPackHandle);
+	new spider = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	new box = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	
 	SetPackPosition(dataPackHandle, 112);
-	new flameEntity = ReadPackCell(dataPackHandle);
+	new flameEntity = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
 	if(!GetConVarInt(c_Enabled))
 		return true;
 	
-	if(!IsValidEntity(spider) || !IsValidEntity(box))
+	if(spider <= 0 || box <= 0)
 	{
-		//LogToFile(logPath,"Killing Spider_Think handle! Reason: Invalid Entity");
-		if(IsValidEntity(flameEntity))
+		if(flameEntity > 0)
 		{
-			new String:classname[256];
-			GetEdictClassname(flameEntity, classname, sizeof(classname));
-			if (StrEqual(classname, "info_particle_system", false))
-			{
-				StopSound(spider, SNDCHAN_AUTO, SOUND_FlameLoop);
-				killEntityIn(flameEntity, 0.1);
-				//AcceptEntityInput(flameEntity,"kill");
-			}
+			StopSound(spider, SNDCHAN_AUTO, SOUND_FlameLoop);
+			killEntityIn(flameEntity, 0.1);
 		}
 		
 		return true;
 	}
 	
-	new String:modelname[128];
-	new String:boxmodelname[128];
-	GetEntPropString(spider, Prop_Data, "m_ModelName", modelname, 128);
-	GetEntPropString(box, Prop_Data, "m_ModelName", boxmodelname, 128);
-	
-	if (!StrEqual(modelname, MODEL_SPIDER) && !StrEqual(boxmodelname, MODEL_SPIDERBOX) )
+	if(GetEntProp(spider, Prop_Data, "m_iHealth") <= 0)
 	{
-		if(IsValidEntity(flameEntity))
-		{
-			new String:classname[256];
-			GetEdictClassname(flameEntity, classname, sizeof(classname));
-			if (StrEqual(classname, "info_particle_system", false))
-			{
-				StopSound(spider, SNDCHAN_AUTO, SOUND_FlameLoop);
-				//AcceptEntityInput(flameEntity,"kill");
-				killEntityIn(flameEntity, 0.1);
-			}
-		}
-		
-		//LogToFile(logPath,"Killing Spider_Think handle! Reason: Invalid Model");
-		return true;
-	}
-	
-	if(GetEntProp(spider, Prop_Data, "m_iHealth") <= 0 && StrEqual(modelname, MODEL_SPIDER))
-	{
-		if(IsValidEntity(flameEntity))
-		{
-			new String:classname[256];
-			GetEdictClassname(flameEntity, classname, sizeof(classname));
-			if (StrEqual(classname, "info_particle_system", false))
-			{
-				killEntityIn(flameEntity, 0.1);
-			}
-		}
-		
+		if(flameEntity > 0)
+			killEntityIn(flameEntity, 0.1);
+			
 		StopSound(spider, SNDCHAN_AUTO, SOUND_FlameLoop);
 		StopSound(spider, SNDCHAN_AUTO, SOUND_SpiderTurn);
-		//LogToFile(logPath,"Killing Spider_Think handle! Reason: Spider is dead");
 		return true;
 	}
 	
@@ -1549,7 +1503,7 @@ public findSpiderTouch(spider, closestEntity)
 		
 		//emit Regenerate sound from health pack
 		EmitSoundToAll(SOUND_REGENERATE,closestEntity);
-				
+		
 		//say thanks
 		new spiderSounds = GetEntProp(spider, Prop_Data, "m_PerformanceMode");
 		if(spiderSounds == 1)
@@ -1971,7 +1925,7 @@ public moveSpider(spider, box, spiderTeam, Float:spiderPosition[3], closestEntit
 				tempZAngle[0]  = -50.0;
 			
 			//Create the flames
-			if(flameEntity == -1)
+			if(flameEntity <= 0)
 			{
 				new particle = CreateEntityByName("info_particle_system");
 				if (IsValidEntity(particle))
@@ -1997,7 +1951,7 @@ public moveSpider(spider, box, spiderTeam, Float:spiderPosition[3], closestEntit
 					
 					//SetEntPropEnt(spider, Prop_Data, "m_hOwnerOwnerEntity", particle);
 					SetPackPosition(dataPackHandle, 112);
-					WritePackCell(dataPackHandle, particle);
+					WritePackCell(dataPackHandle, EntIndexToEntRef(particle));
 					
 					EmitSoundToAll(SOUND_FlameLoop,spider);
 				}
@@ -2009,7 +1963,7 @@ public moveSpider(spider, box, spiderTeam, Float:spiderPosition[3], closestEntit
 		}else{
 			//The spider was shooting flames but now the ENEMY is no longer
 			//in sight. So remove the flames particle.
-			if(flameEntity != -1 && IsValidEntity(flameEntity))
+			if(flameEntity > 0)
 			{	
 				EmitSoundToAll(SOUND_FlameEnd,spider);
 				StopSound(spider, SNDCHAN_AUTO, SOUND_FlameLoop);
@@ -2214,7 +2168,7 @@ public filterClosestResults(Handle: dataPackHandle)
 	new whoIsCloser;
 	
 	ResetPack(dataPackHandle);
-	new spider = ReadPackCell(dataPackHandle);
+	new spider = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
 	SetPackPosition(dataPackHandle, 16);
 	spiderTeam = ReadPackCell(dataPackHandle);
@@ -2481,7 +2435,7 @@ AttachSpiderToBack(client, health, maxHealth)
 		return;
 	}
 	
-	client_rolls[client][AWARD_G_SPIDER][1] = ent;
+	client_rolls[client][AWARD_G_SPIDER][1] = EntIndexToEntRef(ent);
 	
 	SetEntityModel(ent, MODEL_SPIDERBACK);
 	
@@ -2540,7 +2494,7 @@ AttachSpiderToBack(client, health, maxHealth)
 	CreateDataTimer(0.1, SpiderOnBack_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	
 	//Setup the datapack with appropriate information
-	WritePackCell(dataPackHandle, ent);   //PackPosition(0);  Spider entity
+	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0);  Spider entity
 	WritePackCell(dataPackHandle, GetTime() + 40);   //PackPosition(8);  Next yell time
 	WritePackCell(dataPackHandle, GetTime());   //PackPosition(16);  spawnedTime
 	
@@ -2560,7 +2514,7 @@ public Action:SpiderOnBack_Timer(Handle:timer, Handle:dataPackHandle)
 	// Set to the beginning and unpack it   //
 	//////////////////////////////////////////
 	ResetPack(dataPackHandle);
-	new spider = ReadPackCell(dataPackHandle);
+	new spider = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new nextYellTime = ReadPackCell(dataPackHandle);
 	//new spawnedTime = ReadPackCell(dataPackHandle);
 	
@@ -2675,18 +2629,10 @@ public Action:SpiderOnBack_Timer(Handle:timer, Handle:dataPackHandle)
 public stop_SpiderOnBack_Timer(Handle:dataPackHandle)
 {	
 	ResetPack(dataPackHandle);
-	new spider = ReadPackCell(dataPackHandle);
+	new spider = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
-	if(!IsValidEntity(spider))
+	if(spider <= 0)
 		return true;
-	
-	new currIndex = GetEntProp(spider, Prop_Data, "m_nModelIndex");
-	
-	if(currIndex != spiderBackIndex)
-	{
-		StopSound(spider, SNDCHAN_AUTO, SOUND_SPIDER_WEE);
-		return true;
-	}
 	
 	new client = GetEntPropEnt(spider, Prop_Data, "m_hOwnerEntity");
 	
@@ -2725,8 +2671,9 @@ public stop_SpiderOnBack_Timer(Handle:dataPackHandle)
 
 public dropSpider(client)
 {
-	new spider = client_rolls[client][AWARD_G_SPIDER][1];
-	if(!IsValidEntity(spider))
+	new spider = EntRefToEntIndex(client_rolls[client][AWARD_G_SPIDER][1]);
+	
+	if(spider <= 0)
 		return;
 		
 	new currIndex = GetEntProp(spider, Prop_Data, "m_nModelIndex");

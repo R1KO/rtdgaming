@@ -82,17 +82,18 @@ public Action:Spawn_JumpPad(client)
 	return Plugin_Continue;
 }
 
-public Action:DoJump(any:client)
+public Action:DoJump(any:client, Float:hforce, Float:vForce)
 {
-	client_rolls[client][AWARD_G_JUMPPAD][2] = 1;
+	if(client < MaxClients)
+		client_rolls[client][AWARD_G_JUMPPAD][2] = 1;
 	
 	// Calculate and apply a new velocity to the player.
 	new Float:speed[3];
 	GetEntPropVector(client, Prop_Data, "m_vecVelocity", speed);
-	speed[0] *= cvHSpeed;
-	speed[1] *= cvHSpeed;
+	speed[0] *= (cvHSpeed * hforce);
+	speed[1] *= (cvHSpeed * hforce);
 	
-	speed[2] = cvVSpeed;
+	speed[2] = (cvVSpeed * vForce);
 	
 	TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
 	
@@ -178,7 +179,7 @@ public Action:Jumppad_Timer(Handle:timer, any:other)
 	GetEntPropVector(other, Prop_Data, "m_vecOrigin", jumpPos);
 	new ownerEntity = GetEntPropEnt(other, Prop_Data, "m_hOwnerEntity");
 	new cflags;
-		
+	
 	for (new i = 1; i <= MaxClients ; i++)
 	{
 		if(!IsClientInGame(i) || !IsPlayerAlive(i))
@@ -204,11 +205,11 @@ public Action:Jumppad_Timer(Handle:timer, any:other)
 			
 			if(FloatAbs(playerPos[0] - jumpPos[0]) < 40.0 && FloatAbs(playerPos[1] - jumpPos[1]) < 40.0 && FloatAbs(playerPos[2] - jumpPos[2]) < 100.0)
 			{
-				DoJump(i);
+				DoJump(i, 1.0, 1.0);
 			}
 		}
 	}
-
+	
 	return Plugin_Continue;
 }
 
