@@ -235,9 +235,6 @@ public Action:SetupTrinketsMenu(client, startAtPage)
 	
 	DisplayMenuAtItem(hCMenu, client, 0, MENU_TIME_FOREVER);
 	
-	if(startAtPage == 0)
-		EmitSoundToClient(client, SOUND_SHOP);
-	
 	return Plugin_Handled;
 }
 
@@ -285,20 +282,16 @@ public fn_TrinketsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						
 						EmitSoundToClient(param1, SOUND_DENY);
 					}
-					
-					StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 				}
 				
 			}
 		}
 		
 		case MenuAction_Cancel: {
-			StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 		}
 		
 		case MenuAction_End: {
 			CloseHandle(menu);
-			StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 		}
 	}
 }
@@ -541,7 +534,6 @@ public fn_TrinketsLoadOutHandler(Handle:menu, MenuAction:action, param1, param2)
 		
 		case MenuAction_End: {
 			CloseHandle(menu);
-			StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 		}
 	}
 }
@@ -699,7 +691,6 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				//trade trinket
 				case 5:
 				{
-					StopSound(param1, SNDCHAN_AUTO, SOUND_SHOP);
 					askAmountToTrade(param1, selectedSlot);
 				}
 			}

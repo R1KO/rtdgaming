@@ -453,6 +453,7 @@
 #define SOUND_JUMP01	"rtdgaming/jump01.wav"
 #define SOUND_JUMP02	"rtdgaming/jump02.wav"
 #define SOUND_JUMP03	"rtdgaming/jump03.wav"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 
