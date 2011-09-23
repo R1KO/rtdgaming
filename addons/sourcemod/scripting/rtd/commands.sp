@@ -310,7 +310,14 @@ public Action:Command_rtd(client, args)
 	if((StrEqual("trinket", strArgs[0], false) || StrEqual("trinkets", strArgs[0], false) || StrEqual("!trinket", strArgs[0], false) || StrEqual("/trinkets", strArgs[0], false) || StrEqual("!trinkets", strArgs[0], false) || StrEqual("/trinket", strArgs[0], false) || StrEqual("trinks", strArgs[0], false) || StrEqual("trinkts", strArgs[0], false) || StrEqual("trinkt", strArgs[0], false)) && StrEqual("", strArgs[1], false))
 	{
 		if(!rtd_classic)
-			SetupTrinketsMenu(client, 0);
+		{
+			if(rtd_trinket_enabled == 1)
+			{
+				SetupTrinketsMenu(client, 0);
+			}else{
+				PrintCenterText(client, "Trinkets are DISABLED!");
+			}
+		}
 		
 		return Plugin_Handled;
 	}

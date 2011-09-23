@@ -274,8 +274,6 @@ public InitializeClientonDB(client)
 	//////////////////
 	//Format(buffer, sizeof(buffer), "SELECT * FROM Trinkets WHERE STEAMID = '%s'", ConUsrSteamID);
 	Format(buffer, sizeof(buffer), "SELECT * FROM trinkets_v2 WHERE STEAMID = '%s'", ConUsrSteamID);
-	
-	//LogMessage("InitializeClientonDB(client): %s", buffer);
 	SQL_TQuery(db, LoadTrinkets_Upgraded_SQL, buffer, GetClientUserId(client));
 }
 
@@ -473,6 +471,9 @@ public LoadTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 				
 				SetHudTextParams(0.42, 0.22, 5.0, 250, 250, 210, 255);
 				ShowHudText(client, HudMsg3, "Trinkets loaded!");
+				
+				if(foundTrinket >= 20)
+					return;
 			}
 		}
 		
@@ -483,12 +484,6 @@ public LoadTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 
 public SaveTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[], any:tempStorage)
 {
-	new foundTrinket;
-	new rowIdent;
-	
-	//Just for trinkets
-	//new client = data;
-	
 	if(tempStorage == INVALID_HANDLE)
 	{
 		LogError("Error in SaveTrinkets_Upgraded_SQL: INVALID_HANDLE");
@@ -496,29 +491,31 @@ public SaveTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 	}
 	
 	ResetPack(tempStorage);
+
+	new Handle: tmp_TrinketTier	= CreateArray(1, 20);
+	new Handle: tmp_TrinketExpire	= CreateArray(21, 20);
+	new Handle: tmp_TrinketEquipped	= CreateArray(1, 20);
+	new Handle: tmp_Trinket_DB_ID	= CreateArray(1, 20);
+	new Handle: tmp_TrinketUnique	= CreateArray(32, 20);
 	
 	new String:tmp_SteamID[32];
-	new String:tmp_TrinketUnique[21][32];
-	new tmp_TrinketTier[21];
-	new tmp_TrinketExpire[21];
-	new tmp_TrinketEquipped[21];
-	new tmp_Trinket_DB_ID[21];
-
+	new String:tempTU[32];
 	ReadPackString(tempStorage, tmp_SteamID, 32);
 	
 	for(new j = 0; j < 20; j++)
 	{
-		tmp_Trinket_DB_ID[j] = ReadPackCell(tempStorage);
+		SetArrayCell(tmp_Trinket_DB_ID, j, ReadPackCell(tempStorage));
 		
-		ReadPackString(tempStorage, tmp_TrinketUnique[j], 32);
+		ReadPackString(tempStorage, tempTU, 32);
+		SetArrayString(tmp_TrinketUnique,j, tempTU);
 		
-		tmp_TrinketTier[j] = ReadPackCell(tempStorage);
-		tmp_TrinketExpire[j] = ReadPackCell(tempStorage);
-		tmp_TrinketEquipped[j] = ReadPackCell(tempStorage);
+		SetArrayCell(tmp_TrinketTier, j, ReadPackCell(tempStorage));
+		SetArrayCell(tmp_TrinketExpire, j, ReadPackCell(tempStorage));
+		SetArrayCell(tmp_TrinketEquipped, j, ReadPackCell(tempStorage));
 	}
 	
 	CloseHandle(tempStorage);
-	
+
 	
 	if (hndl == INVALID_HANDLE)
 	{
@@ -530,12 +527,15 @@ public SaveTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 			/*insert user*/
 			//will insert 20 blank rows
 			new String:buffer[255];
+			new String:tempUnique[32];
 			
 			for(new j = 0; j < 20; j++)
 			{
-				if(!StrEqual(tmp_TrinketUnique[j], "", false))
+				GetArrayString(tmp_TrinketUnique, j, tempUnique, 32);
+				
+				if(!StrEqual(tempUnique, "", false))
 				{
-					Format(buffer, sizeof(buffer), "INSERT INTO trinkets_v2 (`STEAMID`, `TRINKET`, `TIER`, `EXPIRE`, `EQUIPPED`) VALUES ('%s', '%s', '%i', '%i', '%i')", tmp_SteamID, tmp_TrinketUnique[j], tmp_TrinketTier[j], tmp_TrinketExpire[j], tmp_TrinketEquipped[j]);
+					Format(buffer, sizeof(buffer), "INSERT INTO trinkets_v2 (`STEAMID`, `TRINKET`, `TIER`, `EXPIRE`, `EQUIPPED`) VALUES ('%s', '%s', '%i', '%i', '%i')", tmp_SteamID, tempUnique, GetArrayCell(tmp_TrinketTier, j), GetArrayCell(tmp_TrinketExpire, j), GetArrayCell(tmp_TrinketEquipped, j));
 					SQL_TQuery(db, SQLErrorCheckCallback, buffer);
 				}
 				
@@ -543,59 +543,49 @@ public SaveTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 		}
 		else
 		{
-			while (SQL_FetchRow(hndl))
-			{
-				new String:buffer[255];
-				new found = -1;
-				
-				rowIdent = SQL_FetchInt(hndl,0);
-				
-				if(tmp_Trinket_DB_ID[foundTrinket] != 0)
-				{
-					for(new j = 0; j < 20; j++)
-					{
-						if(!StrEqual(tmp_TrinketUnique[j], "", false))
-						{
-							if(rowIdent == tmp_Trinket_DB_ID[j])
-							{
-								found = j;
-								break;
-							}
-						}
-					}
-				}
-				
-				
-				
-				//here we only save those matched ids
-				if(found > -1)
-				{
-					//id already exists
-					Format(buffer, sizeof(buffer), "UPDATE `trinkets_v2` SET `TRINKET` = '%s', `TIER` = '%i', `EXPIRE` = '%i', `EQUIPPED` = '%i' WHERE `ID` = '%i'", tmp_TrinketUnique[found], tmp_TrinketTier[found], tmp_TrinketExpire[found], tmp_TrinketEquipped[found], rowIdent);
-					tmp_TrinketEquipped[found] = -100;
-				}
-				
-				SQL_TQuery(db, SQLErrorCheckCallback, buffer);
-				
-				foundTrinket ++;
-			}
-			
+			///////////////////
+			// SAVE TRINKETS //
+			///////////////////
 			new String:buffer[255];
+			new String:tempUnique[32];
+			new j;
 			
-			//here we save the extras
-			for(new j = 0; j < 20; j++)
+			//search the temp until it finds a matching ID
+			for(j = 0; j < GetArraySize(tmp_Trinket_DB_ID); j++)
 			{
-				if(!StrEqual(tmp_TrinketUnique[j], "", false))
+				GetArrayString(tmp_TrinketUnique, j, tempUnique, 32);
+				
+				if(!StrEqual(tempUnique, "", false))
 				{
-					if(tmp_TrinketEquipped[j] != -100 && tmp_Trinket_DB_ID[j] == 0)
+					if(GetArrayCell(tmp_Trinket_DB_ID, j) > 0)
 					{
-						Format(buffer, sizeof(buffer), "INSERT INTO trinkets_v2 (`STEAMID`, `TRINKET`, `TIER`, `EXPIRE`, `EQUIPPED`) VALUES ('%s', '%s', '%i', '%i', '%i')", tmp_SteamID, tmp_TrinketUnique[j], tmp_TrinketTier[j], tmp_TrinketExpire[j], tmp_TrinketEquipped[j]);
+						/////////////////////////////
+						// SAVE TRINKETS WITH IDS  //
+						/////////////////////////////
+						//PrintToServer("Updated %s for (%s) | ID: %i", tmp_SteamID, tempUnique, GetArrayCell(tmp_Trinket_DB_ID, j));
+						
+						Format(buffer, sizeof(buffer), "UPDATE `trinkets_v2` SET `TRINKET` = '%s', `TIER` = '%i', `EXPIRE` = '%i', `EQUIPPED` = '%i' WHERE `ID` = '%i'", tempUnique, GetArrayCell(tmp_TrinketTier, j), GetArrayCell(tmp_TrinketExpire, j), GetArrayCell(tmp_TrinketEquipped, j), GetArrayCell(tmp_Trinket_DB_ID, j));
+						SQL_TQuery(db, SQLErrorCheckCallback, buffer);
+						
+					}else{
+						/////////////////////////////////////////
+						// SAVE TRINKETS NOT FOUND IN DATABASE //
+						/////////////////////////////////////////
+						//PrintToServer("Inserting %s for (%s) | ID: %i", tmp_SteamID, tempUnique, GetArrayCell(tmp_Trinket_DB_ID, j));
+						
+						Format(buffer, sizeof(buffer), "INSERT INTO trinkets_v2 (`STEAMID`, `TRINKET`, `TIER`, `EXPIRE`, `EQUIPPED`) VALUES ('%s', '%s', '%i', '%i', '%i')", tmp_SteamID, tempUnique, GetArrayCell(tmp_TrinketTier, j), GetArrayCell(tmp_TrinketExpire, j), GetArrayCell(tmp_TrinketEquipped, j));
 						SQL_TQuery(db, SQLErrorCheckCallback, buffer);
 					}
 				}
 			}
 		}
 	}
+	
+	CloseHandle(tmp_TrinketTier);
+	CloseHandle(tmp_TrinketExpire);
+	CloseHandle(tmp_TrinketEquipped);
+	CloseHandle(tmp_Trinket_DB_ID);
+	CloseHandle(tmp_TrinketUnique);
 	
 	return;
 }
