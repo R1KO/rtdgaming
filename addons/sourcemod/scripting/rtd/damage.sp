@@ -619,7 +619,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 					
 					case 3:
 					{
-						TF2_StunPlayer(client, 2.5, 0.0, TF_STUNFLAGS_NORMALBONK, 0);
+						TF2_StunPlayer(client, 1.0, 0.0, TF_STUNFLAGS_NORMALBONK, 0);
 					}
 				}
 			}

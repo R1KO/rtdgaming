@@ -45,7 +45,7 @@ rtd_load_cvars()
 	c_TrinketExtPrice				= CreateConVar("sm_rtd_trinketextprice",				"50",		"<0-x> Cost to extend trinkets for 7 days");
 	c_TrinketReRollPrice			= CreateConVar("sm_rtd_trinketreroll_price",			"300",		"<0-x> Cost to change variant on trinket");
 	
-	
+	HookConVarChange(c_Enabled,				ConVarChange_RTD);
 	HookConVarChange(c_Dice_MinPlayers,				ConVarChange_RTD);
 	HookConVarChange(c_Dice_RespawnTime,			ConVarChange_RTD);
 	HookConVarChange(c_Dice_RareSpawn,				ConVarChange_RTD);
