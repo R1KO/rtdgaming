@@ -1135,7 +1135,7 @@ public smeltTrinkets(client)
 	}
 	
 	Format(chatMessage, sizeof(chatMessage), "\x03%s\x04 smelted: (\x03%s\x04) \x01%s \x04with (\x03%s\x04) \x01%s", name, trinket_TierID[RTD_TrinketIndex[client][tempSlot1]][RTD_TrinketTier[client][tempSlot1]], trinket_Title[RTD_TrinketIndex[client][tempSlot1]], trinket_TierID[RTD_TrinketIndex[client][tempSlot2]][RTD_TrinketTier[client][tempSlot2]], trinket_Title[RTD_TrinketIndex[client][tempSlot2]]);
-	PrintToChat(client, chatMessage);
+	PrintToChatSome(chatMessage, client);
 	
 	eraseTrinket(client, tempSlot1);
 	eraseTrinket(client, tempSlot2);
@@ -1511,6 +1511,8 @@ public eraseTrinket(client, slot)
 		new String:buffer[255];
 		Format(buffer, sizeof(buffer), "DELETE FROM `trinkets_v2` WHERE ID = '%i'", RTD_Trinket_DB_ID[client][slot]);
 		SQL_TQuery(db, SQLErrorCheckCallback, buffer);
+		
+		//LogError("%s", buffer);
 	}
 	
 	
