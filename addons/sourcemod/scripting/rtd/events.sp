@@ -834,6 +834,11 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 					}
 				}
 			}
+			
+			if(RTD_TrinketActive[attacker][TRINKET_BLOODTHIRSTER] && !(death_ringer & 32))
+			{
+				addHealthPercentage(attacker, float(RTD_TrinketBonus[attacker][TRINKET_BLOODTHIRSTER])/100.0, true);
+			}
 			//AttachTempParticle(client,"finishline_confetti",2.0, false,"",0.0, false);
 		}
 	}
@@ -953,7 +958,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 					if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
 						continue;
 					
-					if(distance > 200.0)
+					if(distance > 300.0)
 						continue;
 					
 					SetEntDataVector(i,BaseVelocityOffset,finalvec,true);

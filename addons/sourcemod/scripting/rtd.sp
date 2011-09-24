@@ -441,6 +441,31 @@ public Action:OnPlayerRunCmd(client, &buttons, &impulse, Float:vel[3], Float:ang
 			CreateTimer(0.0, doSuperJump, GetClientUserId(client));
 		}
 	}
+	
+	if(RTD_TrinketActive[client][TRINKET_AIRDASH])
+	{
+		if(buttons & IN_JUMP)
+		{
+			if(TF2_GetPlayerClass(client) != TFClass_Scout && wasJumping[client] == 0)
+			{	
+				if((GetEntityFlags(client) & FL_ONGROUND))
+				{
+					RTD_TrinketMisc[client][TRINKET_AIRDASH] = 1;
+					wasJumping[client] = 1;
+					//CreateTimer(0.0, doAirDash, GetClientUserId(client));
+				}else
+				{
+					if(RTD_TrinketMisc[client][TRINKET_AIRDASH] == 1 && wasJumping[client] == 0)
+						CreateTimer(0.0, doAirDash, GetClientUserId(client));
+				}
+			}
+		}else{
+			wasJumping[client] = 0;
+			
+			if(GetEntityFlags(client) & FL_ONGROUND)
+				RTD_TrinketMisc[client][TRINKET_AIRDASH] = 0;
+		}
+	}
 }
 
 //Just a convenience method

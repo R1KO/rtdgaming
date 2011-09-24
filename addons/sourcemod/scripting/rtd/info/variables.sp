@@ -381,3 +381,4 @@ new smelting[cMaxClients][3];
 new donate_Amount[cMaxClients];
 new String:donate_SteamID[cMaxClients][64];
 new timeExpireScare[cMaxClients];
+new wasJumping[cMaxClients];

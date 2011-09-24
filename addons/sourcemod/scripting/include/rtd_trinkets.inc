@@ -17,7 +17,7 @@
 //trinkets are hard coded to have a database maximum of 50.
 //
 //MAX_TRINKETS represents the number of trinkets available
-#define MAX_TRINKETS		9
+#define MAX_TRINKETS		11
 
 #define TRINKET_LADYLUCK			0
 #define TRINKET_DICEMINER			1
@@ -28,6 +28,8 @@
 #define TRINKET_QUICKDRAW			6
 #define TRINKET_HEAVYHITTER		7
 #define TRINKET_SUPERJUMP			8
+#define TRINKET_BLOODTHIRSTER	9
+#define TRINKET_AIRDASH			10
 
 new String:trinket_id[MAX_TRINKETS][32]; //roll identifiers that match up with ;
 
@@ -45,5 +47,7 @@ stock SetupTrinket_IDs()
 	Format(trinket_id[TRINKET_EXPLOSIVEDEATH], 	32, "EXPLOSIVEDEATH");
 	Format(trinket_id[TRINKET_QUICKDRAW], 		32, "QUICKDRAW");
 	Format(trinket_id[TRINKET_HEAVYHITTER], 	32, "HEAVYHITTER");
-	Format(trinket_id[TRINKET_SUPERJUMP], 			32, "SUPERJUMP");
+	Format(trinket_id[TRINKET_SUPERJUMP], 		32, "SUPERJUMP");
+	Format(trinket_id[TRINKET_BLOODTHIRSTER], 	32, "BLOODTHIRSTER");
+	Format(trinket_id[TRINKET_AIRDASH], 			32, "AIRDASH");
 }
