@@ -628,6 +628,9 @@ public Action:GenericTimer(Handle:timer)
 				{	
 					if(RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] < GetTime())
 					{
+						timeExpireScare[i] = GetTime() + RTD_TrinketBonus[i][TRINKET_SCARYTAUNT];
+						addHealthPercentage(i, 0.2, true); //add 20% health
+						
 						AttachTempParticle(i,"superrare_ghosts",5.0, false,"",20.0, false);
 						
 						RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] = GetTime() + 30;
@@ -808,6 +811,38 @@ public Action:doSuperJump(Handle:timer, any:clientUserID)
 		
 		RTD_TrinketMisc[client][TRINKET_SUPERJUMP] = 0;
 	}
+	
+	return Plugin_Stop;
+}
+
+public Action:doAirDash(Handle:timer, any:clientUserID)
+{
+	new client = GetClientOfUserId(clientUserID);
+	
+	if(client < 1)
+		return Plugin_Stop;
+	
+	if (!IsClientInGame(client) || !IsPlayerAlive(client))
+		return Plugin_Stop;
+	
+	if(GetEntityFlags(client) & FL_ONGROUND)
+		return Plugin_Stop;
+	
+	new Float:speed[3];
+	new Float:oldZ;
+	GetEntPropVector(client, Prop_Data, "m_vecVelocity", speed);
+	oldZ = speed[2];
+	ScaleVector(speed, 0.8);
+	speed[2] = oldZ;
+	TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
+	
+	new Float:finalvec[3];
+	finalvec[2] = float(RTD_TrinketBonus[client][TRINKET_AIRDASH]);
+	SetEntDataVector(client,BaseVelocityOffset,finalvec,true);
+	
+	AttachFastParticle(client, "rockettrail", 1.0);
+	
+	RTD_TrinketMisc[client][TRINKET_AIRDASH] = 0;
 	
 	return Plugin_Stop;
 }

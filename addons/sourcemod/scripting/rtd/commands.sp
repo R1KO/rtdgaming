@@ -369,7 +369,7 @@ public Action:Command_rtd(client, args)
 		}
 	}
 	
-	if(StrEqual("rtdrank", strArgs[0], false) || StrEqual("rtdstats", strArgs[0], false) || StrEqual("rtdplace", strArgs[0], false))
+	if(StrEqual("rtdrank", strArgs[0], false) || StrEqual("rtdstats", strArgs[0], false) || StrEqual("rtdplace", strArgs[0], false) || StrEqual("rtdstat", strArgs[0], false))
 	{
 		if(StrEqual("", strArgs[1], false))
 			showStatsPage(client);
