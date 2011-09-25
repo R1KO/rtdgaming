@@ -663,12 +663,12 @@ public Action:GenericTimer(Handle:timer)
 								GetClientAbsOrigin(j,enemyPos);
 								distance = GetVectorDistance( playerPos, enemyPos);
 								
-								if(distance < 250.0)
+								if(distance < 400.0)
 								{
 									stunFlag = GetEntData(j, m_iStunFlags);
 									
 									//scare the player
-									if(stunFlag != TF_STUNFLAGS_GHOSTSCARE)
+									if(stunFlag != TF_STUNFLAGS_LOSERSTATE)
 									{
 										if(isVisibileCheck(i, j))
 										{
@@ -683,8 +683,9 @@ public Action:GenericTimer(Handle:timer)
 											Format(playsound, sizeof(playsound), "vo/halloween_boo%i.wav", rndNum);
 											EmitSoundToAll(playsound,i);
 											
-											TF2_StunPlayer(j,float(RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]), 0.0, TF_STUNFLAGS_GHOSTSCARE, 0);
-											
+											TF2_StunPlayer(j,float(RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]), 0.0, TF_STUNFLAGS_LOSERSTATE, 0);
+											ResetClientSpeed(j);
+											SetEntData(j, m_iMovementStunAmount, 0 );
 											
 											PrintCenterText(j, "%s scared you for %i seconds!", name, RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]);
 										}

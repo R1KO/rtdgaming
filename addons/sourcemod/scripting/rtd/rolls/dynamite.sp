@@ -62,7 +62,13 @@ public Action:SpawnAndAttachClientDynamite(client, originalEntity)
 }
 
 public Action:SpawnAndAttachDynamite(client)
-{	
+{
+	if(!IsClientInGame(client))
+		return Plugin_Handled;
+	
+	if(!IsPlayerAlive(client))
+		return Plugin_Handled;
+	
 	new ent = CreateEntityByName("prop_dynamic_override");
 	if ( ent == -1 )
 	{

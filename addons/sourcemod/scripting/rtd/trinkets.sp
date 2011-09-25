@@ -239,20 +239,7 @@ public Action:SetupTrinketsMenu(client, startAtPage)
 }
 
 public fn_TrinketsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
-{
-	if(param1 > 0)
-	{
-		if(IsClientInGame(param1))
-		{
-			if(!IsPlayerAlive(param1))
-			{
-				PrintCenterText(param1, "You must be alive and in game!");
-				PrintToChat(param1, "You must be alive and in game!");
-				action = MenuAction_Cancel;
-			}
-		}
-	}
-	
+{	
 	switch (action) 
 	{
 		case MenuAction_Select: 
@@ -496,20 +483,7 @@ public Action:TrinketsLoadoutMenu(client, startAtPage)
 }
 
 public fn_TrinketsLoadOutHandler(Handle:menu, MenuAction:action, param1, param2)
-{
-	if(param1 > 0)
-	{
-		if(IsClientInGame(param1))
-		{
-			if(!IsPlayerAlive(param1))
-			{
-				PrintCenterText(param1, "You must be alive and in game!");
-				PrintToChat(param1, "You must be alive and in game!");
-				action = MenuAction_Cancel;
-			}
-		}
-	}
-	
+{	
 	switch (action) 
 	{
 		case MenuAction_Select: 
@@ -1249,7 +1223,9 @@ public equipActiveTrinket(client)
 	if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
 	{
 		RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH] = 0;
-		SpawnAndAttachDynamite(client);
+		
+		if(IsPlayerAlive(client))
+			SpawnAndAttachDynamite(client);
 	}
 }
 
