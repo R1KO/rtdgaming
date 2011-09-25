@@ -357,7 +357,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		
 		if(timeExpireScare[client] > GetTime())
 		{
-			damage *= 0.4;
+			damage *= 0.7;
 			
 			if(damagetype & 2050)
 			{
