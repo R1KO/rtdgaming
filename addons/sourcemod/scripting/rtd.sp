@@ -23,8 +23,7 @@
 #include <rtd_trinkets>
 
 //Plugin version is the date  :)
-#define PLUGIN_VERSION 			"03-11-2011 $Rev: 691 $" //DO NOT MODIFY $REV *$ - Commit this file to auto-update
-#define DBVERSION 7
+#define PLUGIN_VERSION 			"$Rev: 691 $" //DO NOT MODIFY $REV *$ - Commit this file to auto-update
 
 // Include files to keep code sorted
 #include "rtd/info/defines.sp"
