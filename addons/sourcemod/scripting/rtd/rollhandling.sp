@@ -712,6 +712,7 @@ GivePlayerEffect(client, award, cost)
 			case AWARD_G_ANGELIC:
 			{
 			}
+			
 		}
 	}else{ // Bad Command
 		//Let's store how many bad rolls the user has received 

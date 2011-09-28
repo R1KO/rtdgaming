@@ -357,18 +357,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		
 		if(timeExpireScare[client] > GetTime())
 		{
-			damage *= 0.7;
-			
-			if(damagetype & 2050)
-			{
-				damage *= 0.0;
-				PrintCenterText(attacker, "Player can't be taunt killed while scared!");
-				
-				//Blast(client, attacker);
-				//new Float:finalvec[3];
-				//finalvec[2]=GetRandomFloat(300.0, 600.0);
-				//SetEntDataVector(client,BaseVelocityOffset,finalvec,true);
-			}
+			damage *= 0.6;
 			
 			//PrintToChatAll("damagetype %i", damagetype);
 		}
