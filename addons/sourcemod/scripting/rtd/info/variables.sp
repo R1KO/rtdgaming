@@ -225,7 +225,6 @@ new cloudIndex;
 new cloud02Index;
 new diglettModelIndex;
 new dugTrioModelIndex;
-new pitchMachineModelIndex[2];
 new crapModelIndex;
 new sawModelIndex;
 new cowModelIndex;
@@ -326,8 +325,6 @@ new bool:g_bBlockDeath,
 	g_ScrambleVoted[cMaxClients];
 new bool:g_bSaveRollsOnDeath;
 new ScrambleMultiplier = 1;
-
-new g_DDRDecal;
 
 // Timer for blocking overlay command (cheat flags)
 new Handle:overlayTimer = INVALID_HANDLE;

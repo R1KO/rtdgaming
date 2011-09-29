@@ -3,10 +3,6 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/white.vtf");
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/white.vmt");
 	
-	//DDR Pad
-	//AddFileToDownloadsTable("materials/rtdgaming/ddr2.vmt");
-	//AddFileToDownloadsTable("materials/rtdgaming/ddr2.vtf");
-	
 	//DiceDeposits
 	AddFileToDownloadsTable("materials/models/rtdgaming/dicedeposit/crystals_blue.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/dicedeposit/dice.vmt");
@@ -151,15 +147,11 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("maps/cp_gorge_particles.txt");
 	AddFileToDownloadsTable("maps/cp_gravelpit_particles.txt");
 	AddFileToDownloadsTable("maps/ctf_2fort_particles.txt");
-	AddFileToDownloadsTable("maps/ctf_doublecross_particles.txt");
 	AddFileToDownloadsTable("maps/pl_badwater_particles.txt");
 	AddFileToDownloadsTable("maps/pl_goldrush_particles.txt");
-	AddFileToDownloadsTable("maps/cp_freight_final_particles.txt");
 	AddFileToDownloadsTable("maps/pl_thundermountain_particles.txt");
 	AddFileToDownloadsTable("maps/pl_upward_particles.txt");
 	AddFileToDownloadsTable("maps/plr_hightower_particles.txt");
-	AddFileToDownloadsTable("maps/cp_mountainlab_particles.txt");
-	AddFileToDownloadsTable("maps/cp_manor_event_particles.txt");
 	
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/beamgun_blue.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/beamgun_blue_glass.vmt");
@@ -333,101 +325,6 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("sound/diglett/rock2.wav");
 	AddFileToDownloadsTable("sound/diglett/rock3.wav");
 	AddFileToDownloadsTable("sound/diglett/triotriotrio.mp3");
-	
-	
-	
-	//Pitching Machine
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine/pitchmachine.mdl");
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine/pitchmachine.dx80.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine/pitchmachine.dx90.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine/pitchmachine.sw.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine/pitchmachine.vvd");
-	
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/leg.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/leg.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/baseball_sheet.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/knob.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/knob.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/launcher.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/launcher.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/launch_wheel.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/launch_wheel.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/legs_base.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/legs_base.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/leg_adjustment.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/leg_adjustment.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/leg_adjustment_turn.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/leg_adjustment_turn.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/loader.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/loader.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/loader_support.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/loader_support.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/loader_tube.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/loader_tube.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/main_plate_uvw.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/main_plate_uvw.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/speed_adjustment01.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/speed_adjustment01.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/speed_adjustment02.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/speed_adjustment02.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/switch01.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/switch01.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/switch_base.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/switch_base.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/wheel_mount.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/wheel_mount.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/wire.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine/wire.vtf");
-	
-	
-	//Pitching Machine BLU
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine_blu/pitchmachine.mdl");
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine_blu/pitchmachine.dx80.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine_blu/pitchmachine.dx90.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine_blu/pitchmachine.sw.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/pitchmachine_blu/pitchmachine.vvd");
-	
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/ammo_crate.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/ammo_crate.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/ammo_support01.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/ammo_support01.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/ammo_support02.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/ammo_support02.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/baseball_sheet.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/knob.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/knob.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/latch.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/latch.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/launcher.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/launcher.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/launch_wheel.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/launch_wheel.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/leg.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/leg.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/legs_base.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/legs_base.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/leg_adjustment.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/leg_adjustment.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/leg_adjustment_turn.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/leg_adjustment_turn.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/loader.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/loader.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/loader_support.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/loader_support.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/loader_tube.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/loader_tube.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/main_plate_uvw.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/main_plate_uvw.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/speed_adjustment01.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/speed_adjustment01.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/speed_adjustment02.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/speed_adjustment02.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/switch_base.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/switch_base.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/wheel_mount.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/wheel_mount.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/wire.vmt");
-	AddFileToDownloadsTable("materials/models/rtdgaming/pitchmachine_blu/wire.vtf");
 	
 	//Saw Blade
 	AddFileToDownloadsTable("models/rtdgaming/saw_blade/saw_blade.mdl");

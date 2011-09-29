@@ -120,10 +120,6 @@ public bool:UnAcceptable(client, award)
 	if(award == AWARD_G_BACKPACK && client_rolls[client][AWARD_G_SPIDER][1] != 0) return true;
 	if(award == AWARD_G_BACKPACK && client_rolls[client][AWARD_G_BLIZZARD][1] != 0) return true;
 	
-	if(award == AWARD_G_MARKEDMURDERER
-		&& (gMarkedMurderer[4] || (gMarkedMurderer[0] + MARKED_MURDERER_COOLDOWN > GetTime())))
-		return true;
-	
 	///////////////////////////////////////////////////////
 	//check entity limits for resource intensive rolls   //
 	///////////////////////////////////////////////////////
@@ -348,16 +344,9 @@ GivePlayerEffect(client, award, cost)
 		{		
 			case AWARD_G_INSTAPORTER:
 				centerHudText(client, "Place the entrance of your teleporter somewhere.", 2.0, 5.0, HudMsg3, 0.75);
-				
-			case AWARD_G_MARKEDMURDERER:
-				Queue_MarkedMurderer(client);
 		
 			case AWARD_G_YOSHI:
 				Make_Yoshi(client);
-			
-			case AWARD_G_TAUNTTRAP:
-			{
-			}
 		
 			case AWARD_G_HEARTSAPLENTY:
 			{
@@ -631,9 +620,6 @@ GivePlayerEffect(client, award, cost)
 			{
 			}
 			
-			case AWARD_G_PITCHMACHINE:
-			{
-			}
 			case AWARD_G_METALMAN:
 				Give_MetalMan(client);
 			
@@ -887,9 +873,6 @@ public Action:Timer_Rolls(Handle:timer, Handle:dataPackHandle)
 		
 		switch(award)
 		{	
-			case AWARD_G_MARKEDMURDERER:
-				Remove_MarkedMurderer();
-				
 			case AWARD_G_YOSHI:
 				Remove_Yoshi(client);
 		

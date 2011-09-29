@@ -233,14 +233,6 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 				}else{
 					Format(message, sizeof(message), "Enemy Jarate Cloud");
 				}
-			}else if(lookingAtModelIndex == pitchMachineModelIndex[0] || lookingAtModelIndex == pitchMachineModelIndex[1])
-			{
-				if(objectTeam == iTeam)
-				{
-					Format(message, sizeof(message), "Friendly Pitching Machine");
-				}else{
-					Format(message, sizeof(message), "Enemy Pitching Machine");
-				}
 			}else if(lookingAtModelIndex == sawModelIndex)
 			{
 				if(objectTeam == iTeam)

@@ -222,20 +222,6 @@ public Action:deleteRTDEntities()
 	{	
 		new currIndex = GetEntProp(ent, Prop_Data, "m_nModelIndex");
 		
-		if(pitchMachineModelIndex[0] == currIndex)
-		{
-			killEntityIn(ent, 2.0);
-			StopSound(ent, SNDCHAN_AUTO, SOUND_PITCHMACHINE_HUM);
-			continue;
-		}
-		
-		if(pitchMachineModelIndex[1] == currIndex)
-		{
-			killEntityIn(ent, 2.0);
-			StopSound(ent, SNDCHAN_AUTO, SOUND_PITCHMACHINE_HUM);
-			continue;
-		}
-		
 		if(currIndex == mineModelIndex)
 		{
 			killEntityIn(ent, 2.0); 
@@ -704,4 +690,8 @@ public amountOfCows()
 	}
 	
 	return numCows;
+}
+
+public bool:TraceEntityFilterPlayer(entity, contentsMask) {
+ 	return entity > MaxClients;
 }

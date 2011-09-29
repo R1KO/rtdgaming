@@ -341,21 +341,11 @@
 #define SOUND_RUMBLE04					"diglett/rock3.wav"
 #define SOUND_EVOLVE					"diglett/evolution.wav"
 
-#define MODEL_PITCHMACHINE				"models/rtdgaming/pitchmachine/pitchmachine.mdl"
-#define MODEL_PITCHMACHINE_BLU			"models/rtdgaming/pitchmachine_blu/pitchmachine.mdl"
-#define PROJECTILE_BALL					"models/weapons/w_models/w_baseball.mdl"
-#define SOUND_PITCHMACHINE_HUM			"ambient/machine_hum2.wav"
-#define SOUND_PITCHMACHINE_HIT01		"weapons/bow_shoot.wav"
-#define SOUND_PITCHMACHINE_HIT02		"weapons/bow_shoot.wav"
-
-#define SOUND_PITCHMACHINE_STUN			"player/pl_impact_stun.wav"
-
 #define SOUND_COUGH_01		"ambient/voices/cough1.wav"
 #define SOUND_COUGH_02		"ambient/voices/cough2.wav"
 #define SOUND_COUGH_03		"ambient/voices/cough3.wav"
 #define SOUND_COUGH_04		"ambient/voices/cough4.wav"
 
-//#define MODEL_TREX				"models/Dinosaurs/trex.mdl"
 #define MODEL_SAW				"models/rtdgaming/saw_blade/saw_blade.mdl"
 #define SOUND_SAW				"ambient/sawblade.wav"
 #define SOUND_SAW_HIT			"ambient/sawblade_impact1.wav"

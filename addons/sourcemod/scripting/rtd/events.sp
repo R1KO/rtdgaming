@@ -7,10 +7,8 @@
 #include <regex>
 #include <rtd_rollinfo>
 #include <tf2>
- //Quick hack
- #include "rtd/rolls/markedmurderer.sp"
  
- // if the plugin was loaded late we have a bunch of initialization that needs to be done
+// if the plugin was loaded late we have a bunch of initialization that needs to be done
 public APLRes:AskPluginLoad2(Handle:hPlugin, bool:isAfterMapLoaded, String:error[], err_max)
 {
 	lateLoaded = isAfterMapLoaded;
@@ -423,9 +421,6 @@ public Action:Event_RoundWin(Handle:event, const String:name[], bool:dontBroadca
 	new winningTeam = GetEventInt(event, "team");
 	tf2_WinningTeam = winningTeam;
 	
-	//Remove marked murderer if it's active
-	Remove_MarkedMurderer();
-	
 	//Players with more than 200 Dice have round end immunity
 	
 	//Remove SlowCubes, Telespheres, Ice Patches from the battlefield
@@ -809,7 +804,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	new death_ringer = GetEventInt(event, "death_flags");
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
-	new assister = GetClientOfUserId(GetEventInt(event, "assister"));
+	//new assister = GetClientOfUserId(GetEventInt(event, "assister"));
 	
 	lastAttackerOnPlayer[client] = attacker;
 	
@@ -847,23 +842,6 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	
 	if(death_ringer & 32)
 		return Plugin_Continue;
-	
-	//If someone currently has marked murderer
-	if (gMarkedMurderer[4]) {
-		new bool:clientIsAttacker = client == attacker;
-		if (client_rolls[attacker][AWARD_G_MARKEDMURDERER][0] && !clientIsAttacker) {
-			gMarkedMurderer[3]++;
-			Satisfied_MarkedMurderer(assister);
-		} else if (client_rolls[client][AWARD_G_MARKEDMURDERER][0]) {
-			if (attacker > 0 && !clientIsAttacker && IsValidClient(attacker)) {
-				addDice(attacker, 6, 1);
-				gMarkedMurderer[0] = GetTime();
-				PrintToChatAll(MARKED_MURDERER_STRING_WON);
-			} else
-				PrintToChatAll(MARKED_MURDERER_STRING_LOST);
-			Remove_MarkedMurderer();
-		}
-	}
 	
 	if (yoshi_eaten[client][0])
 		Yoshi_BreakEgg(client);
