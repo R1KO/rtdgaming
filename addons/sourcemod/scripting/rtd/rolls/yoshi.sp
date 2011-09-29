@@ -215,9 +215,6 @@ public Action:Yoshi_Eggsplode(Handle:timer, Handle:data)
 	//And some particle effects
 	AwardFireworks(victim, 2, false);
 	
-	if(client_rolls[victim][AWARD_G_HORSEMANN][0])
-		ServerCommand("sm_removethehorseman %i", GetClientUserId(victim));
-	
 	return Plugin_Stop;
 }
 
@@ -250,9 +247,6 @@ public Action:Yoshi_KillPlayer(Handle:timer, Handle:data)
 		}else{
 			DealDamage(victim, damageToDeal, attacker);
 		}
-		
-		if(client_rolls[victim][AWARD_G_HORSEMANN][0])
-			ServerCommand("sm_bethehorseman %i", GetClientUserId(victim));
 		
 		return Plugin_Stop;
 	}
@@ -309,8 +303,6 @@ stock Yoshi_Thirdperson(client, bool:apply=true, type=0)
 		}
 		else if (type == 1) 
 		{
-			if(client_rolls[client][AWARD_G_HORSEMANN][0])
-				ServerCommand("sm_removethehorseman %i", GetClientUserId(client));
 			
 			if (GetClientTeam(client) == 2)
 			{

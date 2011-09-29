@@ -11,7 +11,7 @@
 #endif
 #define _rtd_rollinfo_included
 
-#define MAX_GOOD_AWARDS			81
+#define MAX_GOOD_AWARDS			79
 
 #define AWARD_G_GODMODE			0
 #define AWARD_G_TOXIC				1
@@ -82,31 +82,29 @@
 #define AWARD_G_INSTAPORTER		66
 #define AWARD_G_SNORLAX			67
 #define AWARD_G_JARATEBULLETS	68
-#define AWARD_G_AIRINTAKE			69
-#define AWARD_G_HORSEMANN			70
-#define AWARD_G_BRAZIER			71
-#define AWARD_G_MIRROR			72
-#define AWARD_G_STONEWALL			73
-#define AWARD_G_BUILDINGSHIELD	74
-#define AWARD_G_SENTRYWRENCH		75
-#define AWARD_G_FLAVOREDDAMAGE	76
-#define AWARD_G_RUBBERBULLETS	77
-#define AWARD_G_ICEBOMB			78
-#define AWARD_G_FIREBOMB			79
-#define AWARD_G_ANGELIC			80
+#define AWARD_G_BRAZIER			69
+#define AWARD_G_MIRROR			70
+#define AWARD_G_STONEWALL			71
+#define AWARD_G_BUILDINGSHIELD	72
+#define AWARD_G_SENTRYWRENCH		73
+#define AWARD_G_FLAVOREDDAMAGE	74
+#define AWARD_G_RUBBERBULLETS	75
+#define AWARD_G_ICEBOMB			76
+#define AWARD_G_FIREBOMB			77
+#define AWARD_G_ANGELIC			78
 
 #define MAX_BAD_AWARDS			10
 
-#define AWARD_B_LOSER				81
-#define AWARD_B_NOJUMP			82
-#define AWARD_B_IGNITE			83
-#define AWARD_B_HEALTH			84
-#define AWARD_B_WEAPONS			85
-#define AWARD_B_TAUNT				86
-#define AWARD_B_WAITMORE			87
-#define AWARD_B_BADAIM			88
-#define AWARD_B_DOOM				89
-#define AWARD_B_SLOWMO			90
+#define AWARD_B_LOSER				79
+#define AWARD_B_NOJUMP			80
+#define AWARD_B_IGNITE			81
+#define AWARD_B_HEALTH			82
+#define AWARD_B_WEAPONS			83
+#define AWARD_B_TAUNT				84
+#define AWARD_B_WAITMORE			85
+#define AWARD_B_BADAIM			86
+#define AWARD_B_DOOM				87
+#define AWARD_B_SLOWMO			88
 
 new String:roll_id[150][32]; //roll identifiers that match up with ;
 
@@ -184,8 +182,6 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_INSTAPORTER],		32, "INSTAPORTER");
 	Format(roll_id[AWARD_G_SNORLAX],			32, "SNORLAX");
 	Format(roll_id[AWARD_G_JARATEBULLETS],	32, "JARATEBULLETS");
-	Format(roll_id[AWARD_G_AIRINTAKE],		32, "AIRINTAKE");
-	Format(roll_id[AWARD_G_HORSEMANN],		32, "HORSEMANN");
 	Format(roll_id[AWARD_G_BRAZIER],			32, "BRAZIER");
 	Format(roll_id[AWARD_G_MIRROR],			32, "MIRROR");
 	Format(roll_id[AWARD_G_STONEWALL],		32, "STONEWALL");

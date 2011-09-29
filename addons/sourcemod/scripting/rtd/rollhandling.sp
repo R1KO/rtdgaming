@@ -93,8 +93,6 @@ public bool:UnAcceptable(client, award)
 	//Hulk is not rollable
 	if(award == AWARD_G_HULK && BoughtSomething[client] == 0) return true;
 	
-	if(award == AWARD_G_HULK && client_rolls[client][AWARD_G_HORSEMANN][0]) return true;
-	
 	//Fists of Steel + Hulk is a no no
 	if(award == AWARD_G_HULK && isPlayerHolding_UniqueWeapon(client, 331)) return true;
 	

@@ -242,7 +242,6 @@ new redbullModelIndex;
 new dummyModelIndex;
 new snorlaxModelIndex;
 new instaPorterModelIndex;
-new airIntakeModelIndex[2];
 new brazierModelIndex;
 new stonewallModelIndex[2];
 new shieldModelIndex;
@@ -379,3 +378,5 @@ new donate_Amount[cMaxClients];
 new String:donate_SteamID[cMaxClients][64];
 new timeExpireScare[cMaxClients];
 new wasJumping[cMaxClients];
+
+new entityPickedUp[cMaxClients];
