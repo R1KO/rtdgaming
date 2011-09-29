@@ -173,23 +173,8 @@ public Action:Timer_ShowInfo(Handle:timer)
 			
 			DisguiseTeam  = GetEntData(i, m_nDisguiseTeam);
 			
-			if(alpha == 255 || client_rolls[i][AWARD_G_HORSEMANN][0])
-			{
-				if(client_rolls[i][AWARD_G_HORSEMANN][0])
-				{
-					if(yoshi_eaten[i][0] || hasInvisRolls(i))
-					{
-						DeleteParticle(i, "all");
-					}else{
-						if(GetClientTeam(i) == 2)
-						{
-							AttachRTDParticle(i, "ghost_pumpkin_red", true, true, 45.0);
-						}else{
-							AttachRTDParticle(i, "ghost_pumpkin", true, true, 45.0);
-						}
-					}
-				}
-				
+			if(alpha == 255)
+			{	
 				if(client_rolls[i][AWARD_G_UBERCHARGER][0])
 				{
 					if(class == TFClass_Spy)

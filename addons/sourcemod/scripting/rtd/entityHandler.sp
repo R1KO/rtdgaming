@@ -409,13 +409,6 @@ public Action:deleteRTDEntities()
 			continue;
 		}
 		
-		if(currIndex == airIntakeModelIndex[0] || currIndex == airIntakeModelIndex[1])
-		{
-			SetEntProp(ent, Prop_Data, "m_PerformanceMode", 66);
-			killEntityIn(ent, 2.0); 
-			continue;
-		}
-		
 		if(currIndex == stonewallModelIndex[0] || currIndex == stonewallModelIndex[1])
 		{
 			SetEntProp(ent, Prop_Data, "m_PerformanceMode", 66);

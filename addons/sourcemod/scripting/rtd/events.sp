@@ -708,17 +708,6 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		}
 	}
 	
-	if(client_rolls[client][AWARD_G_HORSEMANN][0])
-	{
-		if(TF2_GetPlayerClass(client) != TFClass_Spy)
-		{
-			ServerCommand("sm_bethehorseman %i", GetClientUserId(client));
-		}else{
-			ServerCommand("sm_removethehorseman %i", GetClientUserId(client));
-			client_rolls[client][AWARD_G_HORSEMANN][0] = 0;
-		}
-	}
-	
 	UpdateWaist(client);
 	
 	CreateTimer(0.1,  	Timer_DelayTrinketEquip, GetClientUserId(client), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);

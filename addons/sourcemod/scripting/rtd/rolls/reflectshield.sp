@@ -26,7 +26,7 @@ public Action:Timer_ReflectShield(Handle:Timer, any:client)
 			if(IsValidEntity(ent))
 			{
 				GetEdictClassname(ent, classname, sizeof(classname));
-				if(StrContains(classname, "projectile", false) != -1 && StrContains(classname, "syringe", false) == -1)
+				if(StrContains(classname, "projectile", false) != -1 && StrContains(classname, "syringe", false) == -1 && !StrEqual(classname, "tf_projectile_energy_ring", false))
 				{
 					if(SimpleRegexMatch(classname, "(pipe|jar|stun_ball)", PCRE_CASELESS))
 					{

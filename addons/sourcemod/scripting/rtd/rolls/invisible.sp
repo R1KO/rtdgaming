@@ -164,17 +164,6 @@ stock Colorize(client, c[4], self=true)
 		color[2] = 0;
 	}
 	
-	if(client_rolls[client][AWARD_G_HORSEMANN][0] )
-	{
-		if(color[3] >= 255)
-		{
-			self = false;
-			ServerCommand("sm_bethehorseman %i", GetClientUserId(client));
-		}else{
-			ServerCommand("sm_removethehorseman %i", GetClientUserId(client));
-		}
-	}
-	
 	new weapon;
 	for (new slot = 0; slot <= 6; slot++)
 	{

@@ -493,14 +493,6 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			}
 		}
 		
-		
-		//headless horsemann
-		if(client_rolls[client][AWARD_G_HORSEMANN][0])
-		{
-			//takes 50% less damage
-			damage *= 0.5; 
-		}
-		
 		//allow fire damage from Brazier
 		if(client_rolls[attacker][AWARD_G_BRAZIER][5] > GetTime() && damagetype != 2056)
 		{
@@ -624,7 +616,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		}
 	}
 	
-	if(client_rolls[client][AWARD_G_STONEWALL][0] && !client_rolls[client][AWARD_G_HORSEMANN][0])
+	if(client_rolls[client][AWARD_G_STONEWALL][0])
 	{
 		if(client_rolls[client][AWARD_G_STONEWALL][5] >= GetTime())
 		{

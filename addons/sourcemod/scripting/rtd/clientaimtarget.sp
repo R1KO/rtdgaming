@@ -330,11 +330,31 @@ public pickupItem(client, award)
 		return;
 	}
 	
+	//prevent players from picking up the same item and the same time (dupes)
+	for (new i = 1; i <= MaxClients; i++) 
+	{
+		if (!IsClientInGame(i) || !IsPlayerAlive(i))
+			continue;
+		
+		if(entityPickedUp[i] == 0)
+			continue;
+		
+		if(i == client)
+			continue;
+		
+		if(EntRefToEntIndex(entityPickedUp[i]) == lookingAt)
+		{
+			PrintCenterText(i, "Object is being picked up by another player");
+			EmitSoundToClient(i, SOUND_DENY);
+			return;
+		}
+	}
 	
 	switch(award)
 	{
 		case AWARD_G_SPIDER:
 		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
 			killEntityIn(lookingAt, 0.0);
 			
 			StopSound(lookingAt, SNDCHAN_AUTO, SOUND_SpiderTurn);
@@ -345,12 +365,14 @@ public pickupItem(client, award)
 		
 		case AWARD_G_COW:
 		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
 			killEntityIn(lookingAt, 0.0);
 			AttachCowToBack(client, GetEntProp(lookingAt, Prop_Data, "m_iHealth"), GetEntProp(lookingAt, Prop_Data, "m_iMaxHealth"));
 		}
 		
 		case AWARD_G_CRAP:
 		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
 			StopSound(lookingAt, SNDCHAN_AUTO, SOUND_CRAPIDLE);
 			EmitSoundToAll(SOUND_SLURP,client);
 			client_rolls[client][AWARD_G_CRAP][0] = 1;
@@ -360,6 +382,7 @@ public pickupItem(client, award)
 		
 		case AWARD_G_DUMMY:
 		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
 			//StopSound(lookingAt, SNDCHAN_AUTO, SOUND_CRAPIDLE);
 			//EmitSoundToAll(SOUND_SLURP,client);
 			client_rolls[client][AWARD_G_DUMMY][0] = 1;
@@ -377,6 +400,7 @@ public pickupItem(client, award)
 		
 		case AWARD_G_BOMB:
 		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
 			killEntityIn(lookingAt, 0.0);
 			
 			StopSound(lookingAt, SNDCHAN_AUTO, Bomb_Tick);
@@ -391,6 +415,7 @@ public pickupItem(client, award)
 		
 		case AWARD_G_ICEBOMB:
 		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
 			killEntityIn(lookingAt, 0.0);
 			
 			StopSound(lookingAt, SNDCHAN_AUTO, Bomb_Tick);
@@ -405,6 +430,7 @@ public pickupItem(client, award)
 		
 		case AWARD_G_FIREBOMB:
 		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
 			killEntityIn(lookingAt, 0.0);
 			
 			StopSound(lookingAt, SNDCHAN_AUTO, Bomb_Tick);
@@ -416,8 +442,11 @@ public pickupItem(client, award)
 			
 			PrintCenterText(client, "Fire Bomb disarmed!");
 		}
+		
 		case AWARD_G_AMPLIFIER:
 		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
+			
 			client_rolls[client][AWARD_G_AMPLIFIER][0] = 1;
 			client_rolls[client][AWARD_G_AMPLIFIER][1] ++; //how many the user has
 			client_rolls[client][AWARD_G_AMPLIFIER][2] = GetEntProp(lookingAt, Prop_Data, "m_iHealth");
@@ -431,6 +460,8 @@ public pickupItem(client, award)
 		
 		case AWARD_G_BRAZIER:
 		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
+			
 			StopSound(lookingAt, SNDCHAN_AUTO, SOUND_BRAZIER);
 			
 			client_rolls[client][AWARD_G_BRAZIER][0] = 1;
@@ -812,16 +843,6 @@ public denyPickup(client, lookingAtObject, bool:bypassSame)
 			Format(wearing, sizeof(wearing), "wearing");
 			
 			wantsToPickup = AWARD_G_WINGS;
-		}
-	}
-	
-	if(client_rolls[client][AWARD_G_AIRINTAKE][0])
-	{
-		if((bypassSame && lookingAtObject != AWARD_G_AIRINTAKE) || !bypassSame)
-		{
-			Format(wearing, sizeof(wearing), "wearing");
-			
-			wantsToPickup = AWARD_G_AIRINTAKE;
 		}
 	}
 	

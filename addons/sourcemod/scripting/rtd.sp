@@ -516,7 +516,7 @@ public Float:GetClientBaseSpeed(client)
 	
 	new iWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 	
-	if(!IsValidEntity(iWeapon))
+	if(!IsValidEntity(iWeapon) || iWeapon < 1 || iWeapon > 2048)
 	{
 		//This will be triggered if the player does a civilian glitch
 		//PrintToChatAll("Invalid Active Weapon Index!");

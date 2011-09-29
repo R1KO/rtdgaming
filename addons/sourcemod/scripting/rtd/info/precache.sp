@@ -357,9 +357,6 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_WHISTLE, true);
 	//PrecacheSound(SOUND_SUCK_END, true);
 	
-	airIntakeModelIndex[0] = PrecacheModel(MODEL_AIRINTAKE, true);
-	airIntakeModelIndex[1] = PrecacheModel(MODEL_AIRINTAKE_FLOOR, true);
-	
 	PrecacheSound(SOUND_STARMAN, true);
 	
 	PrecacheSound(SOUND_BOO, true);
@@ -445,16 +442,14 @@ stock RTDPrecache()
 	modelIndex[40] = dummyModelIndex;
 	modelIndex[41] = snorlaxModelIndex;
 	modelIndex[42] = instaPorterModelIndex;
-	modelIndex[43] = airIntakeModelIndex[0];
-	modelIndex[44] = airIntakeModelIndex[1];
-	modelIndex[45] = brazierModelIndex;
-	modelIndex[46] = stonewallModelIndex[0];
-	modelIndex[47] = stonewallModelIndex[1];
-	modelIndex[48] = shieldModelIndex;
-	modelIndex[49] = cloud02Index;
-	modelIndex[50] = angelicModelIndex;
-	modelIndex[51] = PrecacheModel(MODEL_DYNAMITE, true);
+	modelIndex[43] = brazierModelIndex;
+	modelIndex[44] = stonewallModelIndex[0];
+	modelIndex[45] = stonewallModelIndex[1];
+	modelIndex[46] = shieldModelIndex;
+	modelIndex[47] = cloud02Index;
+	modelIndex[48] = angelicModelIndex;
+	modelIndex[49] = PrecacheModel(MODEL_DYNAMITE, true);
 	
 	
-	totModels = 52;
+	totModels = 50;
 }
