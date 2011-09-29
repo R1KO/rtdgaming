@@ -417,9 +417,6 @@ public deployRoll(client, tempAward)
 		case AWARD_G_INSTAPORTER:
 			denyDrop = !Spawn_Instaporter(client);
 	
-		case AWARD_G_TAUNTTRAP:
-			Place_Trap(client);
-	
 		case AWARD_G_HEARTSAPLENTY:
 			Spawn_Heart(client);
 	
@@ -626,21 +623,6 @@ public deployRoll(client, tempAward)
 				denyDrop = true;
 			}else{
 				Spawn_Diglett(client);
-			}
-		}
-		
-		case AWARD_G_PITCHMACHINE:
-		{
-			tooClose = closeToModel(client, 80.0, "prop_dynamic", MODEL_PITCHMACHINE);
-			
-			if(tooClose || CloseToEnemySpawnDoors(client))
-			{
-				if(tooClose)
-					PrintCenterText(client,"Too close to another pitching Machine");
-				
-				denyDrop = true;
-			}else{
-				Spawn_PitchingMachine(client);
 			}
 		}
 		

@@ -1,8 +1,5 @@
 stock RTDPrecache()
 {
-	PrecacheDecal("materials/rtdgaming/ddr2.vmt", true);
-	g_DDRDecal = PrecacheDecal(DECAL_DDR, true);
-
 	PrecacheSound(SOUND_A, true);
 	PrecacheSound(SOUND_B, true);
 	PrecacheSound(SOUND_C, true);
@@ -287,15 +284,6 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_RUMBLE04, true);
 	PrecacheSound(SOUND_EVOLVE, true);
 	
-	
-	PrecacheSound(SOUND_PITCHMACHINE_STUN, true);
-	PrecacheSound(SOUND_PITCHMACHINE_HIT01, true);
-	PrecacheSound(SOUND_PITCHMACHINE_HIT02, true);
-	PrecacheSound(SOUND_PITCHMACHINE_HUM, true);
-	PrecacheModel(PROJECTILE_BALL, true);
-	pitchMachineModelIndex[0] = PrecacheModel(MODEL_PITCHMACHINE, true);
-	pitchMachineModelIndex[1] = PrecacheModel(MODEL_PITCHMACHINE_BLU, true);
-	
 	PrecacheSound(SOUND_AMPLIFIER_HUM_02, true);
 	PrecacheSound(SOUND_COUGH_01, true);
 	PrecacheSound(SOUND_COUGH_02, true);
@@ -439,36 +427,34 @@ stock RTDPrecache()
 	modelIndex[22] = cloudIndex;
 	modelIndex[23] = diglettModelIndex;
 	modelIndex[24] = dugTrioModelIndex;
-	modelIndex[25] = pitchMachineModelIndex[0];
-	modelIndex[26] = pitchMachineModelIndex[1];
-	modelIndex[27] = crapModelIndex;	
-	modelIndex[28] = sawModelIndex;	
-	modelIndex[29] = cowModelIndex;	
-	modelIndex[30] = cowOnBackModelIndex;
-	modelIndex[31] = milkbottleModelIndex;
-	modelIndex[32] = jumpPadModelIndex;
-	modelIndex[33] = slowcubeModelIndex;
-	modelIndex[34] = pumpkinModelIndex;
-	modelIndex[35] = groovitronModelIndex;
-	modelIndex[36] = ghostModelIndex[0];
-	modelIndex[37] = ghostModelIndex[1];
-	modelIndex[38] = blizzardModelIndex[0];
-	modelIndex[39] = blizzardModelIndex[1];
-	modelIndex[40] = wingsModelIndex;
-	modelIndex[41] = redbullModelIndex;
-	modelIndex[42] = dummyModelIndex;
-	modelIndex[43] = snorlaxModelIndex;
-	modelIndex[44] = instaPorterModelIndex;
-	modelIndex[45] = airIntakeModelIndex[0];
-	modelIndex[46] = airIntakeModelIndex[1];
-	modelIndex[47] = brazierModelIndex;
-	modelIndex[48] = stonewallModelIndex[0];
-	modelIndex[49] = stonewallModelIndex[1];
-	modelIndex[50] = shieldModelIndex;
-	modelIndex[51] = cloud02Index;
-	modelIndex[52] = angelicModelIndex;
-	modelIndex[53] = PrecacheModel(MODEL_DYNAMITE, true);
+	modelIndex[25] = crapModelIndex;	
+	modelIndex[26] = sawModelIndex;	
+	modelIndex[27] = cowModelIndex;	
+	modelIndex[28] = cowOnBackModelIndex;
+	modelIndex[29] = milkbottleModelIndex;
+	modelIndex[30] = jumpPadModelIndex;
+	modelIndex[31] = slowcubeModelIndex;
+	modelIndex[32] = pumpkinModelIndex;
+	modelIndex[33] = groovitronModelIndex;
+	modelIndex[34] = ghostModelIndex[0];
+	modelIndex[35] = ghostModelIndex[1];
+	modelIndex[36] = blizzardModelIndex[0];
+	modelIndex[37] = blizzardModelIndex[1];
+	modelIndex[38] = wingsModelIndex;
+	modelIndex[39] = redbullModelIndex;
+	modelIndex[40] = dummyModelIndex;
+	modelIndex[41] = snorlaxModelIndex;
+	modelIndex[42] = instaPorterModelIndex;
+	modelIndex[43] = airIntakeModelIndex[0];
+	modelIndex[44] = airIntakeModelIndex[1];
+	modelIndex[45] = brazierModelIndex;
+	modelIndex[46] = stonewallModelIndex[0];
+	modelIndex[47] = stonewallModelIndex[1];
+	modelIndex[48] = shieldModelIndex;
+	modelIndex[49] = cloud02Index;
+	modelIndex[50] = angelicModelIndex;
+	modelIndex[51] = PrecacheModel(MODEL_DYNAMITE, true);
 	
 	
-	totModels = 54;
+	totModels = 52;
 }

@@ -37,6 +37,3 @@ stock bool:GetPlayerEye(client, Float:pos[3]) {
 	return false;
 }
 
-public bool:TraceEntityFilterPlayer(entity, contentsMask) {
- 	return entity > MaxClients;
-}

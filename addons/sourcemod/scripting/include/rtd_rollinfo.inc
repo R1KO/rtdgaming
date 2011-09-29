@@ -11,7 +11,7 @@
 #endif
 #define _rtd_rollinfo_included
 
-#define MAX_GOOD_AWARDS			85
+#define MAX_GOOD_AWARDS			81
 
 #define AWARD_G_GODMODE			0
 #define AWARD_G_TOXIC				1
@@ -44,73 +44,69 @@
 #define AWARD_G_SPIDER			28
 #define AWARD_G_PUMPKIN			29
 #define AWARD_G_FIREBULLETS		30
-#define AWARD_G_ROLLERMINE		31
-#define AWARD_G_TELESPHERE		32
-#define AWARD_G_ICE				33
-#define AWARD_G_BERSERKER			34
-#define AWARD_G_VAMPIRE			35
-#define AWARD_G_INVISLOWHEALTH	36
-#define AWARD_G_FLAME				37
-#define AWARD_G_RAGE				38
-#define AWARD_G_FIREBALL			39
-#define AWARD_G_GHOST				40
-#define AWARD_G_SANDWICH			41
-#define AWARD_G_JUMPPAD			42
-#define AWARD_G_ACCELERATOR		43
-#define AWARD_G_ZOMBIE			44
-#define AWARD_G_BACKPACK			45
-#define AWARD_G_DIVIDETHESHOT	46
-#define AWARD_G_AMPLIFIER			47
-#define AWARD_G_PROXMINES			48
-#define AWARD_G_BEARTRAP			49
-#define AWARD_G_REFLECTSHIELD	50
-#define AWARD_G_CAGE				51
-#define AWARD_G_CRITSSPURT		52
-#define AWARD_G_URINECLOUD		53
-#define AWARD_G_DIGLETT			54
-#define AWARD_G_PITCHMACHINE		55
-#define AWARD_G_METALMAN			56
-#define AWARD_G_SAW				57
-#define AWARD_G_COW				58
-#define AWARD_G_HEAD				59
-#define AWARD_G_BLIZZARD			60
-#define AWARD_G_UBERBOW			61
-#define AWARD_G_WINGS				62
-#define AWARD_G_SUPPLYDROP		63
-#define AWARD_G_JETPACK			64
-#define AWARD_G_HEARTSAPLENTY	65
-#define AWARD_G_TAUNTTRAP			66
-#define AWARD_G_DUMMY				67
-#define AWARD_G_YOSHI				68
-#define AWARD_G_MARKEDMURDERER 	69
-#define AWARD_G_INSTAPORTER		70
-#define AWARD_G_SNORLAX			71
-#define AWARD_G_JARATEBULLETS	72
-#define AWARD_G_AIRINTAKE			73
-#define AWARD_G_HORSEMANN			74
-#define AWARD_G_BRAZIER			75
-#define AWARD_G_MIRROR			76
-#define AWARD_G_STONEWALL			77
-#define AWARD_G_BUILDINGSHIELD	78
-#define AWARD_G_SENTRYWRENCH		79
-#define AWARD_G_FLAVOREDDAMAGE	80
-#define AWARD_G_RUBBERBULLETS	81
-#define AWARD_G_ICEBOMB			82
-#define AWARD_G_FIREBOMB			83
-#define AWARD_G_ANGELIC			84
+#define AWARD_G_ICE				31
+#define AWARD_G_BERSERKER			32
+#define AWARD_G_VAMPIRE			33
+#define AWARD_G_INVISLOWHEALTH	34
+#define AWARD_G_FLAME				35
+#define AWARD_G_RAGE				36
+#define AWARD_G_FIREBALL			37
+#define AWARD_G_GHOST				38
+#define AWARD_G_SANDWICH			39
+#define AWARD_G_JUMPPAD			40
+#define AWARD_G_ACCELERATOR		41
+#define AWARD_G_ZOMBIE			42
+#define AWARD_G_BACKPACK			43
+#define AWARD_G_DIVIDETHESHOT	44
+#define AWARD_G_AMPLIFIER			45
+#define AWARD_G_PROXMINES			46
+#define AWARD_G_BEARTRAP			47
+#define AWARD_G_REFLECTSHIELD	48
+#define AWARD_G_CAGE				49
+#define AWARD_G_CRITSSPURT		50
+#define AWARD_G_URINECLOUD		51
+#define AWARD_G_DIGLETT			52
+#define AWARD_G_METALMAN			53
+#define AWARD_G_SAW				54
+#define AWARD_G_COW				55
+#define AWARD_G_HEAD				56
+#define AWARD_G_BLIZZARD			57
+#define AWARD_G_UBERBOW			58
+#define AWARD_G_WINGS				59
+#define AWARD_G_SUPPLYDROP		60
+#define AWARD_G_JETPACK			61
+#define AWARD_G_HEARTSAPLENTY	62
+#define AWARD_G_DUMMY				63
+#define AWARD_G_YOSHI				64
+#define AWARD_G_MARKEDMURDERER 	65
+#define AWARD_G_INSTAPORTER		66
+#define AWARD_G_SNORLAX			67
+#define AWARD_G_JARATEBULLETS	68
+#define AWARD_G_AIRINTAKE			69
+#define AWARD_G_HORSEMANN			70
+#define AWARD_G_BRAZIER			71
+#define AWARD_G_MIRROR			72
+#define AWARD_G_STONEWALL			73
+#define AWARD_G_BUILDINGSHIELD	74
+#define AWARD_G_SENTRYWRENCH		75
+#define AWARD_G_FLAVOREDDAMAGE	76
+#define AWARD_G_RUBBERBULLETS	77
+#define AWARD_G_ICEBOMB			78
+#define AWARD_G_FIREBOMB			79
+#define AWARD_G_ANGELIC			80
 
 #define MAX_BAD_AWARDS			10
 
-#define AWARD_B_LOSER				85
-#define AWARD_B_NOJUMP			86
-#define AWARD_B_IGNITE			87
-#define AWARD_B_HEALTH			88
-#define AWARD_B_WEAPONS			89
-#define AWARD_B_TAUNT				90
-#define AWARD_B_WAITMORE			91
-#define AWARD_B_BADAIM			92
-#define AWARD_B_DOOM				93
-#define AWARD_B_SLOWMO			94
+#define AWARD_B_LOSER				81
+#define AWARD_B_NOJUMP			82
+#define AWARD_B_IGNITE			83
+#define AWARD_B_HEALTH			84
+#define AWARD_B_WEAPONS			85
+#define AWARD_B_TAUNT				86
+#define AWARD_B_WAITMORE			87
+#define AWARD_B_BADAIM			88
+#define AWARD_B_DOOM				89
+#define AWARD_B_SLOWMO			90
 
 new String:roll_id[150][32]; //roll identifiers that match up with ;
 
@@ -151,8 +147,6 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_SPIDER], 			32, "SPIDER");
 	Format(roll_id[AWARD_G_PUMPKIN], 		32, "PUMPKIN");
 	Format(roll_id[AWARD_G_FIREBULLETS], 	32, "FIREBULLETS");
-	Format(roll_id[AWARD_G_ROLLERMINE], 		32, "ROLLERMINE");
-	Format(roll_id[AWARD_G_TELESPHERE],		32, "TELESPHERE");
 	Format(roll_id[AWARD_G_ICE], 				32, "ICE");
 	Format(roll_id[AWARD_G_BERSERKER], 		32, "BERSERKER");
 	Format(roll_id[AWARD_G_VAMPIRE],			32, "VAMPIRE");
@@ -175,7 +169,6 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_CRITSSPURT], 		32, "CRITSSPURT");
 	Format(roll_id[AWARD_G_URINECLOUD], 		32, "URINECLOUD");
 	Format(roll_id[AWARD_G_DIGLETT], 		32, "DIGLETT");
-	Format(roll_id[AWARD_G_PITCHMACHINE], 	32, "PITCHMACHINE");
 	Format(roll_id[AWARD_G_METALMAN], 		32, "METALMAN");
 	Format(roll_id[AWARD_G_SAW], 				32, "SAW");
 	Format(roll_id[AWARD_G_COW], 				32, "COW");
@@ -186,10 +179,8 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_SUPPLYDROP],		32, "SUPPLYDROP");
 	Format(roll_id[AWARD_G_JETPACK],			32, "JETPACK");
 	Format(roll_id[AWARD_G_HEARTSAPLENTY],	32, "HEARTSAPLENTY");
-	Format(roll_id[AWARD_G_TAUNTTRAP],		32, "TAUNTTRAP");
 	Format(roll_id[AWARD_G_DUMMY],			32, "DUMMY");
 	Format(roll_id[AWARD_G_YOSHI],			32, "YOSHI");
-	Format(roll_id[AWARD_G_MARKEDMURDERER],	32, "MARKEDMURDERER");
 	Format(roll_id[AWARD_G_INSTAPORTER],		32, "INSTAPORTER");
 	Format(roll_id[AWARD_G_SNORLAX],			32, "SNORLAX");
 	Format(roll_id[AWARD_G_JARATEBULLETS],	32, "JARATEBULLETS");
