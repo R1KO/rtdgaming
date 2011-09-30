@@ -271,6 +271,7 @@ public Action:Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 	// Determine skin //
 	////////////////////
 	new skin = GetEntProp(dynamite, Prop_Data, "m_nSkin");
+	new DisguiseTeam;
 	
 	if(TF2_IsPlayerInCondition(client, TFCond_Ubercharged))
 	{	
@@ -284,13 +285,28 @@ public Action:Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 			}
 		}
 	}else{
-		if(GetClientTeam(client) == RED_TEAM)
+		if(TF2_GetPlayerClass(client) == TFClass_Spy)
 		{
-			if(skin != 0)
+			DisguiseTeam  = GetEntData(client, m_nDisguiseTeam);
+				
+			if(DisguiseTeam == 0)
+				DisguiseTeam = GetClientTeam(client);
+			
+			if(DisguiseTeam == RED_TEAM && skin != 0)
 				DispatchKeyValue(dynamite, "skin","0"); 
-		}else{
-			if(skin != 2)
-				DispatchKeyValue(dynamite, "skin","2");
+			
+			if(DisguiseTeam == BLUE_TEAM && skin != 2)
+				DispatchKeyValue(dynamite, "skin","2"); 
+		}else
+		{
+			if(GetClientTeam(client) == RED_TEAM)
+			{
+				if(skin != 0)
+					DispatchKeyValue(dynamite, "skin","0"); 
+			}else{
+				if(skin != 2)
+					DispatchKeyValue(dynamite, "skin","2");
+			}
 		}
 	}
 	
