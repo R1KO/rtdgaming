@@ -374,7 +374,7 @@ public Action:Command_rtd(client, args)
 		if(StrEqual("", strArgs[1], false))
 			showStatsPage(client);
 		
-		return Plugin_Handled;
+		return Plugin_Continue;
 	}
 	
 	if(StrEqual("topcreds", strArgs[0], false) || StrEqual("topcredits", strArgs[0], false) || StrEqual("topcredit", strArgs[0], false) || StrEqual("creditrank", strArgs[0], false) || StrEqual("rankcredit", strArgs[0], false))

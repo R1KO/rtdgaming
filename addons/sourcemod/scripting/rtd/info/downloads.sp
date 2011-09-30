@@ -756,6 +756,24 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite.sw.vtx");
 	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite.vvd");
 	
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite02.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite02.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite02.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite02.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite02.vvd");
+	
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite03.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite03.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite03.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite03.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite03.vvd");
+	
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite04.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite04.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite04.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite04.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/dynamite/dynamite04.vvd");
+	
 	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/dynamite_SM_01.vtf");
 	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/dynamite_SM_01.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/dynamite/dynamite_SM_02.vtf");
