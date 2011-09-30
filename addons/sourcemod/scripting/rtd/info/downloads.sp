@@ -152,6 +152,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("maps/pl_thundermountain_particles.txt");
 	AddFileToDownloadsTable("maps/pl_upward_particles.txt");
 	AddFileToDownloadsTable("maps/plr_hightower_particles.txt");
+	AddFileToDownloadsTable("maps/pl_morrigan_alley_b3_particles.txt");
 	
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/beamgun_blue.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/beamgun_blue_glass.vmt");
