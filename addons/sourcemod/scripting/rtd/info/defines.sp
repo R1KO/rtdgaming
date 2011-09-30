@@ -439,6 +439,9 @@
 #define SOUND_YOSHISONG 	"rtdgaming/yoshi.mp3"
 #define SOUND_LOSERHANK		"rtdgaming/loser.mp3"
 #define MODEL_DYNAMITE		"models/rtdgaming/dynamite/dynamite.mdl"
+#define MODEL_DYNAMITE02	"models/rtdgaming/dynamite/dynamite02.mdl"
+#define MODEL_DYNAMITE03	"models/rtdgaming/dynamite/dynamite03.mdl"
+#define MODEL_DYNAMITE04	"models/rtdgaming/dynamite/dynamite04.mdl"
 
 #define SOUND_JUMP01	"rtdgaming/jump01.wav"
 #define SOUND_JUMP02	"rtdgaming/jump02.wav"

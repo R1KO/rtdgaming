@@ -295,7 +295,7 @@ public dicedepositDamage(const String:output[], caller, activator, Float:delay)
 								diceChances += RTD_TrinketBonus[activator][TRINKET_DICEMINER];
 							}
 							
-							Format(message, sizeof(message), "Mining Chance: %i\% % (Mass: %s | Gravity: %s | Drag: %s)", ((RTD_Perks[activator][16]-5) + diceChances), massString, gravString, dragString) ;
+							Format(message, sizeof(message), "Mining Chance: %i\%", (RTD_Perks[activator][16]-5) + diceChances) ;
 							PrintHintText(activator, message);
 							
 							if(dicedeposit_roll > (100-(RTD_Perks[activator][16]-5) - diceChances))

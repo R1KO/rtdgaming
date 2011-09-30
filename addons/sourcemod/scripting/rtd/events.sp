@@ -896,53 +896,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			
 			if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
 			{
-				AttachTempParticle(client,"ExplosionCore_MidAir", 1.0, false,"",0.0, false);
-				
-				new playerTeam =  GetClientTeam(client);
-				new Float:distance;
-				
-				new Float:playerPos[3];
-				new Float:enemyPos[3];
-				GetClientAbsOrigin(client, playerPos);
-				
-				new Float:finalvec[3];
-				finalvec[2]=200.0;
-				finalvec[0]=GetRandomFloat(150.0, 375.0)*GetRandomInt(-1,1);
-				finalvec[1]=GetRandomFloat(150.0, 375.0)*GetRandomInt(-1,1);
-				
-				for (new i = 1; i <= MaxClients ; i++)
-				{
-					if(!IsClientInGame(i) || !IsPlayerAlive(i))
-						continue;
-					
-					if(playerTeam == GetClientTeam(i))
-						continue;
-					
-					GetClientAbsOrigin(i, enemyPos);
-					
-					distance = GetVectorDistance(enemyPos, playerPos);
-					
-					if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
-						continue;
-					
-					if(distance > 300.0)
-						continue;
-					
-					SetEntDataVector(i,BaseVelocityOffset,finalvec,true);
-					
-					
-					
-					
-					DelayDamage(0.1, i, RTD_TrinketBonus[client][TRINKET_EXPLOSIVEDEATH], client, 128, "proxmine");
-					
-					SetHudTextParams(0.405, 0.82, 4.0, 255, 50, 50, 255);
-					ShowHudText(i, HudMsg3, "You were hurt by an Explosive Death");
-					
-					//AttachFastParticle(client, "ExplosionCore_MidAir", 1.0);
-					
-				}
-				
-				EmitSoundToAll(Bomb_Explode, client);
+				SpawnDynamite(client);
 			}
 			
 			if(!spawnedItem)

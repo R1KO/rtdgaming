@@ -17,7 +17,20 @@ public Action:SpawnAndAttachClientDynamite(client, originalEntity)
 	if(!RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
 		return Plugin_Stop;
 	
-	SetEntityModel(ent, MODEL_DYNAMITE);
+	switch(RTD_TrinketLevel[client][TRINKET_EXPLOSIVEDEATH])
+	{
+		case 0:
+			SetEntityModel(ent, MODEL_DYNAMITE);
+			
+		case 1:
+			SetEntityModel(ent, MODEL_DYNAMITE02);
+		
+		case 2:
+			SetEntityModel(ent, MODEL_DYNAMITE03);
+		
+		case 3:
+			SetEntityModel(ent, MODEL_DYNAMITE04);
+	}
 	
 	//Set the Dynamite's owner
 	SetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity", client);
@@ -79,7 +92,20 @@ public Action:SpawnAndAttachDynamite(client)
 	if(!RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
 		return Plugin_Stop;
 	
-	SetEntityModel(ent, MODEL_DYNAMITE);
+	switch(RTD_TrinketLevel[client][TRINKET_EXPLOSIVEDEATH])
+	{
+		case 0:
+			SetEntityModel(ent, MODEL_DYNAMITE);
+			
+		case 1:
+			SetEntityModel(ent, MODEL_DYNAMITE02);
+		
+		case 2:
+			SetEntityModel(ent, MODEL_DYNAMITE03);
+		
+		case 3:
+			SetEntityModel(ent, MODEL_DYNAMITE04);
+	}
 	
 	decl String:dynamiteName[32];
 	Format(dynamiteName, 32, "dynamite_%i", ent);
@@ -334,6 +360,159 @@ public stopDynamiteTimer(Handle:dataPackHandle)
 		killEntityIn(dynamite, 0.1);
 		return true;
 	}
+	
+	return false;
+}
+
+public SpawnDynamite(client)
+{	
+	new ent = CreateEntityByName("prop_dynamic_override");
+	new Float:clientOrigin[3];
+	
+	GetEntPropVector(client, Prop_Send, "m_vecOrigin", clientOrigin);
+	clientOrigin[2] += 35.0;
+	
+	switch(RTD_TrinketLevel[client][TRINKET_EXPLOSIVEDEATH])
+	{
+		case 0:
+			SetEntityModel(ent, MODEL_DYNAMITE);
+			
+		case 1:
+			SetEntityModel(ent, MODEL_DYNAMITE02);
+		
+		case 2:
+			SetEntityModel(ent, MODEL_DYNAMITE03);
+		
+		case 3:
+			SetEntityModel(ent, MODEL_DYNAMITE04);
+	}
+	
+	DispatchSpawn(ent);
+	
+	new Float:angles[3];
+	angles[2] = 270.0;
+	
+	new iTeam = GetClientTeam(client);
+	//Set the bombs owner
+	SetEntPropEnt(ent, Prop_Data, "m_hOwnerEntity", client);
+	
+	SetEntProp(ent, Prop_Data, "m_iMaxHealth", 1000);
+	SetEntProp(ent, Prop_Data, "m_iHealth", 1000);
+	
+	SetEntProp( ent, Prop_Data, "m_nSolidType", 6 );
+	SetEntProp( ent, Prop_Send, "m_nSolidType", 6 );
+	
+	SetEntProp(ent, Prop_Data, "m_CollisionGroup", 2);
+	SetEntProp(ent, Prop_Send, "m_CollisionGroup", 2);
+	
+	SetVariantInt(iTeam);
+	AcceptEntityInput(ent, "TeamNum", -1, -1, 0);
+	
+	SetVariantInt(iTeam);
+	AcceptEntityInput(ent, "SetTeam", -1, -1, 0); 
+	
+	//The Datapack stores all the Backpack's important values
+	new Handle:dataPackHandle;
+	CreateDataTimer(0.5, dynamite_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+	
+	//Setup the datapack with appropriate information
+	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0); dynamite entity
+	WritePackCell(dataPackHandle, GetTime() + 1);     //PackPosition(8); time to go off
+	WritePackCell(dataPackHandle, GetClientUserId(client));     //PackPosition(16); owner
+	WritePackCell(dataPackHandle, RTD_TrinketBonus[client][TRINKET_EXPLOSIVEDEATH]);     //PackPosition(24); Damage amount
+	
+	AttachRTDParticle(ent, "candle_light1", false, false, 21.0);
+	
+	if(iTeam == BLUE_TEAM)
+	{
+		AttachRTDParticle(ent, "critical_pipe_blue", false, false, 21.0);
+	}else{
+		AttachRTDParticle(ent, "critical_pipe_red", false, false, 21.0);
+	}
+	
+	TeleportEntity(ent, clientOrigin, angles, NULL_VECTOR);
+	EmitSoundToAll(Bomb_Tick, ent);
+}
+
+public Action:dynamite_Timer(Handle:timer, Handle:dataPackHandle)
+{
+	////////////////////////////////
+	//Should we stop this timer?  //
+	////////////////////////////////
+	if(stop_ExplodingDynamiteTimer(dataPackHandle))
+		return Plugin_Stop;
+	
+	//////////////////////////////////////////
+	//Retrieve the values from the dataPack //
+	// Set to the beginning and unpack it   //
+	//////////////////////////////////////////
+	ResetPack(dataPackHandle);
+	new dynamite = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	new detonateTime = ReadPackCell(dataPackHandle);
+	new owner = GetClientOfUserId(ReadPackCell(dataPackHandle));
+	new damage = ReadPackCell(dataPackHandle);
+	
+	if(detonateTime > GetTime())
+		return Plugin_Continue;
+	
+	StopSound(dynamite, SNDCHAN_AUTO, Bomb_Tick);
+	
+	AttachTempParticle(dynamite,"ExplosionCore_MidAir", 1.0, false,"",0.0, false);
+	
+	new Float:distance;
+	new Float:dynamiteOrigin[3];
+	new Float:enemyPos[3];
+	new dynamiteTeam = GetEntProp(dynamite, Prop_Data, "m_iTeamNum");
+	
+	GetEntPropVector(dynamite, Prop_Send, "m_vecOrigin", dynamiteOrigin);
+	
+	new Float:finalvec[3];
+	finalvec[2]=200.0;
+	finalvec[0]=GetRandomFloat(150.0, 375.0)*GetRandomInt(-1,1);
+	finalvec[1]=GetRandomFloat(150.0, 375.0)*GetRandomInt(-1,1);
+	
+	for (new i = 1; i <= MaxClients ; i++)
+	{
+		if(!IsClientInGame(i) || !IsPlayerAlive(i))
+			continue;
+		
+		if(dynamiteTeam == GetClientTeam(i))
+			continue;
+		
+		GetClientAbsOrigin(i, enemyPos);
+		
+		distance = GetVectorDistance(enemyPos, dynamiteOrigin);
+		
+		if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
+			continue;
+		
+		if(distance > 300.0)
+			continue;
+		
+		SetEntDataVector(i,BaseVelocityOffset,finalvec,true);
+		
+		
+		DelayDamage(0.1, i, damage, owner, 128, "proxmine");
+		
+		SetHudTextParams(0.405, 0.82, 4.0, 255, 50, 50, 255);
+		ShowHudText(i, HudMsg3, "You were hurt by an Explosive Death");
+		
+	}
+	
+	killEntityIn(dynamite, 0.0);
+	EmitSoundToAll(Bomb_Explode, dynamite);
+	
+	return Plugin_Stop;
+}
+
+public stop_ExplodingDynamiteTimer(Handle:dataPackHandle)
+{	
+	ResetPack(dataPackHandle);
+	new dynamite = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	
+	if(!IsValidEntity(dynamite) || dynamite < 1)
+		return true;
+	
 	
 	return false;
 }
