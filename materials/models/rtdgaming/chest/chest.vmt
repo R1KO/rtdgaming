@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\rtdgaming\chest\chest"
+	"$bumpMap" "models\rtdgaming\chest\chest_normal"
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" 1 
+}

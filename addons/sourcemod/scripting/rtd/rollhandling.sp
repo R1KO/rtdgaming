@@ -697,6 +697,16 @@ GivePlayerEffect(client, award, cost)
 			{
 			}
 			
+			case AWARD_G_TREASURE:
+			{	
+				client_rolls[client][award][1] = 0; //entity index
+				client_rolls[client][award][2] = 2; //ammopacks
+				client_rolls[client][award][3] = 2; //healthpacks
+				SpawnAndAttachTreasure(client);
+				
+				centerHudText(client, "Hey you're not supposed to roll this!", 4.0, 10.0, HudMsg3, 0.75); 
+			}
+			
 		}
 	}else{ // Bad Command
 		//Let's store how many bad rolls the user has received 

@@ -56,6 +56,17 @@ public Action:Spawn_QuestionBlock(client, attacker)
 			if(GetRandomInt(1,100) < 20 + RTD_TrinketBonus[attacker][TRINKET_PARTYTIME])
 			{
 				SetEntityModel(ent,MODEL_PRESENT05);
+				
+				//determine treasure chest spawn
+				new rndNumber = GetRandomInt(1, 10);
+				if(rndNumber == 5)
+				{
+					EmitSoundToAll(SOUND_OPEN_TRINKET, client);
+					
+					killEntityIn(ent, 0.1);
+					spawnOnFloorTreasure(client);
+					return Plugin_Continue;
+				}
 			}else{
 				SetEntityModel(ent,MODEL_PRESENT02);
 			}
@@ -326,6 +337,7 @@ GiveRandomEffect(client, attacker, special)
 		if(reward == 18)
 		{
 			randomValue = GetRandomInt(1, RTD_Perks[client][7]);
+			
 			PrintCenterText(client, "Found %i CREDITS!", randomValue);
 			
 			
@@ -376,5 +388,122 @@ public Action:giveCrits_Timer(Handle:Timer, Handle:dataPack)
 	
 	TF2_AddCondition(client,TFCond_Kritzkrieged,2.0);
 	
+	return Plugin_Continue;
+}
+
+public bool:determineCoinSpawn(client)
+{
+	if(GetRandomInt(1, 5) != 2)
+		return false;
+	
+	if(client_rolls[client][AWARD_G_TREASURE][3] > GetTime())
+		return false;
+	
+	//next time a coin will have chance to spawn
+	client_rolls[client][AWARD_G_TREASURE][3] = GetTime() + 10;
+	
+	//small chance to spawn a dice
+	if(GetRandomInt(1, 10) == 5)
+	{
+		SpawnDiceAtClient(client);
+		return true;
+	}
+	
+	new Float:vicorigvec[3];
+	GetClientAbsOrigin(client, Float:vicorigvec);
+	
+	new ent = CreateEntityByName("prop_dynamic_override");
+	
+	SetEntityModel(ent,MODEL_COIN_SMALL);
+	
+	SetEntProp(ent, Prop_Data, "m_takedamage", 0);  //default = 2
+	
+	new String:coinName[128];
+	Format(coinName, sizeof(coinName), "target%i", ent);
+	DispatchKeyValue(ent, "targetname", coinName);
+	
+	DispatchSpawn(ent);
+	
+	
+	new iTeam = GetClientTeam(client);
+	SetVariantInt(iTeam);
+	AcceptEntityInput(ent, "TeamNum", -1, -1, 0);
+	
+	SetVariantInt(iTeam);
+	AcceptEntityInput(ent, "SetTeam", -1, -1, 0); 
+	
+	SetEntProp(ent, Prop_Data, "m_takedamage", 0);  //default = 2
+	
+	SetEntProp( ent, Prop_Data, "m_nSolidType", 6 );
+	SetEntProp( ent, Prop_Send, "m_nSolidType", 6 );
+	
+	SetEntProp(ent, Prop_Data, "m_CollisionGroup", 3);
+	SetEntProp(ent, Prop_Send, "m_CollisionGroup", 3);
+	
+	AcceptEntityInput( ent, "DisableCollision" );
+	
+	SetVariantString("idle");
+	AcceptEntityInput(ent, "SetAnimation", -1, -1, 0); 
+	
+	vicorigvec[2] += 15.0;
+	TeleportEntity(ent, vicorigvec, NULL_VECTOR, NULL_VECTOR);
+	
+	// send "kill" event to the event queue
+	killEntityIn(ent, 30.0);
+	
+	// play sound 
+	EmitSoundToAll(SOUND_PRESENT, client);
+	
+	CreateTimer(0.1, Coin_Timer, EntIndexToEntRef(ent), TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
+	
+	AttachTempParticle(ent,"superrare_beams1",30.0, true, coinName,0.0, false);
+	
+	return true;
+}
+
+public Action:Coin_Timer(Handle:timer, any:coinRef)
+{
+	new coinEntity = EntRefToEntIndex(coinRef);
+	
+	if(coinEntity < 1)
+		return Plugin_Stop;
+	
+	if(!IsValidEntity(coinEntity))
+		return Plugin_Stop;
+	
+	new Float: playerPos[3];
+	new Float: otherPos[3];
+	new Float: distanceFromFeet;
+	new Float: distanceFromHead;
+	
+	GetEntPropVector(coinEntity, Prop_Data, "m_vecOrigin", otherPos);
+	
+	for (new i = 1; i <= MaxClients ; i++)
+	{
+		if(!IsClientInGame(i) || !IsPlayerAlive(i))
+			continue;
+		
+		GetClientAbsOrigin(i,playerPos);
+		distanceFromFeet = GetVectorDistance( playerPos, otherPos);
+		
+		GetClientEyePosition(i,playerPos);
+		distanceFromHead = GetVectorDistance( playerPos, otherPos);
+		
+		if(distanceFromFeet < 50.0 || distanceFromHead < 50)
+		{
+			EmitSoundToAll(SOUND_COIN, i);
+			
+			RTDCredits[i] += 2;
+			
+			PrintCenterText(i, "2 CREDITS!");
+			
+			AcceptEntityInput(coinEntity,"kill");
+			
+			AttachFastParticle(i, "finishline_confetti", 2.0);
+			
+			return Plugin_Stop;
+		}
+	}
+
 	return Plugin_Continue;
 }

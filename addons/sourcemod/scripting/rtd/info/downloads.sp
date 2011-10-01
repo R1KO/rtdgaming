@@ -788,4 +788,33 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("sound/rtdgaming/jump01.wav");
 	AddFileToDownloadsTable("sound/rtdgaming/jump02.wav");
 	AddFileToDownloadsTable("sound/rtdgaming/jump03.wav");
+	
+	AddFileToDownloadsTable("sound/rtdgaming/coin.wav");
+	
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest.vvd");
+	
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest_onback.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest_onback.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest_onback.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest_onback.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/chest/chest_onback.vvd");
+	
+	AddFileToDownloadsTable("models/rtdgaming/coins/coinsmall.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/coins/coinsmall.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/coins/coinsmall.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/coins/coinsmall.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/coins/coinsmall.vvd");
+	
+	AddFileToDownloadsTable("materials/models/rtdgaming/chest/chest.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/chest/chest.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/chest/chest_normal.vtf");
+	
+	AddFileToDownloadsTable("materials/models/rtdgaming/coin/coin_small.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/coin/coin_small.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/coin/lightwrap.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/coin/normal_small.vtf");
 }

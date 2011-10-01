@@ -447,6 +447,11 @@
 #define SOUND_JUMP02	"rtdgaming/jump02.wav"
 #define SOUND_JUMP03	"rtdgaming/jump03.wav"
 
+#define MODEL_CHEST			"models/rtdgaming/chest/chest.mdl"
+#define MODEL_CHEST_ONBACK	"models/rtdgaming/chest/chest_onback.mdl"
+#define MODEL_COIN_SMALL	"models/rtdgaming/coins/coinsmall.mdl"
+
+#define SOUND_COIN "rtdgaming/coin.wav"
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 
