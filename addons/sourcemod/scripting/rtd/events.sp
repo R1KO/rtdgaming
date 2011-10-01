@@ -842,7 +842,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	new death_ringer = GetEventInt(event, "death_flags");
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
-	//new assister = GetClientOfUserId(GetEventInt(event, "assister"));
+	new assister = GetClientOfUserId(GetEventInt(event, "assister"));
 	
 	lastAttackerOnPlayer[client] = attacker;
 	
@@ -850,9 +850,30 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	{
 		if(IsClientInGame(client) && IsClientInGame(attacker))
 		{
+			new playerHigherTrinket;
+			
 			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
+				playerHigherTrinket = assister;
+			
+			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
+				playerHigherTrinket = assister;
+			
+			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && RTD_TrinketActive[assister][TRINKET_PARTYTIME])
 			{
-				for(new i = 0; i <= RTD_TrinketLevel[attacker][TRINKET_PARTYTIME]; i++)
+				if(RTD_TrinketLevel[attacker][TRINKET_PARTYTIME] >= RTD_TrinketLevel[assister][TRINKET_PARTYTIME])
+				{
+					playerHigherTrinket = attacker;
+				}else{
+					playerHigherTrinket = assister;
+				}
+			}
+			
+			if(playerHigherTrinket == 0)
+				playerHigherTrinket = attacker;
+			
+			if(RTD_TrinketActive[playerHigherTrinket][TRINKET_PARTYTIME])
+			{
+				for(new i = 0; i <= RTD_TrinketLevel[playerHigherTrinket][TRINKET_PARTYTIME]; i++)
 				{
 					switch(GetRandomInt(1,3))
 					{

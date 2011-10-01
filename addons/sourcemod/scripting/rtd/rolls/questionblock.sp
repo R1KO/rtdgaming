@@ -393,7 +393,7 @@ public Action:giveCrits_Timer(Handle:Timer, Handle:dataPack)
 
 public bool:determineCoinSpawn(client)
 {
-	if(GetRandomInt(1, 5) != 2)
+	if(GetRandomInt(1, 3) != 2)
 		return false;
 	
 	if(client_rolls[client][AWARD_G_TREASURE][3] > GetTime())
@@ -493,13 +493,13 @@ public Action:Coin_Timer(Handle:timer, any:coinRef)
 		{
 			EmitSoundToAll(SOUND_COIN, i);
 			
-			RTDCredits[i] += 2;
+			RTDCredits[i] += 5;
 			
-			PrintCenterText(i, "2 CREDITS!");
+			PrintCenterText(i, "5 CREDITS!");
 			
 			AcceptEntityInput(coinEntity,"kill");
 			
-			AttachFastParticle(i, "finishline_confetti", 2.0);
+			//AttachFastParticle(i, "finishline_confetti", 2.0);
 			
 			return Plugin_Stop;
 		}
