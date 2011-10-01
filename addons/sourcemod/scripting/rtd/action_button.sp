@@ -20,6 +20,7 @@ public Determine_DropItem(client)
 	client_rolls[client][AWARD_G_SPIDER][1]			||
 	client_rolls[client][AWARD_G_WINGS][0]			||
 	client_rolls[client][AWARD_G_STONEWALL][0]		||
+	client_rolls[client][AWARD_G_TREASURE][0]		||
 	client_rolls[client][AWARD_G_COW][1]			)
 	{
 		BuildUseableRollsMenu(client);
@@ -33,6 +34,12 @@ public BuildUseableRollsMenu(client)
 	new String:info[64];
 	
 	SetMenuTitle(hCMenu,"Select Roll to Activate");
+	
+	if(client_rolls[client][AWARD_G_TREASURE][0])
+	{
+		Format(info, sizeof(info), "%i:0", AWARD_G_TREASURE);
+		AddMenuItem(hCMenu, info, "Drop Treasure Chest", ITEMDRAW_DEFAULT);
+	}
 	
 	if(client_rolls[client][AWARD_G_BACKPACK][0])
 	{
@@ -165,6 +172,11 @@ public fn_SpecialDropItem_Menu(Handle:menu, MenuAction:action, param1, param2)
 							Drop_Backpack(param1);
 						}
 					}
+				}
+				
+				case AWARD_G_TREASURE:
+				{
+					Drop_Treasure(param1);
 				}
 				
 				case AWARD_G_BLIZZARD:

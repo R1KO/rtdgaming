@@ -11,7 +11,7 @@
 #endif
 #define _rtd_rollinfo_included
 
-#define MAX_GOOD_AWARDS			79
+#define MAX_GOOD_AWARDS			80
 
 #define AWARD_G_GODMODE			0
 #define AWARD_G_TOXIC				1
@@ -92,19 +92,20 @@
 #define AWARD_G_ICEBOMB			76
 #define AWARD_G_FIREBOMB			77
 #define AWARD_G_ANGELIC			78
+#define AWARD_G_TREASURE			79
 
 #define MAX_BAD_AWARDS			10
 
-#define AWARD_B_LOSER				79
-#define AWARD_B_NOJUMP			80
-#define AWARD_B_IGNITE			81
-#define AWARD_B_HEALTH			82
-#define AWARD_B_WEAPONS			83
-#define AWARD_B_TAUNT				84
-#define AWARD_B_WAITMORE			85
-#define AWARD_B_BADAIM			86
-#define AWARD_B_DOOM				87
-#define AWARD_B_SLOWMO			88
+#define AWARD_B_LOSER				80
+#define AWARD_B_NOJUMP			81
+#define AWARD_B_IGNITE			82
+#define AWARD_B_HEALTH			83
+#define AWARD_B_WEAPONS			84
+#define AWARD_B_TAUNT				85
+#define AWARD_B_WAITMORE			86
+#define AWARD_B_BADAIM			87
+#define AWARD_B_DOOM				88
+#define AWARD_B_SLOWMO			89
 
 new String:roll_id[150][32]; //roll identifiers that match up with ;
 
@@ -192,6 +193,7 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_ICEBOMB],			32, "ICEBOMB");
 	Format(roll_id[AWARD_G_FIREBOMB],		32, "FIREBOMB");
 	Format(roll_id[AWARD_G_ANGELIC],			32, "ANGELIC");
+	Format(roll_id[AWARD_G_TREASURE],		32, "TREASURE");
 	
 	Format(roll_id[AWARD_B_WEAPONS], 		32, "WEAPONS");
 	Format(roll_id[AWARD_B_TAUNT], 			32, "TAUNT");

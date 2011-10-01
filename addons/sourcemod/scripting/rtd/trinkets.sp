@@ -1278,7 +1278,7 @@ public checkTrinketsExpiration(client)
 	if(expiredTrinkets == 1 && lastExpireNotification[client] < GetTime())
 	{
 		PrintToChat(client, "You have expired trinkets! Extend them through the Trinkets menu.");
-		lastExpireNotification[client] = GetTime() + 180;
+		lastExpireNotification[client] = GetTime() + 600;
 	}
 	
 }

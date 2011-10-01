@@ -396,6 +396,8 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_JUMP02, true);
 	PrecacheSound(SOUND_JUMP03, true);
 	
+	PrecacheSound(SOUND_COIN, true);
+	
 	angelicModelIndex = PrecacheModel(MODEL_ANGELIC, true);
 	
 	//keep track of all indexed models in an array
@@ -452,7 +454,9 @@ stock RTDPrecache()
 	modelIndex[50] = PrecacheModel(MODEL_DYNAMITE02, true);
 	modelIndex[51] = PrecacheModel(MODEL_DYNAMITE03, true);
 	modelIndex[52] = PrecacheModel(MODEL_DYNAMITE04, true);
+	modelIndex[53] = PrecacheModel(MODEL_CHEST, true);
+	modelIndex[54] = PrecacheModel(MODEL_CHEST_ONBACK, true);
+	modelIndex[55] = PrecacheModel(MODEL_COIN_SMALL, true);
 	
-	
-	totModels = 50;
+	totModels = 55;
 }

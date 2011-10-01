@@ -950,3 +950,43 @@ showWelcomeBackPanel(client)
 public emptyPanelHandler(Handle:menu, MenuAction:action, param1, param2)
 {
 }
+
+public SpawnDiceAtClient(client)
+{
+	new Float:vicorigvec[3];
+	GetEntPropVector(client, Prop_Data, "m_vecOrigin", vicorigvec);
+	
+	new String:sModel[64];
+	sModel = MODEL_DICE;
+	new dice = CreateEntityByName("prop_dynamic_override");
+	
+	SetEntityModel(dice,sModel);
+	DispatchSpawn(dice);
+	
+	vicorigvec[2] += 20.0;
+	
+	TeleportEntity(dice, vicorigvec, NULL_VECTOR, NULL_VECTOR);
+	
+	SetVariantString("idle");
+	AcceptEntityInput(dice, "SetAnimation", -1, -1, 0); 
+	
+	//parent the particle to the dice
+	new String:tName[128];
+	Format(tName, sizeof(tName), "dice%i", dice);
+	DispatchKeyValue(dice, "targetname", tName);
+	
+	AttachTempParticle(dice,"superrare_beams1",30.0, true, tName,0.0, false);
+	
+	//Prevent pickup when diceSpawnlimit is set to "all"
+	//this is easier for dice seeding without accidently picking them up
+	//Set up the dice Touch timer
+	new Handle:dataPackHandle;
+	CreateDataTimer(0.1, diceTouch_Timer, dataPackHandle, TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
+	
+	//Setup the datapack with appropriate information
+	WritePackCell(dataPackHandle, dice);   //PackPosition(0); Dice Entity
+	WritePackCell(dataPackHandle, GetTime());     //PackPosition(8);  Current Time
+	WritePackCell(dataPackHandle, 0);
+	
+	killEntityIn(dice, 30.0);
+}

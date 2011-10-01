@@ -622,6 +622,55 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		}
 	}
 	
+	if(client_rolls[client][AWARD_G_TREASURE][0])
+	{
+		new chest = EntRefToEntIndex(client_rolls[client][AWARD_G_TREASURE][1]);
+		
+		new client_chest = EntRefToEntIndex(client_rolls[client][AWARD_G_TREASURE][2]);
+		
+		if(client_chest > 0 && IsValidEntity(client_chest))
+		{
+			new currIndex = GetEntProp(client_chest, Prop_Data, "m_nModelIndex");
+			
+			if(currIndex == modelIndex[53] || currIndex == modelIndex[54])
+			{
+				new String:playerName[128];
+				Format(playerName, sizeof(playerName), "target%i", client);
+				DispatchKeyValue(client, "targetname", playerName);
+				
+				CDetach(client_chest);
+				CAttach(client_chest, client, "flag");
+				
+			}else{
+				//PrintToChatAll("Shield Changed Entities damn it!");
+				//CreateTimer(1.0, waitAndAttachTreasure, GetClientUserId(client));
+			}
+		}else{
+			//CreateTimer(1.0, waitAndAttachTreasure, GetClientUserId(client));
+		}
+		
+		if(chest > 0 && IsValidEntity(chest))
+		{
+			new currIndex = GetEntProp(chest, Prop_Data, "m_nModelIndex");
+			
+			if(currIndex == modelIndex[53] || currIndex == modelIndex[54])
+			{
+				new String:playerName[128];
+				Format(playerName, sizeof(playerName), "target%i", client);
+				DispatchKeyValue(client, "targetname", playerName);
+				
+				CDetach(chest);
+				CAttach(chest, client, "flag");
+				
+			}else{
+				//PrintToChatAll("Shield Changed Entities damn it!");
+				CreateTimer(1.0, waitAndAttachTreasure, GetClientUserId(client));
+			}
+		}else{
+			CreateTimer(1.0, waitAndAttachTreasure, GetClientUserId(client));
+		}
+	}
+	
 	if(client_rolls[client][AWARD_G_SPIDER][1] != 0)
 	{
 		if(IsValidEntity(client_rolls[client][AWARD_G_SPIDER][1]))
@@ -846,7 +895,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	new damagebits  = GetEventInt(event, "damagebits");
 	
 	//customkill 6 = suicide
-	//PrintToChatAll("Event_PlayerDeath:%i | attacker:%i | weaponid:%i | customkill:%i | death_flags:%i", client,attacker,weaponid,customkill,death_flags);
+	//PrintToChatAll("Event_PlayerDeath:%i | attacker:%i | weaponid:%i | customkill:%i | death_flags:%i | damagebits:%i", client,attacker,weaponid,customkill,death_flags, damagebits);
 	
 	SetHudTextParams(HUDxPos[client][0], HUDyPos[client][0], 0.1, 0, 255, 0, 255);
 	ShowHudText(client, HudMsg1, "");
@@ -898,6 +947,9 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			{
 				SpawnDynamite(client);
 			}
+			
+			if(!spawnedItem && client_rolls[attacker][AWARD_G_TREASURE][0])
+				spawnedItem = determineCoinSpawn(client);
 			
 			if(!spawnedItem)
 				spawnedItem = DetermineQuestionBlockSpawn(client, attacker);

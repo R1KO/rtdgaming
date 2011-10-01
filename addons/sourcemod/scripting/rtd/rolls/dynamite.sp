@@ -254,7 +254,7 @@ public Action:Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 	
 	if(TF2_GetPlayerClass(client) == TFClass_Spy)
 	{
-		if(TF2_IsPlayerInCondition(client, TFCond_Cloaked))
+		if(TF2_IsPlayerInCondition(client, TFCond_Cloaked) || TF2_IsPlayerInCondition(client, TFCond_Disguised))
 		{
 			SetEntityRenderMode(dynamite, RENDER_TRANSCOLOR);	
 			SetEntityRenderColor(dynamite, 255, 255,255, 0);
@@ -271,7 +271,6 @@ public Action:Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 	// Determine skin //
 	////////////////////
 	new skin = GetEntProp(dynamite, Prop_Data, "m_nSkin");
-	new DisguiseTeam;
 	
 	if(TF2_IsPlayerInCondition(client, TFCond_Ubercharged))
 	{	
@@ -285,28 +284,13 @@ public Action:Dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 			}
 		}
 	}else{
-		if(TF2_GetPlayerClass(client) == TFClass_Spy)
+		if(GetClientTeam(client) == RED_TEAM)
 		{
-			DisguiseTeam  = GetEntData(client, m_nDisguiseTeam);
-				
-			if(DisguiseTeam == 0)
-				DisguiseTeam = GetClientTeam(client);
-			
-			if(DisguiseTeam == RED_TEAM && skin != 0)
+			if(skin != 0)
 				DispatchKeyValue(dynamite, "skin","0"); 
-			
-			if(DisguiseTeam == BLUE_TEAM && skin != 2)
-				DispatchKeyValue(dynamite, "skin","2"); 
-		}else
-		{
-			if(GetClientTeam(client) == RED_TEAM)
-			{
-				if(skin != 0)
-					DispatchKeyValue(dynamite, "skin","0"); 
-			}else{
-				if(skin != 2)
-					DispatchKeyValue(dynamite, "skin","2");
-			}
+		}else{
+			if(skin != 2)
+				DispatchKeyValue(dynamite, "skin","2");
 		}
 	}
 	
@@ -433,7 +417,7 @@ public SpawnDynamite(client)
 	
 	//Setup the datapack with appropriate information
 	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0); dynamite entity
-	WritePackCell(dataPackHandle, GetTime() + 1);     //PackPosition(8); time to go off
+	WritePackCell(dataPackHandle, GetTime() + 2);     //PackPosition(8); time to go off
 	WritePackCell(dataPackHandle, GetClientUserId(client));     //PackPosition(16); owner
 	WritePackCell(dataPackHandle, RTD_TrinketBonus[client][TRINKET_EXPLOSIVEDEATH]);     //PackPosition(24); Damage amount
 	
@@ -447,7 +431,7 @@ public SpawnDynamite(client)
 	}
 	
 	TeleportEntity(ent, clientOrigin, angles, NULL_VECTOR);
-	EmitSoundToAll(Bomb_Tick, ent);
+	//EmitSoundToAll(Bomb_Tick, ent);
 }
 
 public Action:dynamite_Timer(Handle:timer, Handle:dataPackHandle)
@@ -471,7 +455,7 @@ public Action:dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 	if(detonateTime > GetTime())
 		return Plugin_Continue;
 	
-	StopSound(dynamite, SNDCHAN_AUTO, Bomb_Tick);
+	//StopSound(dynamite, SNDCHAN_AUTO, Bomb_Tick);
 	
 	AttachTempParticle(dynamite,"ExplosionCore_MidAir", 1.0, false,"",0.0, false);
 	
