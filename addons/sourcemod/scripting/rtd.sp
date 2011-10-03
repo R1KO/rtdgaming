@@ -863,6 +863,14 @@ ShowWhatIsMOTD(client, String:lookingFor[])
 		return;
 	}
 	
+	if (StrEqual(lookingFor, "treasure", false) || StrEqual(lookingFor, "treasurechest", false) || StrEqual(lookingFor, "treasure chest", false))
+	{
+		new String:url[128];
+		Format(url, sizeof(url), "http://wiki.rtdgaming.com/wiki/Treasure");
+		ShowMOTDPanel(client, "Something", url, MOTDPANEL_TYPE_URL);
+		return;
+	}
+	
 	if (StrEqual(lookingFor, "gift", false))
 	{
 		new String:url[128];

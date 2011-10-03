@@ -56,7 +56,7 @@ public Action:Spawn_Ice(client)
 	CreateDataTimer(0.1, Ice_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	
 	//Setup the datapack with appropriate information
-	WritePackCell(dataPackHandle, ent); //entity
+	WritePackCell(dataPackHandle, EntIndexToEntRef(ent)); //entity
 	WritePackCell(dataPackHandle, 120); //8 liveTime
 	WritePackCell(dataPackHandle, GetTime()); //16 currentTime
 	
@@ -77,18 +77,16 @@ public Action:Spawn_Ice(client)
 public stopIceTimer(Handle:dataPackHandle)
 {	
 	ResetPack(dataPackHandle);
-	new ice = ReadPackCell(dataPackHandle);
+	new ice = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new liveTime =  ReadPackCell(dataPackHandle);
 	new startTime =  ReadPackCell(dataPackHandle);
 	
 	if(!IsValidEntity(ice))
 		return true;
 	
-	new currIndex = GetEntProp(ice, Prop_Data, "m_nModelIndex");
 	
-	if(currIndex != iceModelIndex)
+	if(ice < 1)
 	{
-		//LogToFile(logPath,"Killing stopAmplifierTimer handle! Reason: Invalid Model");
 		return true;
 	}
 	
@@ -127,7 +125,7 @@ public Action:Ice_Timer(Handle:timer, Handle:dataPackHandle)
 	}
 	
 	ResetPack(dataPackHandle);
-	new ent = ReadPackCell(dataPackHandle);
+	new ent = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
 	//should the ice patch freeze in place?
 	SetPackPosition(dataPackHandle, 24);
@@ -170,7 +168,7 @@ public Action:Ice_Timer(Handle:timer, Handle:dataPackHandle)
 		
 		//Check to see if player is close to a Crap Pile
 		//is Ducking, on the ground, etc.
-		new cflags = GetEntData(i, FindSendPropOffs("CBasePlayer", "m_fFlags"));
+		new cflags = GetEntData(i, m_fFlags);
 		
 		//let's see if player position is valid to drop ice
 		new bool:foundInIce = false;
@@ -236,7 +234,7 @@ public Action:Ice_Timer(Handle:timer, Handle:dataPackHandle)
 			}
 			
 			//Make the user slide faster
-			SetEntDataFloat(i, FindSendPropInfo("CTFPlayer", "m_flMaxspeed"), 1400.0);
+			SetEntDataFloat(i, m_flMaxspeed, 1400.0);
 			new Float:playerspeed[3];
 			
 			GetEntPropVector(i, Prop_Data, "m_vecVelocity", playerspeed);

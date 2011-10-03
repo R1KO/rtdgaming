@@ -966,11 +966,19 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			
 			if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
 			{
-				SpawnDynamite(client);
+				SpawnExplodingDynamite(client);
 			}
 			
+			//determine spawn for coin if attacker has treasure chest
 			if(!spawnedItem && client_rolls[attacker][AWARD_G_TREASURE][0])
-				spawnedItem = determineCoinSpawn(client);
+				spawnedItem = determineCoinSpawn(client, attacker, 0);
+			
+			//determine spawn for coin if assister has treasure chest
+			if(assister != 0)
+			{
+				if(!spawnedItem && client_rolls[assister][AWARD_G_TREASURE][0])
+					spawnedItem = determineCoinSpawn(client, assister, 1);
+			}
 			
 			if(!spawnedItem)
 				spawnedItem = DetermineQuestionBlockSpawn(client, attacker);
