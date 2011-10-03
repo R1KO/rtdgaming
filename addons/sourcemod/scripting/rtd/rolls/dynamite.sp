@@ -307,7 +307,7 @@ public stopDynamiteTimer(Handle:dataPackHandle)
 	new clientOnly = ReadPackCell(dataPackHandle);
 	new originalEntity = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
-	if(!IsValidEntity(dynamite))
+	if(!IsValidEntity(dynamite) || dynamite < 1)
 		return true;
 	
 	if(client == 0)
@@ -364,7 +364,7 @@ public stopDynamiteTimer(Handle:dataPackHandle)
 	return false;
 }
 
-public SpawnDynamite(client)
+public SpawnExplodingDynamite(client)
 {	
 	new ent = CreateEntityByName("prop_dynamic_override");
 	new Float:clientOrigin[3];
@@ -386,6 +386,10 @@ public SpawnDynamite(client)
 		case 3:
 			SetEntityModel(ent, MODEL_DYNAMITE04);
 	}
+	
+	new String:tName[128];
+	Format(tName, sizeof(tName), "target%i", ent);
+	DispatchKeyValue(ent, "targetname", tName);
 	
 	DispatchSpawn(ent);
 	
@@ -411,9 +415,16 @@ public SpawnDynamite(client)
 	SetVariantInt(iTeam);
 	AcceptEntityInput(ent, "SetTeam", -1, -1, 0); 
 	
+	if(iTeam == RED_TEAM)
+	{
+		DispatchKeyValue(ent, "skin","0"); 
+	}else{
+		DispatchKeyValue(ent, "skin","2");
+	}
+	
 	//The Datapack stores all the Backpack's important values
 	new Handle:dataPackHandle;
-	CreateDataTimer(0.5, dynamite_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+	CreateDataTimer(0.5, explodingDynamite_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	
 	//Setup the datapack with appropriate information
 	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0); dynamite entity
@@ -421,20 +432,26 @@ public SpawnDynamite(client)
 	WritePackCell(dataPackHandle, GetClientUserId(client));     //PackPosition(16); owner
 	WritePackCell(dataPackHandle, RTD_TrinketBonus[client][TRINKET_EXPLOSIVEDEATH]);     //PackPosition(24); Damage amount
 	
-	AttachRTDParticle(ent, "candle_light1", false, false, 21.0);
+	
+	TeleportEntity(ent, clientOrigin, angles, NULL_VECTOR);
+	
+	AttachTempParticle(ent,"candle_light1",5.0, true, tName,26.0, false);
+	//AttachRTDParticle(ent, "candle_light1", false, false, 21.0);
 	
 	if(iTeam == BLUE_TEAM)
 	{
-		AttachRTDParticle(ent, "critical_pipe_blue", false, false, 21.0);
+		AttachTempParticle(ent,"critical_pipe_blue",5.0, true, tName,0.0, false);
+		//AttachRTDParticle(ent, "critical_pipe_blue", false, false, 21.0);
 	}else{
-		AttachRTDParticle(ent, "critical_pipe_red", false, false, 21.0);
+		AttachTempParticle(ent,"critical_pipe_red",5.0, true, tName,0.0, false);
+		//AttachRTDParticle(ent, "critical_pipe_red", false, false, 21.0);
 	}
 	
-	TeleportEntity(ent, clientOrigin, angles, NULL_VECTOR);
+	
 	//EmitSoundToAll(Bomb_Tick, ent);
 }
 
-public Action:dynamite_Timer(Handle:timer, Handle:dataPackHandle)
+public Action:explodingDynamite_Timer(Handle:timer, Handle:dataPackHandle)
 {
 	////////////////////////////////
 	//Should we stop this timer?  //
@@ -492,7 +509,7 @@ public Action:dynamite_Timer(Handle:timer, Handle:dataPackHandle)
 		SetEntDataVector(i,BaseVelocityOffset,finalvec,true);
 		
 		
-		DelayDamage(0.1, i, damage, owner, 128, "proxmine");
+		DealDamage(i, damage, owner, 128, "proxmine");
 		
 		SetHudTextParams(0.405, 0.82, 4.0, 255, 50, 50, 255);
 		ShowHudText(i, HudMsg3, "You were hurt by an Explosive Death");

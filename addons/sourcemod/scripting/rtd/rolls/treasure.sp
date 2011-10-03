@@ -238,6 +238,12 @@ public Action:treasure_Timer(Handle:timer, Handle:dataPackHandle)
 						continue;
 					}
 					
+					if(client_rolls[client][AWARD_G_STONEWALL][0])
+					{
+						PrintCenterText(client, "Can't pick up Treasure Chest with Stonewall equipped!");
+						continue;
+					}
+					
 					if(itemEquipped_OnBack[client])
 					{
 						if(denyPickup(client, AWARD_G_TREASURE, true))
@@ -497,6 +503,6 @@ public spawnOnFloorTreasure(client)
 	//Setup the datapack with appropriate information
 	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0);  Backpack Index
 	WritePackCell(dataPackHandle, 0);     //PackPosition(24); Time on floor
-		
+	
 	TeleportEntity(ent, floorPos, angle, NULL_VECTOR);
 }

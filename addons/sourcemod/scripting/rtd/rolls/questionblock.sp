@@ -37,25 +37,22 @@
 //-Time reduction, 15s - 45s
 //-Gives the use 50+ Armor 
 
-public Action:Spawn_QuestionBlock(client, attacker)
+public Spawn_QuestionBlock(client, attacker)
 {
-	new Float:vicorigvec[3];
-	GetClientAbsOrigin(client, Float:vicorigvec);
-	
-	new ent = CreateEntityByName("prop_dynamic_override");
-	
+	//Determine which model present to spawn
 	new randomModel = GetRandomInt(1, 4);
+	new String:modelName[128];
 	
 	switch(randomModel)
 	{
 		case 1:
-			SetEntityModel(ent,MODEL_PRESENT01);
+			Format(modelName, 128, "%s", MODEL_PRESENT01);
 		
 		case 2:
 		{
 			if(GetRandomInt(1,100) < 20 + RTD_TrinketBonus[attacker][TRINKET_PARTYTIME])
 			{
-				SetEntityModel(ent,MODEL_PRESENT05);
+				Format(modelName, 128, "%s", MODEL_PRESENT05);
 				
 				//determine treasure chest spawn
 				new rndNumber = GetRandomInt(1, 10);
@@ -63,22 +60,32 @@ public Action:Spawn_QuestionBlock(client, attacker)
 				{
 					EmitSoundToAll(SOUND_OPEN_TRINKET, client);
 					
-					killEntityIn(ent, 0.1);
 					spawnOnFloorTreasure(client);
-					return Plugin_Continue;
+					return;
 				}
 			}else{
-				SetEntityModel(ent,MODEL_PRESENT02);
+				Format(modelName, 128, "%s", MODEL_PRESENT02);
 			}
 		}
 		
 		case 3:
-			SetEntityModel(ent,MODEL_PRESENT03);
+			Format(modelName, 128, "%s", MODEL_PRESENT03);
 		
 		case 4:
-			SetEntityModel(ent,MODEL_PRESENT04);
+			Format(modelName, 128, "%s", MODEL_PRESENT04);
 	}
 	
+	if(StrEqual(modelName, ""))
+	{
+		PrintToChatAll("Error in Questionblock.sp: No modelname");
+		return;
+	}
+	
+	new Float:vicorigvec[3];
+	GetClientAbsOrigin(client, Float:vicorigvec);
+	
+	new ent = CreateEntityByName("prop_dynamic_override");
+	SetEntityModel(ent,modelName);
 	SetEntProp(ent, Prop_Data, "m_takedamage", 0);  //default = 2
 	
 	DispatchSpawn(ent);
@@ -120,7 +127,6 @@ public Action:Spawn_QuestionBlock(client, attacker)
 	
 	CreateTimer(0.1, Question_Timer, ent, TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
 	
-	return Plugin_Continue;
 }
 
 public Action:Question_Timer(Handle:timer, any:other)
@@ -213,6 +219,30 @@ public bool:DetermineQuestionBlockSpawn(client, attacker)
 	return false;
 }
 
+GiveSpecialPresent(client)
+{
+	PrintCenterText(client, "Received: Full Health & Ammo, 100 Armor, 5 Credits");
+	TF2_RegeneratePlayer(client);
+	
+	if(!client_rolls[client][AWARD_G_ARMOR][0])
+	{
+		client_rolls[client][AWARD_G_ARMOR][0] = 1;
+		client_rolls[client][AWARD_G_ARMOR][1] = 100;//Status of Armor HP
+	}else{
+		client_rolls[client][AWARD_G_ARMOR][1] += 100;//Status of Armor HP
+	}
+	
+	TF2_AddCondition(client,TFCond_Kritzkrieged,2.0);
+	new Handle:dataPack;
+	CreateDataTimer(1.0,giveCrits_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+	
+	WritePackCell(dataPack, client);
+	WritePackCell(dataPack, 0); //starting time
+	WritePackCell(dataPack, 6); //max time
+	
+	RTDCredits[client] += 5;
+}
+
 GiveRandomEffect(client, attacker, special)
 {	
 	new isGood = GetRandomInt(1, 10);
@@ -221,26 +251,7 @@ GiveRandomEffect(client, attacker, special)
 	
 	if(special)
 	{
-		PrintCenterText(client, "You were given lots of stuff!", randomValue);
-		TF2_RegeneratePlayer(client);
-		
-		if(!client_rolls[client][AWARD_G_ARMOR][0])
-		{
-			client_rolls[client][AWARD_G_ARMOR][0] = 1;
-			client_rolls[client][AWARD_G_ARMOR][1] = 100;//Status of Armor HP
-		}else{
-			client_rolls[client][AWARD_G_ARMOR][1] += 100;//Status of Armor HP
-		}
-		
-		TF2_AddCondition(client,TFCond_Kritzkrieged,2.0);
-		new Handle:dataPack;
-		CreateDataTimer(1.0,giveCrits_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
-		
-		WritePackCell(dataPack, client);
-		WritePackCell(dataPack, 0); //starting time
-		WritePackCell(dataPack, 6); //max time
-		
-		RTDCredits[client] += 5;
+		GiveSpecialPresent(client);
 		
 		return;
 	}
@@ -391,19 +402,21 @@ public Action:giveCrits_Timer(Handle:Timer, Handle:dataPack)
 	return Plugin_Continue;
 }
 
-public bool:determineCoinSpawn(client)
+public bool:determineCoinSpawn(client, attacker, isAssister)
 {
-	if(GetRandomInt(1, 3) != 2)
+	new randomNumber = GetRandomInt(1, 100);
+	
+	if(randomNumber >= 50)
 		return false;
 	
-	if(client_rolls[client][AWARD_G_TREASURE][3] > GetTime())
+	if(client_rolls[attacker][AWARD_G_TREASURE][3] > GetTime())
 		return false;
 	
 	//next time a coin will have chance to spawn
-	client_rolls[client][AWARD_G_TREASURE][3] = GetTime() + 10;
+	client_rolls[attacker][AWARD_G_TREASURE][3] = GetTime() + 30;
 	
-	//small chance to spawn a dice
-	if(GetRandomInt(1, 10) == 5)
+	//small chance to spawn a dice	
+	if(randomNumber <= 5)
 	{
 		SpawnDiceAtClient(client);
 		return true;
@@ -454,22 +467,47 @@ public bool:determineCoinSpawn(client)
 	// play sound 
 	EmitSoundToAll(SOUND_PRESENT, client);
 	
-	CreateTimer(0.1, Coin_Timer, EntIndexToEntRef(ent), TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
+	
+	//The Datapack stores all the Backpack's important values
+	new Handle:dataPackHandle;
+	CreateDataTimer(0.1, Coin_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+	
+	//Setup the datapack with appropriate information
+	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0);  entity index
+	WritePackCell(dataPackHandle, GetClientUserId(attacker));     //PackPosition(8); attacker id
+	WritePackCell(dataPackHandle, isAssister);     //PackPosition(16); was the attacker an assister
 	
 	AttachTempParticle(ent,"superrare_beams1",30.0, true, coinName,0.0, false);
 	
 	return true;
 }
 
-public Action:Coin_Timer(Handle:timer, any:coinRef)
-{
-	new coinEntity = EntRefToEntIndex(coinRef);
+public Action:Coin_Timer(Handle:timer, Handle:dataPackHandle)
+{	
+	ResetPack(dataPackHandle);
 	
+	new coinEntity = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	new attacker = GetClientOfUserId(ReadPackCell(dataPackHandle));
+	new isAssister = ReadPackCell(dataPackHandle);
+	
+	/////////////////////////////
+	//validate the coin entity //
+	/////////////////////////////
 	if(coinEntity < 1)
 		return Plugin_Stop;
 	
 	if(!IsValidEntity(coinEntity))
 		return Plugin_Stop;
+	
+	//////////////////////////
+	//validate the attacker //
+	//////////////////////////
+	if(attacker < 1)
+		attacker = -1;
+	
+	if(!IsClientInGame(attacker))
+		attacker = -1;
+	
 	
 	new Float: playerPos[3];
 	new Float: otherPos[3];
@@ -493,13 +531,40 @@ public Action:Coin_Timer(Handle:timer, any:coinRef)
 		{
 			EmitSoundToAll(SOUND_COIN, i);
 			
-			RTDCredits[i] += 5;
+			//determine how many credits get distributed
+			new totalCredits = 5;
 			
-			PrintCenterText(i, "5 CREDITS!");
+			if(isAssister)
+				totalCredits = 3;
+			
+			if(attacker == -1 || attacker == i)
+			{
+				//////////////////////////////////////////////////////
+				//the attacker (client that had the treasure chest) //
+				//is no longer here award full credits on pickup    //
+				//////////////////////////////////////////////////////
+				
+				RTDCredits[i] += totalCredits;
+				
+				PrintCenterText(i, "%i CREDITS!", totalCredits);
+			}else{
+				////////////////////////////////////////////
+				//split up the difference between the     //
+				//player that picked up the coin and the  // 
+				//client that had the treasure chest      //
+				////////////////////////////////////////////
+				
+				//player that picked up
+				RTDCredits[i] += 1;
+				PrintCenterText(i, "1 CREDIT!");
+				
+				//player that forced the drop
+				RTDCredits[attacker] += (totalCredits - 1);
+				PrintCenterText(attacker, "Received %i CREDITS!", (totalCredits - 1));
+				EmitSoundToClient(attacker, SOUND_COIN, i);
+			}
 			
 			AcceptEntityInput(coinEntity,"kill");
-			
-			//AttachFastParticle(i, "finishline_confetti", 2.0);
 			
 			return Plugin_Stop;
 		}
