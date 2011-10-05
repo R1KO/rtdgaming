@@ -571,6 +571,8 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		}
 	}
 	
+	//RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH] = 1;
+	//RTD_TrinketLevel[client][TRINKET_EXPLOSIVEDEATH] = 3;
 	if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
 	{	
 		RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH] = 0;

@@ -436,6 +436,8 @@ public SpawnExplodingDynamite(client)
 	TeleportEntity(ent, clientOrigin, angles, NULL_VECTOR);
 	
 	AttachTempParticle(ent,"candle_light1",5.0, true, tName,26.0, false);
+	AttachTempParticle(ent,"drg_pipe_smoke",5.0, true, tName,26.0, false);
+	
 	//AttachRTDParticle(ent, "candle_light1", false, false, 21.0);
 	
 	if(iTeam == BLUE_TEAM)
@@ -447,8 +449,7 @@ public SpawnExplodingDynamite(client)
 		//AttachRTDParticle(ent, "critical_pipe_red", false, false, 21.0);
 	}
 	
-	
-	//EmitSoundToAll(Bomb_Tick, ent);
+	EmitSoundToAll(SOUND_FUSE, ent);
 }
 
 public Action:explodingDynamite_Timer(Handle:timer, Handle:dataPackHandle)

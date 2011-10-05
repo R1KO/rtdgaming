@@ -397,6 +397,7 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_JUMP03, true);
 	
 	PrecacheSound(SOUND_COIN, true);
+	PrecacheSound(SOUND_FUSE, true);
 	
 	angelicModelIndex = PrecacheModel(MODEL_ANGELIC, true);
 	

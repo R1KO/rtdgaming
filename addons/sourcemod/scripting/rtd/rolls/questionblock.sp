@@ -55,7 +55,7 @@ public Spawn_QuestionBlock(client, attacker)
 				Format(modelName, 128, "%s", MODEL_PRESENT05);
 				
 				//determine treasure chest spawn
-				new rndNumber = GetRandomInt(1, 10);
+				new rndNumber = GetRandomInt(1, 15);
 				if(rndNumber == 5)
 				{
 					EmitSoundToAll(SOUND_OPEN_TRINKET, client);
@@ -561,7 +561,7 @@ public Action:Coin_Timer(Handle:timer, Handle:dataPackHandle)
 				//player that forced the drop
 				RTDCredits[attacker] += (totalCredits - 1);
 				PrintCenterText(attacker, "Received %i CREDITS!", (totalCredits - 1));
-				EmitSoundToClient(attacker, SOUND_COIN, i);
+				EmitSoundToClient(attacker, SOUND_COIN);
 			}
 			
 			AcceptEntityInput(coinEntity,"kill");
