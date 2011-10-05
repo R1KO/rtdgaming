@@ -817,4 +817,6 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/coin/coin_small.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/coin/lightwrap.vtf");
 	AddFileToDownloadsTable("materials/models/rtdgaming/coin/normal_small.vtf");
+	
+	AddFileToDownloadsTable("sound/rtdgaming/fuse.wav");
 }

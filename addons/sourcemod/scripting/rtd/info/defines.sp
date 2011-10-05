@@ -452,6 +452,7 @@
 #define MODEL_COIN_SMALL	"models/rtdgaming/coins/coinsmall.mdl"
 
 #define SOUND_COIN "rtdgaming/coin.wav"
+#define SOUND_FUSE "rtdgaming/fuse.wav"
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 

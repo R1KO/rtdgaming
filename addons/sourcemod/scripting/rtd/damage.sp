@@ -584,23 +584,30 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 				{
 					case 0:
 					{
+						PrintHintText(client, "Attacker used: Jarate Melee Trinket");
 						TF2_AddCondition(client, TFCond_Jarated, 5.0);
 					}
 					
 					case 1:
 					{
+						PrintHintText(client, "Attacker used: Bleed Melee Trinket");
 						TF2_MakeBleed(client, client, 5.0);
 					}
 					
 					case 2:
 					{
+						PrintHintText(client, "Attacker used: Fire Melee Trinket");
 						TF2_IgnitePlayer(client, attacker);
 						DealDamage(client,0,attacker,2056,"tf_weapon_flamethrower");
 					}
 					
 					case 3:
 					{
-						TF2_StunPlayer(client, 1.0, 0.0, TF_STUNFLAGS_NORMALBONK, 0);
+						PrintHintText(client, "Attacker used: Stun Melee Trinket");
+						
+						TF2_StunPlayer(client,2.0, 0.0, TF_STUNFLAGS_LOSERSTATE, 0);
+						ResetClientSpeed(client);
+						SetEntData(client, m_iMovementStunAmount, 0 );
 					}
 				}
 			}
