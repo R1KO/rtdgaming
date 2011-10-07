@@ -48,24 +48,6 @@ public saveStats(client)
 		
 		checkTrinketsExpiration(client);
 		
-		/*
-		//Trinkets
-		for(new i = 0; i < 50; i++)
-		{
-			if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
-			{
-				if(totFound == 0)
-				{
-					Format(stringTrinkets, sizeof(stringTrinkets), "%s:%i:%i:%i", RTD_TrinketUnique[client][i], RTD_TrinketTier[client][i], RTD_TrinketExpire[client][i], RTD_TrinketEquipped[client][i]);
-				}else{
-					Format(stringTrinkets, sizeof(stringTrinkets), "%s,%s:%i:%i:%i", stringTrinkets, RTD_TrinketUnique[client][i], RTD_TrinketTier[client][i], RTD_TrinketExpire[client][i], RTD_TrinketEquipped[client][i]);
-				}
-				
-				totFound ++;
-			}
-		}
-		*/
-		
 		GetClientAuthString(client, clsteamId, sizeof(clsteamId));
 		
 		//PrintToServer("Saving Talent Points: %i for Client %i", talentPoints[client], client);

@@ -1206,12 +1206,14 @@ public equipActiveTrinket(client)
 		{
 			if(RTD_TrinketEquipped[client][i] == 1)
 			{
-				RTD_TrinketActive[client][RTD_TrinketIndex[client][i]] = 1;
-				RTD_TrinketBonus[client][RTD_TrinketIndex[client][i]] = trinket_BonusAmount[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]];
-				RTD_TrinketMisc[client][RTD_TrinketIndex[client][i]] = 0;
-				RTD_TrinketLevel[client][RTD_TrinketIndex[client][i]] = RTD_TrinketTier[client][i];
+				new trinketIndex = RTD_TrinketIndex[client][i];
 				
-				PrintHintText(client, "(%s) \%s Trinket currently equipped", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
+				RTD_TrinketActive[client][trinketIndex] = 1;
+				RTD_TrinketBonus[client][trinketIndex] = trinket_BonusAmount[trinketIndex][RTD_TrinketTier[client][i]];
+				RTD_TrinketMisc[client][trinketIndex] = 0;
+				RTD_TrinketLevel[client][trinketIndex] = RTD_TrinketTier[client][i];
+				
+				PrintHintText(client, "(%s) \%s Trinket currently equipped", trinket_TierID[trinketIndex][RTD_TrinketTier[client][i]], trinket_Title[trinketIndex]);
 				//PrintToChat(client, "Trinket Bonus: %i", RTD_TrinketBonus[client][RTD_TrinketIndex[client][i]]);
 			}
 		}

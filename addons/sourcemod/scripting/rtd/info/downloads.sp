@@ -785,9 +785,8 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("sound/rtdgaming/yoshi.mp3");
 	AddFileToDownloadsTable("sound/rtdgaming/loser.mp3");
 	
-	AddFileToDownloadsTable("sound/rtdgaming/jump01.wav");
-	AddFileToDownloadsTable("sound/rtdgaming/jump02.wav");
-	AddFileToDownloadsTable("sound/rtdgaming/jump03.wav");
+	AddFileToDownloadsTable("sound/rtdgaming/jump01_rev02.wav");
+	AddFileToDownloadsTable("sound/rtdgaming/jump03_rev02.wav");
 	
 	AddFileToDownloadsTable("sound/rtdgaming/coin.wav");
 	

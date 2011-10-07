@@ -355,12 +355,13 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			return Plugin_Changed;
 		}
 		
+		/*
 		if(timeExpireScare[client] > GetTime())
 		{
 			damage *= 0.6;
 			
 			//PrintToChatAll("damagetype %i", damagetype);
-		}
+		}*/
 		
 		//less damage on ice
 		if(inIce[attacker] && damagetype == 16779264 || inIce[attacker] && damagetype == 2056)
@@ -604,8 +605,10 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 					case 3:
 					{
 						PrintHintText(client, "Attacker used: Stun Melee Trinket");
+						PrintCenterText(client, "Attacker used: Stun melee Trinket");
 						
-						TF2_StunPlayer(client,2.0, 0.0, TF_STUNFLAGS_LOSERSTATE, 0);
+						TF2_StunPlayer(client,2.5, 0.0, TF_STUNFLAGS_SMALLBONK, 0);
+						//TF2_StunPlayer(client,2.0, 0.0, TF_STUNFLAGS_LOSERSTATE, 0);
 						ResetClientSpeed(client);
 						SetEntData(client, m_iMovementStunAmount, 0 );
 					}
