@@ -393,13 +393,15 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_LOSERHANK, true);
 	
 	PrecacheSound(SOUND_JUMP01, true);
-	PrecacheSound(SOUND_JUMP02, true);
 	PrecacheSound(SOUND_JUMP03, true);
 	
 	PrecacheSound(SOUND_COIN, true);
 	PrecacheSound(SOUND_FUSE, true);
 	
 	angelicModelIndex = PrecacheModel(MODEL_ANGELIC, true);
+	
+	
+	PrecacheModel(MODEL_HHH, true);
 	
 	//keep track of all indexed models in an array
 	modelIndex[0] = bombModelIndex;	

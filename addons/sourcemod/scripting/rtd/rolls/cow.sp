@@ -692,7 +692,7 @@ public Action:CowOnBack_Timer(Handle:timer, Handle:dataPackHandle)
 	}
 	
 	//Cow's are heavy
-	SetEntityGravity(client, 1.3);
+	//SetEntityGravity(client, 1.3);
 	
 	itemEquipped_OnBack[client] = 1;
 	

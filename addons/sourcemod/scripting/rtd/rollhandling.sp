@@ -231,6 +231,11 @@ GivePlayerEffect(client, award, cost)
 					{
 						Format(bonus, sizeof(bonus), "Increased Dmg Reduction when activated");
 					}
+					
+					case AWARD_G_ARMOR:
+					{
+						Format(bonus, sizeof(bonus), "1000 Armor");
+					}
 				}
 				
 			}else{
@@ -452,7 +457,12 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_G_ARMOR:
 			{
-				client_rolls[client][award][1] += (500 + extraHealth);
+				if(isUnusual)
+				{
+					client_rolls[client][award][1] += (1000 + extraHealth);
+				}else{
+					client_rolls[client][award][1] += (500 + extraHealth);
+				}
 				
 				if(GetClientTeam(client) == BLUE_TEAM)
 				{

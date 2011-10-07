@@ -443,9 +443,8 @@
 #define MODEL_DYNAMITE03	"models/rtdgaming/dynamite/dynamite03.mdl"
 #define MODEL_DYNAMITE04	"models/rtdgaming/dynamite/dynamite04.mdl"
 
-#define SOUND_JUMP01	"rtdgaming/jump01.wav"
-#define SOUND_JUMP02	"rtdgaming/jump02.wav"
-#define SOUND_JUMP03	"rtdgaming/jump03.wav"
+#define SOUND_JUMP01	"rtdgaming/jump01_rev02.wav"
+#define SOUND_JUMP03	"rtdgaming/jump03_rev02.wav"
 
 #define MODEL_CHEST			"models/rtdgaming/chest/chest.mdl"
 #define MODEL_CHEST_ONBACK	"models/rtdgaming/chest/chest_onback.mdl"
@@ -453,6 +452,8 @@
 
 #define SOUND_COIN "rtdgaming/coin.wav"
 #define SOUND_FUSE "rtdgaming/fuse.wav"
+
+#define MODEL_HHH 		"models/bots/headless_hatman.mdl"
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 

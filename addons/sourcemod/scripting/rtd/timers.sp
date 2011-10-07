@@ -613,8 +613,11 @@ public Action:GenericTimer(Handle:timer)
 				{	
 					if(RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] < GetTime())
 					{
+						
+						SetEntData(i, m_iMovementStunAmount, 0 );
+						
 						timeExpireScare[i] = GetTime() + RTD_TrinketBonus[i][TRINKET_SCARYTAUNT];
-						addHealthPercentage(i, 0.2, true); //add 20% health
+						addHealthPercentage(i, 0.5, true); //add 20% health
 						
 						AttachTempParticle(i,"superrare_ghosts",5.0, false,"",20.0, false);
 						
@@ -776,15 +779,12 @@ public Action:doSuperJump(Handle:timer, any:clientUserID)
 	
 	if(RTD_TrinketMisc[client][TRINKET_SUPERJUMP] >= 3)
 	{
-		switch(GetRandomInt(1,3))
+		switch(GetRandomInt(1,2))
 		{
 			case 1:
 				EmitSoundToAll(SOUND_JUMP01, client);
 				
 			case 2:
-				EmitSoundToAll(SOUND_JUMP02, client);
-				
-			case 3:
 				EmitSoundToAll(SOUND_JUMP03, client);
 		}
 		
@@ -826,7 +826,8 @@ public Action:doAirDash(Handle:timer, any:clientUserID)
 	finalvec[2] = float(RTD_TrinketBonus[client][TRINKET_AIRDASH]);
 	SetEntDataVector(client,BaseVelocityOffset,finalvec,true);
 	
-	AttachFastParticle(client, "rockettrail", 1.0);
+	AttachFastParticle(client, "doublejump_puff", 1.0);
+	//AttachFastParticle(client, "rocketjump_smoke", 1.0);
 	
 	RTD_TrinketMisc[client][TRINKET_AIRDASH] = 0;
 	

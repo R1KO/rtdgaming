@@ -318,7 +318,9 @@ stock Yoshi_Thirdperson(client, bool:apply=true, type=0)
 		}
 		else
 			SetVariantString("");
+			
 		AcceptEntityInput(client, "SetCustomModel");
+		
 		SetVariantString("0 0 0");
 		AcceptEntityInput(client, "SetCustomModelOffset");
 		SetVariantInt(1);

@@ -180,6 +180,14 @@ public Action:Command_rtdadmin(client, args)
 		PrintToChat(client, "[RTD][ADMIN] Dice mine debugging turned %s.", diceDebug[client] ? "ON" : "OFF");
 		return Plugin_Handled;
 	}
+	else if(StrEqual("savestats", strMessage, false))
+	{
+		if(areStatsLoaded[client] && g_BCONNECTED)
+			saveStats(client);
+		
+		return Plugin_Handled;
+	}
+	
 	else
 	{
 		SetupAdminMenu(client);
@@ -396,6 +404,30 @@ public Action:Command_rtd(client, args)
 	if(StrEqual("status", strArgs[0], false) || StrEqual("rolls", strArgs[0], false) )
 	{
 		showActiveRolls(client);
+		return Plugin_Handled;
+	}
+	
+	if(StrEqual("activetrinket", strArgs[0], false))
+	{
+		new trinketIndex;
+		
+		for(new i = 0; i < 21; i++)
+		{
+			if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
+			{
+				if(RTD_TrinketEquipped[client][i] == 1)
+				{
+					trinketIndex = RTD_TrinketIndex[client][i];
+					
+					PrintToChat(client, "Current equipped trinket: %s %s", trinket_TierID[trinketIndex][RTD_TrinketTier[client][i]], trinket_Title[trinketIndex]);
+					PrintToChat(client, "isActive: %i | Bonus: %i | Misc: %i", RTD_TrinketActive[client][trinketIndex], RTD_TrinketBonus[client][trinketIndex], RTD_TrinketMisc[client][trinketIndex]);
+					
+					break;
+				}
+			}
+		}
+		
+		
 		return Plugin_Handled;
 	}
 	
