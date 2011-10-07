@@ -777,15 +777,24 @@ public Action:doSuperJump(Handle:timer, any:clientUserID)
 	
 	RTD_TrinketMisc[client][TRINKET_SUPERJUMP] ++;
 	
+	new alpha = GetEntData(client, m_clrRender + 3, 1);
+	
+	if(TF2_GetPlayerClass(client) == TFClass_Spy)
+		if(TF2_IsPlayerInCondition(client, TFCond_Cloaked))
+			alpha = 0;
+		
 	if(RTD_TrinketMisc[client][TRINKET_SUPERJUMP] >= 3)
 	{
-		switch(GetRandomInt(1,2))
+		if(alpha  > 0)
 		{
-			case 1:
-				EmitSoundToAll(SOUND_JUMP01, client);
-				
-			case 2:
-				EmitSoundToAll(SOUND_JUMP03, client);
+			switch(GetRandomInt(1,2))
+			{
+				case 1:
+					EmitSoundToAll(SOUND_JUMP01, client);
+					
+				case 2:
+					EmitSoundToAll(SOUND_JUMP03, client);
+			}
 		}
 		
 		new Float:speed[3];
@@ -793,7 +802,13 @@ public Action:doSuperJump(Handle:timer, any:clientUserID)
 		ScaleVector(speed, 1+(float(RTD_TrinketBonus[client][TRINKET_SUPERJUMP])/10.0));
 		
 		TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
-		AttachFastParticle(client, "rockettrail", 1.0);
+		
+		if(alpha  > 0)
+		{
+			//AttachFastParticle(client, "rockettrail", 1.0);
+			AttachFastParticle4(client, "rocketjump_smoke", 1.0, 5.0);
+			
+		}
 		
 		RTD_TrinketMisc[client][TRINKET_SUPERJUMP] = 0;
 	}
@@ -826,7 +841,15 @@ public Action:doAirDash(Handle:timer, any:clientUserID)
 	finalvec[2] = float(RTD_TrinketBonus[client][TRINKET_AIRDASH]);
 	SetEntDataVector(client,BaseVelocityOffset,finalvec,true);
 	
-	AttachFastParticle(client, "doublejump_puff", 1.0);
+	new alpha = GetEntData(client, m_clrRender + 3, 1);
+	
+	if(TF2_GetPlayerClass(client) == TFClass_Spy)
+		if(TF2_IsPlayerInCondition(client, TFCond_Cloaked))
+			alpha = 0;
+		
+	if(alpha > 0)
+		AttachFastParticle4(client, "doublejump_puff", 1.5, 5.0);
+	
 	//AttachFastParticle(client, "rocketjump_smoke", 1.0);
 	
 	RTD_TrinketMisc[client][TRINKET_AIRDASH] = 0;
