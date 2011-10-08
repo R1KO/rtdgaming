@@ -504,7 +504,7 @@ public Action:explodingDynamite_Timer(Handle:timer, Handle:dataPackHandle)
 		if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
 			continue;
 		
-		if(distance > 300.0)
+		if(distance > 250.0)
 			continue;
 		
 		SetEntDataVector(i,BaseVelocityOffset,finalvec,true);

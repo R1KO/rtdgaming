@@ -451,7 +451,7 @@ AttachCowToBack(client, health, maxHealth)
 		return;
 	}
 	
-	client_rolls[client][AWARD_G_COW][1] = ent;
+	client_rolls[client][AWARD_G_COW][1] = EntIndexToEntRef(ent);
 	
 	SetEntityModel(ent, MODEL_COWONBACK);
 	
@@ -509,7 +509,7 @@ AttachCowToBack(client, health, maxHealth)
 	CreateDataTimer(0.1, CowOnBack_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	
 	//Setup the datapack with appropriate information
-	WritePackCell(dataPackHandle, ent);   //PackPosition(0);  Cow entity
+	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0);  Cow entity
 	WritePackCell(dataPackHandle, GetTime() + 30);   //PackPosition(8);  Next time to give milk
 	WritePackCell(dataPackHandle, GetTime());   //PackPosition(16);  spawnedTime
 	WritePackCell(dataPackHandle, GetTime() + 20);   //PackPosition(24);  spawnedTime
@@ -530,7 +530,7 @@ public Action:CowOnBack_Timer(Handle:timer, Handle:dataPackHandle)
 	// Set to the beginning and unpack it   //
 	//////////////////////////////////////////
 	ResetPack(dataPackHandle);
-	new cow = ReadPackCell(dataPackHandle);
+	new cow = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new nextMilkTime = ReadPackCell(dataPackHandle);
 	new nextMooTime = ReadPackCell(dataPackHandle);
 	nextMooTime = ReadPackCell(dataPackHandle);
@@ -702,14 +702,12 @@ public Action:CowOnBack_Timer(Handle:timer, Handle:dataPackHandle)
 public stop_CowOnBack_Timer(Handle:dataPackHandle)
 {	
 	ResetPack(dataPackHandle);
-	new cow = ReadPackCell(dataPackHandle);
+	new cow = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
-	if(!IsValidEntity(cow))
+	if(cow < 1)
 		return true;
 	
-	new currIndex = GetEntProp(cow, Prop_Data, "m_nModelIndex");
-	
-	if(currIndex != cowOnBackModelIndex)
+	if(!IsValidEntity(cow))
 		return true;
 	
 	new client = GetEntPropEnt(cow, Prop_Data, "m_hOwnerEntity");
@@ -757,7 +755,11 @@ public stop_CowOnBack_Timer(Handle:dataPackHandle)
 
 public dropCow(client)
 {
-	new cow = client_rolls[client][AWARD_G_COW][1];
+	new cow = EntRefToEntIndex(client_rolls[client][AWARD_G_COW][1]);
+	
+	if(cow < 1)
+		return;
+	
 	if(!IsValidEntity(cow))
 		return;
 	

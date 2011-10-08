@@ -698,9 +698,11 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 	if(client_rolls[client][AWARD_G_COW][1] != 0)
 	{
 		ResetClientSpeed(client);
-		if(IsValidEntity(client_rolls[client][AWARD_G_COW][1]))
+		new cowEntity = EntRefToEntIndex(client_rolls[client][AWARD_G_COW][1]);
+		
+		if(IsValidEntity(cowEntity))
 		{
-			new currIndex = GetEntProp(client_rolls[client][AWARD_G_COW][1], Prop_Data, "m_nModelIndex");
+			new currIndex = GetEntProp(cowEntity, Prop_Data, "m_nModelIndex");
 			
 			if(currIndex == cowOnBackModelIndex)
 			{
@@ -708,8 +710,8 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 				Format(playerName, sizeof(playerName), "target%i", client);
 				DispatchKeyValue(client, "targetname", playerName);
 				
-				CDetach(client_rolls[client][AWARD_G_COW][1]);
-				CAttach(client_rolls[client][AWARD_G_COW][1], client, "flag");
+				CDetach(cowEntity);
+				CAttach(cowEntity, client, "flag");
 			}else{
 				if(RTD_Perks[client][17])
 				{
@@ -855,10 +857,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 			new playerHigherTrinket;
 			
 			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
-				playerHigherTrinket = assister;
-			
-			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
-				playerHigherTrinket = assister;
+				playerHigherTrinket = attacker;
 			
 			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && RTD_TrinketActive[assister][TRINKET_PARTYTIME])
 			{

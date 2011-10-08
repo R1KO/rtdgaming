@@ -472,8 +472,8 @@ public Action:Timer_ShowInfo(Handle:timer)
 
 public Action:GenericTimer(Handle:timer)
 {
-	new String:redbulltext[128];
-	new String:working[32];
+	//new String:redbulltext[128];
+	//new String:working[32];
 	
 	for (new i = 1; i <= MaxClients; i++)
 	{
@@ -516,7 +516,7 @@ public Action:GenericTimer(Handle:timer)
 				}
 				
 				SetEntDataFloat(i, m_flMaxspeed, modifiedSpeed);
-				
+				/*
 				/////////////////////////////////////////
 				//Please leave for debugging purposes  //
 				//                                     //
@@ -547,6 +547,7 @@ public Action:GenericTimer(Handle:timer)
 					
 				Format(redbulltext, sizeof(redbulltext), "Speed: %.2f (%.2f) mph %s", _fVelocity, maxSpeed, working);
 				centerHudText(i, redbulltext, 0.0, 1.0, HudMsg3, 0.13); 
+				* */
 			}
 			
 			//Following is for Speed
