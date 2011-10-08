@@ -501,6 +501,7 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_G_CRAP:
 			{
+				centerHudText(client, "A shiny turd!", 4.0, 10.0, HudMsg3, 0.75); 
 			}
 			
 			case AWARD_G_SPIDER:
@@ -652,7 +653,7 @@ GivePlayerEffect(client, award, cost)
 				client_rolls[client][award][3] = 2; //healthpacks
 				SpawnAndAttachBlizzard(client);
 				
-				centerHudText(client, "Nearby enemies will be slowed down", 4.0, 10.0, HudMsg3, 0.75); 
+				centerHudText(client, "On shot enemies will be frozen!", 4.0, 10.0, HudMsg3, 0.75); 
 			}
 			
 			case AWARD_G_UBERBOW:
