@@ -856,9 +856,6 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 		{
 			new playerHigherTrinket;
 			
-			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME])
-				playerHigherTrinket = attacker;
-			
 			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && RTD_TrinketActive[assister][TRINKET_PARTYTIME])
 			{
 				if(RTD_TrinketLevel[attacker][TRINKET_PARTYTIME] >= RTD_TrinketLevel[assister][TRINKET_PARTYTIME])
@@ -867,6 +864,12 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 				}else{
 					playerHigherTrinket = assister;
 				}
+			}else{
+				if(!RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && RTD_TrinketActive[assister][TRINKET_PARTYTIME])
+					playerHigherTrinket = assister;
+				
+				if(!RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && !RTD_TrinketActive[assister][TRINKET_PARTYTIME])
+					playerHigherTrinket = attacker;
 			}
 			
 			if(playerHigherTrinket == 0)
