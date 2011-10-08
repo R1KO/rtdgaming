@@ -557,7 +557,7 @@ public Action:SetupCreditsMenu(client, String:itemToBuy[])
 	
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_CreditsMenuHandler);
 	
-	SetMenuTitle(hCMenu,"Credits Shopping Menu | %i/100 Credit limit used.",credsUsed[client][0]);
+	SetMenuTitle(hCMenu,"RTD Shop | %i/100 Credit limit used.",credsUsed[client][0]);
 	
 	addAllRolls(hCMenu, client);
 	addLastRoll(hCMenu, client);
@@ -771,6 +771,9 @@ public fn_CreditsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					PrintToChatAll("[RTD] Player %s has purchased another minute!", name);
 					Round_AddTime(60);
 					Time_addClient(param1);
+				}else if(StrEqual(menuTriggers[1], "TrinketsMenu"))
+				{
+					SetupTrinketsMenu(param1, 0);
 				}
 				
 				//Set the amount of credits used
@@ -922,11 +925,12 @@ public addAllRolls(Handle:hCMenu, client)
 	//About the Item's name:                                            //
 	//AddMenuItem(hCMenu,"Cost:Function:Num Chat Triggers:Chat Triggers //
 	//////////////////////////////////////////////////////////////////////
+	AddMenuItem(hCMenu,"0:TrinketsMenu::2:trinket:trinkets", "Trinkets", ITEMDRAW_DEFAULT);
 	
-	AddMenuItem(hCMenu,"0:BuyDicePerks::4:perk:perks:diceperk:diceperks", "[0 Credits ] Buy Dice Perks", ITEMDRAW_DEFAULT);
+	AddMenuItem(hCMenu,"0:BuyDicePerks::4:perk:perks:diceperk:diceperks", "Dice Perks", ITEMDRAW_DEFAULT);
 	
-	AddMenuItem(hCMenu,"0:BuyDice::1:dice",						"[0 Credits ] Buy Dice", RTDCredits[client]<1?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
-	AddMenuItem(hCMenu,"0:GiveGift::1:gift",					"[0 Credits ] Gift a roll to someone", RTDCredits[client]<1?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
+	AddMenuItem(hCMenu,"0:BuyDice::1:dice",						"Buy Dice", RTDCredits[client]<1?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
+	AddMenuItem(hCMenu,"0:GiveGift::1:gift",					"Gift a roll to someone", RTDCredits[client]<1?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
 	AddMenuItem(hCMenu,"0:GiveCreds::2:givecreds:givecredits",	"[1 Credits ] Give credits to someone", RTDCredits[client]<1?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
 	
 	AddMenuItem(hCMenu,"3:Decrease:30:1:decrease30",			"[3 Credits ] Decrease your Wait Time by 30 Seconds", RTDCredits[client]<3?ITEMDRAW_DISABLED:NoClipThisLife[client]?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
