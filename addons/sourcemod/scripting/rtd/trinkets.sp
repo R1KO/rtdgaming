@@ -614,7 +614,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						Format(chatMessage, sizeof(chatMessage), "Extended (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 						PrintCenterText(param1, chatMessage);
 						
-						TrinketsLoadoutMenu(param1, 1);
+						TrinketsLoadoutMenu(param1, 0);
 						
 					}else{
 						PrintCenterText(param1, "Insufficent Credits!");
@@ -1450,7 +1450,7 @@ GiveRandomTrinket(client, test)
 	
 	Format(chatMessage, sizeof(chatMessage), "Obtained: (%s) %s Trinket", trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
 	PrintCenterText(client, chatMessage);
-	EmitSoundToClient(client, SOUND_BOUGHTSOMETHING);
+	EmitSoundToClient(client, SOUND_OPEN_TRINKET);
 	
 	//debug
 	//PrintToChatAll("Trinket saved in slot: %i | Tier: %i", availableSlot, variant);
