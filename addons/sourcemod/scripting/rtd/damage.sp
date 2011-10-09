@@ -578,8 +578,10 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		
 		if(RTD_TrinketActive[attacker][TRINKET_UNUSUALMELEE] && (damagetype & DMG_CLUB))
 		{
-			if(GetRandomInt(1,100) <= RTD_TrinketBonus[attacker][TRINKET_UNUSUALMELEE])
+			if(GetRandomInt(1,100) <= RTD_TrinketBonus[attacker][TRINKET_UNUSUALMELEE] && RTD_TrinketMisc[attacker][TRINKET_UNUSUALMELEE] < GetTime())
 			{
+				RTD_TrinketMisc[attacker][TRINKET_UNUSUALMELEE] = GetTime() + 5;
+				
 				//Jarate,Bleed,Fire,Stun"
 				switch(RTD_TrinketLevel[attacker][TRINKET_UNUSUALMELEE])
 				{
