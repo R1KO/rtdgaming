@@ -136,6 +136,7 @@ public Action:Timer_ShowInfo(Handle:timer)
 	new nextTimeMin;
 	new String:nextTimeSec[3];
 	new String:message02[64];
+	new addedBonus;
 	
 	new bool:b_InScore;
 	
@@ -383,7 +384,11 @@ public Action:Timer_ShowInfo(Handle:timer)
 			if (CurrentScore != OldScore[i] && OldScore[i] != -1)
 				ScoreDiff = CurrentScore - OldScore[i];
 			
-			TimeDeduction = ScoreDiff * RTD_Perks[i][0];
+			addedBonus = 0;
+			if(RTD_TrinketActive[i][TRINKET_PARTYTIME])
+				addedBonus = RTD_TrinketLevel[i][TRINKET_LADYLUCK] + 1;
+			
+			TimeDeduction = ScoreDiff * (RTD_Perks[i][0] + addedBonus);
 			
 			if( RTD_Timer[i] <= GetTime())
 			{
