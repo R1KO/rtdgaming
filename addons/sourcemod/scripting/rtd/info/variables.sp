@@ -380,3 +380,4 @@ new timeExpireScare[cMaxClients];
 new wasJumping[cMaxClients];
 
 new entityPickedUp[cMaxClients];
+new rtd_TimeLimit;

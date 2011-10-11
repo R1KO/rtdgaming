@@ -111,6 +111,7 @@ rtd_load_cvar_configs()
 	rtd_trinketPrice		=	GetConVarInt(c_TrinketPrice);
 	rtd_trinketExtPrice		=	GetConVarInt(c_TrinketExtPrice);
 	rtd_trinket_rerollPrice	=	GetConVarInt(c_TrinketReRollPrice);
+	rtd_TimeLimit			=	GetConVarInt(c_Timelimit);
 }
 
 public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:newValue[])
@@ -219,6 +220,9 @@ public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:new
 	}else if(convar == c_TrinketReRollPrice)
 	{
 		rtd_trinket_rerollPrice	= GetConVarInt(c_TrinketReRollPrice);
+	}else if(convar == c_Timelimit)
+	{
+		rtd_TimeLimit = GetConVarInt(c_Timelimit);
 	}
 	
 }
