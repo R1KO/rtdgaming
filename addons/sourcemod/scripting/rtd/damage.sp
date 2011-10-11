@@ -731,6 +731,75 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		}
 	}
 	
+	
+	//damage sensitive rolls
+	if(isAttackerPlayer && !isAttackerSelf && !sameTeam)
+	{
+		if(client_rolls[attacker][AWARD_G_TIMETHIEF][0] && client_rolls[attacker][AWARD_G_TIMETHIEF][1] < GetTime())
+		{
+			client_rolls[attacker][AWARD_G_TIMETHIEF][1] = GetTime() + 5;
+			new timeRedux;
+			
+			timeRedux = RoundFloat(damage/ 5.0);
+			
+			if(timeRedux > 0)
+			{
+				if(timeRedux > 20)
+					timeRedux = 20;
+				
+				decl String:message[200];
+				
+				new String:attackerName[32];
+				GetClientName(attacker, attackerName, sizeof(attackerName));
+				
+				SetHudTextParams(0.32, 0.82, 2.0, 250, 250, 210, 255);
+				Format(message, 200, "%s stole %is from your Timer!", attackerName, timeRedux);
+				centerHudText(client, message, 0.0, 2.0, HudMsg3, 0.79); 
+				
+				SetHudTextParams(0.32, 0.82, 2.0, 250, 250, 210, 255);
+				Format(message, 200, "You stole: %is", timeRedux);
+				
+				centerHudText(attacker, message, 0.0, 2.0, HudMsg3, 0.79); 
+				
+				new timeleft;
+				
+				////////////////////////////////
+				// ATTACKER TIME MANIPULATION //
+				////////////////////////////////
+				if(RTD_Timer[attacker] <= GetTime())
+				{
+					timeleft = GetConVarInt(c_Timelimit) - ( GetTime() - RTD_Timer[attacker] ) ;
+				}else{
+					timeleft = RTD_Timer[attacker] + GetConVarInt(c_Timelimit) - GetTime();
+				}
+				
+				if(timeleft > 0)
+				{
+					RTD_Timer[attacker] -= timeRedux;	
+				}
+				
+				////////////////////////////////
+				// CLIENT TIME MANIPULATION   //
+				////////////////////////////////
+				if(RTD_Timer[client] <= GetTime())
+				{
+					timeleft = rtd_TimeLimit - ( GetTime() - RTD_Timer[client] ) ;
+				}else{
+					timeleft = RTD_Timer[client] + rtd_TimeLimit - GetTime();
+				}
+				
+				if(timeleft > 0)
+				{
+					RTD_Timer[client] += timeRedux;
+				}else{
+					RTD_Timer[client] = (GetTime() - rtd_TimeLimit) + timeRedux;
+				}
+				
+			}
+			
+		}
+	}
+	
 	if(oldDamage == damage)
 	{
 		return Plugin_Continue;

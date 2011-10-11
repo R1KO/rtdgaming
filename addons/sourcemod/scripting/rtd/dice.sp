@@ -399,7 +399,7 @@ public Action:ShowDiceStatus(client)
 	new nextLevel;
 	new addedBonus;
 	
-	if(RTD_TrinketActive[client][TRINKET_PARTYTIME])
+	if(RTD_TrinketActive[client][TRINKET_LADYLUCK])
 		addedBonus = RTD_TrinketLevel[client][TRINKET_LADYLUCK] + 1;
 	
 	nextLevel = RoundToCeil(float(RTDdice[client]+1)/200.0) * 200;
@@ -450,7 +450,7 @@ public Action:ShowDiceStatus(client)
 	
 	
 	Format(message07, sizeof(message07), "    Chance for Good Roll: %i\%%",RoundFloat(GetConVarFloat(c_Chance)*100.0) + RTD_Perks[client][1] + RTD_Perks[client][21] + RTD_TrinketBonus[client][TRINKET_LADYLUCK]);
-	Format(message08, sizeof(message08), "    Time reduction/point: %is",RTD_Perks[client][0] + addedBonus);
+	Format(message08, sizeof(message08), "    Time reduction/point: %is", (RTD_Perks[client][0] + addedBonus));
 	
 	Format(message05, sizeof(message05), "    Next level at: %i Dice", nextLevel);
 	Format(message09, sizeof(message09), "    Talent Points: %i", talentPoints[client]);

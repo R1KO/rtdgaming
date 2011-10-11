@@ -701,7 +701,7 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_G_RUBBERBULLETS:
 			{
-				centerHudText(client, "On it, enemies will be knocked back!", 4.0, 5.0, HudMsg3, 0.75); 
+				centerHudText(client, "On hit, enemies will be knocked back!", 4.0, 5.0, HudMsg3, 0.75); 
 			}
 			
 			case AWARD_G_ANGELIC:
@@ -716,6 +716,10 @@ GivePlayerEffect(client, award, cost)
 				SpawnAndAttachTreasure(client);
 				
 				centerHudText(client, "Hey you're not supposed to roll this!", 4.0, 10.0, HudMsg3, 0.75); 
+			}
+			
+			case AWARD_G_TIMETHIEF:
+			{
 			}
 			
 		}

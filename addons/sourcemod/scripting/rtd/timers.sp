@@ -385,16 +385,16 @@ public Action:Timer_ShowInfo(Handle:timer)
 				ScoreDiff = CurrentScore - OldScore[i];
 			
 			addedBonus = 0;
-			if(RTD_TrinketActive[i][TRINKET_PARTYTIME])
+			if(RTD_TrinketActive[i][TRINKET_LADYLUCK])
 				addedBonus = RTD_TrinketLevel[i][TRINKET_LADYLUCK] + 1;
 			
 			TimeDeduction = ScoreDiff * (RTD_Perks[i][0] + addedBonus);
 			
 			if( RTD_Timer[i] <= GetTime())
 			{
-				timeleft = GetConVarInt(c_Timelimit) - ( GetTime() - RTD_Timer[i]) ;
+				timeleft = rtd_TimeLimit - ( GetTime() - RTD_Timer[i]) ;
 			}else{
-				timeleft = RTD_Timer[i] +  GetConVarInt(c_Timelimit) - GetTime();
+				timeleft = RTD_Timer[i] +  rtd_TimeLimit - GetTime();
 			}
 			
 			if(!inTimerBasedRoll[i]){
