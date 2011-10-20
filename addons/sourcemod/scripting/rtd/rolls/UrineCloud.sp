@@ -334,7 +334,13 @@ public Action:Cloud_Timer(Handle:timer, Handle:dataPack)
 			{
 				TF2_AddCondition(i,TFCond_Jarated,5.0);
 			}else{
-				TF2_RemoveCondition(i, TFCond_OnFire);
+				if(TF2_IsPlayerInCondition(i, TFCond_OnFire))
+				{
+					EmitSoundToAll(SOUND_PYRO_AIRBLAST_REFLECT, i, SNDCHAN_AUTO);
+					
+					ExtinguishEntity(i);
+					TF2_RemoveCondition(i, TFCond_OnFire);
+				}
 				
 				if(isUpgrade)
 				{

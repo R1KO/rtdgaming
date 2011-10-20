@@ -187,12 +187,12 @@ GivePlayerEffect(client, award, cost)
 	if(BoughtSomething[client])
 	{
 		//determine if this will be an unusual roll
-		if(GetRandomInt(1,100) <= unusualRoll_Shop_Chance)
+		if(GetRandomInt(1,100) <= unusualRoll_Shop_Chance && award != AWARD_G_INSTAPORTER)
 		{
 			client_rolls[client][award][9] = 1; //mark as unusual 
 			isUnusual = true;
 			
-			extraTime = GetRandomInt(1, 10);
+			extraTime = GetRandomInt(1, 20);
 			extraHealth = GetRandomInt(100, 300);
 			extraDeployables = GetRandomInt(1, 2);
 			
