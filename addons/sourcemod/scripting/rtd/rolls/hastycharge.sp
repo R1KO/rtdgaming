@@ -236,15 +236,18 @@ public Action:HastyCharge_Timer(Handle:timer)
 								
 								if(timeStamp > 0)
 								{
-									timeReduction = rechargeTime * (float(RTD_TrinketBonus[i][TRINKET_HASTYCHARGE])/100.0);
-									totalCalls = (rechargeTime - timeReduction) * 10.0;
-									
-									incrementPerCall = (timeReduction / totalCalls);
-									
-									//PrintToChat(i, "%f", GetEngineTime());
-									
-									curLevel -= incrementPerCall;
-									SetEntPropFloat(weaponInfo[currWeapon], Prop_Send, "m_flChargeBeginTime", curLevel);
+									if((GetGameTime() - timeStamp ) < rechargeTime)
+									{
+										timeReduction = rechargeTime * (float(RTD_TrinketBonus[i][TRINKET_HASTYCHARGE])/100.0);
+										totalCalls = (rechargeTime - timeReduction) * 10.0;
+										
+										incrementPerCall = (timeReduction / totalCalls);
+										
+										timeStamp -= incrementPerCall;
+										
+										//PrintToChat(i, "%f", GetEngineTime());
+										SetEntPropFloat(weaponInfo[currWeapon], Prop_Send, "m_flChargeBeginTime", timeStamp);
+									}
 								}
 								continue;
 							}
