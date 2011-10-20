@@ -464,6 +464,8 @@
 #define EFFECT_FIREWORK_FLARE "mini_firework_flare"
 #define EFFECT_FIREWORK_FLASH "teleported_flash"
 
+#define SOUND_TRADE_ALERT "ui/notification_alert.wav"
+
 //Team Manager
 #define SCRAMBLE_SOUND "vo/announcer_am_teamscramble03.wav"
 #define VOTE_NO "###no###"
