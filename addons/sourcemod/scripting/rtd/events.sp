@@ -1120,3 +1120,16 @@ public SendObjectDestroyedEvent(attacker, object, String:weapon[])
 	
 	return;
 }
+
+public Action:EventHighFiveSuccess(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	//new initiator	=	GetClientOfUserId(GetEventInt(event, "initiator_entindex"));
+	//new partner		=	GetClientOfUserId(GetEventInt(event, "partner_entindex"));
+	
+	new initiator	=	GetEventInt(event, "initiator_entindex");
+	new partner		=	GetEventInt(event, "partner_entindex");
+	
+	//add 50% health
+	addHealthPercentage(initiator, 0.25, true);
+	addHealthPercentage(partner, 0.25, true);
+}

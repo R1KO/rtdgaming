@@ -450,6 +450,8 @@ public LoadTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 				SetHudTextParams(0.42, 0.22, 5.0, 250, 250, 210, 255);
 				ShowHudText(client, HudMsg3, "Trinkets loaded!");
 				
+				CreateTimer(0.1,  	Timer_DelayTrinketEquip, GetClientUserId(client), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+				
 				if(foundTrinket >= 20)
 					return;
 			}

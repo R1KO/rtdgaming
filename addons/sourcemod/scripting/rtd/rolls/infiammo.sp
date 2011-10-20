@@ -94,7 +94,7 @@ stock TF2_AddSpecialAmmo(iClient, iAmmo, iAmmoMax)
 	if (valid_weapon)
 	{
 		new iOffset = GetEntProp(iWeapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
-		new iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
+		
 		new iCurAmmo = GetEntData(iClient, iAmmoTable+iOffset);
 		if(iCurAmmo < iAmmoMax)
 			SetEntData(iClient, iAmmoTable+iOffset, iCurAmmo+iAmmo, 4, true);

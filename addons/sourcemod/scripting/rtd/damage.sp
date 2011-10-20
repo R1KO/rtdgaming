@@ -798,6 +798,38 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			}
 			
 		}
+		
+		//////////////////////////
+		// HASTY CHARGE TRINKET //
+		//////////////////////////
+		if(RTD_TrinketActive[attacker][TRINKET_HASTYCHARGE])
+		{
+			if(TF2_GetPlayerClass(attacker) == TFClass_Soldier)
+			{
+				new weaponEntity = GetPlayerWeaponSlot(attacker, 1);
+				
+				if(weaponEntity > 0 && !GetEntProp(attacker, Prop_Send, "m_bRageDraining"))
+				{
+					new weaponID = GetEntProp(weaponEntity, Prop_Send, "m_iItemDefinitionIndex");
+					
+					if(weaponID == 129 || weaponID == 226)
+					{
+						//129 = The Buff Banner
+						//226 = The Battalion's Backup
+						new Float:ragelevel = GetEntPropFloat(attacker, Prop_Send, "m_flRageMeter");
+						
+						new Handle:dataPackHandle;
+						CreateDataTimer(0.0, rageMeter_DelayTimer, dataPackHandle, TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+						
+						//Setup the datapack with appropriate information
+						WritePackCell(dataPackHandle, GetClientUserId(attacker));   //PackPosition(0);  Backpack Index
+						WritePackFloat(dataPackHandle, ragelevel);   //PackPosition(0);  Backpack Index
+						
+					}
+				}
+			}
+		}
+		
 	}
 	
 	if(oldDamage == damage)
