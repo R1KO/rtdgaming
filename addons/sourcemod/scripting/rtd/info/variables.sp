@@ -202,6 +202,9 @@ new m_flMaxspeed;
 new m_clrRender;
 new m_bCarryingObject;
 new m_fFlags;
+new m_flEnergyDrinkMeter;
+new m_flChargeMeter;
+new iAmmoTable;
 
 new bool:lateLoaded = false;
 

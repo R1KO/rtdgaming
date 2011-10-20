@@ -309,6 +309,12 @@ public Action:Blizzard_Timer(Handle:timer, Handle:dataPackHandle)
 						continue;
 					}
 					
+					if(client_rolls[client][AWARD_G_TREASURE][0])
+					{
+						PrintCenterText(client, "Can't pick up Blizzard with Treasure Chest equipped!");
+						continue;
+					}
+					
 					if(itemEquipped_OnBack[client])
 					{
 						if(denyPickup(client, AWARD_G_BLIZZARD, true))
@@ -335,6 +341,8 @@ public Action:Blizzard_Timer(Handle:timer, Handle:dataPackHandle)
 						
 						attachExistingBlizzard(client, blizzard);
 					}
+					
+					itemEquipped_OnBack[client] = 1;
 					
 					EmitSoundToAll(SSphere_Heal,wearer);
 					return Plugin_Stop;

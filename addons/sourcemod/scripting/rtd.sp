@@ -114,6 +114,7 @@
 #include "rtd/rolls/dynamite.sp"
 #include "rtd/trinkets_trading.sp"
 #include "rtd/rolls/treasure.sp"
+#include "rtd/rolls/hastycharge.sp"
 
 //Perks
 
@@ -158,11 +159,18 @@ public OnPluginStart()
 	HookEvent("player_death", Event_Pre_PlayerDeath, EventHookMode_Pre);
 	HookEvent("teamplay_teambalanced_player", Event_TeamBalanced);
 	
+	HookEvent("player_highfive_success", EventHighFiveSuccess);
+	
+	
 	AddCommandListener(JoinTeam_Listener, "jointeam");
 	
 	//----Store offsets
 	g_jumpOffset = FindSendPropInfo("CTFPlayer", "m_iAirDash");
 	g_cloakOffset = FindSendPropInfo("CTFPlayer", "m_flCloakMeter");
+	
+	m_flEnergyDrinkMeter = FindSendPropInfo("CTFPlayer", "m_flEnergyDrinkMeter");
+	m_flChargeMeter = FindSendPropInfo("CTFPlayer", "m_flChargeMeter");
+	
 	m_iStunFlags = FindSendPropInfo("CTFPlayer","m_iStunFlags");
 	m_iMovementStunAmount = FindSendPropInfo("CTFPlayer","m_iMovementStunAmount");
 	m_hHealingTarget = FindSendPropInfo("CWeaponMedigun", "m_hHealingTarget");
@@ -180,6 +188,7 @@ public OnPluginStart()
 	g_oDefFOV = FindSendPropOffs("CBasePlayer", "m_iDefaultFOV");
 	
 	m_bCarried = FindSendPropInfo("CBaseObject", "m_bCarried");
+	iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
 	
 	ResetStatus();
 	
@@ -279,6 +288,8 @@ public OnMapStart()
 	CreateTimer(1.0,  	Timer_ShowInfo, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	
 	CreateTimer(0.1,  	UberchargerTimer, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(0.1,  	HastyCharge_Timer, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	
 	CreateTimer(0.2,  	GenericTimer, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	CreateTimer(60.0, 	CreditsTimer,_, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	CreateTimer(0.5,  	CrouchInvisTimer,_, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
@@ -837,6 +848,27 @@ public isPlayerHolding_UniqueWeapon(client, m_iItemDefinitionIndex)
 	return false;
 }
 
+public isPlayerHolding_UniqueWeapon_2(client, m_iItemDefinitionIndex)
+{
+	//for weapons that are removed, only one is the shield so far
+	if(m_iItemDefinitionIndex == 131 && GetEntProp(client, Prop_Send, "m_bShieldEquipped"))
+		return true;
+	
+	new iWeapon ;
+	
+	for (new islot = 0; islot < 11; islot++) 
+	{
+		iWeapon = GetPlayerWeaponSlot(client, islot);
+		if (IsValidEntity(iWeapon))
+		{
+			if (GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex") == m_iItemDefinitionIndex)
+				return iWeapon;
+		}
+	}
+	
+	return -1;
+}
+
 public isActiveWeapon(client, m_iItemDefinitionIndex)
 {
 	new iWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
@@ -1022,4 +1054,9 @@ public bool:isVisibileCheck(client, entity)
 		return true;
 	
 	return false;
+}
+
+public OnGameFrame()
+{
+	
 }
