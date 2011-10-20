@@ -398,6 +398,8 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_COIN, true);
 	PrecacheSound(SOUND_FUSE, true);
 	
+	PrecacheSound(SOUND_TRADE_ALERT, true);
+	
 	angelicModelIndex = PrecacheModel(MODEL_ANGELIC, true);
 	
 	

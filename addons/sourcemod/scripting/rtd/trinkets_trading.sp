@@ -251,6 +251,9 @@ public Action:showOffer(seller, receiver)
 	//SetMenuExitBackButton(hCMenu, true);
 	DisplayMenuAtItem(hCMenu, receiver, 0, MENU_TIME_FOREVER);
 	
+	EmitSoundToClient(receiver, SOUND_TRADE_ALERT);
+	
+	
 	return Plugin_Handled;
 }
 
