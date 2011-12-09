@@ -818,4 +818,28 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/coin/normal_small.vtf");
 	
 	AddFileToDownloadsTable("sound/rtdgaming/fuse.wav");
+	
+	AddFileToDownloadsTable("models/rtdgaming/slice/slice.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/slice/slice.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/slice/slice.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/slice/slice.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/slice/slice.vvd");
+	AddFileToDownloadsTable("models/rtdgaming/slice/slice.phy");
+	
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain.vvd");
+	
+	AddFileToDownloadsTable("materials/models/rtdgaming/strengthdrain/strengthdrain.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/strengthdrain/strengthdrain_blu.vmt");
+	
+	AddFileToDownloadsTable("materials/models/rtdgaming/slice/c_demo_sultan_sword.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/slice/wooden_barrel.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/slice/wooden_barrel.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/slice/wooden_barrel_blu.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/slice/wooden_barrel_blu.vtf");
+	
+	AddFileToDownloadsTable("sound/rtdgaming/slice.wav");
 }

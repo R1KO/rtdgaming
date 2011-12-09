@@ -735,6 +735,52 @@ public deployRoll(client, tempAward)
 			Spawn_AngelicDispenser(client, 400, 400);
 			
 		}
+		
+		case AWARD_G_STRENGTHDRAIN:
+		{
+			tooClose = closeToModel(client, 230.0, "prop_dynamic", MODEL_STRENGTHDRAIN);
+			
+			if(tooClose || CloseToEnemySpawnDoors(client) || closeToCapturePoint(client, 300.0) )
+			{
+				if(tooClose)
+					PrintCenterText(client,"Too close to another Strength Drain Aura");
+				
+				denyDrop = true;
+			}else{
+				Spawn_StrengthDrain(client);
+			}
+		}
+		
+		case AWARD_G_DARKNESSCLOUD:
+		{
+			tooClose = closeToModel(client, 130.0, "prop_dynamic", MODEL_STRENGTHDRAIN);
+			
+			if(tooClose || CloseToEnemySpawnDoors(client) || closeToCapturePoint(client, 250.0) )
+			{
+				if(tooClose)
+					PrintCenterText(client,"Too close to another Darkness Cloud");
+				
+				denyDrop = true;
+			}else{
+				Spawn_DarknessCloud(client);
+			}
+		}
+		
+		case AWARD_G_SLICE:
+		{
+			tooClose = closeToModel(client, 200.0, "prop_dynamic", MODEL_SLICE);
+			
+			if(tooClose || CloseToEnemySpawnDoors(client))
+			{
+				if(tooClose)
+					PrintCenterText(client,"Too close to another Slice N Dice");
+				
+				denyDrop = true;
+			}else{
+				Spawn_Slice(client);
+			}
+		}
+		
 	}
 	
 	/////////////////////////////////////

@@ -48,6 +48,16 @@ public Action:ObjectTakeDamage(object, &attacker, &inflictor, &Float:damage, &da
 		return Plugin_Changed;
 	}
 	
+	//strength drain enemy attacking building
+	if(client_rolls[attacker][AWARD_G_STRENGTHDRAIN][4] != 0)
+	{
+		if(!TF2_IsPlayerInCondition(attacker, TFCond_Ubercharged))
+		{
+			damage *= 0.25;
+			return Plugin_Changed;
+		}
+	}
+	
 	return Plugin_Continue;
 }
 
@@ -624,6 +634,14 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			{
 				damage *= 1.0 + (float(RTD_TrinketBonus[attacker][TRINKET_HEAVYHITTER]) / 100.0);
 				//PrintToChat(attacker, "Pre: %f | New: %f", oldDamage, damage);
+			}
+		}
+		
+		if(client_rolls[attacker][AWARD_G_STRENGTHDRAIN][4])
+		{
+			if(!TF2_IsPlayerInCondition(attacker, TFCond_Ubercharged))
+			{
+				damage *= 0.25;
 			}
 		}
 	}

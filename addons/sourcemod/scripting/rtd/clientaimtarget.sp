@@ -311,6 +311,16 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 				}else{
 					Format(message, sizeof(message), "Enemy Angelic Dispenser (%i/%i hp)", objHealth,objMaxHeath);
 				}
+			}else if(lookingAtModelIndex == sliceModelIndex)
+			{
+				lookingAtOrigin[2] += 85.0;
+				
+				if(objectTeam == iTeam)
+				{
+					Format(message, sizeof(message), "Friendly Slice N Dice (%i/%i hp)", objHealth,objMaxHeath);
+				}else{
+					Format(message, sizeof(message), "Enemy Slice N Dice (%i/%i hp)", objHealth,objMaxHeath);
+				}
 			}
 			
 			if(!(StrEqual(message, "")))
@@ -776,7 +786,7 @@ public SpawnAnnotationEx(client, entity, String:message[], Float:lookingAtOrigin
 
 stock bool:isModelRTDObject(lookingAtModelIndex)
 {
-	for (new i = 0; i < totModels ; i++)
+	for (new i = 0; i <= totModels ; i++)
 	{
 		if(modelIndex[i] < 1)
 			continue;

@@ -2,7 +2,7 @@
 
 public Action:Timer_ReflectShield(Handle:Timer, any:client)
 {
-	if(IsClientInGame(client) && IsPlayerAlive(client))
+	if(IsClientInGame(client) && IsPlayerAlive(client) && client_rolls[client][AWARD_G_REFLECTSHIELD][0])
 	{
 		new entityCount = GetEntityCount();
 		new ent = 0;

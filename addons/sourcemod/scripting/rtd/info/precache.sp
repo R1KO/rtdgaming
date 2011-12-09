@@ -404,6 +404,8 @@ stock RTDPrecache()
 	
 	
 	PrecacheModel(MODEL_HHH, true);
+	PrecacheSound(SOUND_SLICE, true);
+	sliceModelIndex = PrecacheModel(MODEL_SLICE, true);
 	
 	//keep track of all indexed models in an array
 	modelIndex[0] = bombModelIndex;	
@@ -462,6 +464,8 @@ stock RTDPrecache()
 	modelIndex[53] = PrecacheModel(MODEL_CHEST, true);
 	modelIndex[54] = PrecacheModel(MODEL_CHEST_ONBACK, true);
 	modelIndex[55] = PrecacheModel(MODEL_COIN_SMALL, true);
+	modelIndex[56] = PrecacheModel(MODEL_STRENGTHDRAIN, true);
+	modelIndex[57] = sliceModelIndex;
 	
-	totModels = 55;
+	totModels = 57;
 }
