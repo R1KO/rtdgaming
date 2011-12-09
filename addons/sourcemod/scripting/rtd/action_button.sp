@@ -322,7 +322,7 @@ public Action:RightClick_Timer(Handle:Timer)
 		{
 			if(IsValidEntity(lookingAtPickup[i][1]))
 			{
-				if(GetEntProp(lookingAtPickup[i][1], Prop_Data, "m_PerformanceMode") == 1 || lookingAtPickup[i][0] == AWARD_G_SPIDER || lookingAtPickup[i][0] == AWARD_G_AMPLIFIER)
+				if(GetEntProp(lookingAtPickup[i][1], Prop_Data, "m_PerformanceMode") == 1 || lookingAtPickup[i][0] == AWARD_G_SPIDER || lookingAtPickup[i][0] == AWARD_G_AMPLIFIER || lookingAtPickup[i][0] == AWARD_G_SLICE)
 				{
 					//Player wants to pickup item
 					pickupItem(i, lookingAtPickup[i][0]);

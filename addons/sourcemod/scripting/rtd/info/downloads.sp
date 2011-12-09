@@ -841,5 +841,11 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/slice/wooden_barrel_blu.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/slice/wooden_barrel_blu.vtf");
 	
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain_size02.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain_size02.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain_size02.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain_size02.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain_size02.vvd");
+	
 	AddFileToDownloadsTable("sound/rtdgaming/slice.wav");
 }

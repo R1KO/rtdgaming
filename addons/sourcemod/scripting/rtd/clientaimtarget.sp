@@ -481,6 +481,22 @@ public pickupItem(client, award)
 			
 			killEntityIn(lookingAt, 0.0);
 		}
+		
+		case AWARD_G_SLICE:
+		{
+			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
+			
+			client_rolls[client][AWARD_G_SLICE][0] = 1;
+			client_rolls[client][AWARD_G_SLICE][1] ++; //how many the user has
+			client_rolls[client][AWARD_G_SLICE][2] = GetEntProp(lookingAt, Prop_Data, "m_iHealth");
+			client_rolls[client][AWARD_G_SLICE][3] = GetEntProp(lookingAt, Prop_Data, "m_iMaxHealth");
+			client_rolls[client][AWARD_G_SLICE][4] = GetTime() + 5;
+			
+			AttachRTDParticle(client, "target_break_child_puff", true, false, -45.0);
+			
+			StopSound(lookingAt, SNDCHAN_AUTO, SOUND_SLICE);
+			killEntityIn(lookingAt, 0.0);
+		}
 	}
 }
 
@@ -725,6 +741,34 @@ public Pickup_AimTarget(client, lookingAt, objectTeam, clientTeam, lookingAtMode
 				}else{
 					centerHudText(client, "Brazier too far to be picked up!", 0.0, 1.0, HudMsg5, 0.76);
 				}
+			}
+		}
+	}
+	else if (lookingAtModelIndex == sliceModelIndex)
+	{
+		if(objectTeam == clientTeam && GetEntProp(lookingAt, Prop_Data, "m_PerformanceMode") == client)
+		{
+			if(client_rolls[client][AWARD_G_SLICE][4] <= GetTime())
+			{
+				if(distance < 200.0)
+				{
+					lookingAtPickup[client][0] = AWARD_G_SLICE;
+					lookingAtPickup[client][1] = lookingAt;
+					
+					if(RTDOptions[client][0] == 0)
+					{
+						centerHudText(client, "Right Click to pick up your Slice N Dice", 0.0, 1.0, HudMsg5, 0.76); 
+					}else{
+						centerHudText(client, "+Use to pick up your Slice N Dice", 0.0, 1.0, HudMsg5, 0.76); 
+					}
+					
+				}else{
+					centerHudText(client, "Slice N Dice too far to be picked up!", 0.0, 1.0, HudMsg5, 0.76); 
+				}
+			}else{
+				new String:message[64];
+				Format(message, sizeof(message), "Wait %is before picking up Slice N Dice",client_rolls[client][AWARD_G_SLICE][4] - GetTime()); 
+				centerHudText(client, message, 0.0, 1.0, HudMsg5, 0.76); 
 			}
 		}
 	}

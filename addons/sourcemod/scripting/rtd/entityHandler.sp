@@ -145,6 +145,9 @@ public OnEntityDestroyed(entity)
 	
 	if(currIndex == sawModelIndex)
 		StopSound(entity, SNDCHAN_AUTO, SOUND_SAW);
+	
+	if(currIndex == strengthModelIndex[0] || currIndex == strengthModelIndex[1])
+		StopSound(entity, SNDCHAN_AUTO, SlowCube_Idle);
 }
 
 public Action:ProcessEdict(Handle:timer, any:edict)

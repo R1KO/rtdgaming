@@ -171,9 +171,12 @@ public Action:DarknessCloud_Timer(Handle:timer, Handle:dataPackHandle)
 			continue;
 		
 		//Time darkness cloud will go away for player
-		if(client_rolls[i][AWARD_G_DARKNESSCLOUD][4] <= GetTime())
+		if(client_rolls[i][AWARD_G_DARKNESSCLOUD][4] <= GetTime() && client_rolls[i][AWARD_G_DARKNESSCLOUD][5] <= GetTime())
 		{
-			FadeIN(i ,1 ,5 ,252);
+			client_rolls[i][AWARD_G_DARKNESSCLOUD][5] = GetTime() + 10;
+			
+			PrintCenterText(i, "Vision obsured by a Darkness Cloud");
+			FadeIN(i ,1 ,4 ,251);
 			//PerformDarkness(i, 240);
 			//PrintToChatAll("applying blind");
 			
