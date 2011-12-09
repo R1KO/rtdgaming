@@ -2,7 +2,7 @@
 * [TF2] Roll The Dice
 * 
 * Original Author: linux_lower
-* Modded By: Fox, CarlZalph, Kilandor, Czech
+* Modded By: Fox, Kilandor, Czech
 * 
 * Things to remeber: MaxClients will be 32`
 * 					 MaxPlayers will be 60-something
@@ -115,6 +115,9 @@
 #include "rtd/trinkets_trading.sp"
 #include "rtd/rolls/treasure.sp"
 #include "rtd/rolls/hastycharge.sp"
+#include "rtd/rolls/strengthdrain.sp"
+#include "rtd/rolls/darknesscloud.sp"
+#include "rtd/rolls/slicendice.sp"
 
 //Perks
 

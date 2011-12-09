@@ -136,6 +136,17 @@ public OnEntityCreated(entity, const String:classname[])
 	return;
 }
 
+public OnEntityDestroyed(entity)
+{
+	new currIndex = GetEntProp(entity, Prop_Data, "m_nModelIndex");
+	
+	if(currIndex == sliceModelIndex)
+		StopSound(entity, SNDCHAN_AUTO, SOUND_SLICE);
+	
+	if(currIndex == sawModelIndex)
+		StopSound(entity, SNDCHAN_AUTO, SOUND_SAW);
+}
+
 public Action:ProcessEdict(Handle:timer, any:edict)
 {
 	//This is to dissolve player ragdolls that have feigned death
@@ -426,7 +437,7 @@ public Action:deleteRTDEntities()
 			continue;
 		}
 		
-		for (new i = 0; i < totModels ; i++)
+		for (new i = 0; i <= totModels ; i++)
 		{
 			if(currIndex == modelIndex[i])
 			{

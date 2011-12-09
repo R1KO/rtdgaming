@@ -454,6 +454,11 @@
 #define SOUND_FUSE "rtdgaming/fuse.wav"
 
 #define MODEL_HHH 		"models/bots/headless_hatman.mdl"
+
+#define MODEL_STRENGTHDRAIN		"models/rtdgaming/strengthdrain/strengthdrain.mdl"
+#define MODEL_SLICE				"models/rtdgaming/slice/slice.mdl"
+#define SOUND_SLICE				"rtdgaming/slice.wav"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 
@@ -470,3 +475,7 @@
 #define SCRAMBLE_SOUND "vo/announcer_am_teamscramble03.wav"
 #define VOTE_NO "###no###"
 #define VOTE_YES "###yes###"
+
+#define FADE_IN  0x0001
+#define FADE_OUT 0x0002
+#define FADE_STAYOUT 0x0008

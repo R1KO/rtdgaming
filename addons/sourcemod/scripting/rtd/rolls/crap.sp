@@ -271,8 +271,14 @@ public Action:Crap_Timer(Handle:timer, Handle:dataPackHandle)
 	{
 		decl String:crapName[32];
 		Format(crapName, 32, "crap_%i", crap);
-		
-		AttachTempParticle(crap, "superrare_flies", 14.0, true, crapName, 30.0, false);
+		//eyeboss_doorway_vortex
+		//eyeboss_death_vortex
+		//eb_doorway_vortex04
+		//superrare_purpleenergy
+		//eb_aura_calm01 -blu
+		//eb_aura_angry01 -red
+		AttachTempParticle(crap, "eb_aura_angry01", 14.0, true, crapName, 30.0, false);
+		AttachTempParticle(crap, "eyeboss_doorway_vortex", 14.0, true, crapName, 30.0, false);
 		//AttachRTDParticle(crap, "rtd_crap_smoke", true, true, 0.0);
 		
 		StopSound(crap, SNDCHAN_AUTO, SOUND_CRAPIDLE);
