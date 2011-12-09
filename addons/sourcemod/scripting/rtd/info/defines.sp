@@ -456,6 +456,8 @@
 #define MODEL_HHH 		"models/bots/headless_hatman.mdl"
 
 #define MODEL_STRENGTHDRAIN		"models/rtdgaming/strengthdrain/strengthdrain.mdl"
+#define MODEL_STRENGTHDRAIN_02	"models/rtdgaming/strengthdrain/strengthdrain_size02.mdl"
+
 #define MODEL_SLICE				"models/rtdgaming/slice/slice.mdl"
 #define SOUND_SLICE				"rtdgaming/slice.wav"
 

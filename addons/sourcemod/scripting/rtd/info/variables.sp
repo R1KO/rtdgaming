@@ -250,6 +250,7 @@ new stonewallModelIndex[2];
 new shieldModelIndex;
 new angelicModelIndex;
 new sliceModelIndex;
+new strengthModelIndex[2];
 new diceNeeded;
 new g_BeginScore[cMaxClients];
 new String:lastBoughtRoll[cMaxClients][64];

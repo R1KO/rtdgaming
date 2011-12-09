@@ -12,13 +12,21 @@ public Action:Spawn_StrengthDrain(client)
 	if (!GetConVarInt(c_Enabled))
 		return Plugin_Handled;
 	
-	
+	new Float:range;
 	new Float:vicorigvec[3];
 	GetClientAbsOrigin(client, Float:vicorigvec);
 	
 	new ent = CreateEntityByName("prop_dynamic_override");
 	
-	SetEntityModel(ent,MODEL_STRENGTHDRAIN);
+	if(RTD_PerksLevel[client][58] > 0)
+	{
+		range = 240.0;
+		SetEntityModel(ent,MODEL_STRENGTHDRAIN_02);
+	}else{
+		range = 180.0;
+		SetEntityModel(ent,MODEL_STRENGTHDRAIN);
+	}
+	
 	SetEntProp(ent, Prop_Data, "m_takedamage", 0);  //default = 2
 	
 	DispatchSpawn(ent);
@@ -55,6 +63,8 @@ public Action:Spawn_StrengthDrain(client)
 	SetEntProp(ent, Prop_Data, "m_CollisionGroup", 1);
 	SetEntProp(ent, Prop_Send, "m_CollisionGroup", 1);
 	
+	vicorigvec[2] -= 40.0;
+	
 	TeleportEntity(ent, vicorigvec, NULL_VECTOR, NULL_VECTOR);
 	
 	HookSingleEntityOutput(ent, "OnBreak", AngelicBreak, false);
@@ -71,6 +81,7 @@ public Action:Spawn_StrengthDrain(client)
 	WritePackCell(dataPackHandle, 600); //8, health
 	WritePackCell(dataPackHandle, GetTime()); //16, sound emission
 	WritePackCell(dataPackHandle, GetTime()); //24, time to show annotations
+	WritePackFloat(dataPackHandle, range); //24, time to show annotations
 	
 	return Plugin_Continue;
 }
@@ -121,6 +132,8 @@ public Action:StrengthDrain_Timer(Handle:timer, Handle:dataPackHandle)
 	SetPackPosition(dataPackHandle, 16);
 	new nextSoundEmission =  ReadPackCell(dataPackHandle);
 	new timeToShowAnnotations =  ReadPackCell(dataPackHandle);
+	new Float:range =  ReadPackFloat(dataPackHandle);
+	
 	new bool:showAnnotations = false;
 	
 	if(timeToShowAnnotations <= GetTime())
@@ -184,7 +197,7 @@ public Action:StrengthDrain_Timer(Handle:timer, Handle:dataPackHandle)
 			continue;
 		
 		//The user is no longer in this SlowCube
-		if(GetVectorDistance(playerPos,strengthDrainPos) > 250.0)
+		if(GetVectorDistance(playerPos,strengthDrainPos) > range)
 		{
 			//If the TickedTime is off by 0.5 then that means the client
 			//is no longer in any SlowCube as the TickTime gets updated every 0.1
@@ -202,6 +215,7 @@ public Action:StrengthDrain_Timer(Handle:timer, Handle:dataPackHandle)
 		}
 		
 		//PrintCenterText(i, "Strength being drained");
+		centerHudText(i, "Strength being drained", 0.0, 1.0, HudMsg3, 0.82); 
 		
 		//tick away from auras health
 		SetVariantInt(1);
@@ -219,8 +233,8 @@ public Action:StrengthDrain_Timer(Handle:timer, Handle:dataPackHandle)
 		//Save the time that the player entered the slowcube
 		client_rolls[i][AWARD_G_STRENGTHDRAIN][4] = RoundFloat(GetTickedTime() * 10.0) + 2;
 		
-		if(clientOverlay[i] == false)
-			ShowOverlay(i, "models/props_combine/portalball001_sheet ", 2.0);
+		//if(clientOverlay[i] == false)
+		//	ShowOverlay(i, "models/props_combine/portalball001_sheet ", 2.0);
 		
 	}
 	

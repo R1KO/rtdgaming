@@ -53,7 +53,7 @@ public Action:ObjectTakeDamage(object, &attacker, &inflictor, &Float:damage, &da
 	{
 		if(!TF2_IsPlayerInCondition(attacker, TFCond_Ubercharged))
 		{
-			damage *= 0.25;
+			damage *= 0.5;
 			return Plugin_Changed;
 		}
 	}
@@ -641,7 +641,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		{
 			if(!TF2_IsPlayerInCondition(attacker, TFCond_Ubercharged))
 			{
-				damage *= 0.25;
+				damage *= 0.5;
 			}
 		}
 	}

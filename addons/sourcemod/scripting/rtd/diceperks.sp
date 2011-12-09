@@ -686,7 +686,16 @@ public fn_PerksMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					RTD_PerksLevel[param1][57] ++;
 					
 					PrintToChat(param1, "Bear Traps now latch onto enemies!");
-				}else{
+				}
+				else if(StrContains(menuTriggers[1], "a55", false) != -1)
+				{
+					RTD_Perks[param1][58] += value;
+					RTD_PerksLevel[param1][58] ++;
+					
+					PrintToChat(param1, "Larger Strength Drain Aura!");
+				}
+				else
+				{
 					talentPoints[param1] += cost;
 					PrintToChat(param1, "ERROR! Could not find item in shop! TP reimbursed!");
 					

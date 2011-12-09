@@ -7,6 +7,8 @@
 
 public Action:Spawn_Slice(client)
 {
+	client_rolls[client][AWARD_G_SLICE][4] = GetTime() + 5;
+	
 	new ent = CreateEntityByName("prop_dynamic_override");
 	if ( ent == -1 )
 	{
@@ -33,6 +35,9 @@ public Action:Spawn_Slice(client)
 	
 	SetEntPropEnt(ent, Prop_Data, "m_hLastAttacker", client);
 	
+	//owner
+	SetEntProp(ent, Prop_Data, "m_PerformanceMode", client);
+	
 	SetEntProp( ent, Prop_Data, "m_nSolidType", 6 );
 	SetEntProp( ent, Prop_Send, "m_nSolidType", 6 );
 	
@@ -42,8 +47,8 @@ public Action:Spawn_Slice(client)
 	AcceptEntityInput( ent, "DisableCollision" );
 	AcceptEntityInput( ent, "EnableCollision" );
 	
-	SetEntProp(ent, Prop_Data, "m_iMaxHealth", 1200);
-	SetEntProp(ent, Prop_Data, "m_iHealth", 1200);
+	SetEntProp(ent, Prop_Data, "m_iMaxHealth", 2000);
+	SetEntProp(ent, Prop_Data, "m_iHealth", 2000);
 	
 	SetVariantString("idle");
 	AcceptEntityInput(ent, "SetAnimation", -1, -1, 0); 
@@ -65,7 +70,7 @@ public Action:Spawn_Slice(client)
 	new Handle:dataPack;
 	CreateDataTimer(0.2,Slice_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	WritePackCell(dataPack, EntIndexToEntRef(ent));
-	WritePackCell(dataPack, GetTime() + 300);//PackPosition(8)  --kill time
+	WritePackCell(dataPack, GetTime() + 600);//PackPosition(8)  --kill time
 	WritePackCell(dataPack, GetTime() + 20);//PackPosition(16)  --next sound emission
 	WritePackCell(dataPack, GetTime());//PackPosition(24)  --last hurt sound
 	WritePackCell(dataPack, GetClientUserId(client));//PackPosition(48)  --original client owner
@@ -205,7 +210,7 @@ public Action:Slice_Timer(Handle:timer, Handle:dataPackHandle)
 				
 			}
 			
-			DealDamage(i,30 ,client,65536,"killed_by_saw");
+			DealDamage(i,35 ,client,65536,"killed_by_saw");
 			knockback(i, slice, 600.0, 200.0);
 		}
 	}
