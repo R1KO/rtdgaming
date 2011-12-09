@@ -768,7 +768,7 @@ public deployRoll(client, tempAward)
 		
 		case AWARD_G_SLICE:
 		{
-			tooClose = closeToModel(client, 200.0, "prop_dynamic", MODEL_SLICE);
+			tooClose = closeToModel(client, 140.0, "prop_dynamic", MODEL_SLICE);
 			
 			if(tooClose || CloseToEnemySpawnDoors(client))
 			{

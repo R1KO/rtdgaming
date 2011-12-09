@@ -20,6 +20,27 @@ stock Blast(victim, attacker)
 	TeleportEntity(victim, NULL_VECTOR, NULL_VECTOR, vvel);
 }
 
+stock knockback(victim, attacker, Float:amountX, Float:amountY)
+{	
+	new Float:aang[3], Float:vvel[3], Float:pvec[3];
+	
+	// Knockback
+	GetEntPropVector(attacker, Prop_Data, "m_angRotation", aang);
+	GetEntPropVector(victim, Prop_Data, "m_vecVelocity", vvel);
+	
+	if (attacker == victim) 
+	{
+		vvel[2] += 1000.0;
+	} else {
+		GetAngleVectors(aang, pvec, NULL_VECTOR, NULL_VECTOR);
+		
+		vvel[0] += pvec[0] * amountX; //300.0
+		vvel[1] += pvec[1] * amountX; //300.0
+		vvel[2] = amountY; //500.0
+	}
+	
+	TeleportEntity(victim, NULL_VECTOR, NULL_VECTOR, vvel);
+}
 public bool:TraceEntityFilterPlayers(entity, contentsMask) 
 {
 	return entity > GetMaxClients();

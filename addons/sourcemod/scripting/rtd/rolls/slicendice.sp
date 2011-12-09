@@ -65,7 +65,7 @@ public Action:Spawn_Slice(client)
 	new Handle:dataPack;
 	CreateDataTimer(0.2,Slice_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	WritePackCell(dataPack, EntIndexToEntRef(ent));
-	WritePackCell(dataPack, GetTime() + 120);//PackPosition(8)  --kill time
+	WritePackCell(dataPack, GetTime() + 300);//PackPosition(8)  --kill time
 	WritePackCell(dataPack, GetTime() + 20);//PackPosition(16)  --next sound emission
 	WritePackCell(dataPack, GetTime());//PackPosition(24)  --last hurt sound
 	WritePackCell(dataPack, GetClientUserId(client));//PackPosition(48)  --original client owner
@@ -192,7 +192,7 @@ public Action:Slice_Timer(Handle:timer, Handle:dataPackHandle)
 		GetClientAbsOrigin(i,playerPos);
 		distance = GetVectorDistance( playerPos, slicePos);
 		
-		if(distance < 80.0)
+		if(distance < 90.0)
 		{
 			if(lastHurtSound< GetTime())
 			{
@@ -206,6 +206,7 @@ public Action:Slice_Timer(Handle:timer, Handle:dataPackHandle)
 			}
 			
 			DealDamage(i,30 ,client,65536,"killed_by_saw");
+			knockback(i, slice, 600.0, 200.0);
 		}
 	}
 	
