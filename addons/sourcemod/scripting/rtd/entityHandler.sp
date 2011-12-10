@@ -138,6 +138,12 @@ public OnEntityCreated(entity, const String:classname[])
 
 public OnEntityDestroyed(entity)
 {
+	if(!IsValidEdict(entity))
+		return;
+	
+	if(!IsValidEntity(entity))
+		return;
+	
 	new currIndex = GetEntProp(entity, Prop_Data, "m_nModelIndex");
 	
 	if(currIndex == sliceModelIndex)

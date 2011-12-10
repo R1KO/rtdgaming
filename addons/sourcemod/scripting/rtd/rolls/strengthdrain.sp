@@ -63,7 +63,13 @@ public Action:Spawn_StrengthDrain(client)
 	SetEntProp(ent, Prop_Data, "m_CollisionGroup", 1);
 	SetEntProp(ent, Prop_Send, "m_CollisionGroup", 1);
 	
-	vicorigvec[2] -= 40.0;
+	
+	if(RTD_PerksLevel[client][58] > 0)
+	{
+		vicorigvec[2] -= 80.0;
+	}else{
+		vicorigvec[2] -= 40.0;
+	}
 	
 	TeleportEntity(ent, vicorigvec, NULL_VECTOR, NULL_VECTOR);
 	
