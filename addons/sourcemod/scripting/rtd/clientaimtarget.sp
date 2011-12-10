@@ -484,18 +484,21 @@ public pickupItem(client, award)
 		
 		case AWARD_G_SLICE:
 		{
-			entityPickedUp[client] = EntIndexToEntRef(lookingAt);
-			
-			client_rolls[client][AWARD_G_SLICE][0] = 1;
-			client_rolls[client][AWARD_G_SLICE][1] ++; //how many the user has
-			client_rolls[client][AWARD_G_SLICE][2] = GetEntProp(lookingAt, Prop_Data, "m_iHealth");
-			client_rolls[client][AWARD_G_SLICE][3] = GetEntProp(lookingAt, Prop_Data, "m_iMaxHealth");
-			client_rolls[client][AWARD_G_SLICE][4] = GetTime() + 5;
-			
-			AttachRTDParticle(client, "target_break_child_puff", true, false, -45.0);
-			
-			StopSound(lookingAt, SNDCHAN_AUTO, SOUND_SLICE);
-			killEntityIn(lookingAt, 0.0);
+			if(client_rolls[client][AWARD_G_SLICE][4] < GetTime())
+			{
+				entityPickedUp[client] = EntIndexToEntRef(lookingAt);
+				
+				client_rolls[client][AWARD_G_SLICE][0] = 1;
+				client_rolls[client][AWARD_G_SLICE][1] ++; //how many the user has
+				client_rolls[client][AWARD_G_SLICE][2] = GetEntProp(lookingAt, Prop_Data, "m_iHealth");
+				client_rolls[client][AWARD_G_SLICE][3] = GetEntProp(lookingAt, Prop_Data, "m_iMaxHealth");
+				client_rolls[client][AWARD_G_SLICE][4] = GetTime() + 5;
+				
+				AttachRTDParticle(client, "target_break_child_puff", true, false, -45.0);
+				
+				StopSound(lookingAt, SNDCHAN_AUTO, SOUND_SLICE);
+				killEntityIn(lookingAt, 0.0);
+			}
 		}
 	}
 }

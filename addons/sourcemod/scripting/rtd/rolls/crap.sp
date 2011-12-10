@@ -277,8 +277,9 @@ public Action:Crap_Timer(Handle:timer, Handle:dataPackHandle)
 		//superrare_purpleenergy
 		//eb_aura_calm01 -blu
 		//eb_aura_angry01 -red
-		AttachTempParticle(crap, "eb_aura_angry01", 14.0, true, crapName, 30.0, false);
-		AttachTempParticle(crap, "eyeboss_doorway_vortex", 14.0, true, crapName, 30.0, false);
+		//AttachTempParticle(crap, "eb_aura_angry01", 14.0, true, crapName, 30.0, false);
+		//AttachTempParticle(crap, "eyeboss_doorway_vortex", 14.0, true, crapName, 30.0, false);
+		AttachTempParticle(crap, "superrare_flies", 14.0, true, crapName, 30.0, false);
 		//AttachRTDParticle(crap, "rtd_crap_smoke", true, true, 0.0);
 		
 		StopSound(crap, SNDCHAN_AUTO, SOUND_CRAPIDLE);
