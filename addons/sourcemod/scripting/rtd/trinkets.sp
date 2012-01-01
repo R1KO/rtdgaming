@@ -533,7 +533,7 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	//0 = expired
 	//2 = unequipped
 	
-	Format(extendTrinket, 64, "[%i Credits] 7 Day Trinket Extension", rtd_trinketExtPrice);
+	Format(extendTrinket, 64, "[%i Credits] 30 Day Trinket Extension", rtd_trinketExtPrice);
 	Format(reRollText, 64, "[%i Credits] Reroll Variant", rtd_trinket_rerollPrice);
 	
 	if(slotStatus == 1)
@@ -603,9 +603,9 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						
 						if(RTD_TrinketExpire[param1][selectedSlot] < GetTime())
 						{
-							RTD_TrinketExpire[param1][selectedSlot] = GetTime() + 604800;
+							RTD_TrinketExpire[param1][selectedSlot] = GetTime() + 2592000;
 						}else{
-							RTD_TrinketExpire[param1][selectedSlot] += 604800;
+							RTD_TrinketExpire[param1][selectedSlot] += 2592000;
 						}
 						
 						Format(chatMessage, sizeof(chatMessage), "\x03Extended\x04 (\x03%s\x04) \x01%s \x04Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
