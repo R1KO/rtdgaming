@@ -586,6 +586,12 @@ stock botherEngineer(client, spider, spiderTeam, box, Float:distance)
 	if(client < 0 || client > 32)
 		return;
 	
+	if(!IsClientInGame(client))
+		return;
+	
+	if(!IsPlayerAlive(client))
+		return;
+	
 	//LogToFile(logPath,"botherEngineer -- Entering");
 	new pitch = 160;
 	
