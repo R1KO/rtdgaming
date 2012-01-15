@@ -387,7 +387,8 @@
 #define SOUND_SNORLAX		"rtdgaming/snorlax_sleep_v2.wav"
 #define SOUND_BOUNCE		"rtdgaming/bounce.wav"
 
-//#define MODEL_FRIED_CHICKEN		"models/rtdgaming/fried_chicken/fried_chicken.mdl"
+//mlk event
+#define MODEL_FRIED_CHICKEN		"models/rtdgaming/fried_chicken/fried_chicken.mdl"
 
 #define SOUND_ARMOR_IMPACT_01	"physics/metal/metal_solid_impact_bullet1.wav"
 #define SOUND_ARMOR_IMPACT_02	"physics/metal/metal_solid_impact_bullet2.wav"

@@ -45,7 +45,9 @@ rtd_load_cvars()
 	c_TrinketExtPrice				= CreateConVar("sm_rtd_trinketextprice",				"150",		"<0-x> Cost to extend trinkets for 30 days");
 	c_TrinketReRollPrice			= CreateConVar("sm_rtd_trinketreroll_price",			"300",		"<0-x> Cost to change variant on trinket");
 	
-	HookConVarChange(c_Enabled,				ConVarChange_RTD);
+	c_Event_MLK						= CreateConVar("sm_rtd_event_mlk",						"0",		"<0/1> Marti Luther King");
+	
+	HookConVarChange(c_Enabled,						ConVarChange_RTD);
 	HookConVarChange(c_Dice_MinPlayers,				ConVarChange_RTD);
 	HookConVarChange(c_Dice_RespawnTime,			ConVarChange_RTD);
 	HookConVarChange(c_Dice_RareSpawn,				ConVarChange_RTD);
@@ -74,6 +76,8 @@ rtd_load_cvars()
 	HookConVarChange(c_TrinketPrice,				ConVarChange_RTD);
 	HookConVarChange(c_TrinketExtPrice,				ConVarChange_RTD);
 	HookConVarChange(c_TrinketReRollPrice,			ConVarChange_RTD);
+	
+	HookConVarChange(c_Event_MLK,					ConVarChange_RTD);
 }
 
 rtd_load_cvar_configs()
@@ -112,6 +116,8 @@ rtd_load_cvar_configs()
 	rtd_trinketExtPrice		=	GetConVarInt(c_TrinketExtPrice);
 	rtd_trinket_rerollPrice	=	GetConVarInt(c_TrinketReRollPrice);
 	rtd_TimeLimit			=	GetConVarInt(c_Timelimit);
+	
+	rtd_Event_MLK			=	GetConVarInt(c_Event_MLK);
 }
 
 public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:newValue[])
@@ -223,6 +229,9 @@ public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:new
 	}else if(convar == c_Timelimit)
 	{
 		rtd_TimeLimit = GetConVarInt(c_Timelimit);
+	}else if(convar == c_Event_MLK)
+	{
+		rtd_Event_MLK = GetConVarInt(c_Event_MLK);
 	}
 	
 }

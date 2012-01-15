@@ -644,6 +644,25 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 				damage *= 0.5;
 			}
 		}
+		
+		//Martin Luther King event
+		if(rtd_Event_MLK)
+		{
+			if(TF2_GetPlayerClass(client) == TFClass_DemoMan)
+			{
+				if(TF2_GetPlayerClass(attacker) != TFClass_DemoMan)
+					damage *= 0.90;
+				
+				if(damagetype == 2097152 || damagetype == 34603010)
+				{
+					damage = 0.0;
+					PrintCenterText(client, "Headshot DODGED!");
+					PrintCenterText(attacker, "Demomen are immune from headshots!");
+					
+				}
+			}
+		}
+		
 	}
 	
 	if(client_rolls[client][AWARD_G_STONEWALL][0])

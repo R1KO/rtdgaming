@@ -345,7 +345,15 @@ stock RTDPrecache()
 	PrecacheSound(SOUND_SNORLAX, true);
 	PrecacheSound(SOUND_BOUNCE, true);
 	
-	//PrecacheModel(MODEL_FRIED_CHICKEN, true);
+	PrecacheModel(MODEL_FRIED_CHICKEN, true);
+	
+	PrecacheSound("vo/demoman_battlecry01.wav", true);
+	PrecacheSound("vo/demoman_battlecry02.wav", true);
+	PrecacheSound("vo/demoman_battlecry03.wav", true);
+	PrecacheSound("vo/demoman_battlecry04.wav", true);
+	PrecacheSound("vo/demoman_battlecry05.wav", true);
+	PrecacheSound("vo/demoman_battlecry06.wav", true);
+	PrecacheSound("vo/demoman_battlecry07.wav", true);
 	
 	PrecacheSound(SOUND_ARMOR_IMPACT_01, true);
 	PrecacheSound(SOUND_ARMOR_IMPACT_02, true);

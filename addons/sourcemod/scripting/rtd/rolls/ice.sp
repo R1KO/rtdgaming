@@ -324,7 +324,7 @@ public Action:Timer_MaintainOverlay(Handle:timer, Handle:pack)
 		if(movingHUD[client])
 			return Plugin_Continue;
 		
-		if ((RoundToFloor(time * 10) <= 0) || !clientOverlay[client] || StrEqual("effects/dodge_overlay", overlay, true) && !inIce[client] || !IsPlayerAlive(client) || StrEqual("models/props_combine/portalball001_sheet ", overlay, true) && !client_rolls[client][AWARD_G_STRENGTHDRAIN][3]) 
+		if ((RoundToFloor(time * 10) <= 0) || !clientOverlay[client] || StrEqual("effects/dodge_overlay", overlay, true) && !inIce[client] || !IsPlayerAlive(client)) 
 		{
 			OverlayCommand(client, "\"\"");
 			clientOverlay[client] = false;

@@ -36,6 +36,8 @@ new Handle:c_TrinketPrice = INVALID_HANDLE;
 new Handle:c_TrinketExtPrice = INVALID_HANDLE;
 new Handle:c_TrinketReRollPrice = INVALID_HANDLE;
 
+new Handle:c_Event_MLK = INVALID_HANDLE;
+
 new g_oFOV, g_oDefFOV;
 
 /**
@@ -385,3 +387,6 @@ new wasJumping[cMaxClients];
 
 new entityPickedUp[cMaxClients];
 new rtd_TimeLimit;
+
+new rtd_Event_MLK;
+new rtd_Event_MLK_Data[cMaxClients];

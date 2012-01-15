@@ -692,6 +692,33 @@ public Action:GenericTimer(Handle:timer)
 					}
 				}
 			}
+			
+			if(rtd_Event_MLK)
+			{
+				if(TF2_GetPlayerClass(i) == TFClass_DemoMan)
+				{
+					if(TF2_IsPlayerInCondition(i, TFCond_Taunting))
+					{
+						if(rtd_Event_MLK_Data[i] < GetTime())
+						{
+							if(isActiveWeapon(i, 1))
+							{
+								PrintCenterText(i, "Drunken Taunt Activated! +100HP");
+								rtd_Event_MLK_Data[i] = GetTime() + 30;
+								
+								addHealth(i, 100);
+								
+								if(clientOverlay[i] == false)
+									ShowOverlay(i, "effects/tp_eyefx/tp_eyefx.vmt", 12.0);
+							}
+							
+						}else{
+							PrintCenterText(i, "Drunken Taunt cooldown: %i",  rtd_Event_MLK_Data[i] - GetTime());
+						}
+					}
+				}
+			}
+			
 		}
 	}
 	
