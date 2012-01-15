@@ -653,7 +653,8 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("sound/rtdgaming/bounce.wav");
 	
 	//Fried Chicken
-	/*
+	//if(rtd_Event_MLK)
+	//{
 	AddFileToDownloadsTable("models/rtdgaming/fried_chicken/fried_chicken.dx80.vtx");
 	AddFileToDownloadsTable("models/rtdgaming/fried_chicken/fried_chicken.dx90.vtx");
 	AddFileToDownloadsTable("models/rtdgaming/fried_chicken/fried_chicken.mdl");
@@ -664,7 +665,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/fried_chicken/fried.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/fried_chicken/fried.vtf");
 	AddFileToDownloadsTable("materials/models/rtdgaming/fried_chicken/fried_normal.vtf");
-	* */
+	//}
 	
 	//InstaPorter
 	AddFileToDownloadsTable("models/rtdgaming/instaporter_v2/instaporter.dx80.vtx");

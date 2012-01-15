@@ -1035,6 +1035,14 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 					}
 				}
 			}
+			
+			if(rtd_Event_MLK)
+			{
+				if(TF2_GetPlayerClass(attacker) == TFClass_DemoMan)
+				{
+					Spawn_FriedChicken(client);
+				}
+			}
 		}
 	}
 	
@@ -1129,7 +1137,7 @@ public Action:EventHighFiveSuccess(Handle:event, const String:name[], bool:dontB
 	new initiator	=	GetEventInt(event, "initiator_entindex");
 	new partner		=	GetEventInt(event, "partner_entindex");
 	
-	//add 50% health
+	//add 25% health
 	addHealthPercentage(initiator, 0.25, true);
 	addHealthPercentage(partner, 0.25, true);
 }

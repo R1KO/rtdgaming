@@ -120,6 +120,7 @@
 #include "rtd/rolls/slicendice.sp"
 
 //Perks
+#include "rtd/rolls/friedchicken.sp"
 
 public Plugin:myinfo = 
 {
