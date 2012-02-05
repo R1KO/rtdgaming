@@ -183,7 +183,7 @@ public Action:DarknessCloud_Timer(Handle:timer, Handle:dataPackHandle)
 			client_rolls[i][AWARD_G_DARKNESSCLOUD][4] = GetTime() + 5;
 			
 			//@ 300hp this has 30 activations
-			SetVariantInt(100);
+			SetVariantInt(300);
 			AcceptEntityInput(darknessCloud, "RemoveHealth");
 			
 			AttachTempParticle(i,"ghost_appearation", 3.0, false,"",0.0, false);
