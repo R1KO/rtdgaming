@@ -107,9 +107,9 @@
 #define AWARD_B_WEAPONS			88
 #define AWARD_B_TAUNT				89
 #define AWARD_B_WAITMORE			90
-#define AWARD_B_BADAIM			92
-#define AWARD_B_DOOM				93
-#define AWARD_B_SLOWMO			94
+#define AWARD_B_BADAIM			91
+#define AWARD_B_DOOM				92
+#define AWARD_B_SLOWMO			93
 
 new String:roll_id[150][32]; //roll identifiers that match up with ;
 
