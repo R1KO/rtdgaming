@@ -750,8 +750,13 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_B_HEALTH:
 			{
+				TF2_RemoveCondition(client, TFCond_OnFire);
+				TF2_RemoveCondition(client, TFCond_Bleeding);
+				
 				SetEntityHealth(client, 1);
 				client_rolls[client][AWARD_B_HEALTH][0] = 0;
+				
+				
 			}
 			
 			case AWARD_B_WEAPONS:
