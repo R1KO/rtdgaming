@@ -620,7 +620,7 @@ public Action:GenericTimer(Handle:timer)
 					if(RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] < GetTime())
 					{
 						//can't scary taunt with the Phlogistinator 
-						if(isActiveWeapon(i, 594))
+						if(isPlayerHolding_UniqueWeapon(i, 594))
 						{
 							PrintCenterText(i, "Can't Scary Taunt with: Phlogistinator");
 						}else{
