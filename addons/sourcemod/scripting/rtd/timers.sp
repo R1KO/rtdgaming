@@ -619,69 +619,75 @@ public Action:GenericTimer(Handle:timer)
 				{	
 					if(RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] < GetTime())
 					{
-						
-						SetEntData(i, m_iMovementStunAmount, 0 );
-						
-						timeExpireScare[i] = GetTime() + RTD_TrinketBonus[i][TRINKET_SCARYTAUNT];
-						addHealthPercentage(i, 0.5, true); //add 20% health
-						
-						AttachTempParticle(i,"superrare_ghosts",5.0, false,"",20.0, false);
-						
-						RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] = GetTime() + 30;
-						
-						new playerTeam;
-						playerTeam = GetClientTeam(i);
-						
-						new Float:playerPos[3];
-						new Float:enemyPos[3];
-						new Float:distance;
-						new String:playsound[64];
-						new rndNum;
-						new stunFlag;
-						
-						GetClientAbsOrigin(i, playerPos);
-						new String:name[32];
-						GetClientName(i, name, 32);
-						
-						for (new j = 1; j <= MaxClients ; j++)
+						//can't scary taunt with the Phlogistinator 
+						if(isActiveWeapon(i, 594))
 						{
-							if(!IsClientInGame(j) || !IsPlayerAlive(j))
-								continue;
+							PrintCenterText(i, "Can't Scary Taunt with: Phlogistinator");
+						}else{
 							
-							if(TF2_IsPlayerInCondition(j, TFCond_Ubercharged))
-								continue;
+							SetEntData(i, m_iMovementStunAmount, 0 );
 							
+							timeExpireScare[i] = GetTime() + RTD_TrinketBonus[i][TRINKET_SCARYTAUNT];
+							addHealthPercentage(i, 0.5, true); //add 20% health
 							
-							if(playerTeam != GetClientTeam(j))
+							AttachTempParticle(i,"superrare_ghosts",5.0, false,"",20.0, false);
+							
+							RTD_TrinketMisc[i][TRINKET_SCARYTAUNT] = GetTime() + 30;
+							
+							new playerTeam;
+							playerTeam = GetClientTeam(i);
+							
+							new Float:playerPos[3];
+							new Float:enemyPos[3];
+							new Float:distance;
+							new String:playsound[64];
+							new rndNum;
+							new stunFlag;
+							
+							GetClientAbsOrigin(i, playerPos);
+							new String:name[32];
+							GetClientName(i, name, 32);
+							
+							for (new j = 1; j <= MaxClients ; j++)
 							{
-								GetClientAbsOrigin(j,enemyPos);
-								distance = GetVectorDistance( playerPos, enemyPos);
+								if(!IsClientInGame(j) || !IsPlayerAlive(j))
+									continue;
 								
-								if(distance < 400.0)
+								if(TF2_IsPlayerInCondition(j, TFCond_Ubercharged))
+									continue;
+								
+								
+								if(playerTeam != GetClientTeam(j))
 								{
-									stunFlag = GetEntData(j, m_iStunFlags);
+									GetClientAbsOrigin(j,enemyPos);
+									distance = GetVectorDistance( playerPos, enemyPos);
 									
-									//scare the player
-									if(stunFlag != TF_STUNFLAGS_LOSERSTATE)
+									if(distance < 400.0)
 									{
-										if(isVisibileCheck(i, j))
+										stunFlag = GetEntData(j, m_iStunFlags);
+										
+										//scare the player
+										if(stunFlag != TF_STUNFLAGS_LOSERSTATE)
 										{
-											timeExpireScare[j] = GetTime() + RTD_TrinketBonus[i][TRINKET_SCARYTAUNT];
-											
-											rndNum = GetRandomInt(1,8);
-											
-											Format(playsound, sizeof(playsound), "vo/halloween_scream%i.wav", rndNum);
-											EmitSoundToAll(playsound,j);
-											
-											rndNum = GetRandomInt(1,6);
-											Format(playsound, sizeof(playsound), "vo/halloween_boo%i.wav", rndNum);
-											EmitSoundToAll(playsound,i);
-											
-											TF2_StunPlayer(j,float(RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]), 0.0, TF_STUNFLAGS_LOSERSTATE, 0);
-											ResetClientSpeed(j);
-											SetEntData(j, m_iMovementStunAmount, 0 );
-											
-											PrintCenterText(j, "%s scared you for %i seconds!", name, RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]);
+											if(isVisibileCheck(i, j))
+											{
+												timeExpireScare[j] = GetTime() + RTD_TrinketBonus[i][TRINKET_SCARYTAUNT];
+												
+												rndNum = GetRandomInt(1,8);
+												
+												Format(playsound, sizeof(playsound), "vo/halloween_scream%i.wav", rndNum);
+												EmitSoundToAll(playsound,j);
+												
+												rndNum = GetRandomInt(1,6);
+												Format(playsound, sizeof(playsound), "vo/halloween_boo%i.wav", rndNum);
+												EmitSoundToAll(playsound,i);
+												
+												TF2_StunPlayer(j,float(RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]), 0.0, TF_STUNFLAGS_LOSERSTATE, 0);
+												ResetClientSpeed(j);
+												SetEntData(j, m_iMovementStunAmount, 0 );
+												
+												PrintCenterText(j, "%s scared you for %i seconds!", name, RTD_TrinketBonus[i][TRINKET_SCARYTAUNT]);
+											}
 										}
 									}
 								}
