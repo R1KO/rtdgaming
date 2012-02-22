@@ -230,7 +230,10 @@ public AttachTempParticle(entity, String:particleType[], Float:lifetime, bool:pa
 
 
 AttachFastParticle(ent, String:particleType[], Float:lifetime)
-{	
+{
+	if(IsEntLimitReached())
+		return;
+	
 	new particle = CreateEntityByName("info_particle_system");
 
 	new String:tName[128];
