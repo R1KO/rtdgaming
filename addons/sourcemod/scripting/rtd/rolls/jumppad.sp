@@ -55,9 +55,6 @@ public Action:Spawn_JumpPad(client)
 	
 	TeleportEntity(ent, vicorigvec, NULL_VECTOR, NULL_VECTOR);
 	
-	// send "kill" event to the event queue
-	killEntityIn(ent, cvLife);
-	
 	// play sound 
 	if(iTeam == BLUE_TEAM)
 	{
@@ -70,14 +67,18 @@ public Action:Spawn_JumpPad(client)
 	
 	EmitSoundToAll(SND_DROP, client);
 	
-	CreateTimer(1.0, JumppadEffects_Timer, ent, TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
-	CreateTimer(0.1, Jumppad_Timer, ent, TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
-	CreateTimer(cvLife, DestroyJumpPad_Timer, ent, TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
-	/*
-	if(annotation)
-	{
-		CreateAnnotation(ent, "", 0, iTeam, 1);
-	}*/
+	/////////////////////////////////////////////
+	//Initiate the timer.                      //
+	//Important variables to keep track of     //
+	/////////////////////////////////////////////
+	new Handle:dataPackHandle;
+	CreateDataTimer(0.1, Jumppad_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+	
+	//Setup the datapack with appropriate information
+	WritePackCell(dataPackHandle, EntIndexToEntRef(ent)); //entity reference
+	WritePackCell(dataPackHandle, GetTime()); //PackPosition(8) time to re-emit particle
+	WritePackCell(dataPackHandle, 5); //PackPosition(16) time to activate, reset to 0 when jumppad is used
+	WritePackCell(dataPackHandle,GetTime() + (RoundFloat(cvLife) - 1)); //PackPosition(24) time to kill jumppad
 	
 	return Plugin_Continue;
 }
@@ -104,111 +105,113 @@ public Action:DoJump(any:client, Float:hforce, Float:vForce)
 	AttachFastParticle(client, "rockettrail", 1.0);
 }
 
-public Action:DestroyJumpPad_Timer(Handle:timer, any:other)
-{
-	if(!IsValidEntity(other))
-	{
-		KillTimer(timer);
-		return Plugin_Handled;
-	}
+public stopJumpPadTimer(Handle:dataPackHandle)
+{	
+	ResetPack(dataPackHandle);
+	new jumpPad = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
-	new String:modelname[128];
-	GetEntPropString(other, Prop_Data, "m_ModelName", modelname, 128);
+	if(jumpPad < 1)
+		return true;
 	
-	if (!StrEqual(modelname, MDL_JUMP))
-	{
-		KillTimer(timer);
-		return Plugin_Handled;
-	}
+	if(!IsValidEntity(jumpPad))
+		return true;
 	
-	EmitSoundToAll(SND_JUMPEXPLODE, other);
-	
-	return Plugin_Continue;
+	return false;
 }
 
-public Action:JumppadEffects_Timer(Handle:timer, any:other)
+public Action:Jumppad_Timer(Handle:timer, Handle:dataPackHandle)
 {
-	if(!IsValidEntity(other))
+	////////////////////////////////
+	//Should we stop this timer?  //
+	////////////////////////////////
+	if(stopJumpPadTimer(dataPackHandle))
+		return Plugin_Stop;
+	
+	//////////////////////////////////////////
+	//Retrieve the values from the dataPack //
+	// Set to the beginning and unpack it   //
+	//////////////////////////////////////////
+	ResetPack(dataPackHandle);
+	new jumpPad = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	new jumpEffectTime = ReadPackCell(dataPackHandle);
+	new jumpPadTimeOut = ReadPackCell(dataPackHandle);
+	new timeToKill = ReadPackCell(dataPackHandle);
+	
+	/////////////////////
+	// Destroy jumppad //
+	/////////////////////
+	if(GetTime() >= timeToKill)
 	{
-		KillTimer(timer);
-		return Plugin_Handled;
-	}
-	
-	new String:modelname[128];
-	GetEntPropString(other, Prop_Data, "m_ModelName", modelname, 128);
-	
-	if (!StrEqual(modelname, MDL_JUMP))
-	{
-		KillTimer(timer);
-		return Plugin_Handled;
-	}
-	
-	new iTeam =  GetEntProp(other, Prop_Data, "m_iTeamNum");
-	if(iTeam == BLUE_TEAM)
-	{
-		AttachFastParticle(other, "teleporter_blue_exit_level3", 1.0);
-	}else{
-		AttachFastParticle(other, "teleporter_red_exit_level3", 1.0);
-	}
-	
-	return Plugin_Continue;
-}
-
-public Action:Jumppad_Timer(Handle:timer, any:other)
-{
-	if(!IsValidEntity(other))
-	{
-		KillTimer(timer);
-		return Plugin_Handled;
-	}
-	
-	new String:modelname[128];
-	GetEntPropString(other, Prop_Data, "m_ModelName", modelname, 128);
-	
-	if (!StrEqual(modelname, MDL_JUMP))
-	{
-		KillTimer(timer);
-		return Plugin_Handled;
-	}
-	
-	new Float: playerPos[3];
-	new Float: jumpPos[3];
-	new playerTeam;
-	new jumpTeam =  GetEntProp(other, Prop_Data, "m_iTeamNum");
-	
-	GetEntPropVector(other, Prop_Data, "m_vecOrigin", jumpPos);
-	new ownerEntity = GetEntPropEnt(other, Prop_Data, "m_hOwnerEntity");
-	new cflags;
-	
-	for (new i = 1; i <= MaxClients ; i++)
-	{
-		if(!IsClientInGame(i) || !IsPlayerAlive(i))
-			continue;
+		EmitSoundToAll(SND_JUMPEXPLODE, jumpPad);
 		
-		playerTeam = GetClientTeam(i);
+		killEntityIn(jumpPad, 0.1);
+		return Plugin_Stop;
+	}
+	
+	new jumpTeam =  GetEntProp(jumpPad, Prop_Data, "m_iTeamNum");
+	
+	///////////////////////
+	//Do jumppad effects //
+	///////////////////////
+	if(GetTime() >= jumpEffectTime)
+	{
+		SetPackPosition(dataPackHandle, 8);
+		WritePackCell(dataPackHandle, GetTime() + 1); //PackPosition(8) time to re-emit particle
 		
-		//Invalid attacker, possible reasons player left
-		//attacker must be a client!
-		if(ownerEntity == -1 || ownerEntity > MaxClients)
+		if(jumpTeam == BLUE_TEAM)
 		{
-			ownerEntity = i;
+			AttachFastParticle(jumpPad, "teleporter_blue_exit_level3", 1.0);
+		}else{
+			AttachFastParticle(jumpPad, "teleporter_red_exit_level3", 1.0);
 		}
+	}
+	
+	///////////////////////////////
+	//Allow JumpPad to function  //
+	///////////////////////////////
+	if(jumpPadTimeOut > 7)
+	{
+		new Float: playerPos[3];
+		new Float: jumpPos[3];
+		new playerTeam;
 		
-		//Check to see if player is close to a Crap Pile
-		if(playerTeam == jumpTeam)
+		GetEntPropVector(jumpPad, Prop_Data, "m_vecOrigin", jumpPos);
+		new cflags;
+		
+		for (new i = 1; i <= MaxClients ; i++)
 		{
-			cflags = GetEntData(i, FindSendPropOffs("CBasePlayer", "m_fFlags"));
-			if(cflags & FL_ONGROUND)
-				client_rolls[i][AWARD_G_JUMPPAD][2] = 0;
+			if(!IsClientInGame(i) || !IsPlayerAlive(i))
+				continue;
 			
-			GetClientAbsOrigin(i,playerPos);
+			playerTeam = GetClientTeam(i);
 			
-			if(FloatAbs(playerPos[0] - jumpPos[0]) < 40.0 && FloatAbs(playerPos[1] - jumpPos[1]) < 40.0 && FloatAbs(playerPos[2] - jumpPos[2]) < 100.0)
+			//Check to see if player is close to a JumpPAd
+			if(playerTeam == jumpTeam)
 			{
-				DoJump(i, 1.0, 1.0);
+				cflags = GetEntData(i, FindSendPropOffs("CBasePlayer", "m_fFlags"));
+				if(cflags & FL_ONGROUND)
+					client_rolls[i][AWARD_G_JUMPPAD][2] = 0;
+				
+				GetClientAbsOrigin(i,playerPos);
+				
+				if(FloatAbs(playerPos[0] - jumpPos[0]) < 40.0 && FloatAbs(playerPos[1] - jumpPos[1]) < 40.0 && FloatAbs(playerPos[2] - jumpPos[2]) < 100.0)
+				{
+					DoJump(i, 1.0, 1.0);
+					
+					jumpPadTimeOut = -1;
+				}
 			}
 		}
 	}
+	
+	//increment timeout
+	jumpPadTimeOut ++;
+	
+	if(jumpPadTimeOut > 10)
+		jumpPadTimeOut = 10;
+	
+	SetPackPosition(dataPackHandle, 16);
+	WritePackCell(dataPackHandle, jumpPadTimeOut); //PackPosition(16) time to re-emit particle
 	
 	return Plugin_Continue;
 }

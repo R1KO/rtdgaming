@@ -532,8 +532,13 @@ public deployRoll(client, tempAward)
 		
 		case AWARD_G_JUMPPAD:
 		{
-			if(closeToMainObjects(client))
+			tooClose = closeToModel(client, 100.0, "prop_dynamic", MDL_JUMP);
+			
+			if(closeToMainObjects(client) || tooClose)
 			{
+				if(tooClose)
+					PrintCenterText(client,"Too close to another Jump Pad");
+				
 				denyDrop = true;
 			}else{
 				Spawn_JumpPad(client);
