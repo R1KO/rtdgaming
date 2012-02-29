@@ -627,18 +627,35 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				//equip trinket
 				case 1:
 				{
-					unequipTrinkets(param1);
-					
-					RTD_TrinketEquipped[param1][selectedSlot] = 1;
-					equipActiveTrinket(param1);
-					
-					Format(chatMessage, sizeof(chatMessage), "\x03Equipped\x04 (\x03%s\x04) \x01%s \x04Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
-					PrintToChat(param1, chatMessage); 
-					
-					Format(chatMessage, sizeof(chatMessage), "Equipped (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
-					PrintCenterText(param1, chatMessage);
-					
-					//TrinketsLoadoutMenu(param1, 0);
+					//trinket cool down
+					if(RTD_TrinketEquipTime[param1] > GetTime())
+					{
+						
+						Format(chatMessage, sizeof(chatMessage), "\x03Trinket cool down: \x01%is", RTD_TrinketEquipTime[param1] - GetTime());
+						PrintToChat(param1, chatMessage); 
+						
+						Format(chatMessage, sizeof(chatMessage), "Must wait %is before changing trinkets", RTD_TrinketEquipTime[param1] - GetTime());
+						PrintCenterText(param1, chatMessage);
+						
+						EmitSoundToClient(param1, SOUND_DENY);
+						
+						TrinketsLoadoutMenu(param1, 0);
+					}else{
+						RTD_TrinketEquipTime[param1] = GetTime() + 30;
+						
+						unequipTrinkets(param1);
+						
+						RTD_TrinketEquipped[param1][selectedSlot] = 1;
+						equipActiveTrinket(param1);
+						
+						Format(chatMessage, sizeof(chatMessage), "\x03Equipped\x04 (\x03%s\x04) \x01%s \x04Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
+						PrintToChat(param1, chatMessage); 
+						
+						Format(chatMessage, sizeof(chatMessage), "Equipped (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
+						PrintCenterText(param1, chatMessage);
+						
+						//TrinketsLoadoutMenu(param1, 0);
+					}
 					
 				}
 				

@@ -376,6 +376,7 @@ new RTD_TrinketEquipped[cMaxClients][50];
 new String:RTD_TrinketTitle[cMaxClients][32];
 new lastExpireNotification[cMaxClients];
 new RTD_Trinket_DB_ID[cMaxClients][50];
+new RTD_TrinketEquipTime[cMaxClients];
 
 new trading[cMaxClients][6];
 new smelting[cMaxClients][3];

@@ -77,7 +77,7 @@ public Action:Spawn_JumpPad(client)
 	//Setup the datapack with appropriate information
 	WritePackCell(dataPackHandle, EntIndexToEntRef(ent)); //entity reference
 	WritePackCell(dataPackHandle, GetTime()); //PackPosition(8) time to re-emit particle
-	WritePackCell(dataPackHandle, 5); //PackPosition(16) time to activate, reset to 0 when jumppad is used
+	WritePackCell(dataPackHandle, 10); //PackPosition(16) time to activate, reset to 0 when jumppad is used
 	WritePackCell(dataPackHandle,GetTime() + (RoundFloat(cvLife) - 1)); //PackPosition(24) time to kill jumppad
 	
 	return Plugin_Continue;
