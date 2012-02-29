@@ -167,7 +167,7 @@ public Action:DarknessCloud_Timer(Handle:timer, Handle:dataPackHandle)
 			continue;
 		
 		//The user is too far from the cloud
-		if(GetVectorDistance(playerPos,darknessCloudPos) > 150.0)
+		if(GetVectorDistance(playerPos,darknessCloudPos) > 100.0)
 			continue;
 		
 		//Time darkness cloud will go away for player

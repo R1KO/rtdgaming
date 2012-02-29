@@ -763,6 +763,8 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 	
 	UpdateWaist(client);
 	
+	RTD_TrinketEquipTime[client] = 0;
+	
 	CreateTimer(0.1,  	Timer_DelayTrinketEquip, GetClientUserId(client), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Continue;
@@ -1059,6 +1061,8 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 		if(GetRandomInt(1, 10) == 5)
 			RTD_Timer[client]= 0;
 	}
+	
+	RTD_TrinketEquipTime[client] = 0;
 	
 	return Plugin_Continue;
 }
