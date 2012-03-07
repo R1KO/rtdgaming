@@ -782,7 +782,7 @@ public deployRoll(client, tempAward)
 				
 				denyDrop = true;
 			}else{
-				Spawn_Slice(client);
+				Spawn_Slice(client, client_rolls[client][AWARD_G_SLICE][2], client_rolls[client][AWARD_G_SLICE][3]);
 			}
 		}
 		

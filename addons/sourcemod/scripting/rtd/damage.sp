@@ -849,10 +849,9 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 				{
 					new weaponID = GetEntProp(weaponEntity, Prop_Send, "m_iItemDefinitionIndex");
 					
-					if(weaponID == 129 || weaponID == 226)
+					if(weaponID == 129)
 					{
 						//129 = The Buff Banner
-						//226 = The Battalion's Backup
 						new Float:ragelevel = GetEntPropFloat(attacker, Prop_Send, "m_flRageMeter");
 						
 						new Handle:dataPackHandle;
@@ -867,6 +866,40 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			}
 		}
 		
+	}
+	
+	if(!isAttackerSelf && !sameTeam)
+	{
+		/////////////////////////////////////////////////
+		// HASTY CHARGE TRINKET: The Battalion's Backup//
+		/////////////////////////////////////////////////
+		//incoming damage to client
+		if(RTD_TrinketActive[client][TRINKET_HASTYCHARGE])
+		{
+			if(TF2_GetPlayerClass(client) == TFClass_Soldier)
+			{
+				new weaponEntity = GetPlayerWeaponSlot(client, 1);
+				
+				if(weaponEntity > 0 && !GetEntProp(client, Prop_Send, "m_bRageDraining"))
+				{
+					new weaponID = GetEntProp(weaponEntity, Prop_Send, "m_iItemDefinitionIndex");
+					
+					if(weaponID == 226)
+					{
+						//226 = The Battalion's Backup
+						new Float:ragelevel = GetEntPropFloat(client, Prop_Send, "m_flRageMeter");
+						
+						new Handle:dataPackHandle;
+						CreateDataTimer(0.0, rageMeter_DelayTimer, dataPackHandle, TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
+						
+						//Setup the datapack with appropriate information
+						WritePackCell(dataPackHandle, GetClientUserId(client));   //PackPosition(0);  Backpack Index
+						WritePackFloat(dataPackHandle, ragelevel);   //PackPosition(0);  Backpack Index
+						
+					}
+				}
+			}
+		}
 	}
 	
 	if(oldDamage == damage)

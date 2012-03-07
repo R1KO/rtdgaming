@@ -634,6 +634,11 @@ public teleportToOwner(client)
 	new ent = -1;
 	
 	new currIndex;
+	new iTeam;
+	new playerTeam;
+	
+	playerTeam = GetEntProp(client, Prop_Data, "m_iTeamNum");
+	
 	while ((ent = FindEntityByClassname(ent, "prop_dynamic")) != -1)
 	{	
 		currIndex = GetEntProp(ent, Prop_Data, "m_nModelIndex");
@@ -646,12 +651,18 @@ public teleportToOwner(client)
 			
 			if(client == owner)
 			{
-				//PrintToChat(client, "Found a match");
+				//make sure spider and entity are on the same team
+				iTeam = GetEntProp(ent, Prop_Data, "m_iTeamNum");
 				
-				//find parent
-				new parent = GetEntPropEnt(ent, Prop_Data, "m_pParent");
-				if(IsValidEntity(parent))
-					TeleportEntity(parent, startpt, angle, speed);
+				if(playerTeam == iTeam)
+				{
+					//PrintToChat(client, "Found a match");
+					
+					//find parent
+					new parent = GetEntPropEnt(ent, Prop_Data, "m_pParent");
+					if(IsValidEntity(parent))
+						TeleportEntity(parent, startpt, angle, speed);
+				}
 			}
 		}
 	}

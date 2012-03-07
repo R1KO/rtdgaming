@@ -357,10 +357,25 @@ public Action:rageMeter_DelayTimer(Handle:timer, Handle:dataPackHandle)
 					//226 = The Battalion's Backup
 					new Float:ragelevel = GetEntPropFloat(client, Prop_Send, "m_flRageMeter");
 					
-					new Float:adjustedRage = (ragelevel - pastLevel) * (float(RTD_TrinketBonus[client][TRINKET_HASTYCHARGE])/100.0);
-					
-					//PrintToChat(client, "%f | %f", ragelevel, adjustedRage);
-					SetEntPropFloat(client, Prop_Send, "m_flRageMeter", ragelevel + adjustedRage);
+					//make sure rage has changed
+					if(pastLevel != ragelevel)
+					{
+						//don't bother with 
+						if(ragelevel < 100.0)
+						{
+							new Float:adjustedRage = (ragelevel - pastLevel) * (float(RTD_TrinketBonus[client][TRINKET_HASTYCHARGE])/100.0);
+							
+							//PrintToChat(client, "%f | %f", ragelevel, adjustedRage);
+							new Float: finalRage = ragelevel + adjustedRage;
+							
+							if(finalRage > 100.0)
+								finalRage = 100.0;
+							
+							SetEntPropFloat(client, Prop_Send, "m_flRageMeter", finalRage);
+						}
+					}else{
+						//PrintToChat(client, "Rage has not changed! %f", ragelevel);
+					}
 					
 				}
 			}
