@@ -5,7 +5,7 @@
 #include <sdkhooks>
 #include <tf2>
 
-public Action:Spawn_Slice(client)
+public Action:Spawn_Slice(client, health, maxHealth)
 {
 	client_rolls[client][AWARD_G_SLICE][4] = GetTime() + 5;
 	
@@ -47,8 +47,8 @@ public Action:Spawn_Slice(client)
 	AcceptEntityInput( ent, "DisableCollision" );
 	AcceptEntityInput( ent, "EnableCollision" );
 	
-	SetEntProp(ent, Prop_Data, "m_iMaxHealth", 2000);
-	SetEntProp(ent, Prop_Data, "m_iHealth", 2000);
+	SetEntProp(ent, Prop_Data, "m_iMaxHealth", maxHealth);
+	SetEntProp(ent, Prop_Data, "m_iHealth", health);
 	
 	SetVariantString("idle");
 	AcceptEntityInput(ent, "SetAnimation", -1, -1, 0); 

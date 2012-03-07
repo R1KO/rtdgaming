@@ -722,6 +722,12 @@ GivePlayerEffect(client, award, cost)
 			{
 			}
 			
+			case AWARD_G_SLICE:
+			{
+				client_rolls[client][AWARD_G_SLICE][2] = 2000; //health
+				client_rolls[client][AWARD_G_SLICE][3] = 2000; //maxhealth
+			}
+			
 		}
 	}else{ // Bad Command
 		//Let's store how many bad rolls the user has received 
