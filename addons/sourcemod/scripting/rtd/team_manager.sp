@@ -100,8 +100,11 @@ public Action:Event_TeamBalanced(Handle:event, const String:name[], bool:dontBro
 	new iTeam = GetEventInt(event, "team");
 	if(IsBlocked(client) && IsClientConnected(client))
 	{
-		g_BlockTime[client] = GetTime() + 300;
-		g_BlockTeam[client] = GetClientTeam(iTeam);
+		if(IsClientInGame(client))
+		{
+			g_BlockTime[client] = GetTime() + 300;
+			g_BlockTeam[client] = GetClientTeam(iTeam);
+		}
 	}
 	return Plugin_Continue;
 }
