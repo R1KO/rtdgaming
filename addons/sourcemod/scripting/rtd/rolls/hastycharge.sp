@@ -343,6 +343,9 @@ public Action:rageMeter_DelayTimer(Handle:timer, Handle:dataPackHandle)
 	
 	if(RTD_TrinketActive[client][TRINKET_HASTYCHARGE])
 	{
+		////////////////////
+		// SOLDIER        //
+		////////////////////
 		if(TF2_GetPlayerClass(client) == TFClass_Soldier)
 		{
 			new weaponEntity = GetPlayerWeaponSlot(client, 1);
@@ -351,10 +354,11 @@ public Action:rageMeter_DelayTimer(Handle:timer, Handle:dataPackHandle)
 			{
 				new weaponID = GetEntProp(weaponEntity, Prop_Send, "m_iItemDefinitionIndex");
 				
-				if(weaponID == 129 || weaponID == 226)
+				if(weaponID == 129 || weaponID == 226 || weaponID == 354)
 				{
 					//129 = The Buff Banner
 					//226 = The Battalion's Backup
+					//354 = The Concheror
 					new Float:ragelevel = GetEntPropFloat(client, Prop_Send, "m_flRageMeter");
 					
 					//make sure rage has changed
