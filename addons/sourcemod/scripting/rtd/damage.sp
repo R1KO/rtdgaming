@@ -849,9 +849,10 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 				{
 					new weaponID = GetEntProp(weaponEntity, Prop_Send, "m_iItemDefinitionIndex");
 					
-					if(weaponID == 129)
+					if(weaponID == 129 || weaponID == 354)
 					{
 						//129 = The Buff Banner
+						//354 = The Concheror
 						new Float:ragelevel = GetEntPropFloat(attacker, Prop_Send, "m_flRageMeter");
 						
 						new Handle:dataPackHandle;
