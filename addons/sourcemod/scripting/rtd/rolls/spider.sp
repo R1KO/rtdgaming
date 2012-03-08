@@ -373,6 +373,9 @@ public Action:SpiderThink_Timer(Handle:timer, Handle:dataPackHandle)
 	{
 		SetPackPosition(dataPackHandle, 32);
 		WritePackCell(dataPackHandle, -1);
+		
+		if(owner != spider && owner != 0)
+			SetEntPropEnt(spider, Prop_Data, "m_hOwnerEntity", 0);
 	}
 	
 	GetEntPropVector(box, Prop_Send, "m_vecOrigin", spiderPosition);
