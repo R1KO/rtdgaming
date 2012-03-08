@@ -614,7 +614,8 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						Format(chatMessage, sizeof(chatMessage), "Extended (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 						PrintCenterText(param1, chatMessage);
 						
-						TrinketsLoadoutMenu(param1, 0);
+						showTrinketSelectionMenu(param1, selectedSlot, slotStatus);
+						//TrinketsLoadoutMenu(param1, 0);
 						
 					}else{
 						PrintCenterText(param1, "Insufficent Credits!");
