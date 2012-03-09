@@ -23,6 +23,7 @@ public Action:HastyCharge_Timer(Handle:timer)
 	new Float:trinketValue;
 	new iOffset;
 	new iCurAmmo;
+	new Float:regenDuration;
 	
 	for (new i = 1; i <= MaxClients; i++)
 	{
@@ -71,14 +72,19 @@ public Action:HastyCharge_Timer(Handle:timer)
 						{
 							weaponID = GetEntProp(weaponInfo[currWeapon], Prop_Send, "m_iItemDefinitionIndex");
 							
-							if(weaponID == 44 || weaponID == 222)
+							if(weaponID == 44 || weaponID == 222 || weaponID == 648)
 							{
 								//44  = The Sandman
 								//222 = Mad Milk
+								//648 = The Wrap Assassin"
+								
 								if(weaponID == 222)
 									rechargeTime = 20.0;
 								
 								if(weaponID == 44)
+									rechargeTime = 15.0;
+								
+								if(weaponID == 648)
 									rechargeTime = 15.0;
 								
 								iOffset = GetEntProp(weaponInfo[currWeapon], Prop_Send, "m_iPrimaryAmmoType", 1)*4;
@@ -274,7 +280,6 @@ public Action:HastyCharge_Timer(Handle:timer)
 									SetEntPropFloat(weaponInfo[currWeapon], Prop_Send, "m_flEffectBarRegenTime", timeStamp);
 								}
 								
-								
 								continue;
 							}
 						}
@@ -317,6 +322,37 @@ public Action:HastyCharge_Timer(Handle:timer)
 								
 								
 								continue;
+							}
+						}
+					}
+					
+					////////////////////
+					// SPY            //
+					////////////////////
+					case TFClass_Spy:
+					{
+						for (new currWeapon = 0; currWeapon < totWeaponsFound; currWeapon++)
+						{
+							weaponID = GetEntProp(weaponInfo[currWeapon], Prop_Send, "m_iItemDefinitionIndex");
+							
+							if(weaponID == 649)
+							{
+								//649 = The Spy-cicle"
+								
+								//m_flKnifeRegenerateDuration = how long user needs to wait for it to regenerate
+								//m_flKnifeMeltTimestamp = time it was last activated
+								
+								rechargeTime = 15.0;
+								regenDuration = GetEntPropFloat(weaponInfo[currWeapon], Prop_Send, "m_flKnifeRegenerateDuration");
+								
+								if(regenDuration > 1.0)
+								{
+									timeReduction = rechargeTime - (rechargeTime * (float(RTD_TrinketBonus[i][TRINKET_HASTYCHARGE])/100.0));
+									
+									SetEntPropFloat(weaponInfo[currWeapon], Prop_Send, "m_flKnifeRegenerateDuration", timeReduction);
+								}
+								continue;
+								
 							}
 						}
 					}
