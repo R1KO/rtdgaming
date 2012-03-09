@@ -688,10 +688,10 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 				CDetach(client_rolls[client][AWARD_G_SPIDER][1]);
 				CAttach(client_rolls[client][AWARD_G_SPIDER][1], client, "flag");
 			}else{
-				AttachSpiderToBack(client, 500, 500);
+				AttachSpiderToBack(client, 500 + RTD_Perks[client][15], 500 + RTD_Perks[client][15]);
 			}
 		}else{
-			AttachSpiderToBack(client, 500, 500);
+			AttachSpiderToBack(client, 500 + RTD_Perks[client][15], 500 + RTD_Perks[client][15]);
 		}
 	}
 	
