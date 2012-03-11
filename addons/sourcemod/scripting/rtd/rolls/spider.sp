@@ -369,13 +369,20 @@ public Action:SpiderThink_Timer(Handle:timer, Handle:dataPackHandle)
 		WritePackCell(dataPackHandle, -1);
 	}
 	
-	if(spiderOwner != spiderTeam)
+	//set the owner entity to 0 if the owner and the spider are not on the same team
+	if(spiderOwner > 0 && spiderOwner < MaxClients)
 	{
-		SetPackPosition(dataPackHandle, 32);
-		WritePackCell(dataPackHandle, -1);
-		
-		if(owner != spider && owner != 0)
-			SetEntPropEnt(spider, Prop_Data, "m_hOwnerEntity", 0);
+		if(IsValidEntity(spiderOwner))
+		{
+			if(GetEntProp(spiderOwner, Prop_Data, "m_iTeamNum") != spiderTeam)
+			{
+				SetPackPosition(dataPackHandle, 32);
+				WritePackCell(dataPackHandle, -1);
+				
+				if(owner != spider && owner != 0)
+					SetEntPropEnt(spider, Prop_Data, "m_hOwnerEntity", 0);
+			}
+		}
 	}
 	
 	GetEntPropVector(box, Prop_Send, "m_vecOrigin", spiderPosition);

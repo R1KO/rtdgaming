@@ -202,7 +202,7 @@ public Action:HastyCharge_Timer(Handle:timer)
 						{
 							weaponID = GetEntProp(weaponInfo[currWeapon], Prop_Send, "m_iItemDefinitionIndex");
 							
-							if(weaponID == 14 || weaponID == 230)
+							if(weaponID == 14 || weaponID == 230 || weaponID == 526)
 							{
 								//14  = Sniper Rifle
 								if(weaponID == 14)
@@ -211,6 +211,10 @@ public Action:HastyCharge_Timer(Handle:timer)
 								//230  = Sydney Sleep
 								if(weaponID == 230)
 									rechargeTime = 2.4;
+								
+								//526 = The Machina
+								if(weaponID == 526)
+									rechargeTime = 3.3;
 								
 								curLevel = GetEntPropFloat(weaponInfo[currWeapon], Prop_Send, "m_flChargedDamage");
 								

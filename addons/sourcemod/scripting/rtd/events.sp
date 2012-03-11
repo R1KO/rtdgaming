@@ -571,8 +571,6 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		}
 	}
 	
-	//RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH] = 1;
-	//RTD_TrinketLevel[client][TRINKET_EXPLOSIVEDEATH] = 3;
 	if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
 	{	
 		RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH] = 0;
@@ -675,9 +673,11 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 	
 	if(client_rolls[client][AWARD_G_SPIDER][1] != 0)
 	{
-		if(IsValidEntity(client_rolls[client][AWARD_G_SPIDER][1]))
+		new spiderEntity = EntRefToEntIndex(client_rolls[client][AWARD_G_SPIDER][1]);
+		
+		if(IsValidEntity(spiderEntity))
 		{
-			new currIndex = GetEntProp(client_rolls[client][AWARD_G_SPIDER][1], Prop_Data, "m_nModelIndex");
+			new currIndex = GetEntProp(spiderEntity, Prop_Data, "m_nModelIndex");
 			
 			if(currIndex == spiderBackIndex)
 			{
@@ -685,8 +685,8 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 				Format(playerName, sizeof(playerName), "target%i", client);
 				DispatchKeyValue(client, "targetname", playerName);
 				
-				CDetach(client_rolls[client][AWARD_G_SPIDER][1]);
-				CAttach(client_rolls[client][AWARD_G_SPIDER][1], client, "flag");
+				CDetach(spiderEntity);
+				CAttach(spiderEntity, client, "flag");
 			}else{
 				AttachSpiderToBack(client, 500 + RTD_Perks[client][15], 500 + RTD_Perks[client][15]);
 			}

@@ -232,14 +232,15 @@ GivePlayerEffect(client, award, cost)
 						Format(bonus, sizeof(bonus), "Increased Dmg Reduction when activated");
 					}
 					
-					case AWARD_G_ARMOR:
-					{
-						Format(bonus, sizeof(bonus), "1000 Armor");
-					}
 				}
 				
 			}else{
-				Format(bonus, sizeof(bonus), "+%i health", extraDeployables);
+				if(award == AWARD_G_ARMOR)
+				{
+					Format(bonus, sizeof(bonus), "1000 Armor");
+				}else{
+					Format(bonus, sizeof(bonus), "+%i health", extraDeployables);
+				}
 			}
 			
 			Format(chatMessage, sizeof(chatMessage), "\x01\x04[Unusual Purchase] \x03%s\x04 bought an Unusual \x03%s\x04. Bonus: \x03%s", name, roll_Text[award], bonus);
@@ -434,7 +435,14 @@ GivePlayerEffect(client, award, cost)
 			{
 				
 				client_rolls[client][AWARD_G_ARMOR][0] = 1;
-				client_rolls[client][AWARD_G_ARMOR][1] += 500;
+				
+				if(isUnusual)
+				{
+					client_rolls[client][AWARD_G_ARMOR][1] += 1000;
+				}else{
+					client_rolls[client][AWARD_G_ARMOR][1] += 500;
+				}
+				
 				client_rolls[client][AWARD_G_SPEED][0] = 1;
 				
 				ROFMult[client] = 2.0;
