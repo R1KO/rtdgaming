@@ -97,13 +97,11 @@ public Action:Event_Pre_PlayerDeath(Handle:event, const String:name[], bool:dont
 public Action:Event_TeamBalanced(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	new client = GetEventInt(event, "player");
-	new iTeam = GetEventInt(event, "team");
 	if(IsBlocked(client) && IsClientConnected(client))
 	{
 		if(IsClientInGame(client))
 		{
-			g_BlockTime[client] = GetTime() + 300;
-			g_BlockTeam[client] = iTeam;
+			SetupTeamSwapBlock(client);
 		}
 	}
 	return Plugin_Continue;
