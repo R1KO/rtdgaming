@@ -736,6 +736,11 @@ GivePlayerEffect(client, award, cost)
 				client_rolls[client][AWARD_G_SLICE][3] = 2000; //maxhealth
 			}
 			
+			case AWARD_G_GROUNDINGBULLET:
+			{
+				centerHudText(client, "On hit, enemies gravity will be greatly increased!", 4.0, 5.0, HudMsg3, 0.75); 
+			}
+			
 		}
 	}else{ // Bad Command
 		//Let's store how many bad rolls the user has received 

@@ -663,6 +663,20 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			}
 		}
 		
+		if(client_rolls[attacker][AWARD_G_GROUNDINGBULLET][0])
+		{
+			if(!(damagetype & 2056))
+			{
+				if(!TF2_IsPlayerInCondition(client, TFCond_Ubercharged))
+				{
+					if(GetTime() > client_rolls[client][AWARD_G_GROUNDINGBULLET][1])
+					{
+						GroundPlayer(client);
+					}
+				}
+			}
+		}
+		
 	}
 	
 	if(client_rolls[client][AWARD_G_STONEWALL][0])

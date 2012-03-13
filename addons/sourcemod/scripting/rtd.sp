@@ -118,6 +118,7 @@
 #include "rtd/rolls/strengthdrain.sp"
 #include "rtd/rolls/darknesscloud.sp"
 #include "rtd/rolls/slicendice.sp"
+#include "rtd/rolls/groundingbullet.sp"
 
 //Perks
 #include "rtd/rolls/friedchicken.sp"
