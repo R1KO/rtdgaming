@@ -9,7 +9,7 @@ stock GroundPlayer(client)
 {	
 	//mark when the player can be grounded again
 	client_rolls[client][AWARD_G_GROUNDINGBULLET][1] = GetTime() + 10;
-	SetEntityGravity(client, 99.0);
+	SetEntityGravity(client, 5.0);
 	
 	//The Datapack stores all the Backpack's important values
 	new Handle:dataPackHandle;
@@ -54,7 +54,7 @@ public Action:Ground_Timer(Handle:timer, Handle:dataPackHandle)
 	{
 		SetEntityGravity(client, 1.0);
 	}else{
-		SetEntityGravity(client, 99.0);
+		SetEntityGravity(client, 5.0);
 	}
 	
 	return Plugin_Continue;
