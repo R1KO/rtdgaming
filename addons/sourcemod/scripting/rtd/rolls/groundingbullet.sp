@@ -19,7 +19,7 @@ stock GroundPlayer(client)
 	WritePackCell(dataPackHandle, EntIndexToEntRef(client));   //PackPosition(0);  Backpack Index
 	WritePackCell(dataPackHandle, GetTime() + 5);     //PackPosition(8) ;  Amount of ammopacks
 	
-	PrintCenterText(client, "You have been grounded for 5s!");
+	PrintCenterText(client, "You've been grounded!");
 }
 
 

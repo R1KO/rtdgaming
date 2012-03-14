@@ -734,7 +734,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		SetHudTextParams(0.07, 1.0, 1.0, 250, 250, 210, 255);
 		ShowHudText(client, HudMsg5, "ARMOR: %i", client_rolls[client][AWARD_G_ARMOR][1]);
 		
-		client_rolls[client][AWARD_G_ARMOR][1] -= RoundFloat(damage);
+		client_rolls[client][AWARD_G_ARMOR][1] -= (RoundFloat(damage) - (RoundFloat(damage) * 0.1));
 		
 		if(client_rolls[client][AWARD_G_ARMOR][1] < 0)
 		{
@@ -766,7 +766,8 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			if(clientOverlay[client] == false)
 				ShowOverlay(client, "effects/com_shield002a.vmt ", 0.6);
 			
-			damage = 0.0;
+			//10% damage taken
+			damage *= 0.1;
 		}
 	}
 	
