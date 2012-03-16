@@ -253,6 +253,76 @@ public fn_TrinketsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				
 				case 1:
 				{
+					confirmPurchaseTrinket(param1);
+				}
+				
+			}
+		}
+		
+		case MenuAction_Cancel: {
+		}
+		
+		case MenuAction_End: {
+			CloseHandle(menu);
+		}
+	}
+}
+
+
+////////////////////////////////////////
+// Confirm Purchase Trinket           //
+////////////////////////////////////////
+public Action:confirmPurchaseTrinket(client)
+{
+	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_PurchaseTrinkMenuHandler);
+	
+	new String:menuTitle[64];
+	new String:displayIdent[64];
+	
+	Format(menuTitle, 64, "Purchase Trinket for %i credits", rtd_trinketPrice);
+	SetMenuTitle(hCMenu, menuTitle);
+	
+	Format(displayIdent, 64, "0");
+	AddMenuItem(hCMenu, displayIdent, "Yes", ITEMDRAW_DEFAULT);
+	
+	Format(displayIdent, 64, "1");
+	AddMenuItem(hCMenu, displayIdent, "No! Wait! How'd I get here?!", ITEMDRAW_DEFAULT);
+	
+	SetMenuExitBackButton(hCMenu, true);
+	DisplayMenuAtItem(hCMenu, client, 0, MENU_TIME_FOREVER);
+	
+	return Plugin_Handled;
+}
+
+public fn_PurchaseTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
+{	
+	switch (action) 
+	{
+		case MenuAction_Select: 
+		{
+			decl String:MenuInfo[64];
+			decl String:chatMessage[200];
+			
+			new style;
+			//new selectedSlot;
+			
+			GetMenuItem(menu, param2, MenuInfo, sizeof(MenuInfo),style);
+			
+			//selectedSlot = StringToInt(MenuInfo[0]);
+			
+			switch(param2)
+			{
+				//get outta here
+				case 1:
+				{
+					Format(chatMessage, 64, "Phew! Close call (I'm an idiot sometimes)");
+					PrintToChat(param1, chatMessage);
+					PrintCenterText(param1, chatMessage);
+				}
+				
+				//purchase trinket
+				case 0:
+				{
 					if(RTDCredits[param1] >= rtd_trinketPrice)
 					{
 						if(nextAvailableSlot(param1) >= 0)
@@ -270,11 +340,13 @@ public fn_TrinketsMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						EmitSoundToClient(param1, SOUND_DENY);
 					}
 				}
-				
 			}
+			
+			TrinketsLoadoutMenu(param1, 0);
 		}
 		
 		case MenuAction_Cancel: {
+			SetupTrinketsMenu(param1, 0);
 		}
 		
 		case MenuAction_End: {
