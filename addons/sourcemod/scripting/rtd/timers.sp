@@ -780,7 +780,9 @@ public Action:CreditsTimer(Handle:timer)
 		
 		//only count valid teams
 		if(GetClientTeam(i) == BLUE_TEAM || GetClientTeam(i) == RED_TEAM)
+		{
 			totalPlayers ++;
+		}
 	}
 	
 	////////////////////////////
@@ -808,7 +810,28 @@ public Action:CreditsTimer(Handle:timer)
 		{
 			if(GetClientTeam(i) == BLUE_TEAM || GetClientTeam(i) == RED_TEAM)
 			{
-				RTDCredits[i] += credits_rate + creditBonus;
+				if(creditBonus > 0)
+				{
+					seedingLimit[i] ++;
+					
+					//check to see how long they've been receiving
+					//the credit bonus
+					if(seedingLimit[i] > 15)
+					{
+						//if they have received the credit bonus for more
+						//than 10 minutes then they can no longer get the 
+						//credit bonus
+						seedingLimit[i] = 16;
+						
+						RTDCredits[i] += credits_rate;
+					}else{
+						//give credit bonus
+						RTDCredits[i] += credits_rate + creditBonus;
+					}
+					
+				}else{
+					RTDCredits[i] += credits_rate;
+				}
 			}
 		}
 	}
