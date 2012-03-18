@@ -561,13 +561,18 @@ public Float:GetClientBaseSpeed(client)
 			
 		case TFClass_Sniper:
 		{
-			if(cond & 1)
+			if(TF2_IsPlayerInCondition(client, TFCond_Zoomed))
 			{
 				if(StrEqual(classname, "tf_weapon_compound_bow"))
 				speed = 136.0;
 				
 				if(StrEqual(classname, "tf_weapon_sniperrifle"))
 					speed = 80.0;
+				
+				//the Cozy Camper
+				if(isPlayerHoliding_NonSlotItem(client, 642))
+					speed = 32.0;
+				
 			}else{
 				speed = 300.0;
 			}
@@ -832,6 +837,24 @@ public OnClientCookiesCached(client)
 	
 }
 
+public isPlayerHoliding_NonSlotItem(client, m_iItemDefinitionIndex)
+{
+	// Check items that dont take a slot in players inventory
+	//primarily used for weapons such as the razorback
+	new edict;
+	
+	while((edict = FindEntityByClassname(edict, "tf_wearable")) != -1)
+	{
+		if (GetEntProp(edict, Prop_Send, "m_iItemDefinitionIndex") == m_iItemDefinitionIndex)
+		{
+			if(GetEntPropEnt(edict, Prop_Send, "m_hOwnerEntity") == client)
+				return true;
+		}
+	}
+	
+	return false;
+}
+
 public isPlayerHolding_UniqueWeapon(client, m_iItemDefinitionIndex)
 {
 	//for weapons that are removed, only one is the shield so far
@@ -845,6 +868,8 @@ public isPlayerHolding_UniqueWeapon(client, m_iItemDefinitionIndex)
 		iWeapon = GetPlayerWeaponSlot(client, islot);
 		if (IsValidEntity(iWeapon))
 		{
+			PrintToChat(client, "%i", GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex"));
+			
 			if (GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex") == m_iItemDefinitionIndex)
 				return true;
 		}
