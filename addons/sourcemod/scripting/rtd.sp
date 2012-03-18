@@ -868,8 +868,7 @@ public isPlayerHolding_UniqueWeapon(client, m_iItemDefinitionIndex)
 		iWeapon = GetPlayerWeaponSlot(client, islot);
 		if (IsValidEntity(iWeapon))
 		{
-			PrintToChat(client, "%i", GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex"));
-			
+			//PrintToChat(client, "%i", GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex"));
 			if (GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex") == m_iItemDefinitionIndex)
 				return true;
 		}
