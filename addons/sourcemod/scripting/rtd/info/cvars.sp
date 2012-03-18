@@ -45,7 +45,7 @@ rtd_load_cvars()
 	c_TrinketExtPrice				= CreateConVar("sm_rtd_trinketextprice",				"150",		"<0-x> Cost to extend trinkets for 30 days");
 	c_TrinketReRollPrice			= CreateConVar("sm_rtd_trinketreroll_price",			"300",		"<0-x> Cost to change variant on trinket");
 	
-	c_Event_MLK						= CreateConVar("sm_rtd_event_mlk",						"0",		"<0/1> Marti Luther King");
+	c_Event_MLK						= CreateConVar("sm_rtd_event_mlk",						"0",		"<0/1> Martin Luther King");
 	
 	HookConVarChange(c_Enabled,						ConVarChange_RTD);
 	HookConVarChange(c_Dice_MinPlayers,				ConVarChange_RTD);

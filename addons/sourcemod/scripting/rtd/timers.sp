@@ -764,6 +764,43 @@ public Action:SaveStats_Timer(Handle:Timer)
 
 public Action:CreditsTimer(Handle:timer)
 {
+	new creditBonus;
+	new totalPlayers;
+	
+	////////////////////////////////////////////////
+	//count how many players are actually playing //
+	////////////////////////////////////////////////
+	for (new i = 1; i <= MaxClients; i++)
+	{
+		if (!IsClientInGame(i))
+			continue;
+		
+		if(IsFakeClient(i))
+			continue;
+		
+		//only count valid teams
+		if(GetClientTeam(i) == BLUE_TEAM || GetClientTeam(i) == RED_TEAM)
+			totalPlayers ++;
+	}
+	
+	////////////////////////////
+	// Determine credit bonus //
+	////////////////////////////
+	switch(totalPlayers)
+	{
+		case 1:
+			creditBonus = 3;
+			
+		case 2:
+			creditBonus = 2;
+		
+		case 3:
+			creditBonus = 1;
+	}
+	
+	/////////////////
+	// Add credits //
+	/////////////////
 	for (new i = 1; i <= MaxClients; i++)
 	{
 		//ok let's make sure that the player really is in the game
@@ -771,7 +808,7 @@ public Action:CreditsTimer(Handle:timer)
 		{
 			if(GetClientTeam(i) == BLUE_TEAM || GetClientTeam(i) == RED_TEAM)
 			{
-				RTDCredits[i] += credits_rate;
+				RTDCredits[i] += credits_rate + creditBonus;
 			}
 		}
 	}
