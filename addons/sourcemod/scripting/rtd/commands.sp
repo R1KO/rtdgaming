@@ -186,14 +186,21 @@ public Action:Command_rtdadmin(client, args)
 			saveStats(client);
 		
 		return Plugin_Handled;
+	}else if(StrEqual("serverhour", strMessage, false))
+	{
+		decl String:szTime[30];
+		FormatTime(szTime, sizeof(szTime), "%H", GetTime());
+		
+		new serverHour = StringToInt(szTime);
+		PrintToChat(client, "%i", serverHour);
 	}
-	
 	else
 	{
 		SetupAdminMenu(client);
 		return Plugin_Handled;
 	}
-
+	
+	return Plugin_Handled;
 }
 
 public Action:Command_rtd(client, args)

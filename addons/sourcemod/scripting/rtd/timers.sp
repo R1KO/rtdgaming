@@ -788,16 +788,24 @@ public Action:CreditsTimer(Handle:timer)
 	////////////////////////////
 	// Determine credit bonus //
 	////////////////////////////
-	switch(totalPlayers)
+	decl String:szTime[30];
+	FormatTime(szTime, sizeof(szTime), "%H", GetTime());
+	
+	new serverHour = StringToInt(szTime);
+	
+	if(serverHour >= 8 && serverHour <= 23)
 	{
-		case 1:
-			creditBonus = 3;
+		switch(totalPlayers)
+		{
+			case 1:
+				creditBonus = 3;
+				
+			case 2:
+				creditBonus = 2;
 			
-		case 2:
-			creditBonus = 2;
-		
-		case 3:
-			creditBonus = 1;
+			case 3:
+				creditBonus = 1;
+		}
 	}
 	
 	/////////////////
