@@ -66,6 +66,8 @@ public APLRes:AskPluginLoad2(Handle:hPlugin, bool:isAfterMapLoaded, String:error
 	
 	SDKHook(client,	SDKHook_OnTakeDamage, 	TakeDamageHook);
 	//SDKHook(client,	SDKHook_TraceAttack, 	TakeDamageHook);
+	
+	seedingLimit[client] = 0;
 }
 
 public OnClientDisconnect(client)
