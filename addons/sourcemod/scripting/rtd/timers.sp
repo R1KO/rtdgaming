@@ -891,29 +891,40 @@ public Action:doSuperJump(Handle:timer, any:clientUserID)
 		
 	if(RTD_TrinketMisc[client][TRINKET_SUPERJUMP] >= 3)
 	{
-		if(alpha  > 0)
+		if(RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] <= GetTime() || RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] == 0)
 		{
-			switch(GetRandomInt(1,2))
+			if(alpha  > 0)
 			{
-				case 1:
-					EmitSoundToAll(SOUND_JUMP01, client);
-					
-				case 2:
-					EmitSoundToAll(SOUND_JUMP03, client);
+				switch(GetRandomInt(1,2))
+				{
+					case 1:
+						EmitSoundToAll(SOUND_JUMP01, client);
+						
+					case 2:
+						EmitSoundToAll(SOUND_JUMP03, client);
+				}
 			}
-		}
-		
-		new Float:speed[3];
-		GetEntPropVector(client, Prop_Data, "m_vecVelocity", speed);
-		ScaleVector(speed, 1+(float(RTD_TrinketBonus[client][TRINKET_SUPERJUMP])/10.0));
-		
-		TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
-		
-		if(alpha  > 0)
-		{
-			//AttachFastParticle(client, "rockettrail", 1.0);
-			AttachFastParticle4(client, "rocketjump_smoke", 1.0, 5.0);
 			
+			new Float:speed[3];
+			GetEntPropVector(client, Prop_Data, "m_vecVelocity", speed);
+			ScaleVector(speed, 1+(float(RTD_TrinketBonus[client][TRINKET_SUPERJUMP])/10.0));
+			
+			TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
+			
+			if(alpha  > 0)
+			{
+				//AttachFastParticle(client, "rockettrail", 1.0);
+				AttachFastParticle4(client, "rocketjump_smoke", 1.0, 5.0);
+				
+			}
+			
+			RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] = GetTime() + 10;
+		}else{
+			decl String:message[100];
+			Format(message, 100, "Trinket Cooldown! Wait: %is", (RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] - GetTime()));
+			
+			centerHudText(client, message, 0.0, 2.0, HudMsg3, 0.13);
+			EmitSoundToClient(client, SOUND_DENY);
 		}
 		
 		RTD_TrinketMisc[client][TRINKET_SUPERJUMP] = 0;
