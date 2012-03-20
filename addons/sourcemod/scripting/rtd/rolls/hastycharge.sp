@@ -215,6 +215,10 @@ public Action:HastyCharge_Timer(Handle:timer)
 								//526 = The Machina
 								if(weaponID == 526)
 									rechargeTime = 3.3;
+									
+								//402 = The Bazaar Bargain
+								if(weaponID == 402)
+									rechargeTime = 2.9;
 								
 								curLevel = GetEntPropFloat(weaponInfo[currWeapon], Prop_Send, "m_flChargedDamage");
 								
