@@ -204,6 +204,9 @@ public Action:HastyCharge_Timer(Handle:timer)
 							
 							if(weaponID == 14 || weaponID == 230 || weaponID == 526 || weaponID == 402)
 							{
+								//rechargeTime represents the weapons maximum charge time 
+								//Check http://wiki.teamfortress.com/ for official numbers
+								
 								//14  = Sniper Rifle
 								if(weaponID == 14)
 									rechargeTime = 3.0;
@@ -218,7 +221,9 @@ public Action:HastyCharge_Timer(Handle:timer)
 									
 								//402 = The Bazaar Bargain
 								if(weaponID == 402)
-									rechargeTime = 2.9;
+								{
+									rechargeTime = 5.26 - (GetEntProp(i, Prop_Send, "m_iDecapitations") * 0.497143);
+								}
 								
 								curLevel = GetEntPropFloat(weaponInfo[currWeapon], Prop_Send, "m_flChargedDamage");
 								
