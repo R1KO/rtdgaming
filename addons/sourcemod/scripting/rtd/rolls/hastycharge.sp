@@ -209,7 +209,7 @@ public Action:HastyCharge_Timer(Handle:timer)
 								
 								//14  = Sniper Rifle
 								if(weaponID == 14)
-									rechargeTime = 3.0;
+									rechargeTime = 3.3;
 								
 								//230  = Sydney Sleep
 								if(weaponID == 230)
