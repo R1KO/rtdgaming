@@ -234,6 +234,10 @@ public Action:Command_rtd(client, args)
 	
 	if(StrEqual("!rtd", strArgs[0], false)) cond = true;
 	
+	if(StrEqual("/rtd", strArgs[0], false)) cond = true;
+	
+	//Buy commands
+	
 	if(StrEqual(strArgs[0], "buy", false))
 	{
 		if(rtd_classic)
@@ -249,6 +253,40 @@ public Action:Command_rtd(client, args)
 		
 		return Plugin_Handled;
 	}
+	
+	if(StrEqual(strArgs[0], "/buy", false))
+	{
+		if(rtd_classic)
+		{
+			PrintToChat(client, "Buying is DISABLED in Classic RTD");
+		}else{
+			decl String:arg2[128];
+			if (StrEqual(strArgs[1], "", false) && GetCmdArg(2, arg2, sizeof(arg2)) != 0)
+				SetupCreditsMenu(client, arg2);
+			else
+				SetupCreditsMenu(client, strArgs[1]);
+		}
+		
+		return Plugin_Handled;
+	}
+	
+	if(StrEqual(strArgs[0], "!buy", false))
+	{
+		if(rtd_classic)
+		{
+			PrintToChat(client, "Buying is DISABLED in Classic RTD");
+		}else{
+			decl String:arg2[128];
+			if (StrEqual(strArgs[1], "", false) && GetCmdArg(2, arg2, sizeof(arg2)) != 0)
+				SetupCreditsMenu(client, arg2);
+			else
+				SetupCreditsMenu(client, strArgs[1]);
+		}
+		
+		return Plugin_Handled;
+	}
+	
+	//
 	
 	if((StrEqual(strArgs[0], "givecreds", false) || StrEqual(strArgs[0], "givecredits", false) || StrEqual(strArgs[0], "givecredit", false) || StrEqual(strArgs[0], "givecred", false)))
 	{
