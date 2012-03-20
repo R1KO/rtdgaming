@@ -202,7 +202,7 @@ public Action:HastyCharge_Timer(Handle:timer)
 						{
 							weaponID = GetEntProp(weaponInfo[currWeapon], Prop_Send, "m_iItemDefinitionIndex");
 							
-							if(weaponID == 14 || weaponID == 230 || weaponID == 526)
+							if(weaponID == 14 || weaponID == 230 || weaponID == 526 || weaponID == 402)
 							{
 								//14  = Sniper Rifle
 								if(weaponID == 14)
