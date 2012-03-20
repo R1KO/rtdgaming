@@ -366,6 +366,7 @@ new RTD_TrinketActive[cMaxClients][MAX_TRINKETS + 1];
 new RTD_TrinketBonus[cMaxClients][MAX_TRINKETS + 1];
 new RTD_TrinketLevel[cMaxClients][MAX_TRINKETS + 1];
 new RTD_TrinketMisc[cMaxClients][MAX_TRINKETS + 1];
+new RTD_TrinketMisc_02[cMaxClients][MAX_TRINKETS + 1];
 
 //player variables
 new String:RTD_TrinketUnique[cMaxClients][50][32];
