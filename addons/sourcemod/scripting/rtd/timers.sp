@@ -918,7 +918,7 @@ public Action:doSuperJump(Handle:timer, any:clientUserID)
 				
 			}
 			
-			RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] = GetTime() + 10;
+			RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] = GetTime() + 8;
 		}else{
 			decl String:message[100];
 			Format(message, 100, "Trinket Cooldown! Wait: %is", (RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] - GetTime()));
