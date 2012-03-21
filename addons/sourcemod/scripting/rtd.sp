@@ -447,11 +447,38 @@ public Action:OnPlayerRunCmd(client, &buttons, &impulse, Float:vel[3], Float:ang
 		}
 	}
 	
+	/*
 	if(RTD_TrinketActive[client][TRINKET_SUPERJUMP])
 	{
 		if((GetEntityFlags(client) & FL_ONGROUND) && (buttons & IN_JUMP))
 		{
 			CreateTimer(0.0, doSuperJump, GetClientUserId(client));
+		}
+	}*/
+	
+	if(RTD_TrinketActive[client][TRINKET_SUPERJUMP])
+	{
+		if(buttons & IN_JUMP)
+		{
+			if(TF2_GetPlayerClass(client) != TFClass_Scout && wasJumping[client] == 0)
+			{	
+				if((GetEntityFlags(client) & FL_ONGROUND))
+				{
+					RTD_TrinketMisc[client][TRINKET_SUPERJUMP] = 1;
+					wasJumping[client] = 1;
+					
+					CreateTimer(0.0, recordVelocity, GetClientUserId(client));
+				}else
+				{
+					if(RTD_TrinketMisc[client][TRINKET_SUPERJUMP] == 1 && wasJumping[client] == 0)
+						CreateTimer(0.0, doSuperJump, GetClientUserId(client));
+				}
+			}
+		}else{
+			wasJumping[client] = 0;
+			
+			if(GetEntityFlags(client) & FL_ONGROUND)
+				RTD_TrinketMisc[client][TRINKET_SUPERJUMP] = 0;
 		}
 	}
 	

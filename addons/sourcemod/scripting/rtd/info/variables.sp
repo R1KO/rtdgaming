@@ -394,3 +394,5 @@ new rtd_Event_MLK;
 new rtd_Event_MLK_Data[cMaxClients];
 
 new seedingLimit[cMaxClients];
+
+new Float:superJumpVelocity[cMaxClients][3];

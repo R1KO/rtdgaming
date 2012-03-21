@@ -868,6 +868,25 @@ public Action:delayInstaKill(Handle:timer, Handle:dataPackHandle)
 	return Plugin_Stop;
 }
 
+public Action:recordVelocity(Handle:timer, any:clientUserID)
+{
+	new client = GetClientOfUserId(clientUserID);
+	
+	if(client < 1)
+		return Plugin_Stop;
+	
+	if (!IsClientInGame(client) || !IsPlayerAlive(client))
+		return Plugin_Stop;
+	
+	new Float:speed[3];
+	GetEntPropVector(client, Prop_Data, "m_vecVelocity", speed);
+	superJumpVelocity[client][0] = speed[0];
+	superJumpVelocity[client][1] = speed[1];
+	superJumpVelocity[client][2] = speed[2];
+	
+	return Plugin_Stop;
+}
+
 public Action:doSuperJump(Handle:timer, any:clientUserID)
 {
 	new client = GetClientOfUserId(clientUserID);
@@ -881,56 +900,87 @@ public Action:doSuperJump(Handle:timer, any:clientUserID)
 	if(GetEntityFlags(client) & FL_ONGROUND)
 		return Plugin_Stop;
 	
-	RTD_TrinketMisc[client][TRINKET_SUPERJUMP] ++;
-	
 	new alpha = GetEntData(client, m_clrRender + 3, 1);
 	
 	if(TF2_GetPlayerClass(client) == TFClass_Spy)
 		if(TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 			alpha = 0;
 		
-	if(RTD_TrinketMisc[client][TRINKET_SUPERJUMP] >= 3)
+	
+	if(RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] <= GetTime() || RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] == 0)
 	{
-		if(RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] <= GetTime() || RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] == 0)
+		if(alpha  > 0)
 		{
-			if(alpha  > 0)
+			switch(GetRandomInt(1,2))
 			{
-				switch(GetRandomInt(1,2))
-				{
-					case 1:
-						EmitSoundToAll(SOUND_JUMP01, client);
-						
-					case 2:
-						EmitSoundToAll(SOUND_JUMP03, client);
-				}
+				case 1:
+					EmitSoundToAll(SOUND_JUMP01, client);
+					
+				case 2:
+					EmitSoundToAll(SOUND_JUMP03, client);
 			}
-			
-			new Float:speed[3];
-			GetEntPropVector(client, Prop_Data, "m_vecVelocity", speed);
-			ScaleVector(speed, 1+(float(RTD_TrinketBonus[client][TRINKET_SUPERJUMP])/10.0));
-			
-			TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
-			
-			if(alpha  > 0)
-			{
-				//AttachFastParticle(client, "rockettrail", 1.0);
-				AttachFastParticle4(client, "rocketjump_smoke", 1.0, 5.0);
-				
-			}
-			
-			RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] = GetTime() + 9;
-		}else{
-			decl String:message[100];
-			Format(message, 100, "Trinket Cooldown! Wait: %is", (RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] - GetTime()));
-			
-			centerHudText(client, message, 0.0, 2.0, HudMsg3, 0.13);
-			EmitSoundToClient(client, SOUND_DENY);
 		}
 		
-		RTD_TrinketMisc[client][TRINKET_SUPERJUMP] = 0;
+		new Float:speed[3];
+		speed[0] = superJumpVelocity[client][0];
+		speed[1] = superJumpVelocity[client][1];
+		speed[2] = superJumpVelocity[client][2];
+		ScaleVector(speed, 1+(float(RTD_TrinketBonus[client][TRINKET_SUPERJUMP])/10.0));
+		
+		TeleportEntity(client, NULL_VECTOR, NULL_VECTOR, speed);
+		
+		if(alpha  > 0)
+		{
+			//AttachFastParticle(client, "rockettrail", 1.0);
+			AttachFastParticle4(client, "rocketjump_smoke", 1.0, 5.0);
+			
+		}
+		
+		RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] = GetTime() + 9;
+		
+		CreateTimer(1.0,  Timer_ShowSuperJumpWait, GetClientUserId(client), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+		
+	}else{
+		
+		EmitSoundToClient(client, SOUND_DENY);
 	}
 	
+	RTD_TrinketMisc[client][TRINKET_SUPERJUMP] = 0;
+	
 	return Plugin_Stop;
+}
+
+public Action:Timer_ShowSuperJumpWait(Handle:timer, any:clientUserID)
+{
+	new client = GetClientOfUserId(clientUserID);
+	
+	if(client < 1)
+		return Plugin_Stop;
+	
+	if (!IsClientInGame(client) || !IsPlayerAlive(client))
+		return Plugin_Stop;
+	
+	if(!RTD_TrinketActive[client][TRINKET_SUPERJUMP])
+		return Plugin_Stop;
+	
+	if(RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] <= GetTime())
+	{
+		decl String:message[100];
+		Format(message, 100, "Super Jump Ready!");
+		
+		centerHudText(client, message, 0.0, 2.0, HudMsg3, 0.09);
+		return Plugin_Stop;
+	}
+	
+	/////////////////////////////
+	// Show message            //
+	/////////////////////////////
+	decl String:message[100];
+	Format(message, 100, "Super Jump Cooldown: %is", (RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] - GetTime()));
+	
+	centerHudText(client, message, 0.0, 1.5, HudMsg3, 0.09);
+	
+	return Plugin_Continue;
 }
 
 public Action:doAirDash(Handle:timer, any:clientUserID)
