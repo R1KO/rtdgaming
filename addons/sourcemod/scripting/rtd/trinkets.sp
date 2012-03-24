@@ -872,6 +872,12 @@ public fn_ReRollTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 						
 						Format(chatMessage, sizeof(chatMessage), "Obtained: (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][variant], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
 						PrintCenterText(param1, chatMessage);
+						
+						//save stats
+						if(areStatsLoaded[param1] && g_BCONNECTED)
+						{
+							saveStats(param1);
+						}
 					}else{
 						PrintCenterText(param1, "Insufficent Credits!");
 						PrintToChat(param1, "Insufficent Credits!");
@@ -1268,6 +1274,12 @@ public smeltTrinkets(client)
 	smelting[client][1] = -1;
 	
 	EmitSoundToClient(client, SOUND_OPEN_TRINKET);
+	
+	//save stats
+	if(areStatsLoaded[client] && g_BCONNECTED)
+	{
+		saveStats(client);
+	}
 }
 
 public bool:isTrinketEquipped(client, trinketLookup)
@@ -1541,6 +1553,12 @@ GiveRandomTrinket(client, test)
 	Format(chatMessage, sizeof(chatMessage), "Obtained: (%s) %s Trinket", trinket_TierID[awardedTrinket][variant], trinket_Title[awardedTrinket]);
 	PrintCenterText(client, chatMessage);
 	EmitSoundToClient(client, SOUND_OPEN_TRINKET);
+	
+	//save stats
+	if(areStatsLoaded[client] && g_BCONNECTED)
+	{
+		saveStats(client);
+	}
 	
 	//debug
 	//PrintToChatAll("Trinket saved in slot: %i | Tier: %i", availableSlot, variant);
