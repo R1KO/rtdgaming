@@ -161,9 +161,8 @@ public Action:Timer_ShowInfo(Handle:timer)
 				b_InScore = false;
 			}
 			
-			if(client_rolls[i][AWARD_G_BACKPACK][0] && !inTimerBasedRoll[i] && client_rolls[i][AWARD_G_SPIDER][1] == 0 && !b_InScore)
+			if(client_rolls[i][AWARD_G_BACKPACK][0] && !inTimerBasedRoll[i] && client_rolls[i][AWARD_G_SPIDER][1] == 0 && !b_InScore && !isUsingHud4(i))
 			{
-				//that extra condition is so we don't override the text
 				SetHudTextParams(0.35, 0.09, 3.0, 250, 250, 210, 255);
 				ShowHudText(i, HudMsg4, "AmmoPacks: %i | Healthpacks:%i", client_rolls[i][AWARD_G_BACKPACK][2], client_rolls[i][AWARD_G_BACKPACK][3]);
 			}
@@ -936,7 +935,7 @@ public Action:doSuperJump(Handle:timer, any:clientUserID)
 			
 		}
 		
-		RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] = GetTime() + 9;
+		RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] = GetTime() + 10;
 		
 		CreateTimer(1.0,  Timer_ShowSuperJumpWait, GetClientUserId(client), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 		
@@ -965,20 +964,26 @@ public Action:Timer_ShowSuperJumpWait(Handle:timer, any:clientUserID)
 	
 	if(RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] <= GetTime())
 	{
-		decl String:message[100];
-		Format(message, 100, "Super Jump Ready!");
-		
-		centerHudText(client, message, 0.0, 2.0, HudMsg3, 0.09);
+		if(!(GetClientButtons(client) & IN_SCORE))
+		{
+			decl String:message[100];
+			Format(message, 100, "Super Jump Ready!");
+			
+			centerHudText(client, message, 0.0, 2.0, HudMsg3, 0.09);
+		}
 		return Plugin_Stop;
 	}
 	
 	/////////////////////////////
 	// Show message            //
 	/////////////////////////////
-	decl String:message[100];
-	Format(message, 100, "Super Jump Cooldown: %is", (RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] - GetTime()));
-	
-	centerHudText(client, message, 0.0, 1.5, HudMsg3, 0.09);
+	if(!(GetClientButtons(client) & IN_SCORE))
+	{
+		decl String:message[100];
+		Format(message, 100, "Super Jump Cooldown: %is", (RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] - GetTime()));
+		
+		centerHudText(client, message, 0.0, 1.5, HudMsg3, 0.09);
+	}
 	
 	return Plugin_Continue;
 }

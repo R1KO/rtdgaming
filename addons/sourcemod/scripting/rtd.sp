@@ -1116,3 +1116,18 @@ public OnGameFrame()
 {
 	
 }
+
+public bool:isUsingHud4(client)
+{	
+	//that extra condition is so we don't override the text
+	if(RTD_TrinketActive[client][TRINKET_SUPERJUMP])
+	{
+		if(RTD_TrinketMisc_02[client][TRINKET_SUPERJUMP] + 3 > GetTime())
+		{
+			//+2 is delay
+			return true;
+		}
+	}
+	
+	return false;
+}	

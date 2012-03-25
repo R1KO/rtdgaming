@@ -376,7 +376,7 @@ public Action:Blizzard_Timer(Handle:timer, Handle:dataPackHandle)
 				AttachRTDParticle(wearer, "SnowBlower_Main_fix", false, 2, 70.0);
 			}
 			
-			if(!inTimerBasedRoll[wearer] && client_rolls[wearer][AWARD_G_SPIDER][1] == 0)
+			if(!inTimerBasedRoll[wearer] && client_rolls[wearer][AWARD_G_SPIDER][1] == 0 && !isUsingHud4(wearer))
 			{
 				//that extra condition is so we don't override the text
 				
