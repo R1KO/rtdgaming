@@ -207,6 +207,9 @@ Load_Trinkets()
 ////////////////////////////////
 public Action:SetupTrinketsMenu(client, startAtPage)
 {
+	if(!rtd_trinket_enabled)
+		return Plugin_Handled;
+	
 	trading[client][0] = 0;
 	trading[client][1] = 0;
 	trading[client][2] = 0;
@@ -1300,7 +1303,13 @@ public bool:isTrinketEquipped(client, trinketLookup)
 }
 
 public equipActiveTrinket(client)
-{	
+{
+	//trinket handling
+	if(!rtd_trinket_enabled)
+	{
+		unequipTrinkets(client);
+	}
+	
 	//Check to see if player has any trinkets
 	for(new i = 0; i < 21; i++)
 	{
@@ -1359,6 +1368,13 @@ public checkTrinketsExpiration(client)
 		return;
 	
 	new expiredTrinkets;
+	
+	//trinket handling
+	if(!rtd_trinket_enabled)
+	{
+		unequipTrinkets(client);
+		return;
+	}
 	
 	//Check to see if player has any trinkets
 	for(new i = 0; i < 21; i++)
