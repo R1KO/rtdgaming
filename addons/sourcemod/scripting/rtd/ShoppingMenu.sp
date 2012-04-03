@@ -925,7 +925,7 @@ public addAllRolls(Handle:hCMenu, client)
 	//About the Item's name:                                            //
 	//AddMenuItem(hCMenu,"Cost:Function:Num Chat Triggers:Chat Triggers //
 	//////////////////////////////////////////////////////////////////////
-	AddMenuItem(hCMenu,"0:TrinketsMenu::2:trinket:trinkets", "Trinkets", ITEMDRAW_DEFAULT);
+	AddMenuItem(hCMenu,"0:TrinketsMenu::2:trinket:trinkets", "Trinkets", rtd_trinket_enabled<1?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
 	
 	AddMenuItem(hCMenu,"0:BuyDicePerks::4:perk:perks:diceperk:diceperks", "Dice Perks", ITEMDRAW_DEFAULT);
 	

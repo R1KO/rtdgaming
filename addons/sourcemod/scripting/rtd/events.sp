@@ -573,10 +573,14 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		}
 	}
 	
-	if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
-	{	
-		RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH] = 0;
-		SpawnAndAttachDynamite(client);
+	//trinket handling
+	if(rtd_trinket_enabled)
+	{
+		if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
+		{	
+			RTD_TrinketMisc[client][TRINKET_EXPLOSIVEDEATH] = 0;
+			SpawnAndAttachDynamite(client);
+		}
 	}
 	
 	if(client_rolls[client][AWARD_G_WINGS][0])
@@ -854,54 +858,58 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	
 	lastAttackerOnPlayer[client] = attacker;
 	
-	if(client > 0 && client <= MaxClients && attacker > 0 && attacker <= MaxClients && client != attacker)
+	//trinket handling
+	if(rtd_trinket_enabled)
 	{
-		if(IsClientInGame(client) && IsClientInGame(attacker))
+		if(client > 0 && client <= MaxClients && attacker > 0 && attacker <= MaxClients && client != attacker)
 		{
-			new playerHigherTrinket;
-			
-			if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && RTD_TrinketActive[assister][TRINKET_PARTYTIME])
+			if(IsClientInGame(client) && IsClientInGame(attacker))
 			{
-				if(RTD_TrinketLevel[attacker][TRINKET_PARTYTIME] >= RTD_TrinketLevel[assister][TRINKET_PARTYTIME])
-				{
-					playerHigherTrinket = attacker;
-				}else{
-					playerHigherTrinket = assister;
-				}
-			}else{
-				if(!RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && RTD_TrinketActive[assister][TRINKET_PARTYTIME])
-					playerHigherTrinket = assister;
+				new playerHigherTrinket;
 				
-				if(!RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && !RTD_TrinketActive[assister][TRINKET_PARTYTIME])
-					playerHigherTrinket = attacker;
-			}
-			
-			if(playerHigherTrinket == 0)
-				playerHigherTrinket = attacker;
-			
-			if(RTD_TrinketActive[playerHigherTrinket][TRINKET_PARTYTIME])
-			{
-				for(new i = 0; i <= RTD_TrinketLevel[playerHigherTrinket][TRINKET_PARTYTIME]; i++)
+				if(RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && RTD_TrinketActive[assister][TRINKET_PARTYTIME])
 				{
-					switch(GetRandomInt(1,3))
+					if(RTD_TrinketLevel[attacker][TRINKET_PARTYTIME] >= RTD_TrinketLevel[assister][TRINKET_PARTYTIME])
 					{
-						case 1:
-							AttachFastParticle(client, "finishline_confetti", 2.0);
-						
-						case 2:
-							AttachFastParticle(client, "bday_confetti", 2.0);
+						playerHigherTrinket = attacker;
+					}else{
+						playerHigherTrinket = assister;
+					}
+				}else{
+					if(!RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && RTD_TrinketActive[assister][TRINKET_PARTYTIME])
+						playerHigherTrinket = assister;
+					
+					if(!RTD_TrinketActive[attacker][TRINKET_PARTYTIME] && !RTD_TrinketActive[assister][TRINKET_PARTYTIME])
+						playerHigherTrinket = attacker;
+				}
+				
+				if(playerHigherTrinket == 0)
+					playerHigherTrinket = attacker;
+				
+				if(RTD_TrinketActive[playerHigherTrinket][TRINKET_PARTYTIME])
+				{
+					for(new i = 0; i <= RTD_TrinketLevel[playerHigherTrinket][TRINKET_PARTYTIME]; i++)
+					{
+						switch(GetRandomInt(1,3))
+						{
+							case 1:
+								AttachFastParticle(client, "finishline_confetti", 2.0);
 							
-						case 3:
-							AttachFastParticle(client, "bday_balloon02", 2.0);
+							case 2:
+								AttachFastParticle(client, "bday_confetti", 2.0);
+								
+							case 3:
+								AttachFastParticle(client, "bday_balloon02", 2.0);
+						}
 					}
 				}
+				
+				if(RTD_TrinketActive[attacker][TRINKET_BLOODTHIRSTER] && !(death_ringer & 32))
+				{
+					addHealthPercentage(attacker, float(RTD_TrinketBonus[attacker][TRINKET_BLOODTHIRSTER])/100.0, true);
+				}
+				//AttachTempParticle(client,"finishline_confetti",2.0, false,"",0.0, false);
 			}
-			
-			if(RTD_TrinketActive[attacker][TRINKET_BLOODTHIRSTER] && !(death_ringer & 32))
-			{
-				addHealthPercentage(attacker, float(RTD_TrinketBonus[attacker][TRINKET_BLOODTHIRSTER])/100.0, true);
-			}
-			//AttachTempParticle(client,"finishline_confetti",2.0, false,"",0.0, false);
 		}
 	}
 	
@@ -971,10 +979,13 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	{
 		if(IsClientInGame(client) && IsClientInGame(attacker))
 		{
-			
-			if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
+			//trinket handling
+			if(rtd_trinket_enabled)
 			{
-				SpawnExplodingDynamite(client);
+				if(RTD_TrinketActive[client][TRINKET_EXPLOSIVEDEATH])
+				{
+					SpawnExplodingDynamite(client);
+				}
 			}
 			
 			//determine spawn for coin if attacker has treasure chest
