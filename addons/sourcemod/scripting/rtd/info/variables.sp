@@ -97,14 +97,14 @@ new String:roll_OwnerSteamID[100][32];
 new String:roll_disabledForMaps[100][64];
 new String:roll_AmountDisabledMaps[100];
 
+new roll_Unusual[100];
+
 new isNewUser[cMaxClients];
 new TFClassType:roll_ClassRestriction[100];
 new TFClassType:roll_ExcludeClass[100];
 
-new client_rolls[cMaxClients][100][10];
-/** Couldn't find this anywhere and I sometimes find myself needing Handle types saved. **/
-/** Two should do. Please don't delete!      --Czech **/
-//new client_rollsHandle[cMaxClients][100][2];
+new client_rolls[cMaxClients][100][11];
+//10 = mark unusual
 
 new inTimerBasedRoll[cMaxClients];
 

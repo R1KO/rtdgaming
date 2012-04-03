@@ -13,6 +13,7 @@ stock bool:RollTheDice(client)
 	if((GetConVarFloat(c_Chance) + amountOfBadRolls[client] + (float(RTD_Perks[client][1] + RTD_Perks[client][21] + RTD_TrinketBonus[client][TRINKET_LADYLUCK])*0.01)) > GetRandomFloat(0.0, 1.0)) 
 		goodCommand = true;
 	
+	
 	if(goodCommand)
 	{
 		bound[0] = 0; 
@@ -192,7 +193,7 @@ GivePlayerEffect(client, award, cost)
 			client_rolls[client][award][9] = 1; //mark as unusual 
 			isUnusual = true;
 			
-			extraTime = GetRandomInt(1, 20);
+			extraTime = 20;
 			extraHealth = GetRandomInt(100, 300);
 			extraDeployables = GetRandomInt(1, 2);
 			
@@ -584,8 +585,8 @@ GivePlayerEffect(client, award, cost)
 				
 				if(isUnusual)
 				{
-					client_rolls[client][award][2] = GetRandomInt(2,15); //ammopacks
-					client_rolls[client][award][3] = GetRandomInt(2, 15); //healthpacks
+					client_rolls[client][award][2] = 10; //ammopacks
+					client_rolls[client][award][3] = 10; //healthpacks
 				}else{
 					client_rolls[client][award][2] = 2; //ammopacks
 					client_rolls[client][award][3] = 2; //healthpacks
