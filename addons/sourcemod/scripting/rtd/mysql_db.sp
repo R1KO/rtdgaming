@@ -21,8 +21,6 @@ public saveStats(client)
 	
 	if(IsClientInGame(client) && areStatsLoaded[client] && g_BCONNECTED)
 	{
-		new String:query[1024];
-		
 		////////////////////////////
 		//FORUMULA 
 		//Required size = (Amount of Perks) * 5 + (Amount of Perks - 1)
@@ -30,7 +28,6 @@ public saveStats(client)
 		//Perks consist of 5 characters
 		///////////////////////////////////
 		new String:stringDiceLvls[600]; 
-		//new String:stringTrinkets[600];
 		
 		//PerksLevels
 		for(new i = 0; i < totalShopDicePerks; i++)
@@ -46,37 +43,50 @@ public saveStats(client)
 			}
 		}
 		
-		checkTrinketsExpiration(client);
+		/////////////////////////////////////
+		//Formula
+		//Required Size= (Amount of Trinkets) * 7 + (Amount of Trinkets - 1) + 10
+		//Trinket sample: t01:0:1
+		//                trinket unique:trinket tier:is equipped?
+		//30 trinkets total
+		/////////////////////////////////////
 		
-		GetClientAuthString(client, clsteamId, sizeof(clsteamId));
+		///////////////////
+		//Save trinkets  //
+		///////////////////
+		new sizeOfTrinketData = (MAX_TRINKETS_HELD * 7) + (MAX_TRINKETS_HELD - 1) + 10;
 		
-		//PrintToServer("Saving Talent Points: %i for Client %i", talentPoints[client], client);
-		//PrintToServer("%s", stringDiceLvls);
-		Format(query, sizeof(query), "UPDATE `Player` SET `CREDITS` = '%i', `DICE` = '%i', `OPTION1` = '%i', `OPTION2` = '%i', `OPTION3` = '%i', `OPTION4` = '%i', `HUDXPOS` = '%i', `HUDYPOS` = '%i', `HUDXPOS2` = '%i', `HUDYPOS2` = '%i', `LASTONTIME` = '%i', `OPTION5` = '%i', `SCOREENABLED` = '%i', `VOICEOPTIONS` = '%i', `BETATESTING` = '%i', `TALENTPOINTS` = '%i', `DICEPERKS` = '%s' WHERE `STEAMID` = '%s'", RTDCredits[client], RTDdice[client], RTDOptions[client][0], RTDOptions[client][1], RTDOptions[client][2], RTDOptions[client][3], RoundFloat(HUDxPos[client][0] * 100), RoundFloat(HUDyPos[client][0] * 100), RoundFloat(HUDxPos[client][1] * 100), RoundFloat(HUDyPos[client][1] * 100), time, RTDOptions[client][4], ScoreEnabled[client], VoiceOptions[client], isBetaUser[client], talentPoints[client], stringDiceLvls, clsteamId);
+		//make it a bit bigger just in case
+		sizeOfTrinketData += 10; 
 		
-		//LogMessage("saveStats(client): %s", query);
-		SQL_TQuery(db,SQLErrorCheckCallback, query);
+		new String:stringTrinkets[sizeOfTrinketData];
 		
-		//////////////////
-		//save trinkets //
-		//////////////////
-		Format(query, sizeof(query), "SELECT * FROM trinkets_v2 WHERE STEAMID = '%s'", clsteamId);
-		
-		//save to a temporary datapack
-		
-		new Handle:tempStorage = CreateDataPack();
-		WritePackCell(tempStorage, GetClientUserId(client));
-		WritePackString(tempStorage, clsteamId);
-		for(new j = 0; j < 20; j++)
+		for(new j = 0; j < MAX_TRINKETS_HELD; j++)
 		{
-			WritePackCell(tempStorage, RTD_Trinket_DB_ID[client][j]);
-			WritePackString(tempStorage, RTD_TrinketUnique[client][j]);
-			WritePackCell(tempStorage, RTD_TrinketTier[client][j]);
-			WritePackCell(tempStorage, RTD_TrinketExpire[client][j]);
-			WritePackCell(tempStorage, RTD_TrinketEquipped[client][j]);
+			
+			if(!StrEqual(RTD_TrinketUnique[client][j], "", false))
+			{
+				if(StrEqual(stringTrinkets, "", false))
+				{
+					Format(stringTrinkets, sizeOfTrinketData, "%s:%i:%i", RTD_TrinketUnique[client][j], RTD_TrinketTier[client][j],  RTD_TrinketEquipped[client][j]);
+				}else{
+					Format(stringTrinkets, sizeOfTrinketData, "%s,%s:%i:%i", stringTrinkets,  RTD_TrinketUnique[client][j], RTD_TrinketTier[client][j],  RTD_TrinketEquipped[client][j]);
+				}
+			}
 		}
 		
-		SQL_TQuery(db, SaveTrinkets_Upgraded_SQL, query, tempStorage);
+		//////////////////////////////
+		//Finally prepare SQL query //
+		//////////////////////////////
+		GetClientAuthString(client, clsteamId, sizeof(clsteamId));
+		
+		new String:query[1024 + sizeOfTrinketData];
+		
+		Format(query, 1024 + sizeOfTrinketData, "UPDATE `Player` SET `CREDITS` = '%i', `DICE` = '%i', `OPTION1` = '%i', `OPTION2` = '%i', `OPTION3` = '%i', `OPTION4` = '%i', `HUDXPOS` = '%i', `HUDYPOS` = '%i', `HUDXPOS2` = '%i', `HUDYPOS2` = '%i', `LASTONTIME` = '%i', `OPTION5` = '%i', `SCOREENABLED` = '%i', `VOICEOPTIONS` = '%i', `BETATESTING` = '%i', `TALENTPOINTS` = '%i', `DICEPERKS` = '%s', `TRINKETS` = '%s' WHERE `STEAMID` = '%s'", RTDCredits[client], RTDdice[client], RTDOptions[client][0], RTDOptions[client][1], RTDOptions[client][2], RTDOptions[client][3], RoundFloat(HUDxPos[client][0] * 100), RoundFloat(HUDyPos[client][0] * 100), RoundFloat(HUDxPos[client][1] * 100), RoundFloat(HUDyPos[client][1] * 100), time, RTDOptions[client][4], ScoreEnabled[client], VoiceOptions[client], isBetaUser[client], talentPoints[client], stringDiceLvls, stringTrinkets, clsteamId);
+		
+		//LogMessage("saveStats(client): %s", query);
+		
+		SQL_TQuery(db,SQLErrorCheckCallback, query);
 	}
 }
 
@@ -113,6 +123,7 @@ public addCredits(creditsToAdd, award)
 	//UPDATE `rtd_gamedb`.`player` SET `CREDITS` = `CREDITS` + '30' WHERE `player`.`STEAMID` = 'STEAM_0:0:16952541';
 	
 	Format(query, sizeof(query), "UPDATE `Player` SET `CREDITS` = `CREDITS` + '%i' WHERE `STEAMID` = '%s'", creditsToAdd, roll_OwnerSteamID[award]);
+	
 	SQL_TQuery(db,SQLErrorCheckCallback, query);
 }
 
@@ -185,6 +196,7 @@ public updateplayername(client)
 	Format(query, sizeof(query), "UPDATE Player SET NAME = '%s' WHERE STEAMID = '%s'",name ,steamId);
 	
 	//LogMessage("updateplayername(client): %s", query);
+	
 	SQL_TQuery(db,SQLErrorCheckCallback, query);
 }
 
@@ -216,6 +228,7 @@ public SQLErrorCheckCallback(Handle:owner, Handle:hndl, const String:error[], an
 	{
 	LogToFile(logPath,"SQL Error: %s | Data %s", error, data);
 	}
+	
 }
 
 public InitializeClientonDB(client)
@@ -250,125 +263,8 @@ public InitializeClientonDB(client)
 	Format(buffer, sizeof(buffer), "SELECT * FROM Player WHERE STEAMID = '%s'", ConUsrSteamID);
 	
 	//LogMessage("InitializeClientonDB(client): %s", buffer);
+	
 	SQL_TQuery(db, LoadEverythingAtOnce, buffer, GetClientUserId(client));
-	
-	//////////////////
-	//load trinkets //
-	//////////////////
-	//Format(buffer, sizeof(buffer), "SELECT * FROM Trinkets WHERE STEAMID = '%s'", ConUsrSteamID);
-	Format(buffer, sizeof(buffer), "SELECT * FROM trinkets_v2 WHERE STEAMID = '%s'", ConUsrSteamID);
-	SQL_TQuery(db, LoadTrinkets_Upgraded_SQL, buffer, GetClientUserId(client));
-}
-
-public LoadTrinketsSQL(Handle:owner, Handle:hndl, const String:error[], any:data)
-{
-	//Just for trinkets
-	new client;
-	
-	/* Make sure the client didn't disconnect while the thread was running */
-	if ((client = GetClientOfUserId(data)) == 0)
-	{
-		return;
-	}
- 
-	if (hndl == INVALID_HANDLE)
-	{
-		LogToFile(logPath,"Trinkets Query failed! %s", error);
-	} else 
-	{
-		if (!SQL_GetRowCount(hndl)) 
-		{
-			new String:ClientSteamID[MAX_LINE_WIDTH];
-			GetClientAuthString(client, ClientSteamID, sizeof(ClientSteamID));
-			
-			/*insert user*/
-			new String:buffer[255];
-			
-			Format(buffer, sizeof(buffer), "INSERT INTO Trinkets (`STEAMID`) VALUES ('%s')", ClientSteamID);
-			SQL_TQuery(db, SQLErrorCheckCallback, buffer);
-		}
-		else
-		{
-			while (SQL_FetchRow(hndl))
-			{
-				new String:stringTrinkets[600];
-				SQL_FetchString(hndl,1, stringTrinkets, sizeof(stringTrinkets));
-				
-				//Handle the dice perks
-				//50 max trinkets
-				
-				//Example of saved trinket data
-				//t01:3:expire time
-				//above is the Lady Luck trinket (t01) with a High variant (3)
-				new String:partsTrinkets[50][32];
-				ExplodeString(stringTrinkets, ",", partsTrinkets, 100, 32);
-				new foundTrinket;
-				
-				//Split up the strings :
-				for(new i = 0; i < 50; i++)
-				{
-					new String:finalSplit[4][20];
-					decl String:chatMessage[200];
-					
-					ExplodeString(partsTrinkets[i], ":", finalSplit, 4, 32); 
-					
-					//Find the read unique identifier
-					for(new j = 0; j < MAX_TRINKETS; j++)
-					{
-						if(StrEqual(finalSplit[0], "", true))
-							continue;
-						
-						if(StrEqual(finalSplit[0], trinket_Unique[j], true))
-						{
-							//PrintToServer("Raw data: %s", partsTrinkets[i]);
-							//PrintToServer("Pass: %i | Loaded Trinket: %s | Tier: %s | Expire: %s | Equipped: %s", j, finalSplit[0], finalSplit[1], finalSplit[2], finalSplit[3]);
-							
-							
-							Format(RTD_TrinketUnique[client][foundTrinket], 64, "%s", trinket_Unique[j]);
-							RTD_TrinketIndex[client][foundTrinket] = trinket_Index[j];
-							
-							RTD_TrinketTier[client][foundTrinket] = StringToInt(finalSplit[1]);
-							RTD_TrinketExpire[client][foundTrinket] = StringToInt(finalSplit[2]);
-							RTD_TrinketEquipped[client][foundTrinket] = StringToInt(finalSplit[3]);
-							
-							Format(RTD_TrinketTitle[client][foundTrinket], 32, "%s", trinket_Title[j]);
-							
-							//apply stats
-							if(RTD_TrinketEquipped[client][foundTrinket] == 1)
-							{
-								RTD_TrinketActive[client][trinket_Index[j]] = 1;
-								RTD_TrinketBonus[client][trinket_Index[j]] = trinket_BonusAmount[trinket_Index[j]][RTD_TrinketTier[client][foundTrinket]];
-								RTD_TrinketLevel[client][trinket_Index[j]] = RTD_TrinketTier[client][foundTrinket];
-								RTD_TrinketMisc[client][trinket_Index[j]] = 0;
-								
-								Format(chatMessage, sizeof(chatMessage), "\x03Equipped\x04 (\x03%s\x04)\x01%s \x04Trinket", trinket_TierID[RTD_TrinketIndex[client][foundTrinket]][RTD_TrinketTier[client][foundTrinket]], trinket_Title[RTD_TrinketIndex[client][foundTrinket]]);
-								PrintToChat(client, chatMessage); 
-							}else{
-								RTD_TrinketActive[client][trinket_Index[j]] = 0;
-								RTD_TrinketBonus[client][trinket_Index[j]] = 0;
-								RTD_TrinketLevel[client][trinket_Index[j]] = 0;
-								RTD_TrinketMisc[client][trinket_Index[j]] = 0;
-							}
-							
-							foundTrinket ++;
-							break;
-						}
-					}
-				}
-				
-				checkTrinketsExpiration(client);
-				
-				//---------------------------------------------------------
-				
-				//ehh, there no player here mate
-				if ((client = GetClientOfUserId(data)) == 0)
-					return;
-			}
-		}
-		
-		return;
-	}
-	return;
 }
 
 public LoadTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[], any:data)
@@ -397,7 +293,6 @@ public LoadTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 		{
 			while (SQL_FetchRow(hndl))
 			{
-				RTD_Trinket_DB_ID[client][foundTrinket] = SQL_FetchInt(hndl,0);
 				
 				new String:temp_TrinketUnique[4];
 				SQL_FetchString(hndl,2, temp_TrinketUnique, sizeof(temp_TrinketUnique));
@@ -412,7 +307,6 @@ public LoadTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 						RTD_TrinketIndex[client][foundTrinket] = trinket_Index[j];
 						
 						RTD_TrinketTier[client][foundTrinket] = SQL_FetchInt(hndl,3);
-						RTD_TrinketExpire[client][foundTrinket] = SQL_FetchInt(hndl,4);
 						RTD_TrinketEquipped[client][foundTrinket] = SQL_FetchInt(hndl,5);
 						
 						Format(RTD_TrinketTitle[client][foundTrinket], 32, "%s", trinket_Title[j]);
@@ -439,7 +333,6 @@ public LoadTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 					}
 				}
 				
-				checkTrinketsExpiration(client);
 				
 				//---------------------------------------------------------
 				
@@ -452,6 +345,8 @@ public LoadTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 				
 				CreateTimer(0.1,  	Timer_DelayTrinketEquip, GetClientUserId(client), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 				
+				PrintToChat(client, "Trinket upgrade: SUCCESS!");
+				
 				if(foundTrinket >= 20)
 					return;
 			}
@@ -460,175 +355,6 @@ public LoadTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[]
 		return;
 	}
 	return;
-}
-
-public SaveTrinkets_Upgraded_SQL(Handle:owner, Handle:hndl, const String:error[], any:tempStorage)
-{
-	//LogError("Entering SaveTrinkets_Upgraded_SQL");
-	
-	if(tempStorage == INVALID_HANDLE)
-	{
-		LogError("Error in SaveTrinkets_Upgraded_SQL: INVALID_HANDLE");
-		return;
-	}
-	
-	ResetPack(tempStorage);
-
-	new Handle: tmp_TrinketTier	= CreateArray(1, 20);
-	new Handle: tmp_TrinketExpire	= CreateArray(21, 20);
-	new Handle: tmp_TrinketEquipped	= CreateArray(1, 20);
-	new Handle: tmp_Trinket_DB_ID	= CreateArray(1, 20);
-	new Handle: tmp_TrinketUnique	= CreateArray(32, 20);
-	
-	new String:tmp_SteamID[32];
-	new String:tempTU[32];
-	
-	new userid = ReadPackCell(tempStorage);
-	new client = GetClientOfUserId(userid);
-	
-	ReadPackString(tempStorage, tmp_SteamID, 32);
-	
-	for(new j = 0; j < 20; j++)
-	{
-		SetArrayCell(tmp_Trinket_DB_ID, j, ReadPackCell(tempStorage));
-		
-		ReadPackString(tempStorage, tempTU, 32);
-		SetArrayString(tmp_TrinketUnique,j, tempTU);
-		
-		SetArrayCell(tmp_TrinketTier, j, ReadPackCell(tempStorage));
-		SetArrayCell(tmp_TrinketExpire, j, ReadPackCell(tempStorage));
-		SetArrayCell(tmp_TrinketEquipped, j, ReadPackCell(tempStorage));
-	}
-	
-	CloseHandle(tempStorage);
-
-	
-	if (hndl == INVALID_HANDLE)
-	{
-		LogToFile(logPath,"Trinkets Query failed! %s", error);
-		
-		CloseHandle(tmp_TrinketTier);
-		CloseHandle(tmp_TrinketExpire);
-		CloseHandle(tmp_TrinketEquipped);
-		CloseHandle(tmp_Trinket_DB_ID);
-		CloseHandle(tmp_TrinketUnique);
-	} else 
-	{
-		if (!SQL_GetRowCount(hndl)) 
-		{
-			/*insert user*/
-			//will insert 20 blank rows
-			new String:buffer[255];
-			new String:tempUnique[32];
-			
-			for(new j = 0; j < 20; j++)
-			{
-				GetArrayString(tmp_TrinketUnique, j, tempUnique, 32);
-				
-				if(!StrEqual(tempUnique, "", false))
-				{
-					Format(buffer, sizeof(buffer), "INSERT INTO trinkets_v2 (`STEAMID`, `TRINKET`, `TIER`, `EXPIRE`, `EQUIPPED`) VALUES ('%s', '%s', '%i', '%i', '%i')", tmp_SteamID, tempUnique, GetArrayCell(tmp_TrinketTier, j), GetArrayCell(tmp_TrinketExpire, j), GetArrayCell(tmp_TrinketEquipped, j));
-					
-					
-					if(client > 0)
-					{
-						new Handle:hnd_InsertID = CreateDataPack();
-						WritePackCell(hnd_InsertID, userid);
-						WritePackCell(hnd_InsertID, j);
-						
-						SQL_TQuery(db, T_ServerInsert, buffer, hnd_InsertID);
-					}else{
-						SQL_TQuery(db, SQLErrorCheckCallback, buffer);
-					}
-				}
-				
-			}
-		}
-		else
-		{
-			///////////////////
-			// SAVE TRINKETS //
-			///////////////////
-			new String:buffer[255];
-			new String:tempUnique[32];
-			new j;
-			
-			//search the temp until it finds a matching ID
-			for(j = 0; j < GetArraySize(tmp_Trinket_DB_ID); j++)
-			{
-				GetArrayString(tmp_TrinketUnique, j, tempUnique, 32);
-				
-				if(!StrEqual(tempUnique, "", false))
-				{
-					if(GetArrayCell(tmp_Trinket_DB_ID, j) > 0)
-					{
-						/////////////////////////////
-						// SAVE TRINKETS WITH IDS  //
-						/////////////////////////////
-						//PrintToServer("Updated %s for (%s) | ID: %i", tmp_SteamID, tempUnique, GetArrayCell(tmp_Trinket_DB_ID, j));
-						
-						Format(buffer, sizeof(buffer), "UPDATE `trinkets_v2` SET `TRINKET` = '%s', `TIER` = '%i', `EXPIRE` = '%i', `EQUIPPED` = '%i' WHERE `ID` = '%i'", tempUnique, GetArrayCell(tmp_TrinketTier, j), GetArrayCell(tmp_TrinketExpire, j), GetArrayCell(tmp_TrinketEquipped, j), GetArrayCell(tmp_Trinket_DB_ID, j));
-						SQL_TQuery(db, SQLErrorCheckCallback, buffer);
-						
-						//LogError("%s", buffer);
-					}else{
-						/////////////////////////////////////////
-						// SAVE TRINKETS NOT FOUND IN DATABASE //
-						/////////////////////////////////////////
-						//PrintToServer("Inserting %s for (%s) | ID: %i", tmp_SteamID, tempUnique, GetArrayCell(tmp_Trinket_DB_ID, j));
-						
-						Format(buffer, sizeof(buffer), "INSERT INTO trinkets_v2 (`STEAMID`, `TRINKET`, `TIER`, `EXPIRE`, `EQUIPPED`) VALUES ('%s', '%s', '%i', '%i', '%i')", tmp_SteamID, tempUnique, GetArrayCell(tmp_TrinketTier, j), GetArrayCell(tmp_TrinketExpire, j), GetArrayCell(tmp_TrinketEquipped, j));
-						
-						if(client > 0)
-						{
-							new Handle:hnd_InsertID = CreateDataPack();
-							WritePackCell(hnd_InsertID, userid);
-							WritePackCell(hnd_InsertID, j);
-							
-							SQL_TQuery(db, T_ServerInsert, buffer, hnd_InsertID);
-						}else{
-							SQL_TQuery(db, SQLErrorCheckCallback, buffer);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	CloseHandle(tmp_TrinketTier);
-	CloseHandle(tmp_TrinketExpire);
-	CloseHandle(tmp_TrinketEquipped);
-	CloseHandle(tmp_Trinket_DB_ID);
-	CloseHandle(tmp_TrinketUnique);
-	
-	//LogError("Complete----------------");
-	
-	return;
-}
-
-public T_ServerInsert(Handle:hOwner, Handle:hResult, const String:strError[], any:hnd_InsertID)
-{
-	ResetPack(hnd_InsertID);
-	
-	new userid = ReadPackCell(hnd_InsertID);
-	new slot = ReadPackCell(hnd_InsertID);
-	new client = GetClientOfUserId(userid);
-	
-	CloseHandle(hnd_InsertID);
-	
-	
-	if(hResult == INVALID_HANDLE)
-	{
-		LogError("Inserting Trinket Error: %s)", strError);
-	}
-	else
-	{
-		if(client > 0)
-		{
-			RTD_Trinket_DB_ID[client][slot] = SQL_GetInsertId(hResult);
-			PrintToServer("Trinket: %s | SavedID: %i", RTD_TrinketUnique[client][slot], RTD_Trinket_DB_ID[client][slot]);
-		}
-	}
 }
 
 public LoadEverythingAtOnce(Handle:owner, Handle:hndl, const String:error[], any:data)
@@ -677,6 +403,7 @@ public LoadEverythingAtOnce(Handle:owner, Handle:hndl, const String:error[], any
 			SQL_EscapeString(db, clientname, clientname, sizeof(clientname));
 			
 			Format(buffer, sizeof(buffer), "INSERT INTO Player (`NAME`,`STEAMID`) VALUES ('%s','%s')", clientname, ClientSteamID);
+			
 			SQL_TQuery(db, SQLErrorCheckCallback, buffer);
 			
 			//Client has successfully retrieved all info from the database
@@ -757,7 +484,80 @@ public LoadEverythingAtOnce(Handle:owner, Handle:hndl, const String:error[], any
 					}
 				}
 				//---------------------------------------------------------
+				new sizeOfTrinketData = (MAX_TRINKETS_HELD * 7) + (MAX_TRINKETS_HELD - 1) + 10;
 				
+				//make it a bit bigger just in case
+				sizeOfTrinketData += 10; 
+				
+				new String:stringTrinkets[sizeOfTrinketData];
+				SQL_FetchString(hndl,19, stringTrinkets, sizeOfTrinketData);
+				
+				if(StrEqual(stringTrinkets, "-1", true))
+				{
+					//no data check old trinket db
+					
+					new String:buffer[255];
+					new String:ClientSteamID[MAX_LINE_WIDTH];
+					
+					GetClientAuthString(client, ClientSteamID, sizeof(ClientSteamID));
+					Format(buffer, sizeof(buffer), "SELECT * FROM trinkets_v2 WHERE STEAMID = '%s'", ClientSteamID);
+					
+					SQL_TQuery(db, LoadTrinkets_Upgraded_SQL, buffer, GetClientUserId(client));
+				}else{
+					//Handle the trinkets
+					new String:partsTrinkets[MAX_TRINKETS_HELD][16];
+					ExplodeString(stringTrinkets, ",", partsTrinkets, MAX_TRINKETS_HELD + 1, 16);
+					
+					new clientTotalTrinkets;
+					
+					//Split up the strings ...
+					for(new trinketParser = 0; trinketParser < MAX_TRINKETS_HELD; trinketParser++)
+					{
+						new String:finalTSplit[3][16];
+						
+						ExplodeString(partsTrinkets[trinketParser], ":", finalTSplit, 3, 16); 
+						
+						//Find the read unique identifier
+						for(new j = 0; j < MAX_TRINKETS; j++)
+						{
+							if(StrEqual(finalTSplit[0], "", true))
+								continue;
+							
+							if(StrEqual(finalTSplit[0], trinket_Unique[j], true))
+							{
+								Format(RTD_TrinketUnique[client][clientTotalTrinkets], 64, "%s", trinket_Unique[j]);
+								RTD_TrinketIndex[client][clientTotalTrinkets] = trinket_Index[j];
+								
+								RTD_TrinketTier[client][clientTotalTrinkets] = StringToInt(finalTSplit[1]);
+								RTD_TrinketEquipped[client][clientTotalTrinkets] = StringToInt(finalTSplit[2]);
+								
+								Format(RTD_TrinketTitle[client][clientTotalTrinkets], 32, "%s", trinket_Title[j]);
+								
+								//apply stats
+								if(RTD_TrinketEquipped[client][clientTotalTrinkets] == 1)
+								{
+									RTD_TrinketActive[client][trinket_Index[j]] = 1;
+									RTD_TrinketBonus[client][trinket_Index[j]] = trinket_BonusAmount[trinket_Index[j]][RTD_TrinketTier[client][clientTotalTrinkets]];
+									RTD_TrinketLevel[client][trinket_Index[j]] = RTD_TrinketTier[client][clientTotalTrinkets];
+									RTD_TrinketMisc[client][trinket_Index[j]] = 0;
+									
+									new String:chatMessage[128];
+									Format(chatMessage, sizeof(chatMessage), "\x03Equipped\x04 (\x03%s\x04)\x01%s \x04Trinket", trinket_TierID[RTD_TrinketIndex[client][clientTotalTrinkets]][RTD_TrinketTier[client][clientTotalTrinkets]], trinket_Title[RTD_TrinketIndex[client][clientTotalTrinkets]]);
+									PrintToChat(client, chatMessage); 
+								}else{
+									RTD_TrinketActive[client][trinket_Index[j]] = 0;
+									RTD_TrinketBonus[client][trinket_Index[j]] = 0;
+									RTD_TrinketLevel[client][trinket_Index[j]] = 0;
+									RTD_TrinketMisc[client][trinket_Index[j]] = 0;
+								}
+								
+								clientTotalTrinkets ++;
+								break;
+							}
+						}
+					}
+				}
+				//---------------------------------------------------------
 				if(HUDxPos[client][0] == 0)
 					HUDxPos[client][0] = 0.70;
 				

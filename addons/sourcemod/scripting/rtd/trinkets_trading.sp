@@ -516,9 +516,7 @@ public fn_OfferMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					Format(RTD_TrinketUnique[param1][availableSlot], 32, "%s", RTD_TrinketUnique[seller][selectedSlot]);
 					RTD_TrinketTier[param1][availableSlot] = RTD_TrinketTier[seller][selectedSlot];
 					RTD_TrinketIndex[param1][availableSlot] = RTD_TrinketIndex[seller][selectedSlot];
-					RTD_TrinketExpire[param1][availableSlot] = RTD_TrinketExpire[seller][selectedSlot];
 					RTD_TrinketEquipped[param1][availableSlot] = 0;
-					RTD_Trinket_DB_ID[param1][availableSlot] = 0;
 					
 					//clear values from seller
 					eraseTrinket(seller, selectedSlot);

@@ -220,7 +220,7 @@ public Action:SetupTrinketsMenu(client, startAtPage)
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_TrinketsMenuHandler);
 	
 	new String:menuTitle[64];
-	Format(menuTitle, 64, "Trinkets Menu (%i/20)", amountOfTrinketsHeld(client));
+	Format(menuTitle, 64, "Trinkets Menu (%i/%i)", amountOfTrinketsHeld(client), MAX_TRINKETS_HELD);
 	SetMenuTitle(hCMenu, menuTitle);
 	
 	new String:displayInfo[64];
@@ -358,45 +358,6 @@ public fn_PurchaseTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param
 	}
 }
 
-public listTrinkets(client)
-{
-	/*
-	//new Handle: temp_Trinkets 	= CreateArray(2, MAX_TRINKETS);
-	new temp_Trinkets[50][4];
-	new foundTrinkets;
-	decl String:chatMessage[200];
-	
-	//Trinkets
-	for(new i = 0; i < 50; i++)
-	{
-		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
-		{
-			temp_Trinkets[foundTrinkets][0] = RTD_TrinketIndex[client][i];
-			temp_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i];
-			temp_Trinkets[foundTrinkets][2] = RTD_TrinketExpire[client][i];
-			temp_Trinkets[foundTrinkets][3] = RTD_TrinketEquipped[client][i];
-			
-			RTD_TrinketUnique[client][i];Format(RTD_TrinketUnique[client][availableSlot], 32, "%s", trinket_Unique[awardedTrinket]);
-			foundTrinkets ++;
-		}
-	}
-	
-	SortCustom2D(_:temp_Trinkets, foundTrinkets, SortAscend);
-	
-
-	for(new i = 0; i < foundTrinkets; i++)
-	{
-		RTD_TrinketIndex[client][i] = temp_Trinkets[foundTrinkets][0];
-		RTD_TrinketTier[client][i] = temp_Trinkets[foundTrinkets][1];
-		RTD_TrinketExpire[client][i] = temp_Trinkets[foundTrinkets][2];
-		RTD_TrinketEquipped[client][i] = temp_Trinkets[foundTrinkets][3];
-		
-		Format(chatMessage, sizeof(chatMessage), "\x03%s \x01%s \x04Trinket", trinket_TierID[temp_Trinkets[i][0]][temp_Trinkets[i][1]], trinket_Title[temp_Trinkets[i][0]]);
-		PrintToChat(client, chatMessage); 
-	}*/
-	
-}
-
 ///////////////////////////////////
 //       Organize Trinkets       //
 //                               //
@@ -412,7 +373,7 @@ public organizeTrinkets(client)
 	new foundTrinkets;
 	
 	//Sort by saving the index and the tier
-	for(new i = 0; i < 21; i++)
+	for(new i = 0; i < MAX_TRINKETS_HELD+1; i++)
 	{
 		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
 		{
@@ -422,19 +383,12 @@ public organizeTrinkets(client)
 			{
 				temp_Trinkets[foundTrinkets][1] = 999; //bump equipped to the top
 			}else{
-				if(trinketExpired(client, i))
-				{
-					temp_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i] - 100;
-				}else{
-					temp_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i];
-				}
+				temp_Trinkets[foundTrinkets][1] = RTD_TrinketTier[client][i];
 			}
 			
 			placeholder_Trinkets[i][0] = RTD_TrinketIndex[client][i];
 			placeholder_Trinkets[i][1] = RTD_TrinketTier[client][i];
-			placeholder_Trinkets[i][2] = RTD_TrinketExpire[client][i];
-			placeholder_Trinkets[i][3] = RTD_TrinketEquipped[client][i];
-			placeholder_Trinkets[i][4] = RTD_Trinket_DB_ID[client][i];
+			placeholder_Trinkets[i][2] = RTD_TrinketEquipped[client][i];
 			
 			//clear out the unique
 			Format(RTD_TrinketUnique[client][i], 32, "");
@@ -452,12 +406,9 @@ public organizeTrinkets(client)
 	{
 		savedSlot = temp_Trinkets[i][0];
 		
-		
 		RTD_TrinketIndex[client][i] = placeholder_Trinkets[savedSlot][0];
 		RTD_TrinketTier[client][i] = placeholder_Trinkets[savedSlot][1];
-		RTD_TrinketExpire[client][i] = placeholder_Trinkets[savedSlot][2];
-		RTD_TrinketEquipped[client][i] = placeholder_Trinkets[savedSlot][3];
-		RTD_Trinket_DB_ID[client][i] = placeholder_Trinkets[savedSlot][4];
+		RTD_TrinketEquipped[client][i] = placeholder_Trinkets[savedSlot][2];
 		
 		Format(RTD_TrinketUnique[client][i], 32, "%s", trinket_Unique[RTD_TrinketIndex[client][i]]);
 	}
@@ -491,60 +442,29 @@ public Action:TrinketsLoadoutMenu(client, startAtPage)
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_TrinketsLoadOutHandler);
 	
 	new String:menuTitle[64];
-	Format(menuTitle, 64, "Trinkets Loadout Menu (%i/20)", amountOfTrinketsHeld(client));
+	Format(menuTitle, 64, "Trinkets Loadout Menu (%i/%i)", amountOfTrinketsHeld(client), MAX_TRINKETS_HELD);
 	
 	SetMenuTitle(hCMenu, menuTitle);
 	
 	new String:displayInfo[64];
 	new String:displayIdent[64];
-	new String:expireTime[64];
-	
-	new hrsLeft;
-	new minsLeft;
-	new totalTimeLeft;
-	new daysLeft;
 	
 	//Trinkets
-	for(new i = 0; i < 20; i++)
+	for(new i = 0; i < MAX_TRINKETS_HELD; i++)
 	{
 		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
 		{
 			
-			hrsLeft= 0; 
-			minsLeft = 0;
-			daysLeft = 0;
-			
-			totalTimeLeft = RTD_TrinketExpire[client][i] - GetTime();
-			
-			//PrintToChat(client, "Total Timeleft: %i (%i - %i)", totalTimeLeft, RTD_TrinketExpire[client][i], GetTime());
-			
-			
-			if(totalTimeLeft > 0)
-			{
-				daysLeft = RoundToFloor(float(totalTimeLeft)/ 86400.0);
-				hrsLeft = RoundToFloor(float(totalTimeLeft)/ 3600.0) - (daysLeft * 24);
-				minsLeft = RoundToFloor(float((totalTimeLeft - daysLeft * 86400 - hrsLeft * 3600))/60.0);
-			}
-			
-			Format(expireTime, 64, "%id:%ih:%im", daysLeft, hrsLeft, minsLeft);
-			
 			if(RTD_TrinketEquipped[client][i] == 1)
 			{
-				Format(displayInfo, 64, "[Equipped] (%s) %s (Expires: %s)", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]], expireTime);
+				Format(displayInfo, 64, "[Equipped] (%s) %s", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
 				
 				Format(displayIdent, 64, "%i:1", i); //1 = equipped
 				
-			}else{
-				if(RTD_TrinketExpire[client][i] < GetTime())
-				{
-					Format(displayInfo, 64, "[Expired] (%s) %s", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
-					
-					Format(displayIdent, 64, "%i:0", i); //0 = expired
-				}else{
-					Format(displayInfo, 64, "(%s) %s (Expires in %s)", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]], expireTime);
-					
-					Format(displayIdent, 64, "%i:2", i); //2 = unequipped
-				}
+			}else
+			{
+				Format(displayInfo, 64, "(%s) %s", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
+				Format(displayIdent, 64, "%i:2", i); //2 = unequipped
 			}
 			
 			AddMenuItem(hCMenu, displayIdent, displayInfo, ITEMDRAW_DEFAULT);
@@ -599,7 +519,6 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	
 	SetMenuTitle(hCMenu, menuTitle);
 	
-	new String:extendTrinket[64];
 	new String:displayIdent[64];
 	new String:reRollText[64];
 	
@@ -608,7 +527,6 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	//0 = expired
 	//2 = unequipped
 	
-	Format(extendTrinket, 64, "[%i Credits] 30 Day Trinket Extension", rtd_trinketExtPrice);
 	Format(reRollText, 64, "[%i Credits] Reroll Variant", rtd_trinket_rerollPrice);
 	
 	if(slotStatus == 1)
@@ -621,11 +539,7 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 		AddMenuItem(hCMenu, displayIdent, "Equip Trinket", ITEMDRAW_DEFAULT);
 	}
 	
-	Format(displayIdent, 64, "%i:0", selectedSlot);
-	AddMenuItem(hCMenu, displayIdent, extendTrinket, ITEMDRAW_DEFAULT);
-	
 	Format(displayIdent, 64, "%i:4", selectedSlot);
-	//AddMenuItem(hCMenu, displayIdent, reRollText, ITEMDRAW_DEFAULT);
 	AddMenuItem(hCMenu, displayIdent, reRollText, RTD_TrinketTier[client][selectedSlot]>=(trinket_Tiers[RTD_TrinketIndex[client][selectedSlot]]-1)?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
 	
 	Format(displayIdent, 64, "%i:5", selectedSlot);
@@ -666,40 +580,7 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 			slotStatus = StringToInt(menuTriggers[1]);
 			
 			switch(slotStatus)
-			{
-				//extend trinket
-				case 0:
-				{
-					if(RTDCredits[param1] >= rtd_trinketExtPrice)
-					{
-						EmitSoundToClient(param1, SOUND_BOUGHTSOMETHING);
-						
-						RTDCredits[param1] -= rtd_trinketExtPrice;
-						
-						if(RTD_TrinketExpire[param1][selectedSlot] < GetTime())
-						{
-							RTD_TrinketExpire[param1][selectedSlot] = GetTime() + 2592000;
-						}else{
-							RTD_TrinketExpire[param1][selectedSlot] += 2592000;
-						}
-						
-						Format(chatMessage, sizeof(chatMessage), "\x03Extended\x04 (\x03%s\x04) \x01%s \x04Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
-						PrintToChat(param1, chatMessage); 
-						
-						Format(chatMessage, sizeof(chatMessage), "Extended (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][RTD_TrinketTier[param1][selectedSlot]], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
-						PrintCenterText(param1, chatMessage);
-						
-						showTrinketSelectionMenu(param1, selectedSlot, slotStatus);
-						//TrinketsLoadoutMenu(param1, 0);
-						
-					}else{
-						PrintCenterText(param1, "Insufficent Credits!");
-						PrintToChat(param1, "Insufficent Credits!");
-						
-						EmitSoundToClient(param1, SOUND_DENY);
-					}
-				}
-				
+			{	
 				//equip trinket
 				case 1:
 				{
@@ -1003,7 +884,7 @@ public Action:selectSecondTrinket(client, selectedSlot)
 	SetMenuTitle(hCMenu, menuTitle);
 	
 	//Trinkets
-	for(new i = 0; i < 20; i++)
+	for(new i = 0; i < MAX_TRINKETS_HELD; i++)
 	{
 		if(!StrEqual(RTD_TrinketUnique[client][i], "", false) && selectedSlot != i)
 		{
@@ -1014,16 +895,9 @@ public Action:selectSecondTrinket(client, selectedSlot)
 				Format(displayIdent, 64, "%i:1", i); //1 = equipped
 				
 			}else{
-				if(RTD_TrinketExpire[client][i] < GetTime())
-				{
-					Format(displayInfo, 64, "[Expired] (%s) %s", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
-					
-					Format(displayIdent, 64, "%i:0", i); //0 = expired
-				}else{
-					Format(displayInfo, 64, "(%s) %s", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
-					
-					Format(displayIdent, 64, "%i:2", i); //2 = unequipped
-				}
+				Format(displayInfo, 64, "(%s) %s", trinket_TierID[RTD_TrinketIndex[client][i]][RTD_TrinketTier[client][i]], trinket_Title[RTD_TrinketIndex[client][i]]);
+				
+				Format(displayIdent, 64, "%i:2", i); //2 = unequipped
 			}
 			
 			AddMenuItem(hCMenu, displayIdent, displayInfo, ITEMDRAW_DEFAULT);
@@ -1258,9 +1132,7 @@ public smeltTrinkets(client)
 	Format(RTD_TrinketUnique[client][availableSlot], 32, "%s", trinket_Unique[awardedTrinket]);
 	RTD_TrinketTier[client][availableSlot] = variant;
 	RTD_TrinketIndex[client][availableSlot] = trinket_Index[awardedTrinket];
-	RTD_TrinketExpire[client][availableSlot] = GetTime() + 604800; // expire in 7 days
 	RTD_TrinketEquipped[client][availableSlot] = 0;
-	RTD_Trinket_DB_ID[client][availableSlot] = 0;
 	
 	Format(RTD_TrinketTitle[client][availableSlot], 32, "%s", trinket_Title[awardedTrinket]);
 	
@@ -1292,7 +1164,7 @@ public bool:isTrinketEquipped(client, trinketLookup)
 	{
 		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
 		{
-			if(RTD_TrinketIndex[client][i] == trinketLookup && RTD_TrinketEquipped[client][i] && RTD_TrinketExpire[client][i] < GetTime())
+			if(RTD_TrinketIndex[client][i] == trinketLookup && RTD_TrinketEquipped[client][i] < GetTime())
 			{
 				return true;
 			}
@@ -1311,7 +1183,7 @@ public equipActiveTrinket(client)
 	}
 	
 	//Check to see if player has any trinkets
-	for(new i = 0; i < 21; i++)
+	for(new i = 0; i < MAX_TRINKETS_HELD; i++)
 	{
 		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
 		{
@@ -1348,7 +1220,7 @@ public unequipTrinkets(client)
 		ROFMult[client] = 0.0;
 	
 	//get ready to equip by unequipping all trinkets
-	for(new k = 0; k < 21; k++)
+	for(new k = 0; k < MAX_TRINKETS_HELD; k++)
 	{
 		RTD_TrinketEquipped[client][k] = 0;
 	}
@@ -1362,70 +1234,18 @@ public unequipTrinkets(client)
 	}
 }
 
-public checkTrinketsExpiration(client)
-{
-	if(!(IsClientInGame(client) && IsClientAuthorized(client)))
-		return;
-	
-	new expiredTrinkets;
-	
-	//trinket handling
-	if(!rtd_trinket_enabled)
-	{
-		unequipTrinkets(client);
-		return;
-	}
-	
-	//Check to see if player has any trinkets
-	for(new i = 0; i < 21; i++)
-	{
-		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
-		{
-			if(RTD_TrinketExpire[client][i] < GetTime())
-			{
-				expiredTrinkets = 1;
-				RTD_TrinketEquipped[client][i] = 0;
-				RTD_TrinketExpire[client][i] = 0;
-				
-				RTD_TrinketActive[client][RTD_TrinketIndex[client][i]] = 0;
-				RTD_TrinketBonus[client][RTD_TrinketIndex[client][i]] = 0;
-				RTD_TrinketLevel[client][RTD_TrinketIndex[client][i]] = 0;
-				RTD_TrinketMisc[client][RTD_TrinketIndex[client][i]] = 0;
-			}
-		}
-	}
-	
-	if(expiredTrinkets == 1 && lastExpireNotification[client] < GetTime())
-	{
-		PrintToChat(client, "You have expired trinkets! Extend them through the Trinkets menu.");
-		lastExpireNotification[client] = GetTime() + 600;
-	}
-	
-}
-
 public amountOfTrinketsHeld(client)
 {
 	new totTrinkets;
 	
 	//Check to see if player has any trinkets
-	for(new i = 0; i < 50; i++)
+	for(new i = 0; i < MAX_TRINKETS_HELD; i++)
 	{
 		if(!StrEqual(RTD_TrinketUnique[client][i], "", false))
 			totTrinkets ++;
 	}
 	
 	return totTrinkets;
-}
-
-public bool:trinketExpired(client, slot)
-{
-	if(RTD_TrinketExpire[client][slot] == 0)
-		return true;
-	
-	if(RTD_TrinketExpire[client][slot] < GetTime())
-		return true;
-	
-	return false;
 }
 
 public countRarity(match)
@@ -1444,7 +1264,7 @@ public countRarity(match)
 public nextAvailableSlot(client)
 {
 	//Trinkets
-	for(new i = 0; i < 20; i++)
+	for(new i = 0; i < MAX_TRINKETS_HELD; i++)
 	{	
 		if(StrEqual(RTD_TrinketUnique[client][i], "", false))
 			return i;
@@ -1465,10 +1285,10 @@ GiveRandomTrinket(client, test)
 		return;
 	}
 	
-	if(amountOfTrinketsHeld(client) > 20)
+	if(amountOfTrinketsHeld(client) > MAX_TRINKETS_HELD)
 	{
-		PrintCenterText(client, "You cannot hold more than 20 trinkets!");
-		PrintToChat(client, "You cannot hold more than 20 trinkets!");
+		PrintCenterText(client, "You cannot hold more than %i trinkets!", MAX_TRINKETS_HELD);
+		PrintToChat(client, "You cannot hold more than %i trinkets!", MAX_TRINKETS_HELD);
 		return;
 	}
 	
@@ -1550,9 +1370,7 @@ GiveRandomTrinket(client, test)
 		Format(RTD_TrinketUnique[client][availableSlot], 32, "%s", trinket_Unique[awardedTrinket]);
 		RTD_TrinketTier[client][availableSlot] = variant;
 		RTD_TrinketIndex[client][availableSlot] = trinket_Index[awardedTrinket];
-		RTD_TrinketExpire[client][availableSlot] = GetTime() + 604800; // expire in 7 days
 		RTD_TrinketEquipped[client][availableSlot] = 0;
-		RTD_Trinket_DB_ID[client][availableSlot] = 0;
 		
 		Format(RTD_TrinketTitle[client][availableSlot], 32, "%s", trinket_Title[awardedTrinket]);
 		
@@ -1608,15 +1426,6 @@ public eraseTrinket(client, slot)
 {
 	//used when player trades or destroys trinket
 	
-	if(RTD_Trinket_DB_ID[client][slot] != 0)
-	{
-		new String:buffer[255];
-		Format(buffer, sizeof(buffer), "DELETE FROM `trinkets_v2` WHERE ID = '%i'", RTD_Trinket_DB_ID[client][slot]);
-		SQL_TQuery(db, SQLErrorCheckCallback, buffer);
-		
-		//LogError("%s", buffer);
-	}
-	
 	
 	RTD_TrinketActive[client][RTD_TrinketIndex[client][slot]] = 0;
 	RTD_TrinketBonus[client][RTD_TrinketIndex[client][slot]] = 0;
@@ -1625,9 +1434,7 @@ public eraseTrinket(client, slot)
 	Format(RTD_TrinketTitle[client][slot], 32, "");
 	
 	RTD_TrinketEquipped[client][slot] = 0;
-	RTD_Trinket_DB_ID[client][slot] = 0;
 	
 	RTD_TrinketTier[client][slot] = 0;
-	RTD_TrinketExpire[client][slot] = 0;
 	RTD_TrinketIndex[client][slot] = 0;
 }
