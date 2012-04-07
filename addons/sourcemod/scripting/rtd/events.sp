@@ -38,10 +38,8 @@ public APLRes:AskPluginLoad2(Handle:hPlugin, bool:isAfterMapLoaded, String:error
 		Format(RTD_TrinketTitle[client][k], 32, "");
 		
 		RTD_TrinketEquipped[client][k] = 0;
-		RTD_Trinket_DB_ID[client][k] = 0;
 		
 		RTD_TrinketTier[client][k] = 0;
-		RTD_TrinketExpire[client][k] = 0;
 		RTD_TrinketIndex[client][k] = 0;
 	}
 	

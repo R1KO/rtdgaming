@@ -19,6 +19,9 @@
 //MAX_TRINKETS represents the number of trinkets available
 #define MAX_TRINKETS		12
 
+//Maximum amount of trinkets a user can hold
+#define MAX_TRINKETS_HELD 		30
+
 #define TRINKET_LADYLUCK			0
 #define TRINKET_DICEMINER			1
 #define TRINKET_PARTYTIME			2

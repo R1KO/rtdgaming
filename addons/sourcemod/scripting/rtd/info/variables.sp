@@ -33,7 +33,6 @@ new Handle:c_UnusualRoll_Shop_Chance = INVALID_HANDLE;
 new Handle:c_Classic = INVALID_HANDLE;
 new Handle:c_Trinkets = INVALID_HANDLE;
 new Handle:c_TrinketPrice = INVALID_HANDLE;
-new Handle:c_TrinketExtPrice = INVALID_HANDLE;
 new Handle:c_TrinketReRollPrice = INVALID_HANDLE;
 
 new Handle:c_Event_MLK = INVALID_HANDLE;
@@ -274,7 +273,6 @@ new unusualRoll_Shop_Chance;
 new rtd_classic;
 new rtd_trinket_enabled;
 new rtd_trinketPrice;
-new rtd_trinketExtPrice;
 new rtd_trinket_rerollPrice;
 new moreDeployables; //enabled/disabled
 new deployables_max;
@@ -371,12 +369,9 @@ new RTD_TrinketMisc_02[cMaxClients][MAX_TRINKETS + 1];
 //player variables
 new String:RTD_TrinketUnique[cMaxClients][50][32];
 new RTD_TrinketTier[cMaxClients][50];
-new RTD_TrinketExpire[cMaxClients][50];
 new RTD_TrinketIndex[cMaxClients][50];
 new RTD_TrinketEquipped[cMaxClients][50];
 new String:RTD_TrinketTitle[cMaxClients][32];
-new lastExpireNotification[cMaxClients];
-new RTD_Trinket_DB_ID[cMaxClients][50];
 new RTD_TrinketEquipTime[cMaxClients];
 
 new trading[cMaxClients][6];
