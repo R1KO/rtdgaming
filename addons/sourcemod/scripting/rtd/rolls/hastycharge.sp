@@ -202,13 +202,21 @@ public Action:HastyCharge_Timer(Handle:timer)
 						{
 							weaponID = GetEntProp(weaponInfo[currWeapon], Prop_Send, "m_iItemDefinitionIndex");
 							
-							if(weaponID == 14 || weaponID == 230 || weaponID == 526 || weaponID == 402)
+							if(weaponID == 14 || weaponID == 230 || weaponID == 526 || weaponID == 402 || weaponID== 201 || weaponID == 604)
 							{
 								//rechargeTime represents the weapons maximum charge time 
 								//Check http://wiki.teamfortress.com/ for official numbers
 								
 								//14  = Sniper Rifle
 								if(weaponID == 14)
+									rechargeTime = 3.3;
+									
+								//201  = Strange/Renamed Sniper Rifle
+								if(weaponID == 201)
+									rechargeTime = 3.3;
+								
+								//664  = Festive Sniper Rifle
+								if(weaponID == 664)
 									rechargeTime = 3.3;
 								
 								//230  = Sydney Sleep
