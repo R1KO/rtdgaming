@@ -417,6 +417,8 @@ stock RTDPrecache()
 	strengthModelIndex[0] = PrecacheModel(MODEL_STRENGTHDRAIN, true);
 	strengthModelIndex[1] = PrecacheModel(MODEL_STRENGTHDRAIN_02, true);
 	
+	pattycakeModelIndex = PrecacheModel(MODEL_DIARHIA, true);
+	
 	//keep track of all indexed models in an array
 	modelIndex[0] = bombModelIndex;	
 	modelIndex[1] = mineModelIndex;	
@@ -478,7 +480,7 @@ stock RTDPrecache()
 	modelIndex[57] = strengthModelIndex[1];
 	modelIndex[58] = sliceModelIndex;
 	modelIndex[59] = PrecacheModel(MODEL_DIARHIA_JAR, true);
-	modelIndex[60] = PrecacheModel(MODEL_DIARHIA, true);
+	modelIndex[60] = pattycakeModelIndex;
 	
 	totModels = 60;
 }

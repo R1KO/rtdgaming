@@ -266,14 +266,6 @@ public Action:Spawn_Pattycake(client)
 	decl String:crapName[32];
 	Format(crapName, 32, "crap_%i", ent);
 	DispatchKeyValue(ent, "targetname", crapName);
-	
-	new iTeam = GetEntProp(client, Prop_Data, "m_iTeamNum");
-	SetVariantInt(iTeam);
-	AcceptEntityInput(ent, "TeamNum", -1, -1, 0);
-
-	SetVariantInt(iTeam);
-	AcceptEntityInput(ent, "SetTeam", -1, -1, 0); 
-	
 
 	SetEntProp(ent, Prop_Data, "m_takedamage", 2);  //default = 2
 	
@@ -291,8 +283,8 @@ public Action:Spawn_Pattycake(client)
 	SetEntProp(ent, Prop_Send, "m_CollisionGroup", 2); 
 	
 	//Set the shield's health
-	SetEntProp(ent, Prop_Data, "m_iMaxHealth", 800);
-	SetEntProp(ent, Prop_Data, "m_iHealth", 800);
+	SetEntProp(ent, Prop_Data, "m_iMaxHealth", 600);
+	SetEntProp(ent, Prop_Data, "m_iHealth", 600);
 	
 	AcceptEntityInput( ent, "DisableCollision" );
 	AcceptEntityInput( ent, "EnableCollision" );
@@ -300,9 +292,22 @@ public Action:Spawn_Pattycake(client)
 	//patty cake is damaged by its own team
 	if(GetClientTeam(client) == RED_TEAM)
 	{
+		SetVariantInt(BLUE_TEAM);
+		AcceptEntityInput(ent, "TeamNum", -1, -1, 0);
+		
+		SetVariantInt(BLUE_TEAM);
+		AcceptEntityInput(ent, "SetTeam", -1, -1, 0); 
+		
 		SetVariantString(redDamageFilter);
 	}else{
+		SetVariantInt(RED_TEAM);
+		AcceptEntityInput(ent, "TeamNum", -1, -1, 0);
+		
+		SetVariantInt(RED_TEAM);
+		AcceptEntityInput(ent, "SetTeam", -1, -1, 0); 
+		
 		SetVariantString(bluDamageFilter);
+		
 	}
 	AcceptEntityInput(ent, "SetDamageFilter", -1, -1, 0); 
 	
@@ -437,7 +442,7 @@ public Action:Pattycake_Timer(Handle:timer, Handle:dataPackHandle)
 		playerTeam = GetClientTeam(i);
 		
 		//Check to see if player is close to a Pattycake
-		if(playerTeam == pattycakeTeam)
+		if(playerTeam != pattycakeTeam)
 		{
 			GetClientAbsOrigin(i,playerPos);
 			distance = GetVectorDistance( playerPos, pattycakePos);
