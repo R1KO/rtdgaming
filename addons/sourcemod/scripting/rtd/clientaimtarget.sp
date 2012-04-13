@@ -321,6 +321,14 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 				}else{
 					Format(message, sizeof(message), "Enemy Slice N Dice (%i/%i hp)", objHealth,objMaxHeath);
 				}
+			}else if(lookingAtModelIndex == pattycakeModelIndex)
+			{
+				if(objectTeam == iTeam)
+				{
+					Format(message, sizeof(message), "Friendly Poop (%i/%i hp)", objHealth,objMaxHeath);
+				}else{
+					Format(message, sizeof(message), "Enemy Poop (%i/%i hp)", objHealth,objMaxHeath);
+				}
 			}
 			
 			if(!(StrEqual(message, "")))
