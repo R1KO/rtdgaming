@@ -850,5 +850,25 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain_size02.sw.vtx");
 	AddFileToDownloadsTable("models/rtdgaming/strengthdrain/strengthdrain_size02.vvd");
 	
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/diarhia.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/diarhia.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/diarhia.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/diarhia.phy");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/diarhia.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/diarhia.vvd");
+	
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/pattycake.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/pattycake.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/pattycake.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/pattycake.phy");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/pattycake.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/diarhia/pattycake.vvd");
+	
+	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_glass.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_glass.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_liquid.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_liquidl.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/crap.vmt");
+	
 	AddFileToDownloadsTable("sound/rtdgaming/slice.wav");
 }

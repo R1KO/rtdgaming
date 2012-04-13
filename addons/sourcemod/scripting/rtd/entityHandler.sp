@@ -154,6 +154,7 @@ public OnEntityDestroyed(entity)
 	
 	if(currIndex == strengthModelIndex[0] || currIndex == strengthModelIndex[1])
 		StopSound(entity, SNDCHAN_AUTO, SlowCube_Idle);
+	
 }
 
 public Action:ProcessEdict(Handle:timer, any:edict)
@@ -483,7 +484,7 @@ public Action:deleteRTDEntities()
 			continue;
 		}
 		
-		for (new i = 0; i < totModels ; i++)
+		for (new i = 0; i <= totModels ; i++)
 		{
 			if(currIndex == modelIndex[i])
 			{

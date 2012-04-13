@@ -176,7 +176,7 @@ public Action:DarknessCloud_Timer(Handle:timer, Handle:dataPackHandle)
 			client_rolls[i][AWARD_G_DARKNESSCLOUD][5] = GetTime() + 10;
 			
 			PrintCenterText(i, "Vision obsured by a Darkness Cloud");
-			FadeIN(i ,1 ,4 ,251);
+			FadeIN(i ,1 ,4 ,241);
 			//PerformDarkness(i, 240);
 			//PrintToChatAll("applying blind");
 			

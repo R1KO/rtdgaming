@@ -477,6 +477,8 @@ stock RTDPrecache()
 	modelIndex[56] = strengthModelIndex[0];
 	modelIndex[57] = strengthModelIndex[1];
 	modelIndex[58] = sliceModelIndex;
+	modelIndex[59] = PrecacheModel(MODEL_DIARHIA_JAR, true);
+	modelIndex[60] = PrecacheModel(MODEL_DIARHIA, true);
 	
-	totModels = 58;
+	totModels = 60;
 }

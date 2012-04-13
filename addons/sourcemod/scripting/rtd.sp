@@ -119,6 +119,7 @@
 #include "rtd/rolls/darknesscloud.sp"
 #include "rtd/rolls/slicendice.sp"
 #include "rtd/rolls/groundingbullet.sp"
+#include "rtd/rolls/diarhia.sp"
 
 //Perks
 #include "rtd/rolls/friedchicken.sp"

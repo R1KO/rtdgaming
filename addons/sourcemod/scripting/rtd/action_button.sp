@@ -786,6 +786,9 @@ public deployRoll(client, tempAward)
 			}
 		}
 		
+		case AWARD_G_DIARHIA:
+			throw_Diarhia(client);
+		
 	}
 	
 	/////////////////////////////////////
