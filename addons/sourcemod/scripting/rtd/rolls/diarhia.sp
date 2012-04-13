@@ -144,7 +144,7 @@ public DiarhiaJarBreak (objectTeam, attacker, Float:jarPos[3])
 		if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
 			continue;
 		
-		if(distance > 250.0)
+		if(distance > 350.0)
 			continue;
 		
 		//Invalid attacker, possible reasons player left
@@ -442,7 +442,7 @@ public Action:Pattycake_Timer(Handle:timer, Handle:dataPackHandle)
 			GetClientAbsOrigin(i,playerPos);
 			distance = GetVectorDistance( playerPos, pattycakePos);
 			
-			if(distance < 140.0)
+			if(distance < 160.0)
 			{
 				if((GetTime() - lastCoughed[i]) >= 2)
 				{
