@@ -462,6 +462,8 @@
 #define MODEL_SLICE				"models/rtdgaming/slice/slice.mdl"
 #define SOUND_SLICE				"rtdgaming/slice.wav"
 
+#define MODEL_DIARHIA_JAR		"models/rtdgaming/diarhia/diarhia.mdl"
+#define MODEL_DIARHIA			"models/rtdgaming/diarhia/pattycake.mdl"
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 
