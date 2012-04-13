@@ -867,7 +867,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_glass.vtf");
 	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_glass.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_liquid.vtf");
-	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_liquidl.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_liquid.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/crap.vmt");
 	
 	AddFileToDownloadsTable("sound/rtdgaming/slice.wav");

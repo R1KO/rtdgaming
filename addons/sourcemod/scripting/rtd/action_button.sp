@@ -602,7 +602,7 @@ public deployRoll(client, tempAward)
 		{
 			tooClose = closeToModel(client, 400.0, "prop_physics", MODEL_CAGE);
 			
-			if(tooClose || CloseToEnemySpawnDoors(client))
+			if(tooClose || CloseToEnemySpawnDoors(client) || isCloseToWall(client, 2) || willCollide(client))
 			{
 				if(tooClose)
 					PrintCenterText(client,"Too close to another Cage");
@@ -686,7 +686,7 @@ public deployRoll(client, tempAward)
 		{
 			tooClose = closeToModel(client, 130.0, "prop_physics", MODEL_SNORLAX);
 			
-			if(CloseToEnemySpawnDoors(client) || tooClose || closeToMainObjects(client) || closeToCapturePoint(client, 250.0) || isCloseToWall(client, 2) || willCollide(client))
+			if(CloseToEnemySpawnDoors(client) || tooClose || closeToMainObjects(client) || closeToCapturePoint(client, 250.0) || isCloseToWall(client, 2) || willCollide_Snorlax(client))
 			{
 				if(tooClose)
 					PrintCenterText(client,"Too close to another Snorlax");
@@ -827,6 +827,43 @@ public willCollide(client)
 	new Float:hullBoxMin[3];
 	new Float:hullBoxMax[3];
 	
+	hullBoxMin[0] = -70.0;
+	hullBoxMin[1] = -70.0;
+	hullBoxMin[2] = 10.0;
+	
+	hullBoxMax[0] = 70.0;
+	hullBoxMax[1] = 70.0;
+	hullBoxMax[2] = 180.0;
+	
+	new Handle:Trace = TR_TraceHullFilterEx(startPos, startPos,hullBoxMin,hullBoxMax, MASK_PLAYERSOLID	, TraceFilterAll,client);
+	
+	if(TR_DidHit(Trace))
+	{
+		if(client < MaxClients)
+		{
+			PrintCenterText(client, "Too close to Wall!!");
+			EmitSoundToAll(SOUND_DENY, client);
+		}
+		
+		CloseHandle(Trace);
+		return 1;
+	}
+	
+	CloseHandle(Trace);
+	
+	return 0;
+}
+
+public willCollide_Snorlax(client)
+{
+	//set the position in front of the player
+	new Float: startPos[3];
+	GetEntPropVector(client, Prop_Send, "m_vecOrigin", startPos);
+	
+	//is barrel going to collide with something else?
+	new Float:hullBoxMin[3];
+	new Float:hullBoxMax[3];
+	
 	hullBoxMin[0] = -40.0;
 	hullBoxMin[1] = -40.0;
 	hullBoxMin[2] = 10.0;
@@ -853,7 +890,7 @@ public willCollide(client)
 	
 	return 0;
 }
-	
+
 public closeToModel(client, Float:minDistance, String:classname[], String:modelname[])
 {
 	//closeToModel(i, 500.0, "prop_physics", MODEL_CAGE);
