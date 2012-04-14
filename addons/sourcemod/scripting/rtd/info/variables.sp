@@ -66,43 +66,43 @@ new Handle:g_hDetonate;
 new Handle:GameConf = INVALID_HANDLE;
 
 new totalRolls; //used to keep track of amount of rolls loaded from config
-//Current limit that can be read from cfg is 100, cause that's a nice number
-new roll_isGood[100];
-new roll_enabled[100];
-new roll_resetOnDeath[100];
-new roll_EntLimit[100];
-new roll_inBeta[100];
-new roll_purchasable[100];
-new roll_cost[100];
-new roll_amountTriggers[100];
-new roll_isDeployable[100];
-new roll_amountDeployable[100];
-new String:roll_cfgID[100][32]; //this is matched against roll_id
-new String:roll_Article[100][8];
-new String:roll_Text[100][32];
-new String:roll_QuickBuy[100][64];
+//Current limit that can be read from cfg is 200, cause that's a nice number
+new roll_isGood[200];
+new roll_enabled[200];
+new roll_resetOnDeath[200];
+new roll_EntLimit[200];
+new roll_inBeta[200];
+new roll_purchasable[200];
+new roll_cost[200];
+new roll_amountTriggers[200];
+new roll_isDeployable[200];
+new roll_amountDeployable[200];
+new String:roll_cfgID[200][32]; //this is matched against roll_id
+new String:roll_Article[200][8];
+new String:roll_Text[200][32];
+new String:roll_QuickBuy[200][64];
 
-new String:roll_ActionText[100][32];
-new roll_CountDownTimer[100];
-new roll_TimerOverride[100];
-new String:roll_Particle[100][32];
-new bool:roll_AutoKill[100];
-new bool:roll_AttachToHead[100];
-new roll_ZCorrection[100];
-new roll_required_weapon[100];
-new roll_itemEquipped_OnBack[100];
-new String:roll_OwnerSteamID[100][32];
+new String:roll_ActionText[200][32];
+new roll_CountDownTimer[200];
+new roll_TimerOverride[200];
+new String:roll_Particle[200][32];
+new bool:roll_AutoKill[200];
+new bool:roll_AttachToHead[200];
+new roll_ZCorrection[200];
+new roll_required_weapon[200];
+new roll_itemEquipped_OnBack[200];
+new String:roll_OwnerSteamID[200][32];
 
-new String:roll_disabledForMaps[100][64];
-new String:roll_AmountDisabledMaps[100];
+new String:roll_disabledForMaps[200][64];
+new String:roll_AmountDisabledMaps[200];
 
-new roll_Unusual[100];
+new roll_Unusual[200];
 
 new isNewUser[cMaxClients];
-new TFClassType:roll_ClassRestriction[100];
-new TFClassType:roll_ExcludeClass[100];
+new TFClassType:roll_ClassRestriction[200];
+new TFClassType:roll_ExcludeClass[200];
 
-new client_rolls[cMaxClients][100][11];
+new client_rolls[cMaxClients][200][11];
 //10 = mark unusual
 
 new inTimerBasedRoll[cMaxClients];

@@ -113,7 +113,7 @@
 #define AWARD_B_DOOM				94
 #define AWARD_B_SLOWMO			95
 
-new String:roll_id[150][32]; //roll identifiers that match up with ;
+new String:roll_id[200][32]; //roll identifiers that match up with ;
 
 stock SetupRoll_IDs()
 {

@@ -277,7 +277,12 @@ public Action:RegenerateHealth(Handle:timer, any:client)
 {
 	if(client_rolls[client][AWARD_G_REGEN][0] && IsClientInGame(client))
 	{
-		addHealth(client, 3);
+		if(client_rolls[i][AWARD_G_REGEN][9])
+		{
+			addHealth(i, roll_Unusual[AWARD_G_REGEN]);
+		}else{
+			addHealth(i, 3);
+		}
 	}else{
 		return Plugin_Stop;
 	}

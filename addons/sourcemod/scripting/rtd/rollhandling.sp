@@ -181,70 +181,27 @@ GivePlayerEffect(client, award, cost)
 	//Unusual variables
 	new bool:isUnusual = false;
 	new extraTime;
-	new extraHealth;
-	new extraDeployables;
+	
+	//Determine unusual
+	if(GetRandomInt(1,100) <= unusualRoll_Shop_Chance)
+	{
+		isUnusual = true;
+		client_rolls[client][award][9] = 1; //mark as unusual 
+	}
+	
+	if(roll_Unusual[award] == 0)
+	{
+		client_rolls[client][award][9] = 0; //mark as normal
+		isUnusual = false;
+	}
 	
 	//Display roll info
 	if(BoughtSomething[client])
 	{
 		//determine if this will be an unusual roll
-		if(GetRandomInt(1,100) <= unusualRoll_Shop_Chance && award != AWARD_G_INSTAPORTER)
+		if(isUnusual)
 		{
-			client_rolls[client][award][9] = 1; //mark as unusual 
-			isUnusual = true;
-			
-			extraTime = 20;
-			extraHealth = GetRandomInt(100, 300);
-			extraDeployables = GetRandomInt(1, 2);
-			
-			new String:bonus[32];
-			if(roll_CountDownTimer[award])
-			{
-				Format(bonus, sizeof(bonus), "+%i seconds", extraTime);
-			}else if(roll_isDeployable[award])
-			{
-				if(extraDeployables == 1)
-				{
-					Format(bonus, sizeof(bonus), "+1 deployable");
-				}else{
-					Format(bonus, sizeof(bonus), "+%i deployable", extraDeployables);
-				}
-			}else if(roll_itemEquipped_OnBack[award])
-			{
-				switch(award)
-				{
-					case AWARD_G_BACKPACK:
-					{
-						Format(bonus, sizeof(bonus), "Stuffed pack");
-					}
-					
-					case AWARD_G_BLIZZARD:
-					{
-						Format(bonus, sizeof(bonus), "Shorter Cooldown");
-					}
-					
-					case AWARD_G_WINGS:
-					{
-						Format(bonus, sizeof(bonus), "Faster Speed");
-					}
-					
-					case AWARD_G_STONEWALL:
-					{
-						Format(bonus, sizeof(bonus), "Increased Dmg Reduction when activated");
-					}
-					
-				}
-				
-			}else{
-				if(award == AWARD_G_ARMOR)
-				{
-					Format(bonus, sizeof(bonus), "1000 Armor");
-				}else{
-					Format(bonus, sizeof(bonus), "+%i health", extraDeployables);
-				}
-			}
-			
-			Format(chatMessage, sizeof(chatMessage), "\x01\x04[Unusual Purchase] \x03%s\x04 bought an Unusual \x03%s\x04. Bonus: \x03%s", name, roll_Text[award], bonus);
+			Format(chatMessage, sizeof(chatMessage), "\x01\x04[Unusual Purchase] \x03%s\x04 bought an Unusual \x03%s\x04", name, roll_Text[award]);
 			
 			Format(message, sizeof(message), "Unusual Purchase: %s%s", roll_Article[award], roll_Text[award]);
 			centerHudText(client, message, 0.0, 5.0, HudMsg3, 0.75); 
@@ -258,9 +215,14 @@ GivePlayerEffect(client, award, cost)
 	}else{
 		if(cost == -1)
 		{
-			Format(chatMessage, sizeof(chatMessage), "\x01\x04[RTD] \x03%s\x04 was gifted %s\x03%s", name, roll_Article[award], roll_Text[award]);
-			
-			Format(message, sizeof(message), "You were gifted: %s%s", roll_Article[award], roll_Text[award]);
+			if(isUnusual)
+			{
+				Format(chatMessage, sizeof(chatMessage), "\x01\x04[RTD] \x03%s\x04 was gifted %s\x03%s", name, roll_Article[award], roll_Text[award]);
+				Format(message, sizeof(message), "Received Gift: %s%s", roll_Article[award], roll_Text[award]);
+			}else{
+				Format(chatMessage, sizeof(chatMessage), "\x01\x04[Unusual Gift] \x03%s\x04 was gifted %s\x03%s", name, roll_Article[award], roll_Text[award]);
+				Format(message, sizeof(message), "Received Unusual Gift: %s%s", roll_Article[award], roll_Text[award]);
+			}
 		}
 		
 		if(cost == -2)
@@ -272,12 +234,26 @@ GivePlayerEffect(client, award, cost)
 		
 		if(cost == 0)
 		{
-			Format(chatMessage, sizeof(chatMessage), "\x01\x04[RTD] \x03%s\x04 rolled %s\x03%s", name, roll_Article[award], roll_Text[award]);
+			if(!isUnusual)
+			{
+				Format(chatMessage, sizeof(chatMessage), "\x01\x04[RTD] \x03%s\x04 rolled %s\x03%s", name, roll_Article[award], roll_Text[award]);
+			}else{
+				Format(chatMessage, sizeof(chatMessage), "\x01\x04[Unusual RTD] \x03%s\x04 rolled an Unusual \x03%s\x04.", name, roll_Text[award]);
+			}
 			
 			Format(message, sizeof(message), "You rolled: %s%s", roll_Article[award], roll_Text[award]);
 		}
 		
 		centerHudText(client, message, 0.1, 5.0, HudMsg3, 0.82); 
+	}
+	
+	//apply timer based unusual effects
+	if(isUnusual)
+	{
+		if(roll_CountDownTimer[award])
+		{
+			extraTime = roll_Unusual[award];
+		}
 	}
 	
 	//Display roll info in chat
@@ -338,7 +314,7 @@ GivePlayerEffect(client, award, cost)
 			}else{
 				if(isUnusual)
 				{
-					client_rolls[client][award][1] = roll_amountDeployable[award] + extraDeployables;
+					client_rolls[client][award][1] = roll_amountDeployable[award] + roll_Unusual[award];
 				}else{
 					client_rolls[client][award][1] = roll_amountDeployable[award];
 				}
@@ -375,7 +351,14 @@ GivePlayerEffect(client, award, cost)
 			}
 			
 			case AWARD_G_HEALTH:
-				SetEntityHealth(client, RoundToCeil(classHealth[GetEntProp(client, Prop_Send, "m_iClass")] * GetConVarFloat(c_Health)));
+			{
+				if(isUnusual)
+				{
+					SetEntityHealth(client, RoundToCeil(classHealth[GetEntProp(client, Prop_Send, "m_iClass")] * GetConVarFloat(c_Health)));
+				}else{
+					SetEntityHealth(client, RoundToCeil(classHealth[GetEntProp(client, Prop_Send, "m_iClass")] * (GetConVarFloat(c_Health) * roll_Unusual[AWARD_G_HEALTH]));
+				}
+			}
 			
 			case AWARD_G_SPEED:
 			{
@@ -603,8 +586,15 @@ GivePlayerEffect(client, award, cost)
 			case AWARD_G_AMPLIFIER:
 			{
 				centerHudText(client, "Allies near the amplifier receive minicrits", 4.0, 10.0, HudMsg3, 0.75);
-				client_rolls[client][AWARD_G_AMPLIFIER][2] = 800; //health
-				client_rolls[client][AWARD_G_AMPLIFIER][3] = 800; //maxhealth
+				
+				if(isUnusual)
+				{
+					client_rolls[client][AWARD_G_AMPLIFIER][2] = 800; //health
+					client_rolls[client][AWARD_G_AMPLIFIER][3] = 800; //maxhealth
+				}else{
+					client_rolls[client][AWARD_G_AMPLIFIER][2] = roll_Unusual[AWARD_G_AMPLIFIER]; //health
+					client_rolls[client][AWARD_G_AMPLIFIER][3] = roll_Unusual[AWARD_G_AMPLIFIER]; //maxhealth
+				}
 			}
 			
 			case AWARD_G_PROXMINES:
