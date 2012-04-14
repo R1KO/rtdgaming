@@ -20,35 +20,36 @@ Load_Rolls()
 	//Setup our arrays that will store the loaded config data
 	//afterwards it will be saved to a global array in proper order
 	//that matches the order that is 'hard coded'
-	new Handle: cfg_ID = CreateArray(32,100);
-	new Handle: cfg_isGood = CreateArray(1,100);
-	new Handle: cfg_enabled = CreateArray(1,100);
-	new Handle: cfg_resetOnDeath = CreateArray(1,100);
-	new Handle: cfg_EntLimit = CreateArray(1,100);
-	new Handle: cfg_inBeta = CreateArray(1,100);
-	new Handle: cfg_purchasable = CreateArray(1,100);
-	new Handle: cfg_cost = CreateArray(1,100);
-	new Handle: cfg_Article = CreateArray(8,100);
-	new Handle: cfg_Text = CreateArray(32,100);
-	new Handle: cfg_QuickBuy = CreateArray(64,100);
-	new Handle: cfg_ClassRestriction = CreateArray(32,100);
-	new Handle: cfg_ExcludeClass = CreateArray(32,100);
+	new Handle: cfg_ID = CreateArray(32,200);
+	new Handle: cfg_isGood = CreateArray(1,200);
+	new Handle: cfg_enabled = CreateArray(1,200);
+	new Handle: cfg_resetOnDeath = CreateArray(1,200);
+	new Handle: cfg_EntLimit = CreateArray(1,200);
+	new Handle: cfg_inBeta = CreateArray(1,200);
+	new Handle: cfg_purchasable = CreateArray(1,200);
+	new Handle: cfg_cost = CreateArray(1,200);
+	new Handle: cfg_Article = CreateArray(8,200);
+	new Handle: cfg_Text = CreateArray(32,200);
+	new Handle: cfg_QuickBuy = CreateArray(64,200);
+	new Handle: cfg_ClassRestriction = CreateArray(32,200);
+	new Handle: cfg_ExcludeClass = CreateArray(32,200);
 	
-	new Handle: cfg_deployable = CreateArray(1,100);
-	new Handle: cfg_amountdeployable = CreateArray(1,100);
-	new Handle: cfg_ActionText = CreateArray(32,100);
+	new Handle: cfg_deployable = CreateArray(1,200);
+	new Handle: cfg_amountdeployable = CreateArray(1,200);
+	new Handle: cfg_ActionText = CreateArray(32,200);
 	
-	new Handle: cfg_CountDownTimer = CreateArray(1,100);
-	new Handle: cfg_TimerOverride = CreateArray(1,100);
-	new Handle: cfg_Particle = CreateArray(32,100);
-	new Handle: cfg_Particle_AutoKill = CreateArray(1,100);
-	new Handle: cfg_Particle_AttachToHead = CreateArray(1,100);
-	new Handle: cfg_Particle_ZCorrection = CreateArray(1,100);
-	new Handle: cfg_required_weapon = CreateArray(1,100);
-	new Handle: cfg_itemEquipped_OnBack = CreateArray(1,100);
+	new Handle: cfg_CountDownTimer = CreateArray(1,200);
+	new Handle: cfg_TimerOverride = CreateArray(1,200);
+	new Handle: cfg_Particle = CreateArray(32,200);
+	new Handle: cfg_Particle_AutoKill = CreateArray(1,200);
+	new Handle: cfg_Particle_AttachToHead = CreateArray(1,200);
+	new Handle: cfg_Particle_ZCorrection = CreateArray(1,200);
+	new Handle: cfg_required_weapon = CreateArray(1,200);
+	new Handle: cfg_itemEquipped_OnBack = CreateArray(1,200);
 	
-	new Handle: cfg_OwnerSteamID = CreateArray(32,100);
-	new Handle: cfg_disabledForMaps = CreateArray(64,100);
+	new Handle: cfg_OwnerSteamID = CreateArray(32,200);
+	new Handle: cfg_disabledForMaps = CreateArray(64,200);
+	new Handle: cfg_unusual = CreateArray(8,200);
 	
 	// Load the key files.
 	BuildPath(Path_SM, strLocation, 256, "configs/rtd/rtd_rolls.cfg");
@@ -142,6 +143,9 @@ Load_Rolls()
 		
 		KvGetString(kvItemList, "disabledForMaps", strLine, sizeof(strLine), "");
 		SetArrayString(cfg_disabledForMaps, totalRolls, strLine);
+		
+		KvGetString(kvItemList, "unusual", strLine, sizeof(strLine), "");
+		SetArrayCell(cfg_unusual, totalRolls, StringToInt(strLine), 0);
 		
 		totalRolls ++;
 	}
@@ -255,7 +259,7 @@ Load_Rolls()
 				roll_required_weapon[i]	= GetArrayCell(cfg_required_weapon, step, 0);
 				
 				roll_itemEquipped_OnBack[i]	= GetArrayCell(cfg_itemEquipped_OnBack, step, 0);
-				
+				roll_Unusual[i]	= GetArrayCell(cfg_unusual, step, 0);
 				
 				
 				
@@ -287,6 +291,7 @@ Load_Rolls()
 				RemoveFromArray(cfg_itemEquipped_OnBack, step);
 				RemoveFromArray(cfg_OwnerSteamID, step);
 				RemoveFromArray(cfg_disabledForMaps, step);
+				RemoveFromArray(cfg_unusual, step);
 				break;
 			}
 		}
@@ -318,7 +323,7 @@ Load_Rolls()
 	CloseHandle(cfg_itemEquipped_OnBack);
 	CloseHandle(cfg_OwnerSteamID);
 	CloseHandle(cfg_disabledForMaps);
-	
+	CloseHandle(cfg_unusual);
 }
 
 public Load_DamageFilters()

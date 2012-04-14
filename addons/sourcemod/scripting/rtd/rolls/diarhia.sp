@@ -123,6 +123,11 @@ public DiarhiaJarBreak (objectTeam, attacker, Float:jarPos[3])
 	finalvec[0]=GetRandomFloat(50.0, 75.0)*GetRandomInt(-1,1);
 	finalvec[1]=GetRandomFloat(50.0, 75.0)*GetRandomInt(-1,1);
 	
+	new Float:jarRange = 350.0;
+	
+	if(RTD_Perks[attacker][59])
+		jarRange = 490.0;
+	
 	for (new i = 1; i <= MaxClients ; i++)
 	{
 		if(!IsClientInGame(i) || !IsPlayerAlive(i))
@@ -144,7 +149,7 @@ public DiarhiaJarBreak (objectTeam, attacker, Float:jarPos[3])
 		if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
 			continue;
 		
-		if(distance > 350.0)
+		if(distance > jarRange)
 			continue;
 		
 		//Invalid attacker, possible reasons player left

@@ -490,7 +490,14 @@ public Action:GenericTimer(Handle:timer)
 			new TFClassType:class = TF2_GetPlayerClass(i);
 			
 			if(client_rolls[i][AWARD_G_CLOAK][0] && class == TFClass_Spy)
-				TF_AddCloak(i, 1.0);
+			{
+				if(client_rolls[i][AWARD_G_CLOAK][9])
+				{
+					TF_AddCloak(i, float(roll_Unusual[AWARD_G_CLOAK]));
+				}else{
+					TF_AddCloak(i, 1.0);
+				}
+			}
 			
 			//Following is for Cow Speed
 			if(client_rolls[i][AWARD_G_COW][1] > 0 && RTD_PerksLevel[i][44] == 0)
