@@ -356,7 +356,7 @@ GivePlayerEffect(client, award, cost)
 				{
 					SetEntityHealth(client, RoundToCeil(classHealth[GetEntProp(client, Prop_Send, "m_iClass")] * GetConVarFloat(c_Health)));
 				}else{
-					SetEntityHealth(client, RoundToCeil(classHealth[GetEntProp(client, Prop_Send, "m_iClass")] * (GetConVarFloat(c_Health) * roll_Unusual[AWARD_G_HEALTH]));
+					SetEntityHealth(client, RoundToCeil(classHealth[GetEntProp(client, Prop_Send, "m_iClass")] * (GetConVarFloat(c_Health) * roll_Unusual[AWARD_G_HEALTH])));
 				}
 			}
 			
@@ -451,9 +451,9 @@ GivePlayerEffect(client, award, cost)
 			{
 				if(isUnusual)
 				{
-					client_rolls[client][award][1] += (1000 + extraHealth);
+					client_rolls[client][award][1] += roll_Unusual[award];
 				}else{
-					client_rolls[client][award][1] += (500 + extraHealth);
+					client_rolls[client][award][1] += 500;
 				}
 				
 				if(GetClientTeam(client) == BLUE_TEAM)
