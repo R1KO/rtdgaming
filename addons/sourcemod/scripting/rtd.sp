@@ -1004,6 +1004,15 @@ ShowWhatIsMOTD(client, String:lookingFor[])
 		return;
 	}
 	
+	if (StrEqual(lookingFor, "unusual", false) || StrEqual(lookingFor, "unusuals", false))
+	{
+		new String:url[128];
+		Format(url, sizeof(url), "http://wiki.rtdgaming.com/wiki/Unusual_Rolls");
+		ShowMOTDPanel(client, "Something", url, MOTDPANEL_TYPE_URL);
+		
+		return;
+	}
+	
 	for(new i=1; i <= totalRolls; i ++)
 	{
 		if (StrEqual(lookingFor, roll_Text[i], false))

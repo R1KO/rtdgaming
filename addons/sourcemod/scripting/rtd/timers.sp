@@ -611,12 +611,28 @@ public Action:GenericTimer(Handle:timer)
 			//This is designed to activate every 10th loop == 2.0
 			if(client_rolls[i][AWARD_G_INFIAMMO][0])
 			{
-				if(client_rolls[i][AWARD_G_INFIAMMO][1] >= 9)
+				if(client_rolls[i][AWARD_G_INFIAMMO][9])
 				{
-					client_rolls[i][AWARD_G_INFIAMMO][1] = 0;
-					GivePlayerInfiAmmo(i);
-				}else
-					client_rolls[i][AWARD_G_INFIAMMO][1] += 1;
+					
+					if(client_rolls[i][AWARD_G_INFIAMMO][1] >= roll_Unusual[AWARD_G_INFIAMMO])
+					{
+						client_rolls[i][AWARD_G_INFIAMMO][1] = 0;
+						GivePlayerInfiAmmo(i);
+					}else{
+						client_rolls[i][AWARD_G_INFIAMMO][1] += 1;
+					}
+					
+				}else{
+					
+					if(client_rolls[i][AWARD_G_INFIAMMO][1] >= 9)
+					{
+						client_rolls[i][AWARD_G_INFIAMMO][1] = 0;
+						GivePlayerInfiAmmo(i);
+					}else{
+						client_rolls[i][AWARD_G_INFIAMMO][1] += 1;
+					}
+					
+				}
 			}
 			
 			if(RTD_TrinketActive[i][TRINKET_SCARYTAUNT])

@@ -183,7 +183,14 @@ GivePlayerEffect(client, award, cost)
 	new extraTime;
 	
 	//Determine unusual
-	if(GetRandomInt(1,100) <= unusualRoll_Shop_Chance)
+	new bonus = 0;
+	
+	if(RTD_TrinketActive[client][TRINKET_LADYLUCK])
+	{
+		bonus = RTD_TrinketLevel[client][TRINKET_LADYLUCK] + 1;
+	}
+	
+	if(GetRandomInt(1,100) <= unusualRoll_Shop_Chance + bonus)
 	{
 		isUnusual = true;
 		client_rolls[client][award][9] = 1; //mark as unusual 
@@ -352,7 +359,7 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_G_HEALTH:
 			{
-				if(isUnusual)
+				if(!isUnusual)
 				{
 					SetEntityHealth(client, RoundToCeil(classHealth[GetEntProp(client, Prop_Send, "m_iClass")] * GetConVarFloat(c_Health)));
 				}else{
