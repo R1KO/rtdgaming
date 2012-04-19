@@ -336,7 +336,6 @@ new Handle:overlayTimer = INVALID_HANDLE;
 
 // Whether a client is having an overlay shown
 new bool:clientOverlay[MAXPLAYERS + 1];
-new m_nWaterLevel;
 new m_hOwnerEntity;
 new lastSummon[MAXPLAYERS + 1];
 new timeForNextAnnotation[MAXPLAYERS + 1];

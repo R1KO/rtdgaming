@@ -565,38 +565,6 @@ public Action:GenericTimer(Handle:timer)
 			if(client_rolls[i][AWARD_G_SPEED][0])
 				SetEntDataFloat(i, m_flMaxspeed, 1400.0);
 			
-			if(client_rolls[i][AWARD_G_STONEWALL][0])
-			{
-				//adjust the gravity
-				if(client_rolls[i][AWARD_G_STONEWALL][5] >= GetTime())
-				{
-					if(GetEntData(i, m_nWaterLevel) != 3 && GetEntityFlags(i) & FL_ONGROUND && !(GetEntityFlags(i) & FL_WATERJUMP) && !(GetClientButtons(i) & IN_JUMP))
-					{
-						SetEntityGravity(i, 3.0);
-					}else{
-						SetEntityGravity(i, 1.1);
-					}
-					
-				}else{
-					if(RTD_PerksLevel[i][48] == 0)
-					{
-						SetEntityGravity(i, 1.2);
-						
-						//adjust the speed
-						
-						//Don't apply to demoman charging
-						if(!TF2_IsPlayerInCondition(i, TFCond_Charging))
-						{
-							new Float:modifiedSpeed = GetClientBaseSpeed(i);
-							modifiedSpeed *= 0.85;
-							
-							SetEntDataFloat(i, m_flMaxspeed, modifiedSpeed);
-						}
-					}
-				}
-				
-			}
-			
 			//Following is for gravity
 			if(client_rolls[i][AWARD_G_GRAVITY][0])
 				SetEntityGravity(i, GetConVarFloat(c_Gravity));
