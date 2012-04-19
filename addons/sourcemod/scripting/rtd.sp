@@ -185,7 +185,6 @@ public OnPluginStart()
 	m_nDisguiseClass = FindSendPropInfo("CTFPlayer","m_nDisguiseClass");
 	m_flMaxspeed = FindSendPropInfo("CTFPlayer", "m_flMaxspeed");
 	m_bCarryingObject = FindSendPropInfo("CTFPlayer", "m_bCarryingObject");
-	m_nWaterLevel = FindSendPropOffs("CBasePlayer", "m_nWaterLevel");	
 	m_hOwnerEntity = FindSendPropOffs("CTFWearable", "m_hOwnerEntity");
 	
 	m_fFlags = FindSendPropOffs("CBasePlayer", "m_fFlags");
