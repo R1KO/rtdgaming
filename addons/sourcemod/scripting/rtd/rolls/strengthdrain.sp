@@ -185,6 +185,10 @@ public Action:StrengthDrain_Timer(Handle:timer, Handle:dataPackHandle)
 		
 		GetClientAbsOrigin(i,playerPos);
 		
+		if(client_rolls[i][AWARD_G_STRENGTHDRAIN][5] > GetTime() && client_rolls[i][AWARD_G_STRENGTHDRAIN][5] != 0)
+		{
+			centerHudText(i, "Strength being drained", 0.0, 1.0, HudMsg3, 0.82); 
+		}
 		
 		//Show the annotations to nearbvy players
 		if(GetVectorDistance(playerPos,strengthDrainPos) < 500.0)
@@ -221,7 +225,7 @@ public Action:StrengthDrain_Timer(Handle:timer, Handle:dataPackHandle)
 		}
 		
 		//PrintCenterText(i, "Strength being drained");
-		centerHudText(i, "Strength being drained", 0.0, 1.0, HudMsg3, 0.82); 
+		
 		
 		//tick away from auras health
 		SetVariantInt(1);
@@ -238,6 +242,9 @@ public Action:StrengthDrain_Timer(Handle:timer, Handle:dataPackHandle)
 		
 		//Save the time that the player entered the slowcube
 		client_rolls[i][AWARD_G_STRENGTHDRAIN][4] = RoundFloat(GetTickedTime() * 10.0) + 2;
+		
+		//strength drain for 5s
+		client_rolls[i][AWARD_G_STRENGTHDRAIN][5] = GetTime() + 5;
 		
 		//if(clientOverlay[i] == false)
 		//	ShowOverlay(i, "models/props_combine/portalball001_sheet ", 2.0);

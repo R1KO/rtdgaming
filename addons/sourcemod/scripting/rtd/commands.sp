@@ -440,7 +440,7 @@ public Action:Command_rtd(client, args)
 		return Plugin_Handled;
 	}
 	
-	if(StrEqual("status", strArgs[0], false) || StrEqual("rolls", strArgs[0], false) )
+	if(StrEqual("status", strArgs[0], false) || StrEqual("rolls", strArgs[0], false) || (StrEqual("active", strArgs[0], false) && StrEqual("rolls", strArgs[0], false)))
 	{
 		showActiveRolls(client);
 		return Plugin_Handled;
