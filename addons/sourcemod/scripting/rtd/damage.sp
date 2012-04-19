@@ -49,7 +49,7 @@ public Action:ObjectTakeDamage(object, &attacker, &inflictor, &Float:damage, &da
 	}
 	
 	//strength drain enemy attacking building
-	if(client_rolls[attacker][AWARD_G_STRENGTHDRAIN][4] != 0)
+	if(client_rolls[attacker][AWARD_G_STRENGTHDRAIN][5] > GetTime() && client_rolls[attacker][AWARD_G_STRENGTHDRAIN][5] != 0)
 	{
 		if(!TF2_IsPlayerInCondition(attacker, TFCond_Ubercharged))
 		{
@@ -637,7 +637,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			}
 		}
 		
-		if(client_rolls[attacker][AWARD_G_STRENGTHDRAIN][4])
+		if(client_rolls[attacker][AWARD_G_STRENGTHDRAIN][5] > GetTime() && client_rolls[attacker][AWARD_G_STRENGTHDRAIN][5] != 0)
 		{
 			if(!TF2_IsPlayerInCondition(attacker, TFCond_Ubercharged))
 			{

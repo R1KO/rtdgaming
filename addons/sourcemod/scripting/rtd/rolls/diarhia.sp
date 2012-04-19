@@ -73,7 +73,7 @@ public Action:throw_Diarhia(client)
 	CreateDataTimer(0.0,Diarhia_Jar_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	WritePackCell(dataPack, EntIndexToEntRef(ent));
 	WritePackCell(dataPack, iTeam);
-	WritePackCell(dataPack, EntIndexToEntRef(client));
+	WritePackCell(dataPack, GetClientUserId(client));
 	WritePackFloat(dataPack, startpt[0]);
 	WritePackFloat(dataPack, startpt[1]);
 	WritePackFloat(dataPack, startpt[2]);
@@ -88,7 +88,7 @@ public Action:Diarhia_Jar_Timer(Handle:timer, Handle:dataPackHandle)
 	ResetPack(dataPackHandle);
 	new jar = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new iTeam = ReadPackCell(dataPackHandle);
-	new ownerEntity = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	new ownerEntity = GetClientOfUserId(ReadPackCell(dataPackHandle));
 	
 	jarPos[0] = ReadPackFloat(dataPackHandle);
 	jarPos[1] = ReadPackFloat(dataPackHandle);
@@ -125,8 +125,11 @@ public DiarhiaJarBreak (objectTeam, attacker, Float:jarPos[3])
 	
 	new Float:jarRange = 350.0;
 	
-	if(RTD_Perks[attacker][59])
-		jarRange = 490.0;
+	if(attacker > 1)
+	{
+		if(RTD_Perks[attacker][59])
+			jarRange = 490.0;
+	}
 	
 	for (new i = 1; i <= MaxClients ; i++)
 	{
@@ -176,6 +179,14 @@ public DiarhiaJarBreak (objectTeam, attacker, Float:jarPos[3])
 		CreateDataTimer(0.1, Diarhia_Timer,dataPack, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 		WritePackCell(dataPack, GetClientUserId(i));
 		
+		//keep track of attacker
+		if(attacker > 1)
+		{
+			WritePackCell(dataPack, GetClientUserId(attacker));
+		}else{
+			WritePackCell(dataPack, 0);
+		}
+		
 		TF2_AddCondition(i, TFCond_Jarated,5.0);
 	}
 }
@@ -184,6 +195,7 @@ public Action:Diarhia_Timer(Handle:timer, Handle:dataPackHandle)
 {	
 	ResetPack(dataPackHandle);
 	new client = GetClientOfUserId(ReadPackCell(dataPackHandle));
+	new attacker = GetClientOfUserId(ReadPackCell(dataPackHandle));
 	
 	////////////////////////////
 	//Determine stop timer    //
@@ -205,13 +217,21 @@ public Action:Diarhia_Timer(Handle:timer, Handle:dataPackHandle)
 		return Plugin_Stop;
 	}
 	
+	///////////////////////
+	//Determine attacker //
+	///////////////////////
+	if(attacker < 1)
+	{
+		attacker = client;
+	}
+	
 	//////////////////////////////
 	// Determine bowel movement //
 	//////////////////////////////
 	if(GetTime() > client_rolls[client][AWARD_G_DIARHIA][6])
 	{
 		if(!IsEntLimitReached())
-			Spawn_Pattycake(client);
+			Spawn_Pattycake(client, attacker);
 		
 		//next bowel movent
 		client_rolls[client][AWARD_G_DIARHIA][6] = GetTime() + GetRandomInt(1, 12);
@@ -227,13 +247,13 @@ public Action:Diarhia_Timer(Handle:timer, Handle:dataPackHandle)
 		ShowHudText(client, HudMsg3, "...Diarhia!");
 		
 		TF2_AddCondition(client,TFCond_Jarated,5.0);
-		TF2_MakeBleed(client, client, 5.0);
+		TF2_MakeBleed(client, attacker, 5.0);
 	}
 	
 	return Plugin_Continue;
 }
 
-public Action:Spawn_Pattycake(client)
+public Action:Spawn_Pattycake(client, attacker)
 {
 	//---duke tf2nades
 	// get position and angles
@@ -333,6 +353,14 @@ public Action:Spawn_Pattycake(client)
 	WritePackCell(dataPack, RoundFloat(startpt[2])); //40
 	WritePackCell(dataPack, 0); //48 still time
 	
+	//keep track of attacker
+	if(attacker > 1)
+	{
+		WritePackCell(dataPack, GetClientUserId(attacker)); //56
+	}else{
+		WritePackCell(dataPack, 0);
+	}
+	
 	//Throw or spawn the crap
 	TeleportEntity(ent, startpt, NULL_VECTOR, speed);
 	SetEntityMoveType(ent, MOVETYPE_VPHYSICS);
@@ -377,6 +405,10 @@ public Action:Pattycake_Timer(Handle:timer, Handle:dataPackHandle)
 	
 	ResetPack(dataPackHandle);
 	new pattycake = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	
+	SetPackPosition(dataPackHandle,56);
+	new attacker = GetClientOfUserId(ReadPackCell(dataPackHandle));
+	
 	SetPackPosition(dataPackHandle,16);
 	new soundTime = ReadPackCell(dataPackHandle);
 	
@@ -463,7 +495,14 @@ public Action:Pattycake_Timer(Handle:timer, Handle:dataPackHandle)
 				//DealDamage(i, 10, i, 4226, "crap");
 				
 				TF2_AddCondition(i,TFCond_Jarated, 10.0);
-				TF2_MakeBleed(i, i, 10.0);
+				
+				if(attacker > 1)
+				{
+					TF2_MakeBleed(i, attacker, 10.0);
+				}else{
+					TF2_MakeBleed(i, i, 10.0);
+				}
+				
 			}else{
 				if(lastCoughed[i] != 0 && (GetTime() - lastCoughed[i]) == 1)
 				{
