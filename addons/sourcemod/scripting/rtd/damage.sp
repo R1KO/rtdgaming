@@ -681,36 +681,28 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 	
 	if(client_rolls[client][AWARD_G_STONEWALL][0])
 	{
-		if(client_rolls[client][AWARD_G_STONEWALL][5] >= GetTime())
+		if(RTD_PerksLevel[client][49] > 0)
 		{
-			if(RTD_PerksLevel[client][49] > 0)
-			{
-				damage *= 0.35;
-			}else{
-				damage *= 0.4;
-			}
-			
-			new rnd = GetRandomInt(1,3);
-			switch(rnd)
-			{
-				case 1:
-					EmitSoundToAll(SOUND_CONCRETE_IMPACT_01,client);
-				
-				case 2:
-					EmitSoundToAll(SOUND_CONCRETE_IMPACT_02,client);
-					
-				case 3:
-					EmitSoundToAll(SOUND_CONCRETE_IMPACT_03,client);
-			}
-			
+			damage *= 0.65;
 		}else{
+			damage *= 0.8;
+		}
+		
+		//additional 25% damage reistance
+		if(client_rolls[client][AWARD_G_STONEWALL][4] > GetTime())
+			damage *= 0.75;
+		
+		new rnd = GetRandomInt(1,3);
+		switch(rnd)
+		{
+			case 1:
+				EmitSoundToAll(SOUND_CONCRETE_IMPACT_01,client);
 			
-			if(RTD_PerksLevel[client][49] > 0)
-			{
-				damage *= 0.9;
-			}else{
-				damage *= 0.95;
-			}
+			case 2:
+				EmitSoundToAll(SOUND_CONCRETE_IMPACT_02,client);
+				
+			case 3:
+				EmitSoundToAll(SOUND_CONCRETE_IMPACT_03,client);
 		}
 	}
 	

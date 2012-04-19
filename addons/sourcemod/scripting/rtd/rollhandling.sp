@@ -689,7 +689,12 @@ GivePlayerEffect(client, award, cost)
 				client_rolls[client][award][1] = 0; //entity index
 				SpawnAndAttachStonewall(client);
 				
-				centerHudText(client, "Standing still reduces damage taken by 50 percent", 4.0, 5.0, HudMsg3, 0.75); 
+				if(RTD_PerksLevel[client][49] > 0)
+				{
+					centerHudText(client, "+35 Percent Damage Resistance", 4.0, 5.0, HudMsg3, 0.75); 
+				}else{
+					centerHudText(client, "+20 Percent Damage Resistance", 4.0, 5.0, HudMsg3, 0.75); 
+				}
 			}
 			
 			case AWARD_G_SENTRYWRENCH:
