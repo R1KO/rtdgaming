@@ -315,7 +315,7 @@ public Action:Stonewall_Timer(Handle:timer, Handle:dataPackHandle)
 						
 						attachExistingStonewall(client, stonewall);
 					}else{
-						PrintCenterText(client, "Stonewall Damage reduction increased for 30s");
+						PrintCenterText(client, "Stonewall Damage Resistance increased for 30s");
 						
 						//Add extra speed boost
 						client_rolls[client][AWARD_G_STONEWALL][4] = GetTime() + 30;
@@ -385,53 +385,6 @@ public Action:Stonewall_Timer(Handle:timer, Handle:dataPackHandle)
 				SetEntityRenderColor(stonewall, 255, 255,255, alpha);
 			}
 			
-			/////////////////////////
-			//Is the player moving //
-			/////////////////////////
-			/*
-			new iButtons = GetClientButtons(wearer);
-			new bool:isMoving = false;
-			if(iButtons & IN_FORWARD || iButtons & IN_BACK || iButtons & IN_MOVELEFT || iButtons & IN_MOVERIGHT)
-				isMoving = true;
-			*/
-			
-			///////////////////////////////////////
-			//Only apply if Stonewall is visible //
-			///////////////////////////////////////
-			if(alpha != 0)
-			{
-				////////////////////
-				//begin code here //
-				////////////////////
-				new Float:newCoordinates[3];
-				GetClientAbsOrigin(wearer, newCoordinates);
-				
-				new Float:distance;
-				distance = GetVectorDistance(newCoordinates, lastCoordinates);
-				
-				//PrintToChat(wearer, "(%f, %f, %f) | %f", lastCoordinates[0], lastCoordinates[1], lastCoordinates[2], distance);
-				
-				lastCoordinates[0] = newCoordinates[0];
-				lastCoordinates[1] = newCoordinates[1];
-				lastCoordinates[2] = newCoordinates[2];
-				
-				if(distance > 5.0)
-					client_rolls[wearer][AWARD_G_STONEWALL][5] = 0;
-				
-				if(nextTime == 0)
-				{	
-					if(distance < 5.0 && GetEntData(wearer, m_nWaterLevel) != 3 && GetEntityFlags(wearer) & FL_ONGROUND && !(GetEntityFlags(wearer) & FL_WATERJUMP))
-					{
-						//this marks the time that the player will receive time reduction
-						client_rolls[wearer][AWARD_G_STONEWALL][5] = GetTime() + 1;
-						
-						centerHudText(wearer, "Stonewall Activated!", 0.0, 0.7, HudMsg3, 0.75); 
-					}
-				}
-			}
-			
-			
-				
 			////////////////////
 			// Determine skin //
 			////////////////////
@@ -486,11 +439,6 @@ public Drop_Stonewall(client)
 	if(!IsClientInGame(client))
 		return;
 	
-	if(IsPlayerAlive(client))
-	{
-		SetEntityGravity(client, 1.0);
-		ResetClientSpeed(client);
-	}
 }
 
 public detachStonewall(stonewall)

@@ -613,7 +613,7 @@ public fn_PerksMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					RTD_Perks[param1][49] += value;
 					RTD_PerksLevel[param1][49] ++;
 					
-					PrintToChat(param1, "Stonewall: +5% Damage resistance");			
+					PrintToChat(param1, "Stonewall: 35% Damage resistance");			
 				}
 				else if (StrContains(menuTriggers[1], "a47", false) != -1)
 				{
