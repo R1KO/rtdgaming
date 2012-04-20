@@ -734,6 +734,9 @@ public Action:resetCredsUsed(Handle:timer, any:clientUserID)
 	credsUsed[client][0] = 0;
 	credsUsed[client][1] = GetTime();
 	
+	creds_ReceivedFromGifts[client] = 0;
+	creds_Gifted[client] = 0;
+	
 	return Plugin_Continue;
 }
 
