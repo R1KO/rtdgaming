@@ -5,6 +5,13 @@
 #include <attachments>
 #include <rtd_rollinfo>
 
+public GiveHorsemann(client)
+{	
+	//PrintToServer("Reached Horsemann File: %i", client);
+	CreateTimer(1.0, Timer_DelayHorseMan, GetClientUserId(client), TIMER_REPEAT);
+	
+}
+
 public Action:Timer_Boo(Handle:timer, Handle:dataPackHandle)
 {
 	ResetPack(dataPackHandle);
@@ -124,15 +131,15 @@ public Action:Timer_Boo(Handle:timer, Handle:dataPackHandle)
 	return Plugin_Continue;
 }
 
-public Action:Timer_DelayHorseMan(Handle:Timer, any:userId)
+public Action:Timer_DelayHorseMan(Handle:timer, any:userId)
 {
+
 	new client = GetClientOfUserId(userId);
-	
-	if(client < 1)
-		return Plugin_Stop;
-	
-	if(client_rolls[client][AWARD_G_HORSEMANN][0])
-		ServerCommand("sm_bethehorseman %i", userId);
-	
+	new String:clientName[32];
+	GetClientName(client, clientName, 32);
+	ServerCommand("sm_bethehorsemann \"%s\" ", clientName);
+	//PrintToServer("Reached command with client: %s", clientName);
 	return Plugin_Stop;
 }
+
+
