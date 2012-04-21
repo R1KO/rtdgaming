@@ -120,6 +120,7 @@
 #include "rtd/rolls/slicendice.sp"
 #include "rtd/rolls/groundingbullet.sp"
 #include "rtd/rolls/diarhia.sp"
+#include "rtd/rolls/horsemann.sp"
 
 //Perks
 #include "rtd/rolls/friedchicken.sp"
