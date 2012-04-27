@@ -23,6 +23,7 @@
 new bool:g_IsModel[MAXPLAYERS+1] = {false, ...};
 new bool:g_bIsTP[MAXPLAYERS+1] = {false, ...};
 new bool:g_bIsHHH[MAXPLAYERS + 1] = {false, ...};
+new bool:hasModel[MAXPLAYERS + 1] = {false, ...};
 //new bool:g_bLeftFootstep[MAXPLAYERS + 1] = {0, ...};
 
 public Plugin:myinfo = 
@@ -52,6 +53,7 @@ public OnClientDisconnect_Post(client)
 	g_IsModel[client] = false;
 	g_bIsTP[client] = false;
 	g_bIsHHH[client] = false;
+	hasModel[client] = false;
 }
 public OnMapStart()
 {
@@ -66,6 +68,11 @@ public OnMapStart()
 	PrecacheSound(DEATHVO, true);
 	PrecacheSound(LEFTFOOT, true);
 	PrecacheSound(RIGHTFOOT, true);
+	
+	///////////////////////////////////////
+	//Timers                             //
+	///////////////////////////////////////
+	CreateTimer(0.5,  	Timer_UpdateSkins, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 }
 
 public OnPluginEnd()
@@ -138,7 +145,7 @@ public Event_Death(Handle:event, const String:name[], bool:dontBroadcast)
 		if (IsValidClient(client) && g_bIsHHH[client])
 		{
 			g_bIsHHH[client] = false;
-			
+			hasModel[client] = false;
 			EmitSoundToAll(DEATH);
 			EmitSoundToAll(DEATHVO);
 		}
@@ -154,13 +161,8 @@ public Action:SetModel(client, const String:model[])
 		SetEntProp(client, Prop_Send, "m_bUseClassAnimations", 1);
 		
 		g_IsModel[client] = true;
+		hasModel[client] = true;
 		
-		if(GetClientTeam(client) == BLUE_TEAM)
-		{
-			DispatchKeyValue(client, "skin","1"); 
-		}else{
-			DispatchKeyValue(client, "skin","2"); 
-		}
 	}
 }
 public Action:RemoveModel(client)
@@ -170,6 +172,7 @@ public Action:RemoveModel(client)
 		SetVariantString("");
 		AcceptEntityInput(client, "SetCustomModel");
 		g_IsModel[client] = false;
+		hasModel[client] = false;
 	}
 //	return Plugin_Handled;
 }
@@ -366,4 +369,67 @@ stock FindEntityByClassname2(startEnt, const String:classname[])
 	/* If startEnt isn't valid shifting it back to the nearest valid one */
 	while (startEnt > -1 && !IsValidEntity(startEnt)) startEnt--;
 	return FindEntityByClassname(startEnt, classname);
+}
+
+public Action:Timer_UpdateSkins(Handle:timer) 
+{
+	new skin;
+	
+	for (new i = 1; i <= MaxClients ; i++)
+	{
+		if(!IsClientInGame(i) || !IsPlayerAlive(i))
+			continue;
+		
+		if(g_bIsHHH[i])
+		{
+			skin = GetEntProp(i, Prop_Data, "m_nSkin");
+			
+			if(GetClientTeam(i) == BLUE_TEAM)
+			{
+				if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
+				{
+					if(skin != 3)
+					{
+						DispatchKeyValue(i, "skin","3");
+					}
+				}else{
+					if(skin != 0)
+					{
+						DispatchKeyValue(i, "skin","0");
+					}
+				}
+			}else{
+				if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
+				{
+					if(skin != 2)
+					{
+						DispatchKeyValue(i, "skin","2");
+					}
+				}else{
+					if(skin != 1)
+					{
+						DispatchKeyValue(i, "skin","1");
+					}
+				}
+			}
+			
+			//Special Spy conditions
+			if(TF2_IsPlayerInCondition(i, TFCond_Disguised) || TF2_IsPlayerInCondition(i, TFCond_Cloaked))
+			{
+				if(hasModel[i])
+				{
+					RemoveModel(i);
+				}
+			}else{
+				if(!hasModel[i])
+				{
+					SetModel(i, HHH);
+				}
+			}
+			
+		}
+		
+	}
+	
+	return Plugin_Continue;
 }

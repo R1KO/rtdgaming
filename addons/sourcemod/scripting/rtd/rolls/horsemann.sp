@@ -8,7 +8,7 @@
 public GiveHorsemann(client)
 {	
 	//PrintToServer("Reached Horsemann File: %i", client);
-	CreateTimer(1.0, Timer_DelayHorseMan, GetClientUserId(client));
+	CreateTimer(0.5, Timer_DelayHorseMan, GetClientUserId(client));
 	
 }
 

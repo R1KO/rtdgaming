@@ -37,7 +37,6 @@ new Handle:c_TrinketReRollPrice = INVALID_HANDLE;
 
 new Handle:c_Event_MLK = INVALID_HANDLE;
 
-new g_oFOV, g_oDefFOV;
 
 /**
 	0 - Is client in a yoshi egg?
