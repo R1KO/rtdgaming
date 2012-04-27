@@ -203,15 +203,23 @@ public Action:SlowCube_Timer(Handle:timer, Handle:dataPackHandle)
 		{
 			EmitSoundToClient(i,SlowCube_Enter);
 		}else{
-			if(((GetRandomInt(0,100) > (100 - RTD_Perks[i][10])) && GetTime() > client_rolls[i][AWARD_G_SLOWCUBE][7])|| client_rolls[i][AWARD_G_SLOWCUBE][6] > GetTime())
+			if(((GetRandomInt(0,100) > (100 - RTD_Perks[i][10])) && GetTime() >= client_rolls[i][AWARD_G_SLOWCUBE][7]) || GetTime() <= client_rolls[i][AWARD_G_SLOWCUBE][6])
 			{
-				//next bypassing allowed in 10s
-				client_rolls[i][AWARD_G_SLOWCUBE][7] = GetTime() + 10;
+				if(GetTime() > client_rolls[i][AWARD_G_SLOWCUBE][6])
+				{
+					//next time when bypassing is allowed (10s)
+					client_rolls[i][AWARD_G_SLOWCUBE][7] = GetTime() + 10;
+					
+					//immunity time
+					client_rolls[i][AWARD_G_SLOWCUBE][6] = GetTime() + 2;
+					
+					//PrintToChat(i, "SlowCube Immunity starting: %i", GetTime());
+				}
 				
-				client_rolls[i][AWARD_G_SLOWCUBE][6] = GetTime() + 2;
 				centerHudText(i, "Bypassing SlowCube for 2s", 0.0, 0.3, HudMsg3, 0.7); 
 				SetEntityGravity(i, 1.0);
 				ResetClientSpeed(i);
+				
 			}else{
 				new Float:speed[3];
 				// Calculate and apply a new velocity to the player.
