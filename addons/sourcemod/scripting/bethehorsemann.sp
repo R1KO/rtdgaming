@@ -6,8 +6,7 @@
 
 #define PLUGIN_VERSION "1.1"
 
-#define HHH "models/bots/headless_hatman.mdl"
-//#define HHH "models/rtdgaming/horsemann/horsemann.mdl"
+#define HHH "models/rtdgaming/horsemann/horsemann.mdl"
 #define AXE "models/weapons/c_models/c_bigaxe/c_bigaxe.mdl"
 #define SPAWN "ui/halloween_boss_summoned_fx.wav"
 #define SPAWNRUMBLE "ui/halloween_boss_summon_rumble.wav"
@@ -19,6 +18,9 @@
 #define LEFTFOOT "player/footsteps/giant1.wav"
 #define RIGHTFOOT "player/footsteps/giant2.wav"
 
+#define RED_TEAM				2
+#define BLUE_TEAM				3
+
 new bool:g_IsModel[MAXPLAYERS+1] = {false, ...};
 new bool:g_bIsTP[MAXPLAYERS+1] = {false, ...};
 new bool:g_bIsHHH[MAXPLAYERS + 1] = {false, ...};
@@ -26,9 +28,9 @@ new bool:g_bIsHHH[MAXPLAYERS + 1] = {false, ...};
 
 public Plugin:myinfo = 
 {
-	name = "[TF2] Be the Horsemann",
-	author = "FlaminSarge",
-	description = "Be the Horsemann",
+	name = "[TF2] Be the Horsemann (RTD Mod)",
+	author = "FlaminSarge (RTD Modified: John & Fox)",
+	description = "Be the Horsemann (RTD Mod)",
 	version = PLUGIN_VERSION,
 	url = ""
 }
@@ -54,6 +56,7 @@ public OnClientDisconnect_Post(client)
 }
 public OnMapStart()
 {
+	ProcessDownloads();
 	PrecacheModel(HHH, true);
 	PrecacheModel(AXE, true);
 	PrecacheSound(BOO, true);
@@ -64,15 +67,68 @@ public OnMapStart()
 	PrecacheSound(DEATHVO, true);
 	PrecacheSound(LEFTFOOT, true);
 	PrecacheSound(RIGHTFOOT, true);
-//	TF2Items_CreateWeapon(8266, "tf_weapon_sword", 266, 2, 5, 100, "15 ; 0 ; 26 ; 750.0 ; 2 ; 999.0 ; 107 ; 4.0 ; 109 ; 0.0 ; 62 ; 0.09 ; 205 ; 0.05 ; 206 ; 0.05 ; 68 ; -2 ; 236 ; 1.0 ; 53 ; 1.0 ; 27 ; 1.0 ; 180 ; -25 ; 219 ; 1.0", _, "models/weapons/c_models/c_bigaxe/c_bigaxe.mdl", true);
+}
+
+public OnPluginEnd()
+{
+	for (new i = 1; i <= MaxClients ; i++) 
+	{
+		
+		if (IsClientInGame(i) )
+		{
+			if(!IsPlayerAlive(i))
+				continue;
+			
+			if(g_bIsHHH[i])
+			{
+				RemoveModel(i);
+				SwitchView(i, false, true, true);
+			}
+		}
+	}
+}
+
+stock ProcessDownloads()
+{
+	AddFileToDownloadsTable("materials/models/rtdgaming/horsemann/headless_hatman.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/horsemann/headless_hatman_red.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/horsemann/hhh_pumpkin.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/horsemann/invulnfx_blue.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/horsemann/invulnfx_red.vmt");
+	
+	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.vvd");
+}
+
+public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	
+	if(g_bIsHHH[client])
+	{
+		MakeHorsemann(client);
+	}else{
+		RemoveModel(client);
+		SwitchView(client, false, true, true);
+		g_bIsHHH[client] = false;
+	}
 }
 
 public EventInventoryApplication(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	RemoveModel(client)
-	SwitchView(client, false, true, true);
-	g_bIsHHH[client] = false;
+	
+	if(g_bIsHHH[client])
+	{
+		MakeHorsemann(client);
+	}else{
+		RemoveModel(client)
+		SwitchView(client, false, true, true);
+		g_bIsHHH[client] = false;
+	}
 }
 public Event_Death(Handle:event, const String:name[], bool:dontBroadcast)
 {
@@ -82,7 +138,8 @@ public Event_Death(Handle:event, const String:name[], bool:dontBroadcast)
 	{
 		if (IsValidClient(client) && g_bIsHHH[client])
 		{
-//			DoHorsemannDeath(client);
+			g_bIsHHH[client] = false;
+			
 			EmitSoundToAll(DEATH);
 			EmitSoundToAll(DEATHVO);
 		}
@@ -94,10 +151,17 @@ public Action:SetModel(client, const String:model[])
 	{
 		SetVariantString(model);
 		AcceptEntityInput(client, "SetCustomModel");
-
+		
 		SetEntProp(client, Prop_Send, "m_bUseClassAnimations", 1);
-
+		
 		g_IsModel[client] = true;
+		
+		if(GetClientTeam(client) == BLUE_TEAM)
+		{
+			DispatchKeyValue(client, "skin","1"); 
+		}else{
+			DispatchKeyValue(client, "skin","2"); 
+		}
 	}
 }
 public Action:RemoveModel(client)
@@ -110,6 +174,7 @@ public Action:RemoveModel(client)
 	}
 //	return Plugin_Handled;
 }
+
 stock SwitchView (target, bool:observer, bool:viewmodel, bool:self)
 {
 	//SetEntPropEnt(target, Prop_Send, "m_hObserverTarget", observer ? target:-1);
@@ -124,52 +189,44 @@ stock SwitchView (target, bool:observer, bool:viewmodel, bool:self)
 }
 
 //Commands
-public Action:Command_Horsemann(client, args)
+public Action:Command_Horsemann(initiator, args)
 {
-	decl String:arg1[32];
-	if (args != 1)
+	//can only be called by server
+	if(initiator != 0)
 	{
-		arg1 = "@me";
+		ReplyToCommand(initiator, "Function can't be used through console, use: sm_bethehorsemann <Client Index>");
+		PrintToServer("Function can't be used through console, use: sm_bethehorsemann <Client Index>");
 	}
-	else GetCmdArg(1, arg1, sizeof(arg1));
-	/**
-	 * target_name - stores the noun identifying the target(s)
-	 * target_list - array to store clients
-	 * target_count - variable to store number of clients
-	 * tn_is_ml - stores whether the noun must be translated
-	 */
-	new String:target_name[MAX_TARGET_LENGTH];
-	new target_list[MAXPLAYERS], target_count;
-	new bool:tn_is_ml;
- 
-	if ((target_count = ProcessTargetString(
-			arg1,
-			client,
-			target_list,
-			MAXPLAYERS,
-			COMMAND_FILTER_ALIVE, /* Only allow alive players */
-			target_name,
-			sizeof(target_name),
-			tn_is_ml)) <= 0)
-	{
-		/* This function replies to the admin with a failure message */
-		ReplyToTargetError(client, target_count);
+	
+	decl String:strMessage[128];
+	GetCmdArg(1, strMessage, sizeof(strMessage));
+	
+	new client = StringToInt(strMessage);
+	
+	//PrintToChatAll("Attempting to give horsemann to: %i", client);
+	
+	if(client < 1 || client > MAXPLAYERS)
 		return Plugin_Handled;
-	}
-	for (new i = 0; i < target_count; i++)
-	{
-		MakeHorsemann(target_list[i]);
-		LogAction(client, target_list[i], "\"%L\" made \"%L\" a Horseless Headless Horsemann", client, target_list[i]);
-	}
+	
+	if(!IsClientInGame(client))
+		return Plugin_Handled;
+	
+	if(!IsPlayerAlive(client))
+		return Plugin_Handled;
+	
+	MakeHorsemann(client);
+	
 	EmitSoundToAll(SPAWN);
 	EmitSoundToAll(SPAWNRUMBLE);
 	EmitSoundToAll(SPAWNVO);
 	return Plugin_Handled;
 }
+
 MakeHorsemann(client)
 {
 	new ragdoll = GetEntPropEnt(client, Prop_Send, "m_hRagdoll");
 	if (ragdoll > MaxClients && IsValidEntity(ragdoll)) AcceptEntityInput(ragdoll, "Kill");
+	/*
 	decl String:weaponname[32];
 	GetClientWeapon(client, weaponname, sizeof(weaponname));
 	if (strcmp(weaponname, "tf_weapon_minigun", false) == 0) 
@@ -179,36 +236,46 @@ MakeHorsemann(client)
 	}
 	TF2_SwitchtoSlot(client, TFWeaponSlot_Melee);
 	CreateTimer(0.0, Timer_Switch, client);
-//	TF2Items_GiveWeapon(client, 8266);
+	//	TF2Items_GiveWeapon(client, 8266);
+	*/
+	
 	SetModel(client, HHH);
 	SwitchView(client, true, false, true);
+	
+	/*
 	TF2_RemoveWeaponSlot(client, 0);
 	TF2_RemoveWeaponSlot(client, 1);
 	TF2_RemoveWeaponSlot(client, 5);
 	TF2_RemoveWeaponSlot(client, 3);
-	TF2_SetHealth(client, 2500);
+	* */
+	
+	//TF2_SetHealth(client, 2500);
 	g_bIsHHH[client] = true;
-//	g_bIsTP[client] = true;
+	//	g_bIsTP[client] = true;
 }
+
 stock TF2_SetHealth(client, NewHealth)
 {
 	SetEntProp(client, Prop_Send, "m_iHealth", NewHealth, 1);
 	SetEntProp(client, Prop_Data, "m_iHealth", NewHealth, 1);
 }
+
 public Action:Timer_Switch(Handle:timer, any:client)
 {
 	if (IsValidClient(client))
 		GiveAxe(client);
 }
+
 stock GiveAxe(client)
 {
 	//TF2_RemoveWeaponSlot(client, 2);
-	new Handle:hWeapon = TF2Items_CreateItem(OVERRIDE_ALL|FORCE_GENERATION)
-	if (hWeapon != INVALID_HANDLE)
-	{
+	//new Handle:hWeapon = TF2Items_CreateItem(OVERRIDE_ALL|FORCE_GENERATION)
+	//if (hWeapon != INVALID_HANDLE)
+	//{
 		//Nothing here....
-	}	
+	//}	
 }
+
 stock TF2_SwitchtoSlot(client, slot)
 {
 	if (slot >= 0 && slot <= 5 && IsClientInGame(client) && IsPlayerAlive(client))
@@ -221,6 +288,7 @@ stock TF2_SwitchtoSlot(client, slot)
 		}
 	}
 }
+
 public Action:HorsemannSH(clients[64], &numClients, String:sample[PLATFORM_MAX_PATH], &entity, &channel, &Float:volume, &level, &pitch, &flags)
 {
 //	decl String:clientModel[64];
@@ -245,6 +313,7 @@ public Action:HorsemannSH(clients[64], &numClients, String:sample[PLATFORM_MAX_P
 	}
 	return Plugin_Continue;
 }
+
 DoHorsemannScare(client)
 {
 	decl Float:HorsemannPosition[3];
@@ -266,6 +335,7 @@ DoHorsemannScare(client)
 		}
 	}
 }
+
 stock bool:IsValidClient(client)
 {
 	if (client <= 0) return false;
@@ -273,6 +343,7 @@ stock bool:IsValidClient(client)
 //	if (!IsClientConnected(client)) return false;
 	return IsClientInGame(client);
 }
+
 stock bool:FindHHHSaxton(client)
 {
 	new edict = MaxClients+1;
@@ -290,6 +361,7 @@ stock bool:FindHHHSaxton(client)
 	}
 	return false;
 }
+
 stock FindEntityByClassname2(startEnt, const String:classname[])
 {
 	/* If startEnt isn't valid shifting it back to the nearest valid one */

@@ -8,7 +8,7 @@
 public GiveHorsemann(client)
 {	
 	//PrintToServer("Reached Horsemann File: %i", client);
-	CreateTimer(1.0, Timer_DelayHorseMan, GetClientUserId(client), TIMER_REPEAT);
+	CreateTimer(1.0, Timer_DelayHorseMan, GetClientUserId(client));
 	
 }
 
@@ -135,10 +135,13 @@ public Action:Timer_DelayHorseMan(Handle:timer, any:userId)
 {
 
 	new client = GetClientOfUserId(userId);
-	new String:clientName[32];
-	GetClientName(client, clientName, 32);
-	ServerCommand("sm_bethehorsemann \"%s\" ", clientName);
-	//PrintToServer("Reached command with client: %s", clientName);
+	
+	//client left while waiting for command
+	if(client < 1)
+		return Plugin_Stop;
+	
+	ServerCommand("sm_bethehorsemann %i", client);
+	
 	return Plugin_Stop;
 }
 

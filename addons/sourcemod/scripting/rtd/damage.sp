@@ -677,8 +677,37 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			}
 		}
 		
+		//////////////////////////
+		//Attacker is Horsemann //
+		//////////////////////////
+		
+		//damage bonuses do not apply to spies
+		if(!TF2_IsPlayerInCondition(attacker, TFCond_Disguised) && !TF2_IsPlayerInCondition(attacker, TFCond_Disguising) && !TF2_IsPlayerInCondition(attacker, TFCond_Cloaked))
+		{	
+			//client deals 25% more damage
+			if(client_rolls[attacker][AWARD_G_HORSEMANN][0])
+			{
+				damage *= 1.25;
+			}
+		}
 	}
 	
+	////////////////////////
+	//Client is Horsemann //
+	////////////////////////
+	
+	//damage bonuses do not apply to spies
+	if(!TF2_IsPlayerInCondition(client, TFCond_Disguised) && !TF2_IsPlayerInCondition(client, TFCond_Disguising) && !TF2_IsPlayerInCondition(client, TFCond_Cloaked) && !isAttackerSelf)
+	{
+		//client receives 50% less damage
+		if(client_rolls[client][AWARD_G_HORSEMANN][0])
+		{
+			damage *= 0.5;
+		}
+	}
+	
+	////////////////////////
+	//attacker
 	if(client_rolls[client][AWARD_G_STONEWALL][0])
 	{
 		if(RTD_PerksLevel[client][49] > 0)
