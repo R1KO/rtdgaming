@@ -2,7 +2,6 @@
 #include <sdktools>
 #include <sdkhooks>
 #include <tf2_stocks>
-#include <tf2items>
 
 #define PLUGIN_VERSION "1.1"
 
