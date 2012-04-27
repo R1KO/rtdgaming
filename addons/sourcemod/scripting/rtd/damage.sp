@@ -682,7 +682,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		//////////////////////////
 		
 		//damage bonuses do not apply to spies
-		if(!TF2_IsPlayerInCondition(attacker, TFCond_Disguised) && !TF2_IsPlayerInCondition(attacker, TFCond_Disguising) && !TF2_IsPlayerInCondition(attacker, TFCond_Cloaked))
+		if(!TF2_IsPlayerInCondition(attacker, TFCond_Disguised) && !TF2_IsPlayerInCondition(attacker, TFCond_Cloaked))
 		{	
 			//client deals 25% more damage
 			if(client_rolls[attacker][AWARD_G_HORSEMANN][0])

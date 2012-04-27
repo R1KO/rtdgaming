@@ -190,9 +190,6 @@ public OnPluginStart()
 	
 	m_fFlags = FindSendPropOffs("CBasePlayer", "m_fFlags");
 	
-	g_oFOV = FindSendPropOffs("CBasePlayer", "m_iFOV");
-	g_oDefFOV = FindSendPropOffs("CBasePlayer", "m_iDefaultFOV");
-	
 	m_bCarried = FindSendPropInfo("CBaseObject", "m_bCarried");
 	iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
 	

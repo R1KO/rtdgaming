@@ -333,22 +333,17 @@ stock Yoshi_Thirdperson(client, bool:apply=true, type=0)
 		}
 		
 		//Third person code
-		SetEntPropEnt(client, Prop_Send, "m_hObserverTarget", client);
-		SetEntProp(client, Prop_Send, "m_iObserverMode", 1);
-		SetEntData(client, g_oFOV, 70, 4, true);
-		SetEntProp(client, Prop_Send, "m_bDrawViewmodel", 0);
-		SetVariantBool(true);
-		AcceptEntityInput(client, "SetCustomModelVisibletoSelf");
+		SetVariantInt(1);
+		AcceptEntityInput(client, "SetForcedTauntCam");
 		
 		Colorize(client, INVIS, false);
 	} else {
 		SetVariantString("");
 		AcceptEntityInput(client, "SetCustomModel");
 		
-		SetEntPropEnt(client, Prop_Send, "m_hObserverTarget", -1);
-		SetEntProp(client, Prop_Send, "m_iObserverMode", 0);
-		SetEntData(client, g_oFOV, GetEntData(client, g_oDefFOV, 4), 4, true);
-		SetEntProp(client, Prop_Send, "m_bDrawViewmodel", 1);
+		SetVariantInt(0);
+		AcceptEntityInput(client, "SetForcedTauntCam");
+		
 		SetVariantBool(false);
 		AcceptEntityInput(client, "SetCustomModelVisibletoSelf");
 		
