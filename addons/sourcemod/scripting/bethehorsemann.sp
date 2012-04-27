@@ -427,9 +427,32 @@ public Action:Timer_UpdateSkins(Handle:timer)
 				}
 			}
 			
+			//bug with sapper animation
+			if(isActiveWeapon(i, 735) || isActiveWeapon(i, 736) || isActiveWeapon(i, 25) || isActiveWeapon(i, 26) || isActiveWeapon(i, 27) || isActiveWeapon(i, 28))
+			{
+				if(hasModel[i])
+				{
+					RemoveModel(i);
+				}
+			}
+			
 		}
 		
 	}
 	
 	return Plugin_Continue;
+}
+
+public isActiveWeapon(client, m_iItemDefinitionIndex)
+{
+	new iWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	
+	if(IsValidEntity(iWeapon))
+	{
+		new itemDefinition = GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex");
+		if(itemDefinition == m_iItemDefinitionIndex)
+			return true;
+	}
+	
+	return false;
 }
