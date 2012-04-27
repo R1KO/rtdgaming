@@ -160,6 +160,16 @@ public bool:UnAcceptable(client, award)
 	
 	if(award == AWARD_B_DOOM && GameRules_GetProp("m_bInSetup", 4, 0) == 1) return true;
 	
+	//Horsemann
+	if(award == AWARD_G_HULK && client_rolls[client][AWARD_G_HORSEMANN][0])
+		return true;
+	
+	if(award == AWARD_G_HORSEMANN && client_rolls[client][AWARD_G_HULK][0])
+		return true;
+	
+	if(award == AWARD_G_YOSHI && client_rolls[client][AWARD_G_HORSEMANN][0])
+		return true;
+	
 	return false;
 }
 
