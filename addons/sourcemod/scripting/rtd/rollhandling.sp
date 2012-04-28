@@ -267,7 +267,7 @@ GivePlayerEffect(client, award, cost)
 	//apply timer based unusual effects
 	if(isUnusual)
 	{
-		if(roll_CountDownTimer[award])
+		if(roll_CountDownTimer[award] && roll_Unusual_Override[award] == 0)
 		{
 			extraTime = roll_Unusual[award];
 		}
@@ -329,7 +329,7 @@ GivePlayerEffect(client, award, cost)
 					client_rolls[client][award][1] = roll_amountDeployable[award];
 				}
 			}else{
-				if(isUnusual)
+				if(isUnusual && roll_Unusual_Override[award] == 0)
 				{
 					client_rolls[client][award][1] = roll_amountDeployable[award] + roll_Unusual[award];
 				}else{
@@ -606,11 +606,11 @@ GivePlayerEffect(client, award, cost)
 				
 				if(isUnusual)
 				{
-					client_rolls[client][AWARD_G_AMPLIFIER][2] = 800; //health
-					client_rolls[client][AWARD_G_AMPLIFIER][3] = 800; //maxhealth
-				}else{
 					client_rolls[client][AWARD_G_AMPLIFIER][2] = roll_Unusual[AWARD_G_AMPLIFIER]; //health
 					client_rolls[client][AWARD_G_AMPLIFIER][3] = roll_Unusual[AWARD_G_AMPLIFIER]; //maxhealth
+				}else{
+					client_rolls[client][AWARD_G_AMPLIFIER][2] = 800; //health
+					client_rolls[client][AWARD_G_AMPLIFIER][3] = 800; //maxhealth
 				}
 			}
 			
