@@ -655,8 +655,8 @@ GivePlayerEffect(client, award, cost)
 			{
 				client_rolls[client][award][0] = 0;
 				new decapitations = GetEntProp(client, Prop_Send, "m_iDecapitations");
-				SetEntProp(client, Prop_Send, "m_iDecapitations", decapitations + 2);
-				centerHudText(client, "Two heads were added!", 4.0, 10.0, HudMsg3, 0.75);
+				SetEntProp(client, Prop_Send, "m_iDecapitations", decapitations + 4);
+				centerHudText(client, "Four heads were added!", 4.0, 10.0, HudMsg3, 0.75);
 				
 				ResetClientSpeed(client);
 				addHealth(client, 15);
