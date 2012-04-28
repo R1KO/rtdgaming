@@ -300,7 +300,7 @@ MakeHorsemann(client)
 	TF2_RemoveWeaponSlot(client, 1);
 	TF2_RemoveWeaponSlot(client, 5);
 	TF2_RemoveWeaponSlot(client, 3);
-	TF2_SetHealth(client, 1100);
+	TF2_SetHealth(client, 500);
 	g_bIsHHH[client] = true;
 //	g_bIsTP[client] = true;
 }
