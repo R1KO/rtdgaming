@@ -299,6 +299,15 @@ public Action:Timer_ShowInfo(Handle:timer)
 					}
 				}
 				
+				if(client_rolls[i][AWARD_G_HORSEMANN][0])
+				{
+					if(currentTeam == RED_TEAM)
+					{
+						AttachRTDParticle(i, "ghost_pumpkin_red", true, true, 0.0);
+					}else{
+						AttachRTDParticle(i, "ghost_pumpkin", true, true, 0.0);
+					}
+				}
 				
 				if(client_rolls[i][AWARD_G_BLIZZARD][0] && client_rolls[i][AWARD_G_BLIZZARD][4] == 0)
 				{

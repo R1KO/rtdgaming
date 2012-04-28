@@ -2,10 +2,13 @@
 #include <sdktools>
 #include <sdkhooks>
 #include <tf2_stocks>
+#include <tf2items>
 
 #define PLUGIN_VERSION "1.1"
 
-#define HHH "models/rtdgaming/horsemann/horsemann.mdl"
+//#define HHH "models/rtdgaming/horsemann_v2/headless_hatman.mdl"
+#define HHH "models/bots/headless_hatman.mdl"
+
 #define AXE "models/weapons/c_models/c_bigaxe/c_bigaxe.mdl"
 #define SPAWN "ui/halloween_boss_summoned_fx.wav"
 #define SPAWNRUMBLE "ui/halloween_boss_summon_rumble.wav"
@@ -23,7 +26,6 @@
 new bool:g_IsModel[MAXPLAYERS+1] = {false, ...};
 new bool:g_bIsTP[MAXPLAYERS+1] = {false, ...};
 new bool:g_bIsHHH[MAXPLAYERS + 1] = {false, ...};
-new bool:hasModel[MAXPLAYERS + 1] = {false, ...};
 //new bool:g_bLeftFootstep[MAXPLAYERS + 1] = {0, ...};
 
 public Plugin:myinfo = 
@@ -43,6 +45,7 @@ public OnPluginStart()
 	AddNormalSoundHook(HorsemannSH);
 	HookEvent("post_inventory_application", EventInventoryApplication,  EventHookMode_Post);
 	HookEvent("player_death", Event_Death,  EventHookMode_Post);
+	HookEvent("player_changeclass", Event_PlayerChangeClass);
 }
 public OnClientPutInServer(client)
 {
@@ -53,11 +56,10 @@ public OnClientDisconnect_Post(client)
 	g_IsModel[client] = false;
 	g_bIsTP[client] = false;
 	g_bIsHHH[client] = false;
-	hasModel[client] = false;
 }
 public OnMapStart()
 {
-	ProcessDownloads();
+	//ProcessDownloads();
 	PrecacheModel(HHH, true);
 	PrecacheModel(AXE, true);
 	PrecacheSound(BOO, true);
@@ -72,7 +74,15 @@ public OnMapStart()
 	///////////////////////////////////////
 	//Timers                             //
 	///////////////////////////////////////
-	CreateTimer(0.5,  	Timer_UpdateSkins, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	//CreateTimer(0.5,  	Timer_UpdateSkins, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	
+	for (new i = 1; i <= MaxClients ; i++) 
+	{
+		if (IsClientInGame(i) )
+		{
+			RemoveAllModels(i);
+		}
+	}
 }
 
 public OnPluginEnd()
@@ -102,11 +112,13 @@ stock ProcessDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/horsemann/invulnfx_blue.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/horsemann/invulnfx_red.vmt");
 	
-	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.dx80.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.dx90.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.mdl");
-	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.sw.vtx");
-	AddFileToDownloadsTable("models/rtdgaming/horsemann/horsemann.vvd");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann_v2/headless_hatman.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann_v2/headless_hatman.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann_v2/headless_hatman.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann_v2/headless_hatman.phy");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann_v2/headless_hatman.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann_v2/headless_hatman.vvd");
+	AddFileToDownloadsTable("models/rtdgaming/horsemann_v2/headless_hatman_animations.mdl");
 }
 
 public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroadcast)
@@ -115,11 +127,8 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 	
 	if(g_bIsHHH[client])
 	{
-		MakeHorsemann(client);
-	}else{
 		RemoveModel(client);
-		SwitchView(client, false, true, true);
-		g_bIsHHH[client] = false;
+		MakeHorsemann(client);
 	}
 }
 
@@ -129,13 +138,43 @@ public EventInventoryApplication(Handle:event, const String:name[], bool:dontBro
 	
 	if(g_bIsHHH[client])
 	{
-		MakeHorsemann(client);
-	}else{
-		RemoveModel(client)
+		RemoveModel(client);
+		//g_bIsHHH[client] = false;
+		
 		SwitchView(client, false, true, true);
-		g_bIsHHH[client] = false;
+		
+		CreateTimer(0.0, Timer_DelayMake, client);
 	}
 }
+
+public Action:Event_PlayerChangeClass(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	if (!client)
+		return;
+
+	new TFClassType:class = TFClassType:GetEventInt(event, "class");
+	new TFClassType:oldclass = TF2_GetPlayerClass(client);
+	
+	//player is the same class  :P
+	if (class == oldclass)
+		return;
+	
+	//player was Hulk before but now he changed class
+	if(g_bIsHHH[client])
+	{
+		if(class != TFClass_DemoMan)
+		{
+			RemoveModel(client);
+			SwitchView(client, false, true, true);
+			
+			g_bIsHHH[client] = false;
+			EmitSoundToAll(DEATH, client);
+			EmitSoundToAll(DEATHVO, client);
+		}
+	}
+}
+
 public Event_Death(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
@@ -144,10 +183,12 @@ public Event_Death(Handle:event, const String:name[], bool:dontBroadcast)
 	{
 		if (IsValidClient(client) && g_bIsHHH[client])
 		{
+			RemoveModel(client);
+			SwitchView(client, false, true, true);
+			
 			g_bIsHHH[client] = false;
-			hasModel[client] = false;
-			EmitSoundToAll(DEATH);
-			EmitSoundToAll(DEATHVO);
+			EmitSoundToAll(DEATH, client);
+			EmitSoundToAll(DEATHVO, client);
 		}
 	}
 }
@@ -161,7 +202,6 @@ public Action:SetModel(client, const String:model[])
 		SetEntProp(client, Prop_Send, "m_bUseClassAnimations", 1);
 		
 		g_IsModel[client] = true;
-		hasModel[client] = true;
 		
 	}
 }
@@ -172,7 +212,17 @@ public Action:RemoveModel(client)
 		SetVariantString("");
 		AcceptEntityInput(client, "SetCustomModel");
 		g_IsModel[client] = false;
-		hasModel[client] = false;
+	}
+//	return Plugin_Handled;
+}
+
+public Action:RemoveAllModels(client)
+{
+	if (IsValidClient(client))
+	{
+		SetVariantString("");
+		AcceptEntityInput(client, "SetCustomModel");
+		g_IsModel[client] = false;
 	}
 //	return Plugin_Handled;
 }
@@ -218,17 +268,22 @@ public Action:Command_Horsemann(initiator, args)
 	
 	MakeHorsemann(client);
 	
-	EmitSoundToAll(SPAWN);
-	EmitSoundToAll(SPAWNRUMBLE);
-	EmitSoundToAll(SPAWNVO);
+	EmitSoundToAll(SPAWN, client);
+	EmitSoundToAll(SPAWNRUMBLE, client);
+	EmitSoundToAll(SPAWNVO, client);
 	return Plugin_Handled;
+}
+
+public Action:Timer_DelayMake(Handle:timer, any:client)
+{
+	MakeHorsemann(client);
+	return Plugin_Stop;
 }
 
 MakeHorsemann(client)
 {
 	new ragdoll = GetEntPropEnt(client, Prop_Send, "m_hRagdoll");
 	if (ragdoll > MaxClients && IsValidEntity(ragdoll)) AcceptEntityInput(ragdoll, "Kill");
-	/*
 	decl String:weaponname[32];
 	GetClientWeapon(client, weaponname, sizeof(weaponname));
 	if (strcmp(weaponname, "tf_weapon_minigun", false) == 0) 
@@ -239,21 +294,15 @@ MakeHorsemann(client)
 	TF2_SwitchtoSlot(client, TFWeaponSlot_Melee);
 	CreateTimer(0.0, Timer_Switch, client);
 	//	TF2Items_GiveWeapon(client, 8266);
-	*/
-	
 	SetModel(client, HHH);
 	SwitchView(client, true, false, true);
-	
-	/*
 	TF2_RemoveWeaponSlot(client, 0);
 	TF2_RemoveWeaponSlot(client, 1);
 	TF2_RemoveWeaponSlot(client, 5);
 	TF2_RemoveWeaponSlot(client, 3);
-	* */
-	
-	//TF2_SetHealth(client, 2500);
+	TF2_SetHealth(client, 1100);
 	g_bIsHHH[client] = true;
-	//	g_bIsTP[client] = true;
+//	g_bIsTP[client] = true;
 }
 
 stock TF2_SetHealth(client, NewHealth)
@@ -270,13 +319,34 @@ public Action:Timer_Switch(Handle:timer, any:client)
 
 stock GiveAxe(client)
 {
-	//TF2_RemoveWeaponSlot(client, 2);
-	//new Handle:hWeapon = TF2Items_CreateItem(OVERRIDE_ALL|FORCE_GENERATION)
-	//if (hWeapon != INVALID_HANDLE)
-	//{
-		//Nothing here....
-	//}	
+	TF2_RemoveWeaponSlot(client, 2);
+	new Handle:hWeapon = TF2Items_CreateItem(OVERRIDE_ALL|FORCE_GENERATION)
+	if (hWeapon != INVALID_HANDLE)
+	{
+		TF2Items_SetClassname(hWeapon, "tf_weapon_sword");
+		TF2Items_SetItemIndex(hWeapon, 266);
+		TF2Items_SetLevel(hWeapon, 100);
+		TF2Items_SetQuality(hWeapon, 5);
+		new String:weaponAttribs[] = "15 ; 0 ; 26 ; 750.0 ; 2 ; 999.0 ; 107 ; 4.0 ; 109 ; 0.0 ; 62 ; 0.70 ; 205 ; 0.05 ; 206 ; 0.05 ; 68 ; -2 ; 69 ; 0.0 ; 53 ; 1.0 ; 27 ; 1.0 ; 180 ; -15 ; 219 ; 1.0";
+		new String:weaponAttribsArray[32][32];
+		new attribCount = ExplodeString(weaponAttribs, " ; ", weaponAttribsArray, 32, 32);
+		if (attribCount > 0) {
+			TF2Items_SetNumAttributes(hWeapon, attribCount/2);
+			new i2 = 0;
+			for (new i = 0; i < attribCount; i+=2) {
+				TF2Items_SetAttribute(hWeapon, i2, StringToInt(weaponAttribsArray[i]), StringToFloat(weaponAttribsArray[i+1]));
+				i2++;
+			}
+		} else {
+			TF2Items_SetNumAttributes(hWeapon, 0);
+		}
+		new weapon = TF2Items_GiveNamedItem(client, hWeapon);
+		EquipPlayerWeapon(client, weapon);
+		CloseHandle(hWeapon);
+		SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", PrecacheModel(AXE));
+	}	
 }
+
 
 stock TF2_SwitchtoSlot(client, slot)
 {
@@ -307,7 +377,7 @@ public Action:HorsemannSH(clients[64], &numClients, String:sample[PLATFORM_MAX_P
 	{
 		if (StrContains(sample, "1.wav", false) != -1 || StrContains(sample, "3.wav", false) != -1) sample = LEFTFOOT;
 		else if (StrContains(sample, "2.wav", false) != -1 || StrContains(sample, "4.wav", false) != -1) sample = RIGHTFOOT;
-		EmitSoundToAll(sample, entity, _, 150);
+		EmitSoundToAll(sample, entity);
 //		if (g_bLeftFootstep[client]) sample = LEFTFOOT;
 //		else sample = RIGHTFOOT;
 //		g_bLeftFootstep[client] = !g_bLeftFootstep[client];
@@ -399,6 +469,7 @@ public Action:Timer_UpdateSkins(Handle:timer)
 					}
 				}
 			}else{
+				
 				if(TF2_IsPlayerInCondition(i, TFCond_Ubercharged))
 				{
 					if(skin != 2)
@@ -413,46 +484,10 @@ public Action:Timer_UpdateSkins(Handle:timer)
 				}
 			}
 			
-			//Special Spy conditions
-			if(TF2_IsPlayerInCondition(i, TFCond_Disguised) || TF2_IsPlayerInCondition(i, TFCond_Cloaked))
-			{
-				if(hasModel[i])
-				{
-					RemoveModel(i);
-				}
-			}else{
-				if(!hasModel[i])
-				{
-					SetModel(i, HHH);
-				}
-			}
-			
-			//bug with sapper animation
-			if(isActiveWeapon(i, 735) || isActiveWeapon(i, 736) || isActiveWeapon(i, 25) || isActiveWeapon(i, 26) || isActiveWeapon(i, 27) || isActiveWeapon(i, 28))
-			{
-				if(hasModel[i])
-				{
-					RemoveModel(i);
-				}
-			}
 			
 		}
 		
 	}
 	
 	return Plugin_Continue;
-}
-
-public isActiveWeapon(client, m_iItemDefinitionIndex)
-{
-	new iWeapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-	
-	if(IsValidEntity(iWeapon))
-	{
-		new itemDefinition = GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex");
-		if(itemDefinition == m_iItemDefinitionIndex)
-			return true;
-	}
-	
-	return false;
 }

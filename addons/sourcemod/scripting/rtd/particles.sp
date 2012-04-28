@@ -70,14 +70,6 @@ AttachRTDParticle(client, String:particleType[], bool:autoKill, attachToHead, Fl
 		ActivateEntity(particle);
 		AcceptEntityInput(particle, "start");
 		
-		if(StrEqual(particleType, "ghost_pumpkin", false))
-		{
-			if (GetClientTeam(client) == 2)
-			{
-				SetVariantString("155+0+0");
-				AcceptEntityInput(particle, "color", -1, -1, 0);
-			}
-		}
 		//if(!StrEqual(particleType, "rockettrail", false) && !StrEqual(particleType, "cart_flashinglight", false) && !StrEqual(particleType, "toxictrails_medic_red", false) && !StrEqual(particleType, "jaratee_rain", false) && !StrEqual(particleType, "superrare_circling_skull", false))
 		
 		if(autoKill)

@@ -96,6 +96,7 @@ new String:roll_disabledForMaps[200][64];
 new String:roll_AmountDisabledMaps[200];
 
 new roll_Unusual[200];
+new roll_Unusual_Override[200];
 
 new isNewUser[cMaxClients];
 new TFClassType:roll_ClassRestriction[200];
