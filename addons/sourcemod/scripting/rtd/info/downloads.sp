@@ -157,6 +157,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("maps/ctf_turbine_pro_b1_particles.txt");
 	AddFileToDownloadsTable("maps/ctf_facing_worlds_rtd_particles.txt");
 	AddFileToDownloadsTable("maps/koth_ashville_rc1_particles.txt");
+	AddFileToDownloadsTable("maps/koth_lakeside_final_particles.txt");
 	
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/beamgun_blue.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/beamgun_blue_glass.vmt");
@@ -871,6 +872,17 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_liquid.vtf");
 	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/c_mad_milk_liquid.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/diarhia/crap.vmt");
+	
+	AddFileToDownloadsTable("models/rtdgaming/jetpack/jetpack_normal.dx80.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/jetpack/jetpack_normal.dx90.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/jetpack/jetpack_normal.mdl");
+	AddFileToDownloadsTable("models/rtdgaming/jetpack/jetpack_normal.sw.vtx");
+	AddFileToDownloadsTable("models/rtdgaming/jetpack/jetpack_normal.vvd");
+	
+	AddFileToDownloadsTable("materials/models/rtdgaming/jetpack/fury.vtf");
+	AddFileToDownloadsTable("materials/models/rtdgaming/jetpack/fury.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/jetpack/invulnfx_blue.vmt");
+	AddFileToDownloadsTable("materials/models/rtdgaming/jetpack/invulnfx_red.vmt");
 	
 	AddFileToDownloadsTable("sound/rtdgaming/slice.wav");
 }

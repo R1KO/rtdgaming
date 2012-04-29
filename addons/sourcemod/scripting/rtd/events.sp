@@ -571,6 +571,26 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		}
 	}
 	
+	if(client_rolls[client][AWARD_G_JETPACK][0])
+	{
+		new jetpack = EntRefToEntIndex(client_rolls[client][AWARD_G_JETPACK][1]);
+		new clientJetpack = EntRefToEntIndex(client_rolls[client][AWARD_G_JETPACK][3]);
+		
+		if(jetpack > 1 && clientJetpack > 1)
+		{
+			if(IsValidEntity(jetpack) && IsValidEntity(clientJetpack))
+			{
+				CAttach(jetpack, client, "flag");
+				CAttach(clientJetpack, client, "flag");
+				
+			}else{
+				SpawnAndAttachJetpack(client, client_rolls[client][AWARD_G_JETPACK][6], client_rolls[client][AWARD_G_JETPACK][7]);
+			}
+		}else{
+			SpawnAndAttachJetpack(client, client_rolls[client][AWARD_G_JETPACK][6], client_rolls[client][AWARD_G_JETPACK][7]);
+		}
+	}
+	
 	//trinket handling
 	if(rtd_trinket_enabled)
 	{

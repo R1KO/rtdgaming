@@ -300,7 +300,7 @@ MakeHorsemann(client)
 	TF2_RemoveWeaponSlot(client, 1);
 	TF2_RemoveWeaponSlot(client, 5);
 	TF2_RemoveWeaponSlot(client, 3);
-	TF2_SetHealth(client, 500);
+	//TF2_SetHealth(client, 500);
 	g_bIsHHH[client] = true;
 //	g_bIsTP[client] = true;
 }
@@ -327,7 +327,7 @@ stock GiveAxe(client)
 		TF2Items_SetItemIndex(hWeapon, 266);
 		TF2Items_SetLevel(hWeapon, 100);
 		TF2Items_SetQuality(hWeapon, 5);
-		new String:weaponAttribs[] = "15 ; 0 ; 26 ; 750.0 ; 2 ; 999.0 ; 107 ; 4.0 ; 109 ; 0.0 ; 62 ; 0.70 ; 205 ; 0.05 ; 206 ; 0.05 ; 68 ; -2 ; 69 ; 0.0 ; 53 ; 1.0 ; 27 ; 1.0 ; 180 ; -15 ; 219 ; 1.0";
+		new String:weaponAttribs[] = "15 ; 0 ; 107 ; 4.0 ; 109 ; 0.0 ; 68 ; -2 ; 69 ; 0.0 ; 27 ; 1.0 ; 219 ; 1.0";
 		new String:weaponAttribsArray[32][32];
 		new attribCount = ExplodeString(weaponAttribs, " ; ", weaponAttribsArray, 32, 32);
 		if (attribCount > 0) {

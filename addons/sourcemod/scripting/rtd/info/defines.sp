@@ -464,6 +464,8 @@
 
 #define MODEL_DIARHIA_JAR		"models/rtdgaming/diarhia/diarhia.mdl"
 #define MODEL_DIARHIA			"models/rtdgaming/diarhia/pattycake.mdl"
+
+#define MODEL_JETPACK			"models/rtdgaming/jetpack/jetpack_normal.mdl"
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #define MAX_LINE_WIDTH 128
 

@@ -431,10 +431,6 @@ stock SayText2One( client_index , author_index , const String:message[] )
 
 public Action:OnPlayerRunCmd(client, &buttons, &impulse, Float:vel[3], Float:angles[3], &weapon)
 {
-	if (client_rolls[client][AWARD_G_JETPACK][0] && (buttons & IN_ATTACK)) {
-		Jetpack_Player(client, angles, buttons);
-	}
-	
 	if(client_rolls[client][AWARD_G_STONEWALL][0])
 	{
 		//adjust the gravity
@@ -445,14 +441,24 @@ public Action:OnPlayerRunCmd(client, &buttons, &impulse, Float:vel[3], Float:ang
 		}
 	}
 	
-	/*
-	if(RTD_TrinketActive[client][TRINKET_SUPERJUMP])
+	if(client_rolls[client][AWARD_G_JETPACK][0])
 	{
-		if((GetEntityFlags(client) & FL_ONGROUND) && (buttons & IN_JUMP))
+		if(buttons & IN_JUMP)
 		{
-			CreateTimer(0.0, doSuperJump, GetClientUserId(client));
+			if(!(GetEntityFlags(client) & FL_ONGROUND))
+			{
+				Jetpack_Player(client, angles, buttons);
+				client_rolls[client][AWARD_G_JETPACK][5] = 1;
+			}else{
+				client_rolls[client][AWARD_G_JETPACK][5] = 0;
+			}
+		}else{
+			client_rolls[client][AWARD_G_JETPACK][5] = 0;
 		}
-	}*/
+		
+		//prevent trinket override
+		//return Plugin_Continue;
+	}
 	
 	if(RTD_TrinketActive[client][TRINKET_SUPERJUMP])
 	{
@@ -504,6 +510,8 @@ public Action:OnPlayerRunCmd(client, &buttons, &impulse, Float:vel[3], Float:ang
 				RTD_TrinketMisc[client][TRINKET_AIRDASH] = 0;
 		}
 	}
+	
+	return Plugin_Continue;
 }
 
 //Just a convenience method

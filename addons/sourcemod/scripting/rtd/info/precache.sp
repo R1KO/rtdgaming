@@ -481,6 +481,7 @@ stock RTDPrecache()
 	modelIndex[58] = sliceModelIndex;
 	modelIndex[59] = PrecacheModel(MODEL_DIARHIA_JAR, true);
 	modelIndex[60] = pattycakeModelIndex;
+	modelIndex[61] = PrecacheModel(MODEL_JETPACK, true);
 	
-	totModels = 60;
+	totModels = 61;
 }
