@@ -55,11 +55,12 @@ public Jetpack_Player(client, Float:angles[3], buttons)
 // client_rolls[client][AWARD_G_JETPACK][0]	=	Enabled?										//
 // client_rolls[client][AWARD_G_JETPACK][1]	=	Entity, this refers to the jetpackitself		//
 // client_rolls[client][AWARD_G_JETPACK][2]	=													//
-// client_rolls[client][AWARD_G_JETPACK][3]	=	Entity that the client sees												//
-// client_rolls[client][AWARD_G_JETPACK][4]	=													//
-// client_rolls[client][AWARD_G_JETPACK][5]	=													//
+// client_rolls[client][AWARD_G_JETPACK][3]	=	Entity that the client sees						//
+// client_rolls[client][AWARD_G_JETPACK][4]	=										//
+// client_rolls[client][AWARD_G_JETPACK][5]	=	jump        									//
 // client_rolls[client][AWARD_G_JETPACK][6]	=	Amount of Fuel									//
 // client_rolls[client][AWARD_G_JETPACK][7]	=	Total Amount of Fuel					        //
+// client_rolls[client][AWARD_G_JETPACK][8]	=						        //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 public Action:SpawnAndAttachJetpack(client, fuel, totalFuel)
@@ -200,27 +201,21 @@ public Action:Client_Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 		//Update Alpha //
 		/////////////////
 		new alpha = GetEntData(wearer, m_clrRender + 3, 1);
-		new playerCond = GetEntProp(wearer, Prop_Send, "m_nPlayerCond");
 		
-		if(TF2_GetPlayerClass(wearer) == TFClass_Spy)
-		{	
-			if(playerCond&16 || playerCond&24)
-			{
-				SetEntityRenderMode(jetpack, RENDER_TRANSCOLOR);	
-				SetEntityRenderColor(jetpack, 255, 255,255, 0);
-			}else{
-				SetEntityRenderMode(jetpack, RENDER_TRANSCOLOR);	
-				SetEntityRenderColor(jetpack, 255, 255,255, alpha);
-			}
+		if(TF2_IsPlayerInCondition(wearer, TFCond_Cloaked) || TF2_IsPlayerInCondition(wearer, TFCond_Disguised))
+		{
+			SetEntityRenderMode(jetpack, RENDER_TRANSCOLOR);	
+			SetEntityRenderColor(jetpack, 255, 255,255, 0);
 		}else{
 			SetEntityRenderMode(jetpack, RENDER_TRANSCOLOR);	
 			SetEntityRenderColor(jetpack, 255, 255,255, alpha);
 		}
 		
+		
 		////////////////////
 		// Determine skin //
 		////////////////////
-		if(playerCond&32)
+		if(TF2_IsPlayerInCondition(wearer, TFCond_Ubercharged))
 		{	
 			if(GetEntProp(jetpack, Prop_Data, "m_nSkin") == 0)
 			{
@@ -253,6 +248,8 @@ public createJetpackFlames(jetpack, Handle:dataPackHandle)
 	GetEntPropVector(jetpack, Prop_Send, "m_vecOrigin", jetpackPos);
 	GetEntPropVector(jetpack, Prop_Data, "m_angRotation", jetpackAngle);
 	
+	new wearer = GetEntPropEnt(jetpack, Prop_Data, "m_hOwnerEntity");
+
 	new flame1 = CreateEntityByName("info_particle_system");
 	if (IsValidEntity(flame1))
 	{		
@@ -272,7 +269,9 @@ public createJetpackFlames(jetpack, Handle:dataPackHandle)
 		AcceptEntityInput(flame1, "SetParentAttachment", flame1, flame1, 0);
 		
 		ActivateEntity(flame1);
-		AcceptEntityInput(flame1, "start");
+		
+		if(!TF2_IsPlayerInCondition(wearer, TFCond_Cloaked) && !TF2_IsPlayerInCondition(wearer, TFCond_Disguised))
+			AcceptEntityInput(flame1, "start");
 		
 	}
 	
@@ -295,7 +294,9 @@ public createJetpackFlames(jetpack, Handle:dataPackHandle)
 		AcceptEntityInput(flame2, "SetParentAttachment", flame1, flame1, 0);
 		
 		ActivateEntity(flame2);
-		AcceptEntityInput(flame2, "start");
+		
+		if(!TF2_IsPlayerInCondition(wearer, TFCond_Cloaked) && !TF2_IsPlayerInCondition(wearer, TFCond_Disguised))
+			AcceptEntityInput(flame2, "start");
 	}
 	
 	WritePackCell(dataPackHandle, EntIndexToEntRef(flame1));	//PackPosition(40); Particle1
@@ -338,7 +339,7 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 		
 		timeonFloor ++;
 		
-		if(timeonFloor >= 200)
+		if(timeonFloor >= 400)
 		{
 			StopSound(jetpack, SNDCHAN_AUTO, SOUND_FlameLoop);
 			AcceptEntityInput(jetpack,"kill");
@@ -460,18 +461,11 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 			//Update Alpha //
 			/////////////////
 			new alpha = GetEntData(wearer, m_clrRender + 3, 1);
-			new playerCond = GetEntProp(wearer, Prop_Send, "m_nPlayerCond");
 			
-			if(TF2_GetPlayerClass(wearer) == TFClass_Spy)
-			{	
-				if(playerCond&16 || playerCond&24)
-				{
-					SetEntityRenderMode(jetpack, RENDER_TRANSCOLOR);	
-					SetEntityRenderColor(jetpack, 255, 255,255, 0);
-				}else{
-					SetEntityRenderMode(jetpack, RENDER_TRANSCOLOR);	
-					SetEntityRenderColor(jetpack, 255, 255,255, alpha);
-				}
+			if(TF2_IsPlayerInCondition(wearer, TFCond_Cloaked) || TF2_IsPlayerInCondition(wearer, TFCond_Disguised))
+			{
+				SetEntityRenderMode(jetpack, RENDER_TRANSCOLOR);	
+				SetEntityRenderColor(jetpack, 255, 255,255, 0);
 			}else{
 				SetEntityRenderMode(jetpack, RENDER_TRANSCOLOR);	
 				SetEntityRenderColor(jetpack, 255, 255,255, alpha);
@@ -480,7 +474,7 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 			////////////////////
 			// Determine skin //
 			////////////////////
-			if(playerCond&32)
+			if(TF2_IsPlayerInCondition(wearer, TFCond_Ubercharged))
 			{	
 				if(GetEntProp(jetpack, Prop_Data, "m_nSkin") == 0)
 				{
@@ -500,15 +494,17 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 			if(fuelPercent < 0.0)
 				fuelPercent = 0.0;
 				
-			if(!client_rolls[wearer][AWARD_G_BACKPACK][0] && !inTimerBasedRoll[wearer])
+			if(!client_rolls[wearer][AWARD_G_BACKPACK][0] && !inTimerBasedRoll[wearer] && !(GetClientButtons(wearer) & IN_SCORE))
 			{	
 				SetHudTextParams(0.04, 0.04, 3.0, 250, 250, 210, 255);
 				
-				if(RTD_Perks[wearer][61])
+				//PrintToChat(wearer, "Jetpack: Faster recharg: %i | Jetpack: More Airtime: %i", RTD_PerksLevel[wearer][60], RTD_PerksLevel[wearer][61]); 
+				
+				if(RTD_PerksLevel[wearer][61])
 				{
-					ShowHudText(wearer, HudMsg5, "Jetpack Fuel: %i/100", RoundFloat(fuelPercent));
-				}else{
 					ShowHudText(wearer, HudMsg5, "Jetpack Fuel: %i/200", RoundFloat(fuelPercent * 2.0));
+				}else{
+					ShowHudText(wearer, HudMsg5, "Jetpack Fuel: %i/100", RoundFloat(fuelPercent));
 				}
 			}
 			
@@ -563,7 +559,7 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 			
 			client_rolls[wearer][AWARD_G_JETPACK][6] = fuel;
 			
-			if(RTD_Perks[wearer][60])
+			if(RTD_PerksLevel[wearer][60])
 				fuel += 2;
 		}
 	}
