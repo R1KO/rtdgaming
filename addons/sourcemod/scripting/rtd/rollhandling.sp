@@ -354,7 +354,7 @@ GivePlayerEffect(client, award, cost)
 			{
 				client_rolls[client][award][1] = 0; //entity index
 				
-				if(RTD_Perks[client][61])
+				if(RTD_PerksLevel[client][61])
 				{
 					SpawnAndAttachJetpack(client, 1000, 1000);
 				}else{
