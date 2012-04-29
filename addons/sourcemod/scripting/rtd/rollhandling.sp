@@ -352,6 +352,16 @@ GivePlayerEffect(client, award, cost)
 		
 			case AWARD_G_JETPACK:
 			{
+				client_rolls[client][award][1] = 0; //entity index
+				
+				if(RTD_Perks[client][61])
+				{
+					SpawnAndAttachJetpack(client, 1000, 1000);
+				}else{
+					SpawnAndAttachJetpack(client, 500, 500);
+				}
+				
+				centerHudText(client, "Jump to activate Jetpack", 4.0, 10.0, HudMsg3, 0.75); 
 			}
 		
 			case AWARD_G_SUPPLYDROP:

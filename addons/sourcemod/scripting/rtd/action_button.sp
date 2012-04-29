@@ -21,6 +21,7 @@ public Determine_DropItem(client)
 	client_rolls[client][AWARD_G_WINGS][0]			||
 	client_rolls[client][AWARD_G_STONEWALL][0]		||
 	client_rolls[client][AWARD_G_TREASURE][0]		||
+	client_rolls[client][AWARD_G_JETPACK][0]		||
 	client_rolls[client][AWARD_G_COW][1]			)
 	{
 		BuildUseableRollsMenu(client);
@@ -74,6 +75,9 @@ public BuildUseableRollsMenu(client)
 	
 	if(client_rolls[client][AWARD_G_WINGS][0])
 		AddMenuItem(hCMenu, "1004", "Drop Redbull", ITEMDRAW_DEFAULT);
+	
+	if(client_rolls[client][AWARD_G_JETPACK][0])
+		AddMenuItem(hCMenu, "1005", "Drop Jetpack", ITEMDRAW_DEFAULT);
 	
 	//Nothing for the user
 	if(GetMenuItemCount(hCMenu) == 0)
@@ -205,6 +209,12 @@ public fn_SpecialDropItem_Menu(Handle:menu, MenuAction:action, param1, param2)
 				case 1004:
 				{
 					Drop_Wings(param1);
+				}
+				
+				//Drop Jetpack
+				case 1005:
+				{
+					Drop_Jetpack(param1);
 				}
 			}
 		}

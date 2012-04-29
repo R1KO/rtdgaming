@@ -50,6 +50,7 @@ Load_Rolls()
 	new Handle: cfg_OwnerSteamID = CreateArray(32,200);
 	new Handle: cfg_disabledForMaps = CreateArray(64,200);
 	new Handle: cfg_unusual = CreateArray(8,200);
+	new Handle: cfg_unusualOverride = CreateArray(1,200);
 	
 	// Load the key files.
 	BuildPath(Path_SM, strLocation, 256, "configs/rtd/rtd_rolls.cfg");
@@ -146,6 +147,9 @@ Load_Rolls()
 		
 		KvGetString(kvItemList, "unusual", strLine, sizeof(strLine), "");
 		SetArrayCell(cfg_unusual, totalRolls, StringToInt(strLine), 0);
+		
+		KvGetString(kvItemList, "unusualOverride", strLine, sizeof(strLine), "");
+		SetArrayCell(cfg_unusualOverride, totalRolls, StringToInt(strLine), 0);
 		
 		totalRolls ++;
 	}
@@ -260,7 +264,7 @@ Load_Rolls()
 				
 				roll_itemEquipped_OnBack[i]	= GetArrayCell(cfg_itemEquipped_OnBack, step, 0);
 				roll_Unusual[i]	= GetArrayCell(cfg_unusual, step, 0);
-				
+				roll_Unusual_Override[i]	= GetArrayCell(cfg_unusualOverride, step, 0);
 				
 				
 				//PrintToServer("%s has %i triggers", roll_QuickBuy[i], roll_amountTriggers[i] );
@@ -292,6 +296,8 @@ Load_Rolls()
 				RemoveFromArray(cfg_OwnerSteamID, step);
 				RemoveFromArray(cfg_disabledForMaps, step);
 				RemoveFromArray(cfg_unusual, step);
+				RemoveFromArray(cfg_unusualOverride, step);
+				
 				break;
 			}
 		}
@@ -324,6 +330,8 @@ Load_Rolls()
 	CloseHandle(cfg_OwnerSteamID);
 	CloseHandle(cfg_disabledForMaps);
 	CloseHandle(cfg_unusual);
+	CloseHandle(cfg_unusualOverride);
+	
 }
 
 public Load_DamageFilters()

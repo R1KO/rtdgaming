@@ -451,6 +451,7 @@ public Action:deleteRTDEntities()
 		{
 			if(currIndex == modelIndex[i])
 			{
+				StopSound(ent, SNDCHAN_AUTO, SOUND_FlameLoop);
 				killEntityIn(ent, 2.0); 
 				continue;
 			}

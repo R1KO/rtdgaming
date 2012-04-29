@@ -702,7 +702,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		//client receives 50% less damage
 		if(client_rolls[client][AWARD_G_HORSEMANN][0])
 		{
-			damage *= 0.5;
+			damage *= 0.25;
 		}
 	}
 	

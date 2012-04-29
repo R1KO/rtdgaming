@@ -701,6 +701,20 @@ public fn_PerksMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					
 					PrintToChat(param1, "Diarhia: Jar blast increased by +40%");
 				}
+				else if(StrContains(menuTriggers[1], "a57", false) != -1)
+				{
+					RTD_Perks[param1][60] += value;
+					RTD_PerksLevel[param1][60] ++;
+					
+					PrintToChat(param1, "Jetpack: Faster recharge");
+				}
+				else if(StrContains(menuTriggers[1], "a58", false) != -1)
+				{
+					RTD_Perks[param1][61] += value;
+					RTD_PerksLevel[param1][61] ++;
+					
+					PrintToChat(param1, "Jetpack: More airtime");
+				}
 				else
 				{
 					talentPoints[param1] += cost;
