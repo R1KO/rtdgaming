@@ -299,7 +299,7 @@ GivePlayerEffect(client, award, cost)
 				WritePackCell(dataPackHandle, GetTime() + GetConVarInt(c_Duration) - RTD_Perks[client][6]); //16  end time
 			}
 		}else{
-			WritePackCell(dataPackHandle, GetTime() + roll_TimerOverride[award]); //16  end time
+			WritePackCell(dataPackHandle, GetTime() + roll_TimerOverride[award] + extraTime); //16  end time
 		}
 		
 		WritePackString(dataPackHandle, roll_Particle[award]); //24   client

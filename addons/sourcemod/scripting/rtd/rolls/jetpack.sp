@@ -502,9 +502,14 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 				
 			if(!client_rolls[wearer][AWARD_G_BACKPACK][0] && !inTimerBasedRoll[wearer])
 			{	
-				SetHudTextParams(0.03, 0.04, 3.0, 250, 250, 210, 255);
+				SetHudTextParams(0.04, 0.04, 3.0, 250, 250, 210, 255);
 				
-				ShowHudText(wearer, HudMsg5, "Jetpack Fuel: %i/100", RoundFloat(fuelPercent));
+				if(RTD_Perks[wearer][61])
+				{
+					ShowHudText(wearer, HudMsg5, "Jetpack Fuel: %i/100", RoundFloat(fuelPercent));
+				}else{
+					ShowHudText(wearer, HudMsg5, "Jetpack Fuel: %i/200", RoundFloat(fuelPercent * 2.0));
+				}
 			}
 			
 			if(client_rolls[wearer][AWARD_G_JETPACK][5] && RoundFloat(fuelPercent) > 0)
