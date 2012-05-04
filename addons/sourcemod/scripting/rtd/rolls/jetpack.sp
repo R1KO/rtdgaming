@@ -249,7 +249,7 @@ public createJetpackFlames(jetpack, Handle:dataPackHandle)
 	GetEntPropVector(jetpack, Prop_Data, "m_angRotation", jetpackAngle);
 	
 	new wearer = GetEntPropEnt(jetpack, Prop_Data, "m_hOwnerEntity");
-
+	
 	new flame1 = CreateEntityByName("info_particle_system");
 	if (IsValidEntity(flame1))
 	{		
