@@ -404,7 +404,7 @@ public Action:Command_rtd(client, args)
 		else PrintCenterText(client, "You do not have the class immunity respec perk.  Type buy.");
 		return Plugin_Handled;
 	}
-		
+	
 	if(StrEqual("dice", strArgs[0], false) || StrEqual("!dice", strArgs[0], false))
 	{
 		if(StrEqual("", strArgs[1], false))
@@ -481,6 +481,12 @@ public Action:Command_rtd(client, args)
 		PrintToChat(client, "            \"y\"    \"%i\"",RoundFloat(userpos[1]));
 		PrintToChat(client, "            \"z\"    \"%i\"",RoundFloat(userpos[2]));
 		PrintToChat(client, "        }");
+		return Plugin_Handled;
+	}
+	
+	if (StrEqual("checktalentpoints", strArgs[0], false) && !rtd_classic)
+	{
+		checkTalentPoints(client);
 		return Plugin_Handled;
 	}
 	

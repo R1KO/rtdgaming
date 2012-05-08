@@ -1230,3 +1230,62 @@ public bool:userHasEventPerks(client)
 	
 	return false;
 }
+
+checkTalentPoints(client)
+{
+	new totalTPSpent;
+	
+	//This is either done on load or if player wants to respec
+	for(new i = 0; i < maxPerks; i++)
+	{
+		//Do NOT reset event perks, this is disabled through another function
+		if(RTD_PerksLevel[client][dicePerk_Index[i]] > 0)
+		{
+			for (new level = 1; level <= RTD_PerksLevel[client][dicePerk_Index[i]]; level++)
+			{
+				totalTPSpent += dicePerk_Cost[i][level-1];
+			}
+		}
+	}
+	
+	new diceLevel = RoundToFloor(RTDdice[client]/200.0);
+	new maxTalentPoints = diceLevel * 2;
+	new currentTotalTP = totalTPSpent + talentPoints[client];
+	new diffTP = maxTalentPoints - currentTotalTP;
+	
+	if(maxTalentPoints > currentTotalTP)
+	{
+		PrintToChat(client, "Suspected Talent Points inbalance!");
+		PrintToChat(client, "Total Used Talent Points: %i", totalTPSpent);
+		PrintToChat(client, "Total Unused Talent Points: %i", talentPoints[client]);
+		PrintToChat(client, "Expected Max TP: %i | Current Total TP: %i", maxTalentPoints, currentTotalTP);
+		PrintToChat(client, "---------");
+		PrintToChat(client, "Adjusted Talent Points: %i", diffTP);
+		
+		talentPoints[client] += diffTP;
+		
+		//Show Overlay
+		new String:zname[32];
+		GetClientName(client, zname, sizeof(zname));
+		new newLevel =  RoundToFloor(float(RTDdice[client])/200.0);
+		
+		ShowOverlay(client, "rtdgaming/levelup", 10.0);
+		
+		PrintToChatAll("\x01%s\x04 has reached Level \x03%i\x04 | Total Talent Points:\x03%i", zname,newLevel,talentPoints[client]);
+		
+		
+		//The Datapack stores all the Mine's important values
+		new Handle:dataPackHandle;
+		CreateDataTimer(0.1, startDiceAchievement, dataPackHandle, TIMER_REPEAT |TIMER_FLAG_NO_MAPCHANGE);
+		
+		//Setup the datapack with appropriate information
+		WritePackCell(dataPackHandle, client);   //PackPosition(0); Bomb Index
+		WritePackCell(dataPackHandle, GetTime());   //PackPosition(8); Bomb Index
+		WritePackCell(dataPackHandle, 30);   //PackPosition(16); Max live time in seconds
+		WritePackCell(dataPackHandle, GetTime());   //PackPosition(24); This is to repeat sounds and stuff every 5 seconds
+		WritePackCell(dataPackHandle, 0);   //PackPosition(32); This is to repeat sounds and stuff every 5 seconds
+		EmitSoundToAll(DiceFound, client);
+	}else{
+		PrintToChat(client, "All is well!");
+	}
+}
