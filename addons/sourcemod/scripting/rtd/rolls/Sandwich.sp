@@ -140,7 +140,7 @@ public Action:Sandwich_Timer(Handle:timer, any:other)
 			
 			if(distance < 100.0)
 			{
-				addHealth(i, 2);
+				addHealth(i, 2, false);
 			}
 		}
 	}

@@ -324,7 +324,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 		}
 		
 		if(client_rolls[attacker][AWARD_G_VAMPIRE][0] && damage > 5.0)
-			addHealth(attacker, RoundFloat(damage*0.8));
+			addHealth(attacker, RoundFloat(damage*0.8), false);
 		
 		// If attacking player has instant kills
 		if(client_rolls[attacker][AWARD_G_INSTANTKILL][0] && damage != 9999.0)

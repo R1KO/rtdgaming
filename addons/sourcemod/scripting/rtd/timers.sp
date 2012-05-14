@@ -711,7 +711,7 @@ public Action:GenericTimer(Handle:timer)
 								PrintCenterText(i, "Drunken Taunt Activated! +100HP");
 								rtd_Event_MLK_Data[i] = GetTime() + 30;
 								
-								addHealth(i, 100);
+								addHealth(i, 100, false);
 								
 								if(clientOverlay[i] == false)
 									ShowOverlay(i, "effects/tp_eyefx/tp_eyefx.vmt", 12.0);

@@ -221,22 +221,27 @@ public finalHealthAdjustments(client)
 	return (clientMaxHealth[client] + 15*decapitations);
 }
 
-public Action:addHealth(client, amountOfHealth)
+public Action:addHealth(client, amountOfHealth, allowOverHeal)
 {
 	//Adds health to a client but will not allow it to go over maxhealth
 	if(IsClientConnected(client) || IsClientInGame(client))
 	{
 		if(IsPlayerAlive(client))
 		{	
-			if ((GetClientHealth(client)+ amountOfHealth) > finalHealthAdjustments(client))
+			if(allowOverHeal)
 			{
-				if(GetClientHealth(client) < finalHealthAdjustments(client))
-					SetEntityHealth(client, finalHealthAdjustments(client));
-				
-				if((GetClientHealth(client)+ amountOfHealth -1) == finalHealthAdjustments(client))
-					SetEntityHealth(client, finalHealthAdjustments(client));
-			}else{
 				SetEntityHealth(client,GetClientHealth(client) + amountOfHealth);
+			}else{
+				if ((GetClientHealth(client)+ amountOfHealth) > finalHealthAdjustments(client))
+				{
+					if(GetClientHealth(client) < finalHealthAdjustments(client))
+						SetEntityHealth(client, finalHealthAdjustments(client));
+					
+					if((GetClientHealth(client)+ amountOfHealth -1) == finalHealthAdjustments(client))
+						SetEntityHealth(client, finalHealthAdjustments(client));
+				}else{
+					SetEntityHealth(client,GetClientHealth(client) + amountOfHealth);
+				}
 			}
 		}
 	}
@@ -279,9 +284,9 @@ public Action:RegenerateHealth(Handle:timer, any:client)
 	{
 		if(client_rolls[client][AWARD_G_REGEN][9])
 		{
-			addHealth(client, roll_Unusual[AWARD_G_REGEN]);
+			addHealth(client, roll_Unusual[AWARD_G_REGEN], false);
 		}else{
-			addHealth(client, 3);
+			addHealth(client, 3, false);
 		}
 	}else{
 		return Plugin_Stop;

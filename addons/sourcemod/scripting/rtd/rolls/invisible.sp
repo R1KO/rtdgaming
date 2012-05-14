@@ -59,7 +59,7 @@ public Action:Timer_InvisLowHealth(Handle:Timer, any:dataPackHandle)
 		
 		DeleteParticle(client, "all");
 		Colorize(client, INVIS);
-		addHealth(client, 4);
+		addHealth(client, 4, false);
 	} else {
 		SetPackPosition(dataPackHandle, 16);
 		WritePackCell(dataPackHandle, 1);//PackPosition(16) - allow fake death

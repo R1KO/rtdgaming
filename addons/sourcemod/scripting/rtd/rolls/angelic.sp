@@ -315,7 +315,7 @@ public Action:Angelic_Timer(Handle:timer, Handle:dataPackHandle)
 			if( distance < 100.0)
 			{
 				PrintCenterText(nearbyClient, "Angelic Dispenser came to the rescue!");
-				addHealth(nearbyClient, healRate);
+				addHealth(nearbyClient, healRate, false);
 				TF2_AddCondition(nearbyClient, TFCond_InHealRadius, 4.0);
 				
 				Shake2(nearbyClient, 1.0, 65.0);

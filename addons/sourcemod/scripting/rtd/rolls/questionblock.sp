@@ -5,7 +5,7 @@
 #include <rtd_rollinfo>
 
 //////////////////////////////////////////////////////////////////
-//About Question Blocks											//
+//About Presents (Known as Question Blocks internally))			//
 //////////////////////////////////////////////////////////////////
 //They are randomly spawned at the location of a player's
 //death. They do not spawn instantly but instead spawn
@@ -16,7 +16,7 @@
 //2. Amount of Dice the attacker has
 //
 //These two factors must equal more than 0.95 
-//for a Question Block to spawn
+//for a Present to spawn
 //
 //Logic:
 //IF AmountOfDice >= 1000 THEN AddedBonus = 0.10
@@ -27,7 +27,7 @@
 //
 //IF (AddedBonus + RandomValue) > 0.95 THEN spawn Question Block
 //
-//Chances of Block Spawning:
+//Chances of Present Spawning:
 //Between 5% to 20%
 //
 //
@@ -303,9 +303,16 @@ GiveRandomEffect(client, attacker, special)
 		reward = GetRandomInt(1, 20);
 		
 		if(reward <= 5)
-		{
-			randomValue = GetRandomInt(50, 100);
-			addHealth(client, randomValue);
+		{	
+			if(RTD_PerksLevel[client][62])
+			{
+				randomValue = GetRandomInt(50, 125);
+				addHealth(client, randomValue, true);
+			}else{
+				randomValue = GetRandomInt(50, 100);
+				addHealth(client, randomValue, false);
+			}
+			
 			PrintCenterText(client, "You were given +%i HP", randomValue);
 			
 			return;
