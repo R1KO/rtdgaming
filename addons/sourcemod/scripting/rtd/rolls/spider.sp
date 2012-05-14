@@ -2608,7 +2608,7 @@ public Action:SpiderOnBack_Timer(Handle:timer, Handle:dataPackHandle)
 			if(clientHealthPercentage < 0.5)
 			{
 				SetEntProp(spider, Prop_Data, "m_iHealth", spiderHealth - 1);
-				addHealth(client, 1);
+				addHealth(client, 1, false);
 				
 				centerHudText(client, "Spider is healing you", 0.0, 0.2, HudMsg3, 0.72); 
 			}

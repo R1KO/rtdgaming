@@ -10,7 +10,7 @@ public Make_Yoshi(client)
 		PrintToChatAll("Cannot make client %d into a yoshi.", client);
 		return;
 	}
-	addHealth(client, 500);
+	addHealth(client, 500, false);
 	//For spies...
 	TF2_RemoveCondition(client, TFCond_Disguised);
 	TF2_RemoveCondition(client, TFCond_Cloaked);

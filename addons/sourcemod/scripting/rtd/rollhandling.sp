@@ -669,7 +669,7 @@ GivePlayerEffect(client, award, cost)
 				centerHudText(client, "Four heads were added!", 4.0, 10.0, HudMsg3, 0.75);
 				
 				ResetClientSpeed(client);
-				addHealth(client, 15);
+				addHealth(client, 15, false);
 			}
 			
 			case AWARD_G_BLIZZARD:

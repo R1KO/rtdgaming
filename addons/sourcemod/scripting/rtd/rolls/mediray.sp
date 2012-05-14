@@ -278,16 +278,16 @@ public Action:mediRay_Timer(Handle:timer, Handle:dataPackHandle)
 				{
 					if(RTD_PerksLevel[client][47] > 0)
 					{
-						addHealth(i, 4);
+						addHealth(i, 4, false);
 					}else{
-						addHealth(i, 3);
+						addHealth(i, 3, false);
 					}
 				}
 				
 				if(allowAmmo)
 					GiveAmmoToActiveWeapon(i, 0.3);
 			}else{
-				addHealth(i, 150);
+				addHealth(i, 150, false);
 				GiveAmmoToActiveWeapon(i, 0.9);
 			}
 		}

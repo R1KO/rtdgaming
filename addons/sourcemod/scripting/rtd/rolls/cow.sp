@@ -422,7 +422,7 @@ public Action:Milk_Timer(Handle:timer, Handle:dataPack)
 		{	
 			PrintCenterText(i, "Yummy! Milk is so good. (+%ihp)",healthToGive);
 			
-			addHealth(i, healthToGive);
+			addHealth(i, healthToGive, false);
 			TF2_RemoveCondition(i,TFCond_Milked);
 			TF2_RemoveCondition(i,TFCond_OnFire);
 			
@@ -643,7 +643,7 @@ public Action:CowOnBack_Timer(Handle:timer, Handle:dataPackHandle)
 		
 		SetEntProp(cow, Prop_Data, "m_iHealth", cowHealth);
 		
-		addHealth(client, addedHealth);
+		addHealth(client, addedHealth, false);
 		
 		//PrintCenterText(client, "Yummy! Milk is soooooo good");
 		TF2_RemoveCondition(client,TFCond_OnFire);
