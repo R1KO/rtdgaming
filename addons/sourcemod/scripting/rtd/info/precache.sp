@@ -419,6 +419,11 @@ stock RTDPrecache()
 	
 	pattycakeModelIndex = PrecacheModel(MODEL_DIARHIA, true);
 	
+	PrecacheSound(SOUND_ELEMENTAL_IMPACT_01, true);
+	PrecacheSound(SOUND_ELEMENTAL_IMPACT_02, true);
+	PrecacheSound(SOUND_ELEMENTAL_IMPACT_03, true);
+	PrecacheSound(SOUND_ELEMENTAL_BREAK, true);
+	
 	//keep track of all indexed models in an array
 	modelIndex[0] = bombModelIndex;	
 	modelIndex[1] = mineModelIndex;	

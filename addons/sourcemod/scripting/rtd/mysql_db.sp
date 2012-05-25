@@ -525,6 +525,8 @@ public LoadEverythingAtOnce(Handle:owner, Handle:hndl, const String:error[], any
 							
 							if(StrEqual(finalTSplit[0], trinket_Unique[j], true))
 							{
+								//PrintToChatAll("Incr: %i | %s | %s | Index: %i", j, trinket_Title[j], trinket_Unique[j], trinket_Index[j]);
+								
 								Format(RTD_TrinketUnique[client][clientTotalTrinkets], 64, "%s", trinket_Unique[j]);
 								RTD_TrinketIndex[client][clientTotalTrinkets] = trinket_Index[j];
 								

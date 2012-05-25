@@ -612,6 +612,199 @@ public Action:GenericTimer(Handle:timer)
 				}
 			}
 			
+			if(RTD_TrinketActive[i][TRINKET_ELEMENTALRES])
+			{
+				if(RTD_TrinketMisc[i][TRINKET_ELEMENTALRES] < GetTime())
+				{
+					new bool:foundCondition = false;
+					
+					//find out what what effect the user has
+					
+					//1
+					if(TF2_IsPlayerInCondition(i, TFCond_OnFire) && !foundCondition)
+					{
+						RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES] = 1;
+						
+						TF2_RemoveCondition(i, TFCond_OnFire);
+						
+						foundCondition = true;
+					}
+					
+					//2
+					if(TF2_IsPlayerInCondition(i, TFCond_Jarated) && !foundCondition)
+					{
+						RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES] = 2;
+						
+						TF2_RemoveCondition(i, TFCond_Jarated);
+						
+						foundCondition = true;
+					}
+					
+					//3
+					if(TF2_IsPlayerInCondition(i, TFCond_Bleeding) && !foundCondition)
+					{
+						RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES] = 3;
+						
+						TF2_RemoveCondition(i, TFCond_Bleeding);
+						
+						foundCondition = true;
+					}
+					
+					//4
+					if(TF2_IsPlayerInCondition(i, TFCond_Milked) && !foundCondition)
+					{
+						RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES] = 4;
+						
+						TF2_RemoveCondition(i, TFCond_Milked);
+						
+						foundCondition = true;
+					}
+					
+					//5
+					if(TF2_IsPlayerInCondition(i, TFCond_Bonked) && !foundCondition)
+					{
+						RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES] = 5;
+						
+						TF2_RemoveCondition(i, TFCond_Bonked);
+						
+						foundCondition = true;
+					}
+					
+					//6
+					if(TF2_IsPlayerInCondition(i, TFCond_Dazed) && !foundCondition)
+					{
+						RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES] = 6;
+						
+						TF2_RemoveCondition(i, TFCond_Dazed);
+						
+						foundCondition = true;
+					}
+					
+					if(foundCondition)
+					{
+						//apply cooldown
+						RTD_TrinketMisc[i][TRINKET_ELEMENTALRES] = GetTime() + RTD_TrinketBonus[i][TRINKET_ELEMENTALRES];
+						
+						//immunity
+						RTD_TrinketMisc_02[i][TRINKET_ELEMENTALRES] = GetTime() + 2;
+						
+						new Float:addedHPBuff;
+						
+						switch(RTD_TrinketLevel[i][TRINKET_ELEMENTALRES])
+						{
+							case 0:
+								addedHPBuff = 0.02;
+							
+							case 1:
+								addedHPBuff = 0.04;
+							
+							case 2:
+								addedHPBuff = 0.06;
+							
+							case 3:
+								addedHPBuff = 0.08;
+						}
+						
+						if(clientOverlay[i] == false)
+							ShowOverlay(i, "effects/com_shield002a.vmt ", 0.6);
+						
+						addHealthPercentage(i, addedHPBuff, false);
+						
+						CreateTimer(0.5,  Timer_ShowElementalWait, GetClientUserId(i), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+					}
+					
+				}else{
+					//allow immunity
+					if(GetTime() < RTD_TrinketMisc_02[i][TRINKET_ELEMENTALRES])
+					{
+						new bool:foundCondition = false;
+						
+						switch(RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES])
+						{
+							case 1:
+							{
+								if(TF2_IsPlayerInCondition(i, TFCond_OnFire))
+								{
+									TF2_RemoveCondition(i, TFCond_OnFire);
+									foundCondition = true;
+								}
+							}
+							
+							case 2:
+							{
+								if(TF2_IsPlayerInCondition(i, TFCond_Jarated))
+								{
+									TF2_RemoveCondition(i, TFCond_Jarated);
+									foundCondition = true;
+								}
+							}
+								
+							case 3:
+							{
+								if(TF2_IsPlayerInCondition(i, TFCond_Bleeding))
+								{
+									TF2_RemoveCondition(i, TFCond_Bleeding);
+									foundCondition = true;
+								}
+							}
+								
+							case 4:
+							{
+								if(TF2_IsPlayerInCondition(i, TFCond_Milked))
+								{
+									TF2_RemoveCondition(i, TFCond_Milked);
+									foundCondition = true;
+								}
+							}
+								
+							case 5:
+							{
+								if(TF2_IsPlayerInCondition(i, TFCond_Bonked))
+								{
+									TF2_RemoveCondition(i, TFCond_Bonked);
+									foundCondition = true;
+								}
+							}
+							
+							case 6:
+							{
+								if(TF2_IsPlayerInCondition(i, TFCond_Dazed))
+								{
+									TF2_RemoveCondition(i, TFCond_Dazed);
+									foundCondition = true;
+								}
+							}
+						}
+						
+						if(foundCondition)
+						{
+							new rnd = GetRandomInt(1,3);
+							switch(rnd)
+							{
+								case 1:
+									EmitSoundToAll(SOUND_ELEMENTAL_IMPACT_01,i);
+								
+								case 2:
+									EmitSoundToAll(SOUND_ELEMENTAL_IMPACT_02,i);
+									
+								case 3:
+									EmitSoundToAll(SOUND_ELEMENTAL_IMPACT_03,i);
+							}
+							
+							if(clientOverlay[i] == false)
+								ShowOverlay(i, "effects/com_shield002a.vmt ", 0.6);
+						}
+						
+					}else{
+						if(GetTime() == RTD_TrinketMisc_02[i][TRINKET_ELEMENTALRES])
+						{
+							RTD_TrinketMisc_02[i][TRINKET_ELEMENTALRES] = 0;
+							EmitSoundToAll(SOUND_ELEMENTAL_BREAK,i);
+						}
+					}
+				}
+			}
+			
 			if(RTD_TrinketActive[i][TRINKET_SCARYTAUNT])
 			{
 				if(TF2_IsPlayerInCondition(i, TFCond_Taunting) && !isActiveWeapon(i, 163) && !isActiveWeapon(i, 46))
@@ -1030,4 +1223,43 @@ public Action:doAirDash(Handle:timer, any:clientUserID)
 	RTD_TrinketMisc[client][TRINKET_AIRDASH] = 0;
 	
 	return Plugin_Stop;
+}
+
+public Action:Timer_ShowElementalWait(Handle:timer, any:clientUserID)
+{
+	new client = GetClientOfUserId(clientUserID);
+	
+	if(client < 1)
+		return Plugin_Stop;
+	
+	if (!IsClientInGame(client) || !IsPlayerAlive(client))
+		return Plugin_Stop;
+	
+	if(!RTD_TrinketActive[client][TRINKET_ELEMENTALRES])
+		return Plugin_Stop;
+	
+	if(RTD_TrinketMisc[client][TRINKET_ELEMENTALRES] <= GetTime())
+	{
+		if(!(GetClientButtons(client) & IN_SCORE))
+		{
+			decl String:message[100];
+			Format(message, 100, "Elemental Resistance Ready!");
+			
+			centerHudText(client, message, 0.0, 2.0, HudMsg3, 0.09);
+		}
+		return Plugin_Stop;
+	}
+	
+	/////////////////////////////
+	// Show message            //
+	/////////////////////////////
+	if(!(GetClientButtons(client) & IN_SCORE))
+	{
+		decl String:message[100];
+		Format(message, 100, "Elemental Resistance Cooldown: %is", (RTD_TrinketMisc[client][TRINKET_ELEMENTALRES] - GetTime()));
+		
+		centerHudText(client, message, 0.0, 1.5, HudMsg3, 0.09);
+	}
+	
+	return Plugin_Continue;
 }

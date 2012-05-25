@@ -396,6 +396,11 @@
 #define SOUND_ARMOR_IMPACT_04	"physics/metal/metal_solid_impact_bullet4.wav"
 #define SOUND_ARMOR_BREAK_01	"weapons/physcannon/energy_disintegrate5.wav"
 
+#define SOUND_ELEMENTAL_IMPACT_01	"physics/metal/metal_solid_impact_hard1.wav"
+#define SOUND_ELEMENTAL_IMPACT_02	"physics/metal/metal_solid_impact_hard4.wav"
+#define SOUND_ELEMENTAL_IMPACT_03	"physics/metal/metal_solid_impact_hard5.wav"
+#define SOUND_ELEMENTAL_BREAK		"ambient/levels/citadel/weapon_disintegrate1.wav"
+
 #define MODEL_INSTAPORTER		"models/rtdgaming/instaporter_v2/instaporter.mdl"
 
 #define MODEL_AIRINTAKE			"models/rtdgaming/air_intake/air_intake.mdl"
