@@ -302,6 +302,31 @@ public dicedepositDamage(const String:output[], caller, activator, Float:delay)
 							{
 								diceMined = GetRandomInt(1, mineMaxAmount);
 								addDice(activator, 5, diceMined);
+								
+								if(RTD_TrinketActive[activator][TRINKET_DICEMINER])
+								{
+									if(GetClientHealth(activator) < (clientMaxHealth[activator] * 2))
+									{
+										new Float:addedHPBuff;
+										
+										switch(RTD_TrinketLevel[activator][TRINKET_DICEMINER])
+										{
+											case 0:
+												addedHPBuff = 0.2;
+											
+											case 1:
+												addedHPBuff = 0.3;
+											
+											case 2:
+												addedHPBuff = 0.4;
+											
+											case 3:
+												addedHPBuff = 0.6;
+										}
+										
+										addHealthPercentage(activator, addedHPBuff, true);
+									}
+								}
 							}
 							
 							new String:activator_name[64], String:buf[128];
