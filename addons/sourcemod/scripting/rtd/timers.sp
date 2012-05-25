@@ -710,6 +710,19 @@ public Action:GenericTimer(Handle:timer)
 						
 						addHealthPercentage(i, addedHPBuff, false);
 						
+						new rnd = GetRandomInt(1,3);
+						switch(rnd)
+						{
+							case 1:
+								EmitSoundToAll(SOUND_ELEMENTAL_IMPACT_01,i);
+							
+							case 2:
+								EmitSoundToAll(SOUND_ELEMENTAL_IMPACT_02,i);
+								
+							case 3:
+								EmitSoundToAll(SOUND_ELEMENTAL_IMPACT_03,i);
+						}
+						
 						CreateTimer(0.5,  Timer_ShowElementalWait, GetClientUserId(i), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 					}
 					

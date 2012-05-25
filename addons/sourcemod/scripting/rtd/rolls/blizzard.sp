@@ -666,6 +666,17 @@ public Action:Hook_ClientBlizzard(entity, client)
 
 public FreezeClient(client, attacker, Float:length)
 {
+	if(RTD_TrinketActive[client][TRINKET_ELEMENTALRES])
+	{
+		if(RTD_TrinketMisc[client][TRINKET_ELEMENTALRES] < GetTime())
+		{
+			//apply cooldown
+			RTD_TrinketMisc[client][TRINKET_ELEMENTALRES] = GetTime() + RTD_TrinketBonus[client][TRINKET_ELEMENTALRES];
+			return;
+		}
+	}
+
+	
 	new Float:playerspeed[3];
 	GetEntPropVector(client, Prop_Data, "m_vecVelocity", playerspeed);
 	
