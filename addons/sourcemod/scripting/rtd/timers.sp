@@ -686,7 +686,7 @@ public Action:GenericTimer(Handle:timer)
 						RTD_TrinketMisc[i][TRINKET_ELEMENTALRES] = GetTime() + RTD_TrinketBonus[i][TRINKET_ELEMENTALRES];
 						
 						//immunity
-						RTD_TrinketMisc_02[i][TRINKET_ELEMENTALRES] = GetTime() + 2;
+						RTD_TrinketMisc_02[i][TRINKET_ELEMENTALRES] = GetTime() + 3;
 						
 						new Float:addedHPBuff;
 						
