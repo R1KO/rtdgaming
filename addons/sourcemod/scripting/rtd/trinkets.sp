@@ -189,6 +189,8 @@ Load_Trinkets()
 		}
 	}
 	
+	//PrintToChatAll("");
+	
 	CloseHandle(cfg_trinket_Unique);
 	CloseHandle(cfg_trinket_Title);
 	CloseHandle(cfg_trinket_Identifier);

@@ -312,16 +312,16 @@ public dicedepositDamage(const String:output[], caller, activator, Float:delay)
 										switch(RTD_TrinketLevel[activator][TRINKET_DICEMINER])
 										{
 											case 0:
-												addedHPBuff = 0.2;
-											
-											case 1:
-												addedHPBuff = 0.3;
-											
-											case 2:
 												addedHPBuff = 0.4;
 											
-											case 3:
+											case 1:
 												addedHPBuff = 0.6;
+											
+											case 2:
+												addedHPBuff = 0.8;
+											
+											case 3:
+												addedHPBuff = 1.0;
 										}
 										
 										addHealthPercentage(activator, addedHPBuff, true);
