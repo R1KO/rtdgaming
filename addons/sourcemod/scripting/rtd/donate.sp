@@ -3,21 +3,25 @@
 #include <sourcemod>
 #include <sdktools>
 
-public confirmDonationMenu(String:steamID[], amount, admin)
+public confirmDonationMenu(String:steamID[], amount, admin, isDonation)
 {
 	new String:title[64];
-	new String:displayIdent[32];
+	new String:displayIdent[64];
 	
-	
-	Format(title, sizeof(title), "Donate %i Credits to %s?", amount, steamID);
+	if(isDonation)
+	{
+		Format(title, sizeof(title), "Donate %i Credits to %s?", amount, steamID);
+	}else{
+		Format(title, sizeof(title), "Award %i Credits to %s?", amount, steamID);
+	}
 	
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_DonateMenuHandler);
 	SetMenuTitle(hCMenu, title);
 	
-	Format(displayIdent, 64, "0:%i:%i:%s", admin, amount, steamID); 
+	Format(displayIdent, 64, "0:%i:%i:%s:%i", admin, amount, steamID, isDonation); 
 	AddMenuItem(hCMenu, displayIdent, "No", ITEMDRAW_DEFAULT);
 	
-	Format(displayIdent, 64, "1:%i:%i:%s", admin, amount, steamID);
+	Format(displayIdent, 64, "1:%i:%i:%s:%i", admin, amount, steamID, isDonation);
 	AddMenuItem(hCMenu, displayIdent, "Yes", ITEMDRAW_DEFAULT);
 	
 	DisplayMenu(hCMenu, admin, MENU_TIME_FOREVER);
@@ -36,6 +40,7 @@ public fn_DonateMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 			new admin;
 			new amount;
 			new style;
+			new isDonation;
 			
 			GetMenuItem(menu, param2, MenuInfo, sizeof(MenuInfo),style);
 			ExplodeString(MenuInfo, ":", menuTriggers, 8, 32);
@@ -43,12 +48,13 @@ public fn_DonateMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 			option = StringToInt(menuTriggers[0]);
 			admin = StringToInt(menuTriggers[1]);
 			amount = StringToInt(menuTriggers[2]);
+			isDonation = StringToInt(menuTriggers[6]);
 			
 			Format(steamID, 64, "%s:%s:%s", menuTriggers[3], menuTriggers[4], menuTriggers[5]);
 			
 			if(option == 1)
 			{
-				donate(steamID, amount, admin);
+				donate(steamID, amount, admin, isDonation);
 			}
 			
 		}
@@ -82,7 +88,7 @@ public isPlayerBySteamIDOnline(String:steamID[])
 	return -1;
 }
 
-public donate(String:steamID[], amount, admin)
+public donate(String:steamID[], amount, admin, isDonation)
 {
 	new clientUserID;
 	new client;
@@ -90,16 +96,28 @@ public donate(String:steamID[], amount, admin)
 	clientUserID = isPlayerBySteamIDOnline(steamID);
 	client = GetClientOfUserId(clientUserID);
 	
+	new String:msg01[64];
+	new String:msg02[64];
+	
+	if(isDonation)
+	{
+		Format(msg01, 64, "your donation");
+		Format(msg02, 64, "a donation");
+	}else{
+		Format(msg01, 64, "an award");
+		Format(msg02, 64, "an award");
+	}
+	
 	if(clientUserID > 0)
 	{
 		//Player is online
 		new String:name[32];
 		GetClientName(client, name, sizeof(name));
 		
-		PrintCenterText(client, "You have received: %i credits from your donation", amount);
-		PrintToChat(client, "You have received: %i credits from your donation", amount);
+		PrintCenterText(client, "You have received: %i credits from %s", amount, msg01);
+		PrintToChat(client, "You have received: \x01%i\x04 credits from \x03%s", amount, msg01);
 		
-		PrintToChatAll("%s has received %i credits from a donation", name, amount);
+		PrintToChatAll("\x03%s\x04 has received \x01%i\x04 credits from \x03%s", name, amount, msg02);
 		
 		RTDCredits[client] += amount;
 		
@@ -147,8 +165,8 @@ public SaveDonationData(Handle:owner, Handle:hndl, const String:error[], any:dat
 		PrintToChat(data, "Error: %s", error);
 		PrintCenterText(data, "Error: %s", error);
 	}else{
-		PrintToChat(data, "Player (%s) is offline, donation was successful!", donate_SteamID[data]);
-		PrintCenterText(data, "Player (%s) is offline, donation was successful!", donate_SteamID[data]);
+		PrintToChat(data, "Player (%s) is offline, action was successful!", donate_SteamID[data]);
+		PrintCenterText(data, "Player (%s) is offline, action was successful!", donate_SteamID[data]);
 	}
 	
 	return;
