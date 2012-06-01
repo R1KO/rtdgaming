@@ -614,7 +614,7 @@ public Action:GenericTimer(Handle:timer)
 			
 			if(RTD_TrinketActive[i][TRINKET_ELEMENTALRES])
 			{
-				if(RTD_TrinketMisc[i][TRINKET_ELEMENTALRES] < GetTime())
+				if(RTD_TrinketMisc[i][TRINKET_ELEMENTALRES] < GetTime() && !client_rolls[i][AWARD_B_LOSER][0] && !roundEnded)
 				{
 					new bool:foundCondition = false;
 					
@@ -1266,7 +1266,7 @@ public Action:Timer_ShowElementalWait(Handle:timer, any:clientUserID)
 	/////////////////////////////
 	// Show message            //
 	/////////////////////////////
-	if(!(GetClientButtons(client) & IN_SCORE))
+	if(!(GetClientButtons(client) & IN_SCORE) && !isUsingHud4(client))
 	{
 		decl String:message[100];
 		Format(message, 100, "Elemental Resistance Cooldown: %is", (RTD_TrinketMisc[client][TRINKET_ELEMENTALRES] - GetTime()));

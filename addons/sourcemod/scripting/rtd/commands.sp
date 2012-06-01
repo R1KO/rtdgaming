@@ -104,7 +104,42 @@ public Action:Command_rtdadmin(client, args)
 		ReplaceString(steamID, sizeof(steamID), "\\", "", true);
 		SQL_EscapeString(db, steamID, steamID, sizeof(steamID));
 		
-		confirmDonationMenu(steamID, amount, client);
+		//1 =  donation
+		confirmDonationMenu(steamID, amount, client, 1);
+		
+		return Plugin_Handled;
+	}
+	else if(StrEqual("awardcreds", strMessage, false))
+	{
+		if(args < 7)
+		{
+			PrintToChat(client, "usage: /rtdadmin awardcreds <SteamID> <amount>");
+			return Plugin_Handled;
+		}
+		
+		new String:steamID[128];
+		new String:steamIDPart1[128];
+		new String:steamIDPart2[128];
+		new String:steamIDPart3[128];
+		new String:amountStr[128];
+		
+		GetCmdArg(2, steamIDPart1, sizeof(steamIDPart1));
+		GetCmdArg(4, steamIDPart2, sizeof(steamIDPart2));
+		GetCmdArg(6, steamIDPart3, sizeof(steamIDPart3));
+		
+		GetCmdArg(7, amountStr, sizeof(amountStr));
+		
+		Format(steamID,sizeof(steamID),"%s:%s:%s",steamIDPart1,steamIDPart2,steamIDPart3);
+		
+		//rtdadmin donate STEAM_0:0:15175229 
+		//STEAM_0:0:15175229 
+		new amount = StringToInt(amountStr);
+		
+		ReplaceString(steamID, sizeof(steamID), "\\", "", true);
+		SQL_EscapeString(db, steamID, steamID, sizeof(steamID));
+		
+		//0 = not a donation but an award
+		confirmDonationMenu(steamID, amount, client, 0);
 		
 		return Plugin_Handled;
 	}
