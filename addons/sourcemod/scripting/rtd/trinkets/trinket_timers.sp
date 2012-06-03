@@ -22,7 +22,11 @@ public Action:TrinketsTimer(Handle:timer)
 			//////////////////////////////////
 			if(RTD_TrinketActive[i][TRINKET_ELEMENTALRES])
 			{
-				if(RTD_TrinketMisc[i][TRINKET_ELEMENTALRES] < GetTime() && !client_rolls[i][AWARD_B_LOSER][0] && !roundEnded)
+				if(RTD_TrinketMisc[i][TRINKET_ELEMENTALRES] < GetTime() && 
+					!client_rolls[i][AWARD_B_LOSER][0] && 
+					!roundEnded &&
+					!yoshi_eaten[i][0] &&
+					!client_rolls[i][AWARD_G_YOSHI][0])
 				{
 					new bool:foundCondition = false;
 					
