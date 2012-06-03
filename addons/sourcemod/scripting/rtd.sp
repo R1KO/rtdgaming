@@ -53,7 +53,7 @@
 #include "rtd/action_button.sp"
 #include "rtd/round_engine.sp"
 #include "rtd/beacon.sp"
-#include "rtd/trinkets.sp"
+#include "rtd/trinkets/trinkets.sp"
 
 //Rolls
 #include "rtd/rollhandling.sp"
@@ -112,7 +112,7 @@
 #include "rtd/rolls/rubberbullets.sp"
 #include "rtd/rolls/angelic.sp"
 #include "rtd/rolls/dynamite.sp"
-#include "rtd/trinkets_trading.sp"
+#include "rtd/trinkets/trinkets_trading.sp"
 #include "rtd/rolls/treasure.sp"
 #include "rtd/rolls/hastycharge.sp"
 #include "rtd/rolls/strengthdrain.sp"
@@ -121,6 +121,9 @@
 #include "rtd/rolls/groundingbullet.sp"
 #include "rtd/rolls/diarhia.sp"
 #include "rtd/rolls/horsemann.sp"
+
+#include "rtd/trinkets/trinket_timers.sp"
+
 
 //Perks
 #include "rtd/rolls/friedchicken.sp"
@@ -294,6 +297,8 @@ public OnMapStart()
 	CreateTimer(0.1,  	HastyCharge_Timer, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	
 	CreateTimer(0.2,  	GenericTimer, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	CreateTimer(0.2,  	TrinketsTimer, _, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+	
 	CreateTimer(60.0, 	CreditsTimer,_, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	CreateTimer(0.5,  	CrouchInvisTimer,_, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
 	CreateTimer(180.0, 	SaveStats_Timer,_,TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);

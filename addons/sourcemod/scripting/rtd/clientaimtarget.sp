@@ -938,6 +938,16 @@ public denyPickup(client, lookingAtObject, bool:bypassSame)
 		}
 	}
 	
+	if(client_rolls[client][AWARD_G_JETPACK][0])
+	{
+		if((bypassSame && lookingAtObject != AWARD_G_JETPACK) || !bypassSame)
+		{
+			Format(wearing, sizeof(wearing), "carrying");
+			
+			wantsToPickup = AWARD_G_JETPACK;
+		}
+	}
+	
 	if(wantsToPickup != -1)
 	{
 		if(wantsToPickup == lookingAtObject)
