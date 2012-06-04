@@ -255,7 +255,9 @@ public Action:Yoshi_KillPlayer(Handle:timer, Handle:data)
 }
 
 public Yoshi_BreakEgg(client)
-{	
+{
+	client_rolls[client][AWARD_G_YOSHI][4] = GetTime() + 1;
+	
 	yoshi_eaten[client][0] = 0;
 	Yoshi_Thirdperson(client, false);
 	TF2_StunPlayer(client, 0.1, 0.0, TF_STUNFLAG_BONKSTUCK | TF_STUNFLAG_NOSOUNDOREFFECT);
