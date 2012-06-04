@@ -17,6 +17,10 @@ public Action:TrinketsTimer(Handle:timer)
 			if(!IsPlayerAlive(i))
 				continue;
 			
+			//Debugging comment out before release
+			RTD_TrinketActive[i][TRINKET_ELEMENTALRES] = 1;
+			RTD_TrinketBonus[i][TRINKET_ELEMENTALRES] = 20;
+			
 			//////////////////////////////////
 			// Elemental Resistance Trinket //
 			//////////////////////////////////
@@ -26,7 +30,8 @@ public Action:TrinketsTimer(Handle:timer)
 					!client_rolls[i][AWARD_B_LOSER][0] && 
 					!roundEnded &&
 					!yoshi_eaten[i][0] &&
-					!client_rolls[i][AWARD_G_YOSHI][0])
+					!client_rolls[i][AWARD_G_YOSHI][0] &&
+					GetTime() > client_rolls[i][AWARD_G_YOSHI][4])
 				{
 					new bool:foundCondition = false;
 					
@@ -73,19 +78,9 @@ public Action:TrinketsTimer(Handle:timer)
 					}
 					
 					//5
-					if(TF2_IsPlayerInCondition(i, TFCond_Bonked) && !foundCondition)
-					{
-						RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES] = 5;
-						
-						TF2_RemoveCondition(i, TFCond_Bonked);
-						
-						foundCondition = true;
-					}
-					
-					//6
 					if(TF2_IsPlayerInCondition(i, TFCond_Dazed) && !foundCondition)
 					{
-						RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES] = 6;
+						RTD_TrinketMisc_03[i][TRINKET_ELEMENTALRES] = 5;
 						
 						TF2_RemoveCondition(i, TFCond_Dazed);
 						
@@ -181,17 +176,8 @@ public Action:TrinketsTimer(Handle:timer)
 									foundCondition = true;
 								}
 							}
-								
-							case 5:
-							{
-								if(TF2_IsPlayerInCondition(i, TFCond_Bonked))
-								{
-									TF2_RemoveCondition(i, TFCond_Bonked);
-									foundCondition = true;
-								}
-							}
 							
-							case 6:
+							case 5:
 							{
 								if(TF2_IsPlayerInCondition(i, TFCond_Dazed))
 								{
