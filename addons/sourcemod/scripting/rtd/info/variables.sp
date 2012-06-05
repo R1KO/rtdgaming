@@ -361,6 +361,10 @@ new trinket_Index[MAX_TRINKETS];
 new trinket_TotalChance[MAX_TRINKETS];
 new trinketChanceBounds[MAX_TRINKETS][4];
 
+//trinketUpgradeCost[rarity][tier]
+new trinketUpgradeCost[4][3];
+
+
 new RTD_TrinketActive[cMaxClients][MAX_TRINKETS + 1];
 new RTD_TrinketBonus[cMaxClients][MAX_TRINKETS + 1];
 new RTD_TrinketLevel[cMaxClients][MAX_TRINKETS + 1];

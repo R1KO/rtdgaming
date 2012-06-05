@@ -511,7 +511,19 @@ public fn_TrinketsLoadOutHandler(Handle:menu, MenuAction:action, param1, param2)
 		}
 	}
 }
-
+/*
+public upgradeCost(client, slot)
+{
+	new cost;
+	
+	RTD_TrinketIndex[client][slot]
+	RTD_TrinketTier[client][slot]
+	trinket_Rarity[i]
+	return cost;
+	
+	//return -1 when it's at maximum
+}
+*/
 public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 {
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_TrinSelMenuHandler);
@@ -523,6 +535,7 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	
 	new String:displayIdent[64];
 	new String:reRollText[64];
+	//new String:upgradeText[64];
 	
 	//slotStatus
 	//1 = equipped
@@ -530,6 +543,8 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	//2 = unequipped
 	
 	Format(reRollText, 64, "[%i Credits] Reroll Variant", rtd_trinket_rerollPrice);
+	
+	//Format(reRollText, 64, "[%i Credits] Upgrade Trinket", upgradeCost(client, selectedSlot));
 	
 	if(slotStatus == 1)
 	{
