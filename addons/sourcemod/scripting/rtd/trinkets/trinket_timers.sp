@@ -18,8 +18,8 @@ public Action:TrinketsTimer(Handle:timer)
 				continue;
 			
 			//Debugging comment out before release
-			RTD_TrinketActive[i][TRINKET_ELEMENTALRES] = 1;
-			RTD_TrinketBonus[i][TRINKET_ELEMENTALRES] = 20;
+			//RTD_TrinketActive[i][TRINKET_ELEMENTALRES] = 1;
+			//RTD_TrinketBonus[i][TRINKET_ELEMENTALRES] = 20;
 			
 			//////////////////////////////////
 			// Elemental Resistance Trinket //
