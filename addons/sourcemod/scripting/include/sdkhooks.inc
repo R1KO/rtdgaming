@@ -86,6 +86,7 @@ enum SDKHookType
 	SDKHook_UsePost,
 	SDKHook_Reload,
 	SDKHook_ReloadPost,
+	SDKHook_GetMaxHealth,  // ep2v and later
 };
 
 /*
@@ -95,6 +96,8 @@ enum SDKHookType
 	SDKHook_EndTouchPost,
 	
 	SDKHook_FireBulletsPost,
+	
+	SDKHook_GetMaxHealth,  (ep2v and later)
 	
 	SDKHook_GroundEntChangedPost,
 	
@@ -201,6 +204,9 @@ funcenum SDKHookCB
 	// WeaponSwitchPost
 	public(client, weapon),
 	
+	// GetMaxHealth (ep2v and later)
+	Action:public(entity, &maxhealth),
+	
 	// OnTakeDamage
 	// Note: Force application is dependent on game and damage type(s)
 	// SDKHooks 1.0+
@@ -261,6 +267,8 @@ forward OnEntityDestroyed(entity);
 
 /**
  * @brief When the game description is retrieved
+ *
+ * @note  Not supported on ep2v.
  *
  * @param		gameDesc		Game description
  * @noreturn
