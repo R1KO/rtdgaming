@@ -233,6 +233,10 @@ public Action:HastyCharge_Timer(Handle:timer)
 									rechargeTime = 5.26 - (GetEntProp(i, Prop_Send, "m_iDecapitations") * 0.497143);
 								}
 								
+								//752 = Hitman's Heatmaker
+								if(weaponID == 752)
+									rechargeTime = 3.3;
+								
 								curLevel = GetEntPropFloat(weaponInfo[currWeapon], Prop_Send, "m_flChargedDamage");
 								
 								if(curLevel > 0.0 && curLevel < 150.0)
