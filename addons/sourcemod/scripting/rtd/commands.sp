@@ -243,6 +243,8 @@ public Action:Command_rtd(client, args)
 	// Check to see if client is valid
 	if(client <= 0 || !IsClientConnected(client)) return Plugin_Continue;
 	
+	if(!IsClientInGame(client)) return Plugin_Continue;
+	
 	decl String:strMessage[128];
 	GetCmdArg(1, strMessage, sizeof(strMessage));
 	

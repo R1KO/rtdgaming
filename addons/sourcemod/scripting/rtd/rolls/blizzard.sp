@@ -63,7 +63,7 @@ public Action:SpawnAndAttachBlizzard(client)
 	CreateDataTimer(0.1, Blizzard_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	
 	//Setup the datapack with appropriate information
-	WritePackCell(dataPackHandle, ent);   //PackPosition(0);  Backpack Index
+	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0);  Backpack Index
 	WritePackCell(dataPackHandle, 0);     //PackPosition(24); Time on floor
 	WritePackString(dataPackHandle,name); //the wearer's name
 	
@@ -129,7 +129,7 @@ public Action:SpawnAndAttachClientBlizzard(client)
 	CreateDataTimer(0.1, Client_Blizzard_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 	
 	//Setup the datapack with appropriate information
-	WritePackCell(dataPackHandle, ent);   //PackPosition(0);  Backpack Index
+	WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0);  Backpack Index
 	
 	return Plugin_Handled;
 }
@@ -137,7 +137,10 @@ public Action:SpawnAndAttachClientBlizzard(client)
 public Action:Client_Blizzard_Timer(Handle:timer, Handle:dataPackHandle)
 {
 	ResetPack(dataPackHandle);
-	new blizzard = ReadPackCell(dataPackHandle);
+	new blizzard = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	
+	if(blizzard < 1)
+		return Plugin_Stop;
 	
 	if(!IsValidEntity(blizzard))
 		return Plugin_Stop;
@@ -228,7 +231,7 @@ public Action:Blizzard_Timer(Handle:timer, Handle:dataPackHandle)
 	// Set to the beginning and unpack it   //
 	//////////////////////////////////////////
 	ResetPack(dataPackHandle);
-	new blizzard = ReadPackCell(dataPackHandle);
+	new blizzard = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new timeonFloor = ReadPackCell(dataPackHandle);
 	new String:backpackname[32];
 	ReadPackString(dataPackHandle,backpackname,sizeof(backpackname));
@@ -474,7 +477,7 @@ public Action:Blizzard_Timer(Handle:timer, Handle:dataPackHandle)
 	
 	
 	ResetPack(dataPackHandle);
-	WritePackCell(dataPackHandle, blizzard);    //PackPosition(0);  Backpack Index
+	WritePackCell(dataPackHandle, EntIndexToEntRef(blizzard));    //PackPosition(0);  Backpack Index
 	WritePackCell(dataPackHandle, timeonFloor); //PackPosition(24); Time on floor
 	WritePackString(dataPackHandle,backpackname);
 	
@@ -562,7 +565,7 @@ public detachBlizzard(blizzard)
 		CreateDataTimer(0.1, Blizzard_Timer, dataPackHandle, TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE|TIMER_DATA_HNDL_CLOSE);
 		
 		//Setup the datapack with appropriate information
-		WritePackCell(dataPackHandle, ent);   //PackPosition(0);  Backpack Index
+		WritePackCell(dataPackHandle, EntIndexToEntRef(ent));   //PackPosition(0);  Backpack Index
 		WritePackCell(dataPackHandle, 0);     //PackPosition(24); Time on floor
 		WritePackString(dataPackHandle,name); //the wearer's name
 		
@@ -575,7 +578,10 @@ public detachBlizzard(blizzard)
 public stopBlizzardTimer(Handle:dataPackHandle)
 {	
 	ResetPack(dataPackHandle);
-	new blizzard = ReadPackCell(dataPackHandle);
+	new blizzard = EntRefToEntIndex(ReadPackCell(dataPackHandle));
+	
+	if(blizzard < 1)
+		return true;
 	
 	if(!IsValidEntity(blizzard))
 	{
