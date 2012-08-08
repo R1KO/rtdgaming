@@ -678,6 +678,7 @@ public FreezeClient(client, attacker, Float:length)
 		{
 			//apply cooldown
 			RTD_TrinketMisc[client][TRINKET_ELEMENTALRES] = GetTime() + RTD_TrinketBonus[client][TRINKET_ELEMENTALRES];
+      client_rolls[client][AWARD_G_BLIZZARD][7] = 0;
 			return;
 		}
 	}
