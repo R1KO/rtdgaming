@@ -18,6 +18,10 @@ public Action:GivePlayerInfiAmmo(client)
 		//sandwich
 		if (GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex") == 42)
 			return;
+         
+     //widowmaker, caused a bug to not to any damage. 
+		if (GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex") == 527)
+			return;
 		
 		GetEntityNetClass(iWeapon, classname, sizeof(classname));
 		new iCurAmmo;
