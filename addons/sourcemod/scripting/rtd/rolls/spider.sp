@@ -1407,30 +1407,55 @@ public stopSpiderThinkTimer(Handle:dataPackHandle)
 	new spider = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new box = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
+	new bool:killFlameEntity = false;
+	new bool:stopSpiderFuntion = false;
+	
 	SetPackPosition(dataPackHandle, 112);
 	new flameEntity = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
 	if(!GetConVarInt(c_Enabled))
 		return true;
 	
+	//Spider or Box are invalid
 	if(spider <= 0 || box <= 0)
 	{
-		if(flameEntity > 0)
-		{
-			StopSound(spider, SNDCHAN_AUTO, SOUND_FlameLoop);
-			killEntityIn(flameEntity, 0.1);
-		}
-		
-		return true;
+		killFlameEntity = true;
+		stopSpiderFuntion = true;
 	}
 	
-	if(GetEntProp(spider, Prop_Data, "m_iHealth") <= 0)
+	//health check on spider
+	if(spider > 0)
+	{
+		if(GetEntProp(spider, Prop_Data, "m_iHealth") <= 0)
+		{
+			stopSpiderFuntion = true;
+			killFlameEntity = true;
+		}
+	}
+	
+	//spider got destroyed and left parent (sled box) behind
+	if(!IsValidEntity(spider))
+		stopSpiderFuntion = true;
+	
+	//destroy the flames if function is to be terminated
+	if(killFlameEntity)
 	{
 		if(flameEntity > 0)
 			killEntityIn(flameEntity, 0.1);
-			
+		
 		StopSound(spider, SNDCHAN_AUTO, SOUND_FlameLoop);
 		StopSound(spider, SNDCHAN_AUTO, SOUND_SpiderTurn);
+	}
+	
+	//terminate spider function
+	if(stopSpiderFuntion)
+	{
+		if(box > 0)
+		{
+			if(IsValidEntity(box))
+				killEntityIn(box, 0.0);
+		}
+		
 		return true;
 	}
 	
