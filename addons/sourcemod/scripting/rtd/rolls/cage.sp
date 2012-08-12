@@ -39,8 +39,14 @@ public Action:Spawn_Cage(client)
 	SetEntProp(ent, Prop_Send, "m_CollisionGroup", 1);
 	
 	//Set the cage's health
-	SetEntProp(ent, Prop_Data, "m_iMaxHealth", 2000);
-	SetEntProp(ent, Prop_Data, "m_iHealth", 2000);
+	if(RTD_PerksLevel[client][63])
+	{
+		SetEntProp(ent, Prop_Data, "m_iMaxHealth", 2500);
+		SetEntProp(ent, Prop_Data, "m_iHealth", 2500);
+	}else{
+		SetEntProp(ent, Prop_Data, "m_iMaxHealth", 2000);
+		SetEntProp(ent, Prop_Data, "m_iHealth", 2000);
+	}
 	
 	if(iTeam == RED_TEAM)
 	{
@@ -62,8 +68,22 @@ public Action:Spawn_Cage(client)
 	WritePackCell(dataPackHandle, iTeam); //entity
 	WritePackCell(dataPackHandle, 0); //entity
 	
+	if(RTD_PerksLevel[client][63])
+	{
+		WritePackCell(dataPackHandle, 1); //perk
+	}else{
+		WritePackCell(dataPackHandle, 0); //perk
+	}
+	
 	SetEntityRenderMode(ent, RENDER_TRANSCOLOR);
-	SetEntityRenderColor(ent, 255, 255, 255, 100);
+	
+	if(RTD_PerksLevel[client][63])
+	{
+		SetEntityRenderColor(ent, 255, 255, 255, 25);
+	}else{
+		SetEntityRenderColor(ent, 255, 255, 255, 100);
+	}
+	
 	
 	killEntityIn(ent, 120.0);
 	/*
@@ -103,6 +123,7 @@ public Action:Cage_Timer(Handle:timer, Handle:dataPackHandle)
 	new cage = ReadPackCell(dataPackHandle);
 	new cageTeam = ReadPackCell(dataPackHandle);
 	new playersWasInCage = ReadPackCell(dataPackHandle);
+	new hasPerk = ReadPackCell(dataPackHandle);
 	
 	new Float: playerPos[3];
 	new Float: playerPosTwo[3];
@@ -147,7 +168,13 @@ public Action:Cage_Timer(Handle:timer, Handle:dataPackHandle)
 		SetPackPosition(dataPackHandle, 16);
 		WritePackCell(dataPackHandle, 0); //entity
 		SetEntityRenderMode(cage, RENDER_TRANSCOLOR);
-		SetEntityRenderColor(cage, 255, 255, 255, 100);
+		
+		if(hasPerk)
+		{
+			SetEntityRenderColor(cage, 255, 255, 255, 25);
+		}else{
+			SetEntityRenderColor(cage, 255, 255, 255, 100);
+		}
 	}
 	
 	for (new i = 1; i <= MaxClients ; i++)
