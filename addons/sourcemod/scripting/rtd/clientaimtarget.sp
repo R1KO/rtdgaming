@@ -329,7 +329,14 @@ public Action:AimTarget_Timer(Handle:timer, Handle:dataPackHandle)
 				}else{
 					Format(message, sizeof(message), "Enemy Poop (%i/%i hp)", objHealth,objMaxHeath);
 				}
+			}else if(lookingAtModelIndex == cageModelIndex)
+			{
+				if(objectTeam == iTeam)
+				{
+					Format(message, sizeof(message), "Friendly Cage (%i/%i hp)", objHealth,objMaxHeath);
+				}
 			}
+			
 			
 			if(!(StrEqual(message, "")))
 				SpawnAnnotation(i, lookingAt, message, lookingAtOrigin);

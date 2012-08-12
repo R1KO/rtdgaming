@@ -125,7 +125,7 @@ public Action:AmpHook(amplifier, &attacker, &inflictor, &Float:damage, &damagety
 		
 		if(	damagetype&DMG_CLUB)
 		{
-			SetVariantInt(15);
+			SetVariantInt(30);
 			AcceptEntityInput(amplifier, "AddHealth");
 			
 			if(GetEntProp(amplifier, Prop_Data, "m_iHealth") > GetEntProp(amplifier, Prop_Data, "m_iMaxHealth"))
