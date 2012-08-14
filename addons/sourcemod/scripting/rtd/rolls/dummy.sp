@@ -304,6 +304,10 @@ public Action:Dummy_Timer(Handle:timer, Handle:dataPackHandle)
 				diffAng = GetVectorDotProduct(victim_fwd, angle_vec);
 				//PrintToChatAll("%f",diffAng);
 				
+				//make sure both the dummy and player can see each other
+				if(!isVisibileCheck(i, dummy))
+					continue;
+				
 				if (diffAng < 0.5)
 					continue;
 				
@@ -354,9 +358,12 @@ public Action:Dummy_Timer(Handle:timer, Handle:dataPackHandle)
 					
 					if(client < cMaxClients)
 					{
-						if(RTD_Perks[client][28] && GetRandomInt(0, 99) < 50)
+						if(RTD_Perks[client][28] && GetRandomInt(0, 99) < 50 && client_rolls[i][AWARD_G_DUMMY][2] < GetTime())
 						{
 							TF2_StunPlayer(enemy, 1.5, 0.0, TF_STUNFLAGS_NORMALBONK, 0);
+							
+							//Next time the player can get stunned
+							client_rolls[i][AWARD_G_DUMMY][2] = GetTime() + 7;
 						}
 					}
 					
