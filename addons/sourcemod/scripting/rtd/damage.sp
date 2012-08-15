@@ -420,7 +420,7 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 			new Float:pos[3];
 			new Float:distance;
 			new cond;
-			new rndDmg = RoundFloat(damage);
+			//new rndDmg = RoundFloat(damage);
 			
 			GetClientEyePosition(client, vec);   
 			
@@ -444,9 +444,9 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 					continue;
 				
 				if(distance > 375.0)
-						continue;
+					continue;
 				
-				DealDamage(i,(rndDmg/6), attacker, 1234, "collateral");
+				DealDamage(i,(RoundFloat(damage*0.21)), attacker, 1234, "collateral");
 				
 				SetHudTextParams(0.385, 0.82, 5.0, 255, 50, 50, 255);
 				ShowHudText(i, HudMsg3, "You were hurt by Collateral Damage.");
