@@ -153,6 +153,17 @@ public Action:AngelicHook(angelic, &attacker, &inflictor, &Float:damage, &damage
 		}
 	}
 	
+	if(attacker > 0 && attacker < MaxClients)
+	{
+		//homewrecker does double damage
+		if(isActiveWeapon(attacker, 153))
+		{
+			damage *= 2.0;
+			return Plugin_Changed;
+		}
+	}
+	
+	
 	return Plugin_Continue;
 }
 

@@ -136,10 +136,21 @@ public Action:AmpHook(amplifier, &attacker, &inflictor, &Float:damage, &damagety
 			}else{
 				DealDamage(attacker, 5, attacker, 128, "");
 			}
+			
 		}
 		
 		damage = 0.0;
 		return Plugin_Changed;
+	}
+	
+	if(attacker > 0 && attacker < MaxClients)
+	{
+		//homewrecker does double damage
+		if(isActiveWeapon(attacker, 153))
+		{
+			damage *= 2.0;
+			return Plugin_Changed;
+		}
 	}
 	
 	return Plugin_Continue;
