@@ -446,7 +446,19 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 				if(distance > 375.0)
 					continue;
 				
-				DealDamage(i,(RoundFloat(damage*0.21)), attacker, 1234, "collateral");
+				//unusual roll
+				if(client_rolls[attacker][AWARD_G_DIVIDETHESHOT][9])
+				{
+					new Float:floatReduction;
+					new Float:splashDmg;
+					
+					floatReduction = float(roll_Unusual[AWARD_G_DIVIDETHESHOT]) / 100.0;
+					splashDmg = damage*floatReduction;
+					
+					DealDamage(i,RoundFloat(splashDmg), attacker, 1234, "collateral");
+				}else{
+					DealDamage(i,(RoundFloat(damage*0.21)), attacker, 1234, "collateral");
+				}
 				
 				SetHudTextParams(0.385, 0.82, 5.0, 255, 50, 50, 255);
 				ShowHudText(i, HudMsg3, "You were hurt by Collateral Damage.");
