@@ -143,6 +143,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/crap_v2/crap.vtf");
 	AddFileToDownloadsTable("materials/models/rtdgaming/crap_v2/crap_bumpmap_final.vtf");
 	
+	/*
 	AddFileToDownloadsTable("maps/cp_dustbowl_particles.txt");
 	AddFileToDownloadsTable("maps/cp_gorge_particles.txt");
 	AddFileToDownloadsTable("maps/cp_gravelpit_particles.txt");
@@ -158,6 +159,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("maps/ctf_facing_worlds_rtd_particles.txt");
 	AddFileToDownloadsTable("maps/koth_ashville_rc1_particles.txt");
 	AddFileToDownloadsTable("maps/koth_lakeside_final_particles.txt");
+	*/
 	
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/beamgun_blue.vmt");
 	AddFileToDownloadsTable("materials/models/rtdgaming/amplifier/beamgun_blue_glass.vmt");
@@ -221,6 +223,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("materials/models/rtdgaming/mines/proximity_blue.vmt");
 	
 	//Decal Files (Download and Precache)
+	/*
 	AddFileToDownloadsTable("particles/custom_particles002.pcf");
 	AddFileToDownloadsTable("particles/custom_particles003.pcf");
 	
@@ -232,6 +235,7 @@ stock RTDDownloads()
 	AddFileToDownloadsTable("particles/custom_particles015.pcf");
 	AddFileToDownloadsTable("particles/custom_particles016.pcf");
 	AddFileToDownloadsTable("particles/custom_particles018.pcf");
+	*/
 	
 	//Sound Files (Download and Precache)
 	AddFileToDownloadsTable("sound/rtdgaming/slowcube0.wav");
