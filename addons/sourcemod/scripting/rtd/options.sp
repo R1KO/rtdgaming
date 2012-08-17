@@ -235,7 +235,7 @@ public Action:UpdateWaist(client)
 	}
 	
 	//make sure player is here
-	if(!IsClientInGame(client) || !IsPlayerAlive(client))
+	if(!IsClientInGame(client) || !IsPlayerAlive(client) || IsFakeClient(client))
 		return Plugin_Handled;
 	
 	SetEntPropFloat(client, Prop_Send, "m_flModelWidthScale", Scalee);
