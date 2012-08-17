@@ -21,7 +21,7 @@ stock bool:IsEntLimitReached()
 	//PrintToChatAll("%Ent Count: %i", c);
 	//PrintToServer("Found: %i | GetEntityCount: %i", c, GetEntityCount());
 	
-	if (c >= (maxents-300))
+	if (c >= (maxents-450))
 	{
 		//PrintToServer("Warning: Entity limit is nearly reached! Please switch or reload the map!");
 		//LogError("Entity limit is nearly reached: %d/%d", c, maxents);

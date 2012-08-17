@@ -13,6 +13,9 @@ stock bool:RollTheDice(client)
 	if((GetConVarFloat(c_Chance) + amountOfBadRolls[client] + (float(RTD_Perks[client][1] + RTD_Perks[client][21] + RTD_TrinketBonus[client][TRINKET_LADYLUCK])*0.01)) > GetRandomFloat(0.0, 1.0)) 
 		goodCommand = true;
 	
+	//bots always roll good rolls
+	if(IsFakeClient(client))
+		goodCommand = true;
 	
 	if(goodCommand)
 	{
