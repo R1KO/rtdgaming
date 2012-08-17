@@ -877,7 +877,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 	lastAttackerOnPlayer[client] = attacker;
 	
 	//trinket handling
-	if(rtd_trinket_enabled)
+	if(rtd_trinket_enabled && !IsEntLimitReached())
 	{
 		if(client > 0 && client <= MaxClients && attacker > 0 && attacker <= MaxClients && client != attacker)
 		{
@@ -1006,27 +1006,31 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 				}
 			}
 			
-			//determine spawn for coin if attacker has treasure chest
-			if(!spawnedItem && client_rolls[attacker][AWARD_G_TREASURE][0])
-				spawnedItem = determineCoinSpawn(client, attacker, 0);
-			
-			//determine spawn for coin if assister has treasure chest
-			if(assister != 0)
+			//presents and coin spawns
+			if(!IsEntLimitReached())
 			{
-				if(!spawnedItem && client_rolls[assister][AWARD_G_TREASURE][0])
-					spawnedItem = determineCoinSpawn(client, assister, 1);
-			}
-			
-			if(!spawnedItem)
-				spawnedItem = DetermineQuestionBlockSpawn(client, attacker);
-			
-			//Chance for Small health on kill perk
-			if(!spawnedItem)
-			{
-				if(RTD_Perks[client][3] != 0 && attacker != client && GetRandomInt(0, 100) > (100-(RTD_Perks[client][3])))
+				//determine spawn for coin if attacker has treasure chest
+				if(!spawnedItem && client_rolls[attacker][AWARD_G_TREASURE][0])
+					spawnedItem = determineCoinSpawn(client, attacker, 0);
+				
+				//determine spawn for coin if assister has treasure chest
+				if(assister != 0)
 				{
-					TF_SpawnMedipack(client, "item_healthkit_small", true);
-					spawnedItem = true;
+					if(!spawnedItem && client_rolls[assister][AWARD_G_TREASURE][0])
+						spawnedItem = determineCoinSpawn(client, assister, 1);
+				}
+				
+				if(!spawnedItem)
+					spawnedItem = DetermineQuestionBlockSpawn(client, attacker);
+				
+				//Chance for Small health on kill perk
+				if(!spawnedItem)
+				{
+					if(RTD_Perks[client][3] != 0 && attacker != client && GetRandomInt(0, 100) > (100-(RTD_Perks[client][3])))
+					{
+						TF_SpawnMedipack(client, "item_healthkit_small", true);
+						spawnedItem = true;
+					}
 				}
 			}
 			
