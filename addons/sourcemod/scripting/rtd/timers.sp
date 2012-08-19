@@ -14,7 +14,7 @@ public Action:Timer_RunRTDonBots(Handle:Timer, any:client)
 		if(IsClientInGame(i) && IsPlayerAlive(i) && IsFakeClient(i))
 		{
 			//following command is found in commands.sp
-			FakeClientCommand(i, "say rtd");
+			//FakeClientCommand(i, "say rtd");
 			//SetFakeSkin(i);
 		}
 	}

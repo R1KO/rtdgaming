@@ -107,7 +107,7 @@ BuildSentry(iBuilder, m_bMiniBuilding, sentryLevel, lifeTime)							//Not my cod
 	//SetEntDataVector(iSentry, FindSendPropOffs("CObjectSentrygun","m_vecOrigin"),             fOrigin, true);
 	//SetEntDataVector(iSentry, FindSendPropOffs("CObjectSentrygun","m_angRotation"),         fAngle, true);
 	SetEntDataVector(iSentry, FindSendPropOffs("CObjectSentrygun","m_vecBuildMaxs"),         fBuildMaxs, true);
-	SetEntDataVector(iSentry, FindSendPropOffs("CObjectSentrygun","m_flModelWidthScale"),     fMdlWidth, true);
+	//SetEntDataVector(iSentry, FindSendPropOffs("CObjectSentrygun","m_flModelWidthScale"),     fMdlWidth, true);
 	
 	new Float:minbounds[3] = {-70.0, -70.0, -70.0}; 
 	new Float:maxbounds[3] = {70.0, 70.0, 70.0}; 
