@@ -785,7 +785,7 @@ public Action:Event_PlayerSpawn(Handle:event, const String:name[], bool:dontBroa
 		}
 	}
 	
-	//UpdateWaist(client);
+	UpdateWaist(client);
 	
 	RTD_TrinketEquipTime[client] = 0;
 	

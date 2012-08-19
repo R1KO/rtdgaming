@@ -5880,6 +5880,9 @@ public Event_TF2MedicDefended(Handle: event, const String: name[], bool:dontBroa
 
 public Action: Event_TF2ObjectDestroyedPre(Handle: event, const String: name[], bool:dontBroadcast)
 {
+	if(GetEventInt(event, "objecttype") == -1)
+ 		return Plugin_Continue;
+	
 	if (GetEntProp(GetEventInt(event, "index"), Prop_Send, "m_bMiniBuilding", 1)) {
 		new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 		new userid = GetEventInt(event, "userid");
