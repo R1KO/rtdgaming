@@ -18,6 +18,19 @@ stock bool:IsEntLimitReached()
 		
 	}
 	
+	
+	//Reset client speeed and gravity
+	for (new clientI = 1; clientI <= MaxClients; clientI++) 
+	{
+		if(!IsClientInGame(clientI) || !IsPlayerAlive(clientI))
+			continue;
+		
+		if(entityDebug[clientI])
+		{
+			PrintCenterText(clientI, "%i", c);
+		}
+	}
+	
 	//PrintToChatAll("%Ent Count: %i", c);
 	//PrintToServer("Found: %i | GetEntityCount: %i", c, GetEntityCount());
 	

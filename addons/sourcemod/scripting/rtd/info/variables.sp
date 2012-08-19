@@ -131,6 +131,8 @@ new bool:movingHUD[cMaxClients];
 new moveHUDStage[cMaxClients];
 new bool:dmgDebug[cMaxClients];
 new bool:diceDebug[cMaxClients];
+new bool:entityDebug[cMaxClients];
+
 new lastAttackerOnPlayer[cMaxClients];
 new timerMessage;
 

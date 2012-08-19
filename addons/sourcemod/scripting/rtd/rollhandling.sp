@@ -1190,6 +1190,7 @@ public CleanPlayer(client)
 	g_BeginScore[client] = 0;
 	dmgDebug[client] = false;
 	diceDebug[client] = false;
+	entityDebug[client] = false;
 	
 	//Team Manager
 	if(IsClientInGame(client) && IsValidTeam(client) && IsBlocked(client))

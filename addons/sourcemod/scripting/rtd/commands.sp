@@ -229,6 +229,12 @@ public Action:Command_rtdadmin(client, args)
 		new serverHour = StringToInt(szTime);
 		PrintToChat(client, "%i", serverHour);
 	}
+	else if(StrEqual("entitydebug", strMessage, false))
+	{
+		entityDebug[client] = !entityDebug[client];
+		PrintToChat(client, "[RTD][ADMIN] Entity debugging turned %s.", entityDebug[client] ? "ON" : "OFF");
+		return Plugin_Handled;
+	}
 	else
 	{
 		SetupAdminMenu(client);
