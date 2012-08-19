@@ -26,7 +26,7 @@ public Action:ShowRTDOptions(client, startAtPage)
 		AddMenuItem(hMenu,"Option 1","ENABLE RTD messages in chat [REVERTS TO DEFAULT]");
 	}
 	
-	AddMenuItem(hMenu,"Option 2","Set Waist Size");
+	AddMenuItem(hMenu,"Option 2","Set Character Size");
 	
 	if(RTDOptions[client][4] == 0)
 	{
@@ -143,35 +143,42 @@ public Action:ShowWaistMenu(client)
 {
 	new Handle:hMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_WaistMenuHandler);
 	
-	SetMenuTitle(hMenu,"Select your waist size!");
+	SetMenuTitle(hMenu,"Select your model size!");
 	
 	
 	if(RTDOptions[client][3] == 0)
 	{
-		AddMenuItem(hMenu,"Option 1","Normal (Size 3) [Current Setting]" ); //10
+		AddMenuItem(hMenu,"Option 1","Normal [Current Setting]" ); //10
 	}else{
-		AddMenuItem(hMenu,"Option 1","Normal (Size 3)" ); //10
+		AddMenuItem(hMenu,"Option 1","Normal" ); //10
 	}
 	
-	if(RTDOptions[client][3] == 7)
+	if(RTDOptions[client][3] == 1)
 	{
-		AddMenuItem(hMenu,"Option 1","Thin (Size 2) [Current Setting]"); //7
+		AddMenuItem(hMenu,"Option 1","Small [Current Setting]"); //7
 	}else{
-		AddMenuItem(hMenu,"Option 1","Thin (Size 2)"); //7
-	}
-	
-	if(RTDOptions[client][3] == 5)
-	{
-		AddMenuItem(hMenu,"Option 1","Extra Thin (Size 1) [Current Setting]"); //5
-	}else{
-		AddMenuItem(hMenu,"Option 1","Extra Thin (Size 1)"); //5
+		AddMenuItem(hMenu,"Option 1","Small"); //7
 	}
 	
 	if(RTDOptions[client][3] == 2)
 	{
-		AddMenuItem(hMenu,"Option 1","Hardcore diet (Size 0) [Current Setting]"); //2
+		AddMenuItem(hMenu,"Option 1","Smaller [Current Setting]"); //5
 	}else{
-		AddMenuItem(hMenu,"Option 1","Hardcore diet (Size 0)"); //2
+		AddMenuItem(hMenu,"Option 1","Smaller"); //5
+	}
+	
+	if(RTDOptions[client][3] == 3)
+	{
+		AddMenuItem(hMenu,"Option 1","Big [Current Setting]"); //5
+	}else{
+		AddMenuItem(hMenu,"Option 1","Big"); //5
+	}
+	
+	if(RTDOptions[client][3] == 4)
+	{
+		AddMenuItem(hMenu,"Option 1","Bigger [Current Setting]"); //2
+	}else{
+		AddMenuItem(hMenu,"Option 1","Bigger"); //2
 	}
 	
 	
@@ -195,17 +202,22 @@ public fn_WaistMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				
 				case 1: 
 				{
-					RTDOptions[param1][3] = 7;
+					RTDOptions[param1][3] = 1;
 				}
 				
 				case 2: 
 				{
-					RTDOptions[param1][3] = 5;
+					RTDOptions[param1][3] = 2;
 				}
 				
 				case 3: 
 				{
-					RTDOptions[param1][3] = 2;
+					RTDOptions[param1][3] = 3;
+				}
+				
+				case 4: 
+				{
+					RTDOptions[param1][3] = 4;
 				}
 				
 			}
@@ -226,19 +238,37 @@ public Action:UpdateWaist(client)
 {
 	decl Float:Scalee;
 	
-	if(RTDOptions[client][3] == 0)
+	if(RTDOptions[client][3] == 0 || RTDOptions[client][3] < 1.0)
 	{
 		Scalee = 1.0;
 		
 	}else{
-		Scalee = float(RTDOptions[client][3]) / 10.0;
+		switch(RTDOptions[client][3])
+		{
+			case 0:
+				Scalee = 1.0;
+				
+			case 1:
+				Scalee = 0.9;
+			
+			case 2:
+				Scalee = 0.8;
+			
+			case 3:
+				Scalee = 1.1;
+				
+			case 4:
+				Scalee = 1.2;
+		}
+		
 	}
 	
 	//make sure player is here
 	if(!IsClientInGame(client) || !IsPlayerAlive(client) || IsFakeClient(client))
 		return Plugin_Handled;
 	
-	SetEntPropFloat(client, Prop_Send, "m_flModelWidthScale", Scalee);
+	//disabled due to MVM
+	SetEntPropFloat(client, Prop_Send, "m_flModelScale", Scalee);
 	return Plugin_Handled;
 }
 
