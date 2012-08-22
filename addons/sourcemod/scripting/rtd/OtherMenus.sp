@@ -288,24 +288,109 @@ public fn_ReimDiceAmountMenuHandler(Handle:menu, MenuAction:action, param1, para
 	}
 }
 
-public Action:SetupAwardMenu(client){
+public Action:SelectClientToAward(client)
+{
+	if(!IsClientInGame(client))
+		return;
+	
+	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_SelectClientToAward);
+	SetMenuTitle(hCMenu,"Select player");
+	
+	new String:name[32];
+	new String:userid[32];
+	new String:textInfo[64];
+	
+	Format(userid, sizeof(userid), "%i", GetClientUserId(client));
+	Format(textInfo, sizeof(textInfo), "(Self) %s ", name);
+	GetClientName(client, name, sizeof(name));
+	AddMenuItem(hCMenu,userid, textInfo, ITEMDRAW_DEFAULT);
+	
+	AddMenuItem(hCMenu,"-100", "Everyone", ITEMDRAW_DEFAULT);
+	
+	for(new i = 1; i <= MaxClients; i++)
+	{
+		if(i == client)
+			continue;
+		
+		if(!(IsClientInGame(i) && IsClientAuthorized(i)))
+			continue;
+		
+		
+		Format(userid, sizeof(userid), "%i", GetClientUserId(i));
+		GetClientName(i, name, sizeof(name));
+		
+		//PrintToChatAll("String UserId: %s (%i)", userid, GetClientUserId(i));
+		
+		Format(textInfo, sizeof(textInfo), "%s", name);
+		AddMenuItem(hCMenu,userid, textInfo, ITEMDRAW_DEFAULT);
+	}
+	
+	SetMenuExitBackButton(hCMenu, true);
+	DisplayMenu(hCMenu,client,MENU_TIME_FOREVER);
+}
+
+public fn_SelectClientToAward(Handle:menu, MenuAction:action, param1, param2)
+{	
+	new receiver;
+	
+	switch (action) 
+	{
+		case MenuAction_Select: 
+		{
+			new String:menuInfo[16];
+			GetMenuItem(menu, param2, menuInfo, sizeof(menuInfo));
+			
+			new receiverUserId = StringToInt(menuInfo);
+			//PrintToChatAll("menuInfo:%s", menuInfo);
+			
+			if(receiverUserId == -100)
+			{
+				SetupAwardMenu(-100, param1);
+			}else{
+				receiver = GetClientOfUserId(receiverUserId);
+				
+				SetupAwardMenu(receiver, param1);
+			}
+			
+		}
+		
+		case MenuAction_Cancel: {
+			//SetupCreditsMenu(param1, "");
+		}
+		
+		case MenuAction_End: {
+			CloseHandle(menu);
+		}
+	}
+}
+
+public Action:SetupAwardMenu(client, admin){
 	
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_AwardMenuHandler);
 	
 	new String:optionNum[128], String:optionMsg[128];
 	
-	SetMenuTitle(hCMenu,"Award Menu");
+	new String:name[32];
+	
+	if(client == -100)
+	{
+		Format(name, sizeof(name), "Everyone");
+	}else{
+		GetClientName(client, name, sizeof(name));
+	}
+	
+	SetMenuTitle(hCMenu,"Award Menu for %s", name);
 
 	for (new i = 0; i < MAX_GOOD_AWARDS + MAX_BAD_AWARDS; i++) 
-	{	
-		Format(optionNum, sizeof(optionNum), "Option %i", i);
+	{
+		Format(optionNum, sizeof(optionNum), "%i:Option %i", client, i);
 		Format(optionMsg, sizeof(optionMsg), "%s" , roll_Text[i]);
 		
 		AddMenuItem(hCMenu,optionNum, optionMsg);
 	}
 	
 	SetMenuExitBackButton(hCMenu, true);
-	DisplayMenu(hCMenu,client,MENU_TIME_FOREVER);
+	DisplayMenu(hCMenu,admin,MENU_TIME_FOREVER);
 }
 
 public fn_AwardMenuHandler(Handle:menu, MenuAction:action, param1, param2)
@@ -314,21 +399,48 @@ public fn_AwardMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 	{
 		case MenuAction_Select: 
 		{
+			decl String:MenuInfo[64];
+			new String:menuTriggers[2][20];
+			new style;
+			
+			GetMenuItem(menu, param2, MenuInfo, sizeof(MenuInfo),style);
+			ExplodeString(MenuInfo, ":", menuTriggers, 2, 20);
+			
+			new client = StringToInt(menuTriggers[0]);
+			
 			new String:adminName[32];
-			if(IsClientInGame(param1)){
-				
-				GetClientName(param1, adminName, sizeof(adminName));
-				
-				if(!UnAcceptable(param1, param2) && !inTimerBasedRoll[param1] && IsPlayerAlive(param1))
+			if(client == -100)
+			{
+				for (new i = 1; i <= MaxClients ; i++)
 				{
-					GivePlayerEffect(param1, param2, -2);
-					LogToFile(logPath,"[RTD][ADMIN] %s was awarded %s", adminName, roll_Text[param2]);
+					if(!IsClientInGame(i) || i == client || !IsPlayerAlive(i))
+						continue;
+					
+					GetClientName(i, adminName, sizeof(adminName));
+					
+					if(!UnAcceptable(i, param2) && !inTimerBasedRoll[i] && IsPlayerAlive(i))
+					{
+						GivePlayerEffect(i, param2, -2);
+						LogToFile(logPath,"[RTD][ADMIN] %s was awarded %s", adminName, roll_Text[param2]);
+					}
 				}
 				
+			}else{	
+				if(IsClientInGame(client))
+				{
+					GetClientName(client, adminName, sizeof(adminName));
+					
+					if(!UnAcceptable(client, param2) && !inTimerBasedRoll[client] && IsPlayerAlive(client))
+					{
+						GivePlayerEffect(client, param2, -2);
+						LogToFile(logPath,"[RTD][ADMIN] %s was awarded %s", adminName, roll_Text[param2]);
+					}
+				}
 			}
 		}
 		
 		case MenuAction_Cancel: {
+			
 		showAdminMenu(param1);
 		}
 		
@@ -481,7 +593,7 @@ public fn_AdminMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					case 1:
 						SetupGenericMenu(3, param1);
 					case 2:
-						SetupAwardMenu(param1);
+						SelectClientToAward(param1);
 					case 3:
 					{
 						Item_ParseList();
