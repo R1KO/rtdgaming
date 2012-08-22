@@ -13,7 +13,7 @@ public Action:ScaleClient(client)
 		return Plugin_Handled;
 	
 	if(client_rolls[client][AWARD_G_TINYBABYMAN][0])
-		ScaleClientSize(client, 0.2);
+		ScaleClientSize(client, 0.25);
 	
 	if(client_rolls[client][AWARD_G_LUMBERINGGIANT][0])
 		ScaleClientSize(client, 1.7);
