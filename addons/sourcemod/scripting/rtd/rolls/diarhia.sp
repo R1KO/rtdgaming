@@ -308,8 +308,8 @@ public Action:Spawn_Pattycake(client, attacker)
 	SetEntProp(ent, Prop_Send, "m_CollisionGroup", 2); 
 	
 	//Set the shield's health
-	SetEntProp(ent, Prop_Data, "m_iMaxHealth", 600);
-	SetEntProp(ent, Prop_Data, "m_iHealth", 600);
+	SetEntProp(ent, Prop_Data, "m_iMaxHealth", 300);
+	SetEntProp(ent, Prop_Data, "m_iHealth", 300);
 	
 	AcceptEntityInput( ent, "DisableCollision" );
 	AcceptEntityInput( ent, "EnableCollision" );
