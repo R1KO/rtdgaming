@@ -1005,7 +1005,7 @@ public Action:Timer_Rolls(Handle:timer, Handle:dataPackHandle)
 			
 			case AWARD_G_TINYBABYMAN:
 			{
-				ScaleClientSize(client, 1.0);
+				SetEntPropFloat(client, Prop_Send, "m_flModelScale", 1.0);
 			}
 			
 			case AWARD_G_LUMBERINGGIANT:
