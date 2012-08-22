@@ -772,6 +772,15 @@ GivePlayerEffect(client, award, cost)
 				GiveHorsemann(client);
 			}
 			
+			case AWARD_G_TINYBABYMAN:
+			{
+				ScaleClient(client);
+			}
+			
+			case AWARD_G_LUMBERINGGIANT:
+			{
+				ScaleClient(client);
+			}
 		}
 	}else{ // Bad Command
 		//Let's store how many bad rolls the user has received 
@@ -993,6 +1002,15 @@ public Action:Timer_Rolls(Handle:timer, Handle:dataPackHandle)
 			case AWARD_B_LOSER:
 				StopSound(client, SNDCHAN_AUTO, SOUND_LOSERHANK);
 			
+			case AWARD_G_TINYBABYMAN:
+			{
+				ScaleClientSize(client, 1.0);
+			}
+			
+			case AWARD_G_LUMBERINGGIANT:
+			{
+				ScaleClientSize(client, 1.0);
+			}
 		}
 		
 		stopTimer = true;

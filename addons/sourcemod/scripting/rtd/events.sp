@@ -63,7 +63,6 @@ public APLRes:AskPluginLoad2(Handle:hPlugin, bool:isAfterMapLoaded, String:error
 	g_BeginScore[client] = 0;
 	
 	SDKHook(client,	SDKHook_OnTakeDamage, 	TakeDamageHook);
-	//SDKHook(client,	SDKHook_TraceAttack, 	TakeDamageHook);
 	
 	seedingLimit[client] = 0;
 }

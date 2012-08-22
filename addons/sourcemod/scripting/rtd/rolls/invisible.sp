@@ -179,6 +179,8 @@ stock Colorize(client, c[4], self=true)
 	//Colorize the wearables, such as hats
 	SetWearablesRGBA_Impl( client, "tf_wearable", "CTFWearable",color );
 	SetWearablesRGBA_Impl( client, "tf_wearable_demoshield", "CTFWearableDemoShield", color);
+	SetWearablesRGBA_Impl( client, "tf_powerup_bottle", "CTFPowerupBottle", color);
+	
 	
 	//Colorize any backpacks
 	if(client_rolls[client][AWARD_G_BACKPACK][0])

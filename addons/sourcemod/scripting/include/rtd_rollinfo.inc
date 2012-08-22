@@ -11,7 +11,7 @@
 #endif
 #define _rtd_rollinfo_included
 
-#define MAX_GOOD_AWARDS			87
+#define MAX_GOOD_AWARDS			89
 
 #define AWARD_G_GODMODE			0
 #define AWARD_G_TOXIC				1
@@ -100,19 +100,21 @@
 #define AWARD_G_GROUNDINGBULLET	84
 #define AWARD_G_DIARHIA			85
 #define AWARD_G_HORSEMANN 		86
+#define AWARD_G_TINYBABYMAN 		87
+#define AWARD_G_LUMBERINGGIANT	88
 
 #define MAX_BAD_AWARDS			10
 
-#define AWARD_B_LOSER				87
-#define AWARD_B_NOJUMP			88
-#define AWARD_B_IGNITE			89
-#define AWARD_B_HEALTH			90
-#define AWARD_B_WEAPONS			91
-#define AWARD_B_TAUNT				92
-#define AWARD_B_WAITMORE			93
-#define AWARD_B_BADAIM			94
-#define AWARD_B_DOOM				95
-#define AWARD_B_SLOWMO			96
+#define AWARD_B_LOSER				89
+#define AWARD_B_NOJUMP			90
+#define AWARD_B_IGNITE			91
+#define AWARD_B_HEALTH			92
+#define AWARD_B_WEAPONS			93
+#define AWARD_B_TAUNT				94
+#define AWARD_B_WAITMORE			95
+#define AWARD_B_BADAIM			96
+#define AWARD_B_DOOM				97
+#define AWARD_B_SLOWMO			98
 
 new String:roll_id[200][32]; //roll identifiers that match up with ;
 
@@ -208,6 +210,8 @@ stock SetupRoll_IDs()
 	Format(roll_id[AWARD_G_GROUNDINGBULLET],32, "GROUNDINGBULLET");
 	Format(roll_id[AWARD_G_DIARHIA],32, 			"DIARHIA");
 	Format(roll_id[AWARD_G_HORSEMANN],32,		"HORSEMANN");
+	Format(roll_id[AWARD_G_TINYBABYMAN],32,		"TINYBABYMAN");
+	Format(roll_id[AWARD_G_LUMBERINGGIANT],32,	"LUMBERINGGIANT");
 	
 	Format(roll_id[AWARD_B_WEAPONS], 		32, "WEAPONS");
 	Format(roll_id[AWARD_B_TAUNT], 			32, "TAUNT");
