@@ -26,7 +26,7 @@ public Action:ShowRTDOptions(client, startAtPage)
 		AddMenuItem(hMenu,"Option 1","ENABLE RTD messages in chat [REVERTS TO DEFAULT]");
 	}
 	
-	AddMenuItem(hMenu,"Option 2","Set Character Size");
+	AddMenuItem(hMenu,"Option 2","Set Character Size", ITEMDRAW_DISABLED);
 	
 	if(RTDOptions[client][4] == 0)
 	{
@@ -242,7 +242,9 @@ public Action:UpdateWaist(client)
 		return Plugin_Handled;
 	}
 	
+	/*
 	decl Float:Scalee;
+	
 	
 	if(RTDOptions[client][3] == 0 || RTDOptions[client][3] < 1.0)
 	{
@@ -275,6 +277,8 @@ public Action:UpdateWaist(client)
 	
 	//disabled due to MVM
 	SetEntPropFloat(client, Prop_Send, "m_flModelScale", Scalee);
+	* */
+	
 	return Plugin_Handled;
 }
 

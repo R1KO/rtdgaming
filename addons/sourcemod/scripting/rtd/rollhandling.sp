@@ -779,6 +779,7 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_G_LUMBERINGGIANT:
 			{
+				client_rolls[client][AWARD_G_ARMOR][1] += 200;
 				ScaleClient(client);
 			}
 		}
@@ -1009,7 +1010,7 @@ public Action:Timer_Rolls(Handle:timer, Handle:dataPackHandle)
 			
 			case AWARD_G_LUMBERINGGIANT:
 			{
-				ScaleClientSize(client, 1.0);
+				SetEntPropFloat(client, Prop_Send, "m_flModelScale", 1.0);
 			}
 		}
 		
