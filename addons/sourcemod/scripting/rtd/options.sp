@@ -236,6 +236,12 @@ public fn_WaistMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 
 public Action:UpdateWaist(client)
 {
+	if(client_rolls[client][AWARD_G_TINYBABYMAN][0] || client_rolls[client][AWARD_G_LUMBERINGGIANT][0])
+	{
+		ScaleClient(client);
+		return Plugin_Handled;
+	}
+	
 	decl Float:Scalee;
 	
 	if(RTDOptions[client][3] == 0 || RTDOptions[client][3] < 1.0)

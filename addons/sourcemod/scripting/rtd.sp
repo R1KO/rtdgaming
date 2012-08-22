@@ -121,6 +121,8 @@
 #include "rtd/rolls/groundingbullet.sp"
 #include "rtd/rolls/diarhia.sp"
 #include "rtd/rolls/horsemann.sp"
+#include "rtd/rolls/scaleclient.sp"
+
 
 #include "rtd/trinkets/trinket_timers.sp"
 
