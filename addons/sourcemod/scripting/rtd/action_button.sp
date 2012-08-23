@@ -249,7 +249,9 @@ public Action:RightClick_Timer(Handle:Timer)
 		iButtons = GetClientButtons(i);
 		
 		if(movingHUD[i])
-		{	
+		{
+			PrintCenterText(i, "X: %f | Y: %f", HUDxPos[i][moveHUDStage[i]], HUDyPos[i][moveHUDStage[i]] );
+			
 			if(iButtons & IN_FORWARD)
 				HUDyPos[i][moveHUDStage[i]] -= 0.002;
 			

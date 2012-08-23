@@ -34,6 +34,7 @@ new Handle:c_Classic = INVALID_HANDLE;
 new Handle:c_Trinkets = INVALID_HANDLE;
 new Handle:c_TrinketPrice = INVALID_HANDLE;
 new Handle:c_TrinketReRollPrice = INVALID_HANDLE;
+new Handle:c_TrinketUpgradeReduction = INVALID_HANDLE;
 
 new Handle:c_Event_MLK = INVALID_HANDLE;
 
@@ -278,6 +279,8 @@ new rtd_classic;
 new rtd_trinket_enabled;
 new rtd_trinketPrice;
 new rtd_trinket_rerollPrice;
+new Float:rtd_trinket_Upgrade_R;
+
 new moreDeployables; //enabled/disabled
 new deployables_max;
 new Float:deployables_chance = 0.5;
@@ -364,7 +367,7 @@ new trinket_TotalChance[MAX_TRINKETS];
 new trinketChanceBounds[MAX_TRINKETS][4];
 
 //trinketUpgradeCost[rarity][tier]
-new trinketUpgradeCost[4][3];
+new trinketUpgradeCost[MAX_TRINKETS][3];
 
 
 new RTD_TrinketActive[cMaxClients][MAX_TRINKETS + 1];

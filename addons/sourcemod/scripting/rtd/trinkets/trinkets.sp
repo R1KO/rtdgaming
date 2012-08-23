@@ -35,7 +35,8 @@ Load_Trinkets()
 	new Handle: cfg_trinket_Rarity 		= CreateArray(1, MAX_TRINKETS);
 	new Handle: cfg_trinket_Tiers 		= CreateArray(1, MAX_TRINKETS);
 	new Handle: cfg_trinket_Index	 	= CreateArray(1, MAX_TRINKETS);
-
+	
+	new Handle: cfg_trinket_UpgradeCost = CreateArray(64, MAX_TRINKETS);
 	
 	// Load the key files.
 	BuildPath(Path_SM, strLocation, 256, "configs/rtd/trinkets.cfg");
@@ -75,6 +76,8 @@ Load_Trinkets()
 		KvGetString(kvItemList, "tierChance", strLine, sizeof(strLine), "");
 		SetArrayString(cfg_trinket_TierChance, totalTrinkets, strLine);
 		
+		KvGetString(kvItemList, "upgradeCost", strLine, sizeof(strLine), "");
+		SetArrayString(cfg_trinket_UpgradeCost, totalTrinkets, strLine);
 		
 		//Read as Ints
 		KvGetString(kvItemList, "enabled", strLine, sizeof(strLine), "");
@@ -157,6 +160,16 @@ Load_Trinkets()
 				trinketChanceBounds[i][2] = trinketChanceBounds[i][1] + trinket_TierChance[i][2];
 				trinketChanceBounds[i][3] = trinketChanceBounds[i][2] + trinket_TierChance[i][3];
 				
+				/////////////////////////////
+				//split up the upgradeCost //
+				/////////////////////////////
+				GetArrayString(cfg_trinket_UpgradeCost, step, strLine, 32);
+				ExplodeString(strLine, ",", splits, 3, 32);
+				
+				trinketUpgradeCost[i][0] = StringToInt(splits[0]);
+				trinketUpgradeCost[i][1] = StringToInt(splits[1]);
+				trinketUpgradeCost[i][2] = StringToInt(splits[2]);
+				
 				///////////////////////////////////////////
 				//Phew, load up the other 1 digit values //
 				///////////////////////////////////////////
@@ -179,11 +192,12 @@ Load_Trinkets()
 				RemoveFromArray(cfg_trinket_Rarity, step);
 				RemoveFromArray(cfg_trinket_Tiers, step);
 				RemoveFromArray(cfg_trinket_Index, step);
+				RemoveFromArray(cfg_trinket_UpgradeCost, step);
 				
 				//debug message
 				//PrintToChatAll("Trinket %s [%i]: | TierID: %s | Unique: %s", trinket_Title[i], trinket_Index[i], trinket_Identifier[i], trinket_Unique[i]);
 				//PrintToChatAll("Tier chance %i|%i|%i|%i", trinket_TierChance[i][0], trinket_TierChance[i][1], trinket_TierChance[i][2], trinket_TierChance[i][3]);
-				
+				//PrintToChatAll("Upgrade cost %i|%i|%i", trinketUpgradeCost[i][0], trinketUpgradeCost[i][1], trinketUpgradeCost[i][2]);
 				break;
 			}
 		}
@@ -202,6 +216,8 @@ Load_Trinkets()
 	CloseHandle(cfg_trinket_Rarity);
 	CloseHandle(cfg_trinket_Tiers);
 	CloseHandle(cfg_trinket_Index);
+	CloseHandle(cfg_trinket_UpgradeCost);
+	
 }
 
 ////////////////////////////////
@@ -511,19 +527,28 @@ public fn_TrinketsLoadOutHandler(Handle:menu, MenuAction:action, param1, param2)
 		}
 	}
 }
-/*
+
 public upgradeCost(client, slot)
 {
-	new cost;
+	if(RTD_TrinketTier[client][slot]>=(trinket_Tiers[RTD_TrinketIndex[client][slot]]-1))
+		return -1;
 	
-	RTD_TrinketIndex[client][slot]
-	RTD_TrinketTier[client][slot]
-	trinket_Rarity[i]
-	return cost;
+	new baseCost;
+	new Float:finalCost;
+	
+	baseCost = trinketUpgradeCost[RTD_TrinketIndex[client][slot]][RTD_TrinketTier[client][slot]];
+	
+	//PrintToChatAll("Current Tier: %i | UpgradeCost: %i", RTD_TrinketTier[client][slot], cost);
+	
+	finalCost = float(baseCost) - float(baseCost) * rtd_trinket_Upgrade_R;
+	
+	//PrintToChatAll("Base Cost: %i | FinalCost: %i", RoundFloat(baseCost), RoundFloat(finalCost));
+	
+	return RoundFloat(finalCost);
 	
 	//return -1 when it's at maximum
 }
-*/
+
 public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 {
 	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_TrinSelMenuHandler);
@@ -535,7 +560,9 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	
 	new String:displayIdent[64];
 	new String:reRollText[64];
-	//new String:upgradeText[64];
+	new String:upgradeText[64];
+	
+	new selectedUpgradeCost = upgradeCost(client, selectedSlot);
 	
 	//slotStatus
 	//1 = equipped
@@ -544,7 +571,12 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	
 	Format(reRollText, 64, "[%i Credits] Reroll Variant", rtd_trinket_rerollPrice);
 	
-	//Format(reRollText, 64, "[%i Credits] Upgrade Trinket", upgradeCost(client, selectedSlot));
+	if(selectedUpgradeCost == -1)
+	{
+		Format(upgradeText, 64, "Upgrade Trinket");
+	}else{
+		Format(upgradeText, 64, "[%i Credits] Upgrade Trinket", selectedUpgradeCost);
+	}
 	
 	if(slotStatus == 1)
 	{
@@ -558,6 +590,9 @@ public Action:showTrinketSelectionMenu(client, selectedSlot, slotStatus)
 	
 	Format(displayIdent, 64, "%i:4", selectedSlot);
 	AddMenuItem(hCMenu, displayIdent, reRollText, RTD_TrinketTier[client][selectedSlot]>=(trinket_Tiers[RTD_TrinketIndex[client][selectedSlot]]-1)?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
+	
+	Format(displayIdent, 64, "%i:7", selectedSlot);
+	AddMenuItem(hCMenu, displayIdent, upgradeText, RTD_TrinketTier[client][selectedSlot]>=(trinket_Tiers[RTD_TrinketIndex[client][selectedSlot]]-1)?ITEMDRAW_DISABLED:RTDCredits[client]<selectedUpgradeCost?ITEMDRAW_DISABLED:ITEMDRAW_DEFAULT);
 	
 	Format(displayIdent, 64, "%i:5", selectedSlot);
 	AddMenuItem(hCMenu, displayIdent, "Trade Trinket!", ITEMDRAW_DEFAULT);
@@ -670,7 +705,136 @@ public fn_TrinSelMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 				{
 					selectSecondTrinket(param1, selectedSlot);
 				}
+				
+				//upgrade trinket
+				case 7:
+				{
+					confirmUpgradeTrinket(param1, selectedSlot, slotStatus);
+				}
 			}
+		}
+		
+		case MenuAction_Cancel: {
+			TrinketsLoadoutMenu(param1, 0);
+		}
+		
+		case MenuAction_End: {
+			CloseHandle(menu);
+		}
+	}
+}
+
+////////////////////////////////////////
+// Upgrade Trinket                    //
+// User can upgrade variant on trinket//
+////////////////////////////////////////
+public Action:confirmUpgradeTrinket(client, selectedSlot, slotStatus)
+{
+	new Handle:hCMenu = CreateMenuEx(GetMenuStyleHandle(MenuStyle_Radio), fn_UpgradeTrinkMenuHandler);
+	
+	new String:menuTitle[64];
+	new String:displayIdent[64];
+	
+	new selectedUpgradeCost = upgradeCost(client, selectedSlot);
+	
+	//failsafe
+	if(selectedUpgradeCost == -1)
+	{
+		//erm dunno how client got here
+		PrintCenterText(client, "Trinket unable to be upgraded!");
+		PrintToChat(client, "Trinket unable to be upgraded!");
+		return Plugin_Handled;
+	}
+	
+	Format(menuTitle, 64, "[%i Credits] Upgrade Trinket: %s %s?", selectedUpgradeCost, trinket_TierID[RTD_TrinketIndex[client][selectedSlot]][RTD_TrinketTier[client][selectedSlot]], trinket_Title[RTD_TrinketIndex[client][selectedSlot]]);
+	SetMenuTitle(hCMenu, menuTitle);
+	
+	Format(displayIdent, 64, "%i", selectedSlot);
+	AddMenuItem(hCMenu, displayIdent, "No", ITEMDRAW_DEFAULT);
+	
+	Format(displayIdent, 64, "%i", selectedSlot);
+	AddMenuItem(hCMenu, displayIdent, "Yes", ITEMDRAW_DEFAULT);
+	
+	SetMenuExitBackButton(hCMenu, true);
+	DisplayMenuAtItem(hCMenu, client, 0, MENU_TIME_FOREVER);
+	
+	return Plugin_Handled;
+}
+
+public fn_UpgradeTrinkMenuHandler(Handle:menu, MenuAction:action, param1, param2)
+{
+	switch (action) 
+	{
+		case MenuAction_Select: 
+		{
+			decl String:MenuInfo[64];
+			decl String:chatMessage[200];
+			
+			new style;
+			new selectedSlot;
+			
+			GetMenuItem(menu, param2, MenuInfo, sizeof(MenuInfo),style);
+			
+			selectedSlot = StringToInt(MenuInfo[0]);
+			
+			new selectedUpgradeCost = upgradeCost(param1, selectedSlot);
+			
+			switch(param2)
+			{
+				//get outta here
+				case 0:
+				{
+				}
+				
+				//change variant on trinket
+				case 1:
+				{
+					if(RTDCredits[param1] >= selectedUpgradeCost)
+					{
+						EmitSoundToClient(param1, SOUND_BOUGHTSOMETHING);
+						
+						RTDCredits[param1] -= selectedUpgradeCost;
+						
+						//upgrade trinket
+						new oldVariant = RTD_TrinketTier[param1][selectedSlot];
+						new newVariant = RTD_TrinketTier[param1][selectedSlot] + 1;
+						
+						
+						RTD_TrinketTier[param1][selectedSlot] = newVariant;
+						
+						equipActiveTrinket(param1);
+						
+						EmitSoundToClient(param1, SOUND_OPEN_TRINKET);
+						
+						new String:name[32];
+						GetClientName(param1, name, sizeof(name));
+						
+						Format(chatMessage, 128, "\x03%s\x04 upgraded \x03%s\x04 from: \x01%s\x04 to \x01%s", name, trinket_Title[RTD_TrinketIndex[param1][selectedSlot]], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][oldVariant], trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][newVariant]);
+						PrintToChatAll(chatMessage);
+						
+						Format(chatMessage, sizeof(chatMessage), "Obtained: (%s) %s Trinket", trinket_TierID[RTD_TrinketIndex[param1][selectedSlot]][newVariant], trinket_Title[RTD_TrinketIndex[param1][selectedSlot]]);
+						PrintCenterText(param1, chatMessage);
+						
+						//save stats
+						if(areStatsLoaded[param1] && g_BCONNECTED)
+						{
+							saveStats(param1);
+						}
+					}else{
+						PrintCenterText(param1, "Insufficent Credits!");
+						PrintToChat(param1, "Insufficent Credits!");
+						
+						EmitSoundToClient(param1, SOUND_DENY);
+					}
+				}
+			}
+			
+			new slotStatus = 2; //unequipped
+			if(RTD_TrinketEquipped[param1][selectedSlot])
+				slotStatus = 1;
+			
+			showTrinketSelectionMenu(param1, selectedSlot, slotStatus);
+			//TrinketsLoadoutMenu(param1, 0);
 		}
 		
 		case MenuAction_Cancel: {
