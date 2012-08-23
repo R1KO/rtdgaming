@@ -779,6 +779,7 @@ GivePlayerEffect(client, award, cost)
 			
 			case AWARD_G_LUMBERINGGIANT:
 			{
+				client_rolls[client][AWARD_G_ARMOR][0] = 1;
 				client_rolls[client][AWARD_G_ARMOR][1] += 200;
 				ScaleClient(client);
 			}

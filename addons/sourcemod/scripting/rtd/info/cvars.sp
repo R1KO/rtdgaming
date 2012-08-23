@@ -43,6 +43,7 @@ rtd_load_cvars()
 	c_Trinkets						= CreateConVar("sm_rtd_trinkets",						"1",		"<0/1> Allows access to trinkets");
 	c_TrinketPrice					= CreateConVar("sm_rtd_trinketPrice",					"500",		"<0-x> Cost to purchase trinkets");
 	c_TrinketReRollPrice			= CreateConVar("sm_rtd_trinketreroll_price",			"300",		"<0-x> Cost to change variant on trinket");
+	c_TrinketUpgradeReduction		= CreateConVar("sm_rtd_trinketupgrade_reduction",		"0.0",		"<0.0-1.0> Reduces cost of trinket, 0.5 would be half off, 0.99 wold be 99 percent off");
 	
 	c_Event_MLK						= CreateConVar("sm_rtd_event_mlk",						"0",		"<0/1> Martin Luther King");
 	
@@ -74,6 +75,7 @@ rtd_load_cvars()
 	HookConVarChange(c_Trinkets,					ConVarChange_RTD);
 	HookConVarChange(c_TrinketPrice,				ConVarChange_RTD);
 	HookConVarChange(c_TrinketReRollPrice,			ConVarChange_RTD);
+	HookConVarChange(c_TrinketUpgradeReduction,		ConVarChange_RTD);
 	
 	HookConVarChange(c_Event_MLK,					ConVarChange_RTD);
 }
@@ -113,6 +115,8 @@ rtd_load_cvar_configs()
 	rtd_trinketPrice		=	GetConVarInt(c_TrinketPrice);
 	rtd_trinket_rerollPrice	=	GetConVarInt(c_TrinketReRollPrice);
 	rtd_TimeLimit			=	GetConVarInt(c_Timelimit);
+	
+	rtd_trinket_Upgrade_R	=	GetConVarFloat(c_TrinketUpgradeReduction);
 	
 	rtd_Event_MLK			=	GetConVarInt(c_Event_MLK);
 }
@@ -226,6 +230,9 @@ public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:new
 	}else if(convar == c_Event_MLK)
 	{
 		rtd_Event_MLK = GetConVarInt(c_Event_MLK);
+	}else if(convar == c_TrinketUpgradeReduction)
+	{
+		rtd_trinket_Upgrade_R = GetConVarFloat(c_TrinketUpgradeReduction);
 	}
 	
 }
