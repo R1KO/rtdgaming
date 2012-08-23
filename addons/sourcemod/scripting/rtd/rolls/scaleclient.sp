@@ -13,10 +13,10 @@ public Action:ScaleClient(client)
 		return Plugin_Handled;
 	
 	if(client_rolls[client][AWARD_G_TINYBABYMAN][0])
-		ScaleClientSize(client, 0.25);
+		ScaleClientSize(client, 0.35);
 	
 	if(client_rolls[client][AWARD_G_LUMBERINGGIANT][0])
-		ScaleClientSize(client, 1.7);
+		ScaleClientSize(client, 1.65);
 	
 	return Plugin_Handled;
 }
