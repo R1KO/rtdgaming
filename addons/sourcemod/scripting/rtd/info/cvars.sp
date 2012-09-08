@@ -47,6 +47,8 @@ rtd_load_cvars()
 	
 	c_Event_MLK						= CreateConVar("sm_rtd_event_mlk",						"0",		"<0/1> Martin Luther King");
 	
+	c_BotsRTD						= CreateConVar("sm_rtd_bots",						"1",		"<0/1> Allow bots to RTD");
+	
 	HookConVarChange(c_Enabled,						ConVarChange_RTD);
 	HookConVarChange(c_Dice_MinPlayers,				ConVarChange_RTD);
 	HookConVarChange(c_Dice_RespawnTime,			ConVarChange_RTD);
@@ -78,6 +80,8 @@ rtd_load_cvars()
 	HookConVarChange(c_TrinketUpgradeReduction,		ConVarChange_RTD);
 	
 	HookConVarChange(c_Event_MLK,					ConVarChange_RTD);
+	HookConVarChange(c_BotsRTD,					ConVarChange_RTD);
+	
 }
 
 rtd_load_cvar_configs()
@@ -119,6 +123,9 @@ rtd_load_cvar_configs()
 	rtd_trinket_Upgrade_R	=	GetConVarFloat(c_TrinketUpgradeReduction);
 	
 	rtd_Event_MLK			=	GetConVarInt(c_Event_MLK);
+	
+	rtd_BotsRTD				=	GetConVarInt(c_BotsRTD);
+	
 }
 
 public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:newValue[])
@@ -233,6 +240,10 @@ public ConVarChange_RTD(Handle:convar, const String:oldValue[], const String:new
 	}else if(convar == c_TrinketUpgradeReduction)
 	{
 		rtd_trinket_Upgrade_R = GetConVarFloat(c_TrinketUpgradeReduction);
+	}else if(convar == c_BotsRTD)
+	{
+		rtd_BotsRTD	= GetConVarInt(c_BotsRTD);
 	}
+	
 	
 }
