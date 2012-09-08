@@ -8,16 +8,21 @@
 
 public Action:Timer_RunRTDonBots(Handle:Timer, any:client)
 {
+	if(!rtd_BotsRTD)
+		return Plugin_Continue;
+	
 	for(new i=1; i <= MaxClients; i++)
 	{
 		// Check to make sure the player is on the same team
 		if(IsClientInGame(i) && IsPlayerAlive(i) && IsFakeClient(i))
 		{
 			//following command is found in commands.sp
-			//FakeClientCommand(i, "say rtd");
+			FakeClientCommand(i, "say rtd");
 			//SetFakeSkin(i);
 		}
 	}
+	
+	return Plugin_Continue;
 }
 
 public Action:Timer_Check_DatabaseOnClient(Handle:Timer)

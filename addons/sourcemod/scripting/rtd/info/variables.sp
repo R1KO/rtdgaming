@@ -37,6 +37,7 @@ new Handle:c_TrinketReRollPrice = INVALID_HANDLE;
 new Handle:c_TrinketUpgradeReduction = INVALID_HANDLE;
 
 new Handle:c_Event_MLK = INVALID_HANDLE;
+new Handle:c_BotsRTD = INVALID_HANDLE;
 
 
 /**
@@ -396,6 +397,7 @@ new wasJumping[cMaxClients];
 new entityPickedUp[cMaxClients];
 new rtd_TimeLimit;
 
+new rtd_BotsRTD;
 new rtd_Event_MLK;
 new rtd_Event_MLK_Data[cMaxClients];
 
