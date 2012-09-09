@@ -1300,6 +1300,6 @@ checkTalentPoints(client)
 		WritePackCell(dataPackHandle, 0);   //PackPosition(32); This is to repeat sounds and stuff every 5 seconds
 		EmitSoundToAll(DiceFound, client);
 	}else{
-		PrintToChat(client, "All is well!");
+		//PrintToChat(client, "All is well!");
 	}
 }
