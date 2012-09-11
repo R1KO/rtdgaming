@@ -729,6 +729,13 @@ public fn_PerksMenuHandler(Handle:menu, MenuAction:action, param1, param2)
 					
 					PrintToChat(param1, "Cage: Stronger and more translucent");
 				}
+				else if(StrContains(menuTriggers[1], "a61", false) != -1)
+				{
+					RTD_Perks[param1][64] += value;
+					RTD_PerksLevel[param1][64] ++;
+					
+					PrintToChat(param1, "Jetpack: The Fury");
+				}
 				else
 				{
 					talentPoints[param1] += cost;

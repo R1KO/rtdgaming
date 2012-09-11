@@ -28,16 +28,19 @@ public Jetpack_Player(client, Float:angles[3], buttons)
 	if(client_rolls[client][AWARD_G_JETPACK][6] < 100)
 		boost = (float(client_rolls[client][AWARD_G_JETPACK][6])/100.0) * BOOST_AMOUNT;
 	
+	//if player has The Fury perk
+	if(RTD_PerksLevel[client][64])
+	{
+		speed[0] *= 1.003;
+		speed[1] *= 1.003;
+	}
+	
+	//PrintToChatAll("%f | %f", speed[0], speed[1]);
+	
 	speed[2] += boost;
 	
 	if(speed[2] < 0.0)
 		speed[2] = 200.0;
-	
-	/* TODO: Do a vector calc to allow the player to change direction in the air
-	if (angles[0] < 88.0) {
-		USE angles[1] HERE FOR DETERMINING ORIENTATION
-	}
-	*/
 	
 	//client_rolls[client][AWARD_G_JETPACK][5] = GetTime();
 	
@@ -109,7 +112,6 @@ public Action:SpawnAndAttachJetpack(client, fuel, totalFuel)
 	WritePackString(dataPackHandle,name); 		//PackPosition(32)  The wearer's name
 	WritePackCell(dataPackHandle, -1);	//PackPosition(40); Particle1
 	WritePackCell(dataPackHandle, -1);	//PackPosition(48); Particle2
-	
 	EmitSoundToAll(SOUND_ITEM_EQUIP,client);
 	
 	client_rolls[client][AWARD_G_JETPACK][6] = fuel;
@@ -239,16 +241,17 @@ public Action:Client_Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 }
 
 public createJetpackFlames(jetpack, Handle:dataPackHandle)
-{
-	ResetPack(dataPackHandle);
-	SetPackPosition(dataPackHandle, 40);
-	
+{	
 	new Float: jetpackPos[3];
 	new Float: jetpackAngle[3];
+	
 	GetEntPropVector(jetpack, Prop_Send, "m_vecOrigin", jetpackPos);
 	GetEntPropVector(jetpack, Prop_Data, "m_angRotation", jetpackAngle);
 	
+	
 	new wearer = GetEntPropEnt(jetpack, Prop_Data, "m_hOwnerEntity");
+	
+	new hasFuryPerk = RTD_PerksLevel[wearer][64];
 	
 	new flame1 = CreateEntityByName("info_particle_system");
 	if (IsValidEntity(flame1))
@@ -299,8 +302,18 @@ public createJetpackFlames(jetpack, Handle:dataPackHandle)
 			AcceptEntityInput(flame2, "start");
 	}
 	
-	WritePackCell(dataPackHandle, EntIndexToEntRef(flame1));	//PackPosition(40); Particle1
-	WritePackCell(dataPackHandle, EntIndexToEntRef(flame2));	//PackPosition(48); Particle2
+	if(hasFuryPerk && client_rolls[wearer][AWARD_G_JETPACK][8] <= GetTime())
+	{
+		burnNearby(wearer, 200.0, -50.0, 1);
+		
+		AttachTempParticle(wearer, "heavy_ring_of_fire", 4.0, false, "", 10.0, false);
+		client_rolls[wearer][AWARD_G_JETPACK][8] = GetTime() + 3;
+	}
+	
+	ResetPack(dataPackHandle);
+	SetPackPosition(dataPackHandle, 40);
+	WritePackCell(dataPackHandle, EntIndexToEntRef(flame1));		//PackPosition(40); Particle1
+	WritePackCell(dataPackHandle, EntIndexToEntRef(flame2));		//PackPosition(48); Particle2
 }
 
 public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
@@ -329,7 +342,11 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 	new flame1 = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	new flame2 = EntRefToEntIndex(ReadPackCell(dataPackHandle));
 	
+	
 	new wearer = GetEntPropEnt(jetpack, Prop_Data, "m_hOwnerEntity");
+	new hasFuryPerk;
+	
+	new nextRingOfFireTime = client_rolls[wearer][AWARD_G_JETPACK][8];
 	
 	//There is no owner entity
 	if(wearer == -1)
@@ -444,7 +461,9 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 	}
 	
 	if(wearer > 0 && wearer <= MaxClients)
-	{	
+	{
+		hasFuryPerk = RTD_PerksLevel[wearer][64];
+		
 		if(IsClientInGame(wearer))
 		{
 			if(!IsPlayerAlive(wearer) || !client_rolls[wearer][AWARD_G_JETPACK][0])
@@ -510,6 +529,15 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 			
 			if(client_rolls[wearer][AWARD_G_JETPACK][5] && RoundFloat(fuelPercent) > 0)
 			{
+				//PrintToChatAll("%i | %i", nextRingOfFireTime, GetTime());
+				if(hasFuryPerk && nextRingOfFireTime <= GetTime())
+				{
+					burnNearby(wearer, 200.0, -50.0, 1);
+					
+					client_rolls[wearer][AWARD_G_JETPACK][8] = GetTime() + 3;
+					AttachTempParticle(wearer, "heavy_ring_of_fire", 4.0, false, "", 10.0, false);
+				}
+				
 				fuel -= 15;
 				
 				if(flame1 < 1 || flame2 < 1)
@@ -808,7 +836,61 @@ public Drop_Jetpack(client)
 	centerHudText(client, "Jetpack Dropped", 0.1, 5.0, HudMsg3, 0.82); 
 	
 	detachJetpack(jetpack, client_rolls[client][AWARD_G_JETPACK][6], client_rolls[client][AWARD_G_JETPACK][7]);
+}
+
+public burnNearby(owner, Float:maxDistance, Float:zOffset, lightArrows)
+{
+	new ownerTeam =  GetEntProp(owner, Prop_Data, "m_iTeamNum");
+	new playerTeam;
 	
+	new Float:ownerPos[3];
+	new Float:playerPos[3];
+	new Float:distance;
+	GetEntPropVector(owner, Prop_Send, "m_vecOrigin", ownerPos);
 	
+	ownerPos[2] += zOffset;
 	
+	//find nearby allies and give them fire damage
+	for (new i = 1; i <= MaxClients ; i++)
+	{
+		if(!IsClientInGame(i) || !IsPlayerAlive(i))
+			continue;
+		
+		playerTeam = GetClientTeam(i);
+		
+		//Check to see if player is close to a brazier Pile
+		GetClientAbsOrigin(i,playerPos);
+		distance = GetVectorDistance( playerPos, ownerPos);
+		
+		if(distance < maxDistance)
+		{
+			if(playerTeam == ownerTeam)
+			{
+				if(lightArrows)
+				{
+					//light any huntsman arrows
+					new iWeapon = GetEntPropEnt(i, Prop_Send, "m_hActiveWeapon");
+					if(IsValidEntity(iWeapon))
+					{
+						if(GetEntProp(iWeapon, Prop_Send, "m_iItemDefinitionIndex") == 56)
+						{
+							SetEntProp(iWeapon, Prop_Send, "m_bArrowAlight", 1);
+						}
+					}
+				}
+			}else{
+				//do a visible check and ignite
+				if(isVisibileCheck(i, owner))
+				{
+					//light nearby enemies
+					if(owner < 0 || owner > MaxClients)
+					{
+						TF2_IgnitePlayer(i, i);
+					}else{
+						TF2_IgnitePlayer(i, owner);
+					}
+				}
+			}
+		}
+	}
 }

@@ -716,4 +716,7 @@ public FreezeClient(client, attacker, Float:length)
 	WritePackFloat(dataPackHandle, playerspeed[0]);
 	WritePackFloat(dataPackHandle, playerspeed[1]);
 	WritePackFloat(dataPackHandle, playerspeed[2]);
+	
+	AttachTempParticle(client, "xms_snowburst", 5.0, false, "", 31.0, false);
+	
 }
