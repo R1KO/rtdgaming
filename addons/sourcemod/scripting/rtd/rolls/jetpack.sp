@@ -346,7 +346,7 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 	new wearer = GetEntPropEnt(jetpack, Prop_Data, "m_hOwnerEntity");
 	new hasFuryPerk;
 	
-	new nextRingOfFireTime = client_rolls[wearer][AWARD_G_JETPACK][8];
+	new nextRingOfFireTime;
 	
 	//There is no owner entity
 	if(wearer == -1)
@@ -462,6 +462,8 @@ public Action:Jetpack_Timer(Handle:timer, Handle:dataPackHandle)
 	
 	if(wearer > 0 && wearer <= MaxClients)
 	{
+		nextRingOfFireTime = client_rolls[wearer][AWARD_G_JETPACK][8];
+		
 		hasFuryPerk = RTD_PerksLevel[wearer][64];
 		
 		if(IsClientInGame(wearer))
