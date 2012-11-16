@@ -752,10 +752,18 @@ public Action:TakeDamageHook(client, &attacker, &inflictor, &Float:damage, &dama
 	{
 		new Float:angle[3];
 		GetEntPropVector(inflictor, Prop_Data, "m_angRotation", angle);
+		
+		PrintCenterText(client, "EXPLODERED!");
 		if(angle[0] == angle[1] && angle[1] == angle[2])
 		{
-			if(angle[0] == GetClientTeam(client))
+			if(isAttackerSelf)
+				damage = 1000.0;
+			else if(angle[0] == GetClientTeam(client) )
 				damage = 0.0;
+		}
+		else if(isAttackerSelf)
+		{
+			damage = 1000.0;
 		}
 	}
 	
