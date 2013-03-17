@@ -346,14 +346,14 @@ public Action:Dummy_Timer(Handle:timer, Handle:dataPackHandle)
 					victim_fwd[1] *= -1.0;
 					new Float:rndScale = GetRandomFloat(350.0, 700.0);
 					ScaleVector(victim_fwd, rndScale);
-					victim_fwd[2] = rndScale/4.0;
+					victim_fwd[2] = rndScale*2.0;
 					SetEntDataVector(enemy,BaseVelocityOffset,victim_fwd,true);
 					
 					if(rndScale < 450.0)
 					{
-						DealDamage(enemy, 35, client, 4226, "dummy");
-					}else{
 						DealDamage(enemy, 45, client, 4226, "dummy");
+					}else{
+						DealDamage(enemy, 55, client, 4226, "dummy");
 					}
 					
 					if(client < cMaxClients)
@@ -363,7 +363,7 @@ public Action:Dummy_Timer(Handle:timer, Handle:dataPackHandle)
 							TF2_StunPlayer(enemy, 1.5, 0.0, TF_STUNFLAGS_NORMALBONK, 0);
 							
 							//Next time the player can get stunned
-							client_rolls[i][AWARD_G_DUMMY][2] = GetTime() + 7;
+							client_rolls[i][AWARD_G_DUMMY][2] = GetTime() + 20;
 						}
 					}
 					
