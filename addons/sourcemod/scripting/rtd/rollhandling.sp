@@ -177,7 +177,6 @@ public bool:UnAcceptable(client, award)
 }
 
 
-
 GivePlayerEffect(client, award, cost)
 {
 	decl String:chatMessage[200];
@@ -972,8 +971,11 @@ public Action:Timer_Rolls(Handle:timer, Handle:dataPackHandle)
 				SetGodmode(client, false);
 				
 			case AWARD_G_TOXIC:
+			{
 				Colorize(client, NORMAL);
-				
+				disableControlPoints(0);
+			}
+			
 			case AWARD_G_NOCLIP:
 				SetEntityMoveType(client, MOVETYPE_WALK);
 				
@@ -1048,7 +1050,10 @@ public Action:Timer_Rolls(Handle:timer, Handle:dataPackHandle)
 			
 			
 			case AWARD_G_TOXIC:
+			{
 				Toxic(client);
+				disableControlPoints(1);
+			}
 			
 			case AWARD_G_CLOAK:
 			{
