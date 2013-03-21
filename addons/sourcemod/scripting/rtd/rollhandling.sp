@@ -451,9 +451,9 @@ GivePlayerEffect(client, award, cost)
 				
 				if(isUnusual)
 				{
-					client_rolls[client][AWARD_G_ARMOR][1] += 1000;
+					client_rolls[client][AWARD_G_ARMOR][1] += 200;
 				}else{
-					client_rolls[client][AWARD_G_ARMOR][1] += 500;
+					client_rolls[client][AWARD_G_ARMOR][1] += 100;
 				}
 				
 				client_rolls[client][AWARD_G_SPEED][0] = 1;
@@ -482,7 +482,7 @@ GivePlayerEffect(client, award, cost)
 				{
 					client_rolls[client][award][1] += roll_Unusual[award];
 				}else{
-					client_rolls[client][award][1] += 500;
+					client_rolls[client][award][1] += 200;
 				}
 				
 				if(GetClientTeam(client) == BLUE_TEAM)
